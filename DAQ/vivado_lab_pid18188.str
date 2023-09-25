@@ -1,0 +1,525 @@
+/*
+
+Xilinx Vivado Lab Edition v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:39:14 MST 2019
+
+Process ID (PID): 18188
+License: Customer
+
+Current time: 	Mon Apr 05 23:35:24 EDT 2021
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Scientific Linux release 7.9 (Nitrogen)
+OS Version: 3.10.0-1062.9.1.el7.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: localhost:10.0
+Screen size: 1920x1200
+Screen resolution (DPI): 100
+Available screens: 2
+Available disk space: 32 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	muonuser
+User home directory: /home/muonuser
+User working directory: /home/muonuser/git_folder/phase2_MiniDAQ/DAQ
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/softwares/Xilinx/Vivado_Lab
+HDI_APPROOT: /home/softwares/Xilinx/Vivado_Lab/2019.2
+RDI_DATADIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/data
+RDI_BINDIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/bin
+
+Vivado Lab Edition preferences file location: /home/muonuser/.Xilinx/vivado_lab/2019.2/vivado_lab.xml
+Vivado Lab Edition preferences directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/
+Vivado Lab Edition layouts directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/layouts
+PlanAhead jar file location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/lib/classes/planAhead.jar
+Vivado Lab Edition log file location: 	/home/muonuser/git_folder/phase2_MiniDAQ/DAQ/vivado_lab.log
+Vivado Lab Edition journal file location: 	/home/muonuser/git_folder/phase2_MiniDAQ/DAQ/vivado_lab.jou
+Engine tmp dir: 	./.Xil/vivado_lab-18188-localhost.localdomain
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_PLANAHEAD: /home/softwares/Xilinx/Vivado_Lab/2019.2
+XILINX_VITIS: 
+XILINX_VIVADO: /home/softwares/Xilinx/Vivado_Lab/2019.2
+
+
+GUI allocated memory:	128 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 4,991 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// WARNING: HEventQueue.dispatchEvent() is taking  1364 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1079 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 4,991 MB. GUI used memory: 51 MB. Current time: 4/5/21, 11:35:26 PM EDT
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_HARDWARE_MANAGER, "Open Hardware Manager"); // y (x, cr)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HARDWARE_MANAGER
+// Tcl Command: 'rdi::info_commands get_hw_probes'
+// bB (cr):  Open Hardware Manager : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1960 ms.
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  1221 ms.
+// TclEventType: HW_SESSION_OPEN
+// Tcl Message: open_hw_manager 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,032 MB. GUI used memory: 56 MB. Current time: 4/5/21, 11:35:52 PM EDT
+// TclEventType: HW_SESSION_OPEN
+// WARNING: HEventQueue.dispatchEvent() is taking  1212 ms.
+// [GUI Memory]: 58 MB (+58133kb) [00:00:47]
+// [Engine Memory]: 5,056 MB (+5149989kb) [00:00:47]
+// 'Q' command handler elapsed time: 4 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  1184 ms.
+dismissDialog("Open Hardware Manager"); // bB (cr)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (ds, cr)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, cr)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ai (ao, cr)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+// aN (cr): Open New Hardware Target: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2156 ms.
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// bB (aN):  Open Server : addNotify
+// TclEventType: HW_SERVER_UPDATE
+// WARNING: HEventQueue.dispatchEvent() is taking  1836 ms.
+// TclEventType: HW_SERVER_UPDATE
+// WARNING: HEventQueue.dispatchEvent() is taking  2140 ms.
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2450 ms.
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// WARNING: HEventQueue.dispatchEvent() is taking  1650 ms.
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2015 ms.
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+// Elapsed time: 12 seconds
+dismissDialog("Open Target"); // bB (aN)
+// WARNING: HEventQueue.dispatchEvent() is taking  1777 ms.
+// TclEventType: HW_SYSMON_DELETE
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+dismissDialog("Close Target"); // bB (aN)
+selectTable(PAResourceEtoH.HardwareDeviceChooserPanel_DEVICE_CHOOSER_TABLE, "xcku035_0 ; 13823093 ; 6", 0, "13823093", 1); // ac (O, aN)
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// TclEventType: HW_OBJECT_DELETE
+// bB (aN):  Open Hardware Target : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1953 ms.
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -url localhost:3121 -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042 INFO: [Labtools 27-3414] Connected to existing cs_server. 
+// Tcl Message: current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01] 
+// TclEventType: HW_TARGET_CHANGE
+// Tcl Message: set_property PARAM.FREQUENCY 6000000 [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01] 
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: open_hw_target 
+// Tcl Message: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/000017def52c01 
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// Tcl Message: current_hw_device [get_hw_devices xcku035_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_AXI_CHANGE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_AXI_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// Tcl Message: refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcku035_0] 0] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// [GUI Memory]: 101 MB (+41958kb) [00:01:24]
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// WARNING: HEventQueue.dispatchEvent() is taking  7850 ms.
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 2 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 1 JTAG AXI core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 4 VIO core(s). 
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,078 MB. GUI used memory: 81 MB. Current time: 4/5/21, 11:36:38 PM EDT
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:18 ; elapsed = 00:00:11 . Memory (MB): peak = 7236.387 ; gain = 1075.285 ; free physical = 15363 ; free virtual = 36139 
+// Elapsed time: 16 seconds
+selectButton("FINISH", "Finish"); // JButton (j, aN)
+// 'H' command handler elapsed time: 39 seconds
+// [GUI Memory]: 117 MB (+11954kb) [00:01:35]
+// [Engine Memory]: 6,143 MB (+875116kb) [00:01:35]
+// WARNING: HEventQueue.dispatchEvent() is taking  1234 ms.
+dismissDialog("Open Hardware Target"); // bB (aN)
+dismissDialog("Open New Hardware Target"); // aN (cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1209 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1147 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1204 ms.
+selectButton(PAResourceItoN.IlaProbeTablePanel_SPECIFY_PROBES_FILE_AND_REFRESH, "Specify the probes file and refresh the device"); // d (c, cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1295 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1435 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1078 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1201 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1166 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1241 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1344 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1241 ms.
+// Elapsed time: 13 seconds
+selectButton(PAResourceItoN.IlaProbeTablePanel_SPECIFY_PROBES_FILE_AND_REFRESH, "Specify the probes file and refresh the device"); // d (c, cr)
+// bK (cr): Refresh Device: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2027 ms.
+selectButton(PAResourceQtoS.RefreshDeviceDialog_SPECIFY_DEBUG_PROBES_FILE, (String) null); // t (an, bK)
+// WARNING: HEventQueue.dispatchEvent() is taking  2572 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2535 ms.
+// Elapsed time: 79 seconds
+setFileChooser("/home/muonuser/git_folder/phase2_MiniDAQ/firmware/lpgbtfpga_xcku035_10g24_top.ltx");
+selectButton(PAResourceQtoS.RefreshDeviceDialog_REFRESH_DEVICE, "Refresh"); // a (bK)
+// TclEventType: HW_DEVICE_CHANGE
+// Run Command: PAResourceCommand.PACommandNames_REFRESH_DEVICE
+// WARNING: HEventQueue.dispatchEvent() is taking  1070 ms.
+// Tcl Message: set_property PROBES.FILE {/home/muonuser/git_folder/phase2_MiniDAQ/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {/home/muonuser/git_folder/phase2_MiniDAQ/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+// TclEventType: HW_DEVICE_CHANGE
+dismissDialog("Refresh Device"); // bK (cr)
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// WARNING: HEventQueue.dispatchEvent() is taking  1904 ms.
+// bB (cr):  Refresh Device : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2108 ms.
+// TclEventType: HW_DEVICE_UPDATE
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xcku035_0] 0] 
+// TclEventType: HW_AXI_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 2 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 1 JTAG AXI core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 4 VIO core(s). 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_2] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_3] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_4] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:04 ; elapsed = 00:00:08 . Memory (MB): peak = 7258.773 ; gain = 0.000 ; free physical = 15375 ; free virtual = 36151 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// WARNING: HEventQueue.dispatchEvent() is taking  1238 ms.
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1239 ms.
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_trigger_interface/ila_trigger_interface_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1386 ms.
+// Elapsed time: 13 seconds
+dismissDialog("Refresh Device"); // bB (cr)
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,220 MB. GUI used memory: 79 MB. Current time: 4/5/21, 11:38:42 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 239 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "hw_vios", 2); // i (h, cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1522 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_4]", 0, true); // N (O, ResizableWindow) - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1055 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// [GUI Memory]: 123 MB (+390kb) [00:07:47]
+// [GUI Memory]: 131 MB (+1367kb) [00:07:47]
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1159 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTableHeader(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "Direction", 3); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; [B] 0 ;  ; Output ; hw_vio_4", 30, "uplinkRst_i", 0, true); // g (O, cr) - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1015 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; [B] 0 ;  ; Output ; hw_vio_4", 30, "uplinkRst_i", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+// [GUI Memory]: 139 MB (+1720kb) [00:08:08]
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; [B] 0 ;  ; Output ; hw_vio_4", 30, "uplinkRst_i", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1311 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectMenuItem(PAResourceItoN.LabtoolsMenu_ACTIVE_HIGH_BUTTON, "Active-High Button"); // aq (ao, cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_VALUE_ACTIVE_HIGH_MODE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1231 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1040 ms.
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; 0 ;  ; Output ; hw_vio_4", 30, "0", 1, true); // g (O, cr) - Node
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 10 seconds
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_1]", 0, true); // N (O, ResizableWindow) - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1514 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/locked_dline0[9:0] ; [H] 382 ;  ; Input ; hw_vio_1", 5, "tdc_decoder_top_inst/locked_dline0[9:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/locked_dline0[9:0] ; [H] 382 ;  ; Input ; hw_vio_1", 5, "tdc_decoder_top_inst/locked_dline0[9:0]", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.LabtoolsMenu_RADIX, "Radix"); // af (ao, cr)
+selectMenuItem(PAResourceItoN.LabtoolsMenu_BINARY, "Binary"); // aq (cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_BINARY_RADIX
+// TclEventType: DEBUG_PROBE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1193 ms.
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline0 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// bB (cr):  Set VIO Value Radix Type : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2712 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/locked_dline1[9:0] ; [H] 382 ;  ; Input ; hw_vio_1", 6, "tdc_decoder_top_inst/locked_dline1[9:0]", 0, true); // g (O, cr) - Node
+dismissDialog("Set VIO Value Radix Type"); // bB (cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1325 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/locked_dline1[9:0] ; [H] 382 ;  ; Input ; hw_vio_1", 6, "tdc_decoder_top_inst/locked_dline1[9:0]", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.LabtoolsMenu_RADIX, "Radix"); // af (ao, cr)
+selectMenuItem(PAResourceItoN.LabtoolsMenu_BINARY, "Binary"); // aq (cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_BINARY_RADIX
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1023 ms.
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline1 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// bB (cr):  Set VIO Value Radix Type : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2643 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+dismissDialog("Set VIO Value Radix Type"); // bB (cr)
+selectTreeTableHeader(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "Value", 1); // g (O, cr)
+// Elapsed time: 106 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/global_rst ; [B] 0 ;  ; Output ; hw_vio_1", 9, "tdc_decoder_top_inst/global_rst", 0, false); // g (O, cr)
+// WARNING: HEventQueue.dispatchEvent() is taking  1132 ms.
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/global_rst ; [B] 0 ;  ; Output ; hw_vio_1", 9, "tdc_decoder_top_inst/global_rst", 0, false, false, false, false, true, false); // g (O, cr) - Popup Trigger
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectMenuItem(PAResourceItoN.LabtoolsMenu_ACTIVE_HIGH_BUTTON, "Active-High Button"); // aq (ao, cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_VALUE_ACTIVE_HIGH_MODE
+// WARNING: HEventQueue.dispatchEvent() is taking  1204 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1007 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/global_rst ; 0 ;  ; Output ; hw_vio_1", 9, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,216 MB. GUI used memory: 83 MB. Current time: 4/6/21, 12:08:46 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1124 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 2722 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "hw_ila_1", 0); // i (h, cr)
+selectButton(PAResourceItoN.IlaProbeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, tdc_decoder_top_inst/inst_event_builder/hit_count[9:0]]", 3, false); // N (O, ResizableWindow)
+// WARNING: HEventQueue.dispatchEvent() is taking  1090 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTable(PAResourceTtoZ.TriggerSetupPanel_TABLE, "tdc_decoder_top_inst/inst_event_builder/hit_count[9:0] ; ==   ; [H]   ; XXX ; probe11[9:0] ; ", 0, "==  ", 1); // A (O, cr)
+editTable(PAResourceTtoZ.TriggerSetupPanel_TABLE, "==  ", 0, "Operator", 1); // A (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property TRIGGER_COMPARE_VALUE neq10'hXXX [get_hw_probes tdc_decoder_top_inst/inst_event_builder/hit_count -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTable(PAResourceTtoZ.TriggerSetupPanel_TABLE, "tdc_decoder_top_inst/inst_event_builder/hit_count[9:0] ; !=   ; [H]   ; XXX ; probe11[9:0] ; ", 0, "XXX", 3); // A (O, cr)
+setText(PAResourceOtoP.ProbeValueTablePanel_TEXT_FIELD, "000", true); // bW (Q, ResizableWindow)
+editTable(PAResourceTtoZ.TriggerSetupPanel_TABLE, "XXX", 0, "Value", 3); // A (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: set_property TRIGGER_COMPARE_VALUE neq10'h000 [get_hw_probes tdc_decoder_top_inst/inst_event_builder/hit_count -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1336 ms.
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+editTable(PAResourceTtoZ.TriggerSetupPanel_TABLE, "000", 0, "Value", 3); // A (O, cr)
+selectButton(PAResourceEtoH.HardwareIlaWaveformView_RUN_TRIGGER_FOR_THIS_ILA_CORE, "Waveform Viewer_run_trigger"); // E (f, cr)
+// Run Command: PAResourceCommand.PACommandNames_RUN_TRIGGER
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1061 ms.
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}] 
+// Tcl Message: INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2021-Apr-06 00:31:32 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]] 
+// Tcl Message: INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2021-Apr-06 00:31:34 
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// HMemoryUtils.trashcanNow. Engine heap size: 6,242 MB. GUI used memory: 81 MB. Current time: 4/6/21, 12:31:38 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: HW_WAVE_ZIP_EXPORT_DONE
+// TclEventType: WAVEFORM_GLASSPANE
+// Tcl Message: INFO: [Labtools 27-3304] ILA Waveform data saved to file /home/muonuser/git_folder/phase2_MiniDAQ/DAQ/.Xil/vivado_lab-18188-localhost.localdomain/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data. 
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 10 seconds
+selectGraphicalView(RDIResource.RDIViews_WAVEFORM_VIEWER, 485, 139); // n (o, cr)
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 81 MB. Current time: 4/6/21, 12:31:43 AM EDT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 81 MB. Current time: 4/6/21, 12:31:45 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 81 MB. Current time: 4/6/21, 1:01:46 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 79 MB. Current time: 4/6/21, 1:31:46 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 79 MB. Current time: 4/6/21, 2:01:46 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 79 MB. Current time: 4/6/21, 2:31:46 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 79 MB. Current time: 4/6/21, 3:01:46 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 78 MB. Current time: 4/6/21, 3:31:47 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,234 MB. GUI used memory: 79 MB. Current time: 4/6/21, 4:01:47 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE

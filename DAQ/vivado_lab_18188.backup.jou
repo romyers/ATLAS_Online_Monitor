@@ -1,0 +1,47 @@
+#-----------------------------------------------------------
+# Vivado Lab Edition v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+# 
+# Start of session at: Mon Apr  5 23:34:58 2021
+# Process ID: 18188
+# Current directory: /home/muonuser/git_folder/phase2_MiniDAQ/DAQ
+# Command line: vivado_lab
+# Log file: /home/muonuser/git_folder/phase2_MiniDAQ/DAQ/vivado_lab.log
+# Journal file: /home/muonuser/git_folder/phase2_MiniDAQ/DAQ/vivado_lab.jou
+#-----------------------------------------------------------
+start_gui
+open_hw_manager
+connect_hw_server -url localhost:3121 -allow_non_jtag
+current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01]
+set_property PARAM.FREQUENCY 6000000 [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01]
+open_hw_target
+current_hw_device [get_hw_devices xcku035_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcku035_0] 0]
+set_property PROBES.FILE {/home/muonuser/git_folder/phase2_MiniDAQ/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/git_folder/phase2_MiniDAQ/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_trigger_interface/ila_trigger_interface_inst"}]]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline0 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline1 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+endgroup
+set_property TRIGGER_COMPARE_VALUE neq10'hXXX [get_hw_probes tdc_decoder_top_inst/inst_event_builder/hit_count -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]]
+set_property TRIGGER_COMPARE_VALUE neq10'h000 [get_hw_probes tdc_decoder_top_inst/inst_event_builder/hit_count -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]]
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder/ila_event_builder_inst"}]]

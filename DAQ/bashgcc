@@ -1,0 +1,7 @@
+export PATH=/usr/ROOT/bin:/home/rpm/gcc-6.2.0/gcc-build/bin:/home/rpm/Python-2.7.17:$PATH
+export LD_LIBRARY_PATH=/home/rpm/gcc-6.2.0/gcc-build/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/rpm/Python-2.7.17
+export CXX=//home/rpm/gcc-6.2.0/gcc-build/bin/g++
+export CC=//home/rpm/gcc-6.2.0/gcc-build/bin/gcc
+
+

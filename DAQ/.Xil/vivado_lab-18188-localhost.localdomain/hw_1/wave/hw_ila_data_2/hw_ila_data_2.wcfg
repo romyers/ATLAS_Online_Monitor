@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<wave_config>
+	<wave_state>
+	</wave_state>
+	<db_ref_list>
+		<db_ref path="/home/muonuser/git_folder/phase2_MiniDAQ/DAQ/.Xil/vivado_lab-18188-localhost.localdomain/hw_1/wave/hw_ila_data_2/hw_ila_data_2.wdb" id="1" type="auto">
+			<top_modules>
+				<top_module name="top">
+				</top_module>
+			</top_modules>
+		</db_ref>
+	</db_ref_list>
+	<WVObjectSize size="13">
+	</WVObjectSize>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/srst_160" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/srst_160</obj_property>
+		<obj_property name="ObjectShortName">srst_160</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_write_1" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_write_1</obj_property>
+		<obj_property name="ObjectShortName">trigger_write_1</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_write" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_write</obj_property>
+		<obj_property name="ObjectShortName">trigger_write</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_fifo_full" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_fifo_full</obj_property>
+		<obj_property name="ObjectShortName">trigger_fifo_full</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_ready" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_ready</obj_property>
+		<obj_property name="ObjectShortName">trigger_ready</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_fifo_data" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_fifo_data[28:0]</obj_property>
+		<obj_property name="ObjectShortName">trigger_fifo_data[28:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_fifo_empty" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_fifo_empty</obj_property>
+		<obj_property name="ObjectShortName">trigger_fifo_empty</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_coarse" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_coarse[11:0]</obj_property>
+		<obj_property name="ObjectShortName">trigger_coarse[11:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_time_delayed_1" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_time_delayed_1[16:0]</obj_property>
+		<obj_property name="ObjectShortName">trigger_time_delayed_1[16:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/event_count_1" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/event_count_1[11:0]</obj_property>
+		<obj_property name="ObjectShortName">event_count_1[11:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_time_delayed" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_time_delayed[16:0]</obj_property>
+		<obj_property name="ObjectShortName">trigger_time_delayed[16:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/event_count" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/event_count[11:0]</obj_property>
+		<obj_property name="ObjectShortName">event_count[11:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/inst_trigger_interface/trigger_in" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/inst_trigger_interface/trigger_in</obj_property>
+		<obj_property name="ObjectShortName">trigger_in</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+</wave_config>
+

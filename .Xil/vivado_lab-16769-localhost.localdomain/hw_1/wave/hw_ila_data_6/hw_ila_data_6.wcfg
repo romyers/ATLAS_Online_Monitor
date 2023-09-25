@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<wave_config>
+	<wave_state>
+	</wave_state>
+	<db_ref_list>
+		<db_ref path="/home/muonuser/gitfolder/phase2_MiniDAQ/.Xil/vivado_lab-16769-localhost.localdomain/hw_1/wave/hw_ila_data_6/hw_ila_data_6.wdb" id="1" type="auto">
+			<top_modules>
+				<top_module name="top">
+				</top_module>
+			</top_modules>
+		</db_ref>
+	</db_ref_list>
+	<WVObjectSize size="30">
+	</WVObjectSize>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/enable" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/enable</obj_property>
+		<obj_property name="ObjectShortName">enable</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_64b_decode" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_64b_decode[63:0]</obj_property>
+		<obj_property name="ObjectShortName">data_64b_decode[63:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/o_Kout" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/o_Kout[7:0]</obj_property>
+		<obj_property name="ObjectShortName">o_Kout[7:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_ready" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_ready</obj_property>
+		<obj_property name="ObjectShortName">data_ready</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_valid_1" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_valid_1</obj_property>
+		<obj_property name="ObjectShortName">chnl_data_valid_1</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_32b_1" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_32b_1[31:0]</obj_property>
+		<obj_property name="ObjectShortName">chnl_data_32b_1[31:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/K_r_pre" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/K_r_pre[7:0]</obj_property>
+		<obj_property name="ObjectShortName">K_r_pre[7:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/K_r" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/K_r[7:0]</obj_property>
+		<obj_property name="ObjectShortName">K_r[7:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/K_r_after" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/K_r_after[7:0]</obj_property>
+		<obj_property name="ObjectShortName">K_r_after[7:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_r_pre" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_r_pre[63:0]</obj_property>
+		<obj_property name="ObjectShortName">data_r_pre[63:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_r" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_r[63:0]</obj_property>
+		<obj_property name="ObjectShortName">data_r[63:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_r_after" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_r_after[63:0]</obj_property>
+		<obj_property name="ObjectShortName">data_r_after[63:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_ready_r" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_ready_r[2:0]</obj_property>
+		<obj_property name="ObjectShortName">data_ready_r[2:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_ready_delay" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_ready_delay</obj_property>
+		<obj_property name="ObjectShortName">data_ready_delay</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_32b" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_32b[31:0]</obj_property>
+		<obj_property name="ObjectShortName">chnl_data_32b[31:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_valid" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/chnl_data_valid</obj_property>
+		<obj_property name="ObjectShortName">chnl_data_valid</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos[2:0]</obj_property>
+		<obj_property name="ObjectShortName">data_pos[2:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/find_header_front" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/find_header_front</obj_property>
+		<obj_property name="ObjectShortName">find_header_front</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/header_data_front" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/header_data_front[23:0]</obj_property>
+		<obj_property name="ObjectShortName">header_data_front[23:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos_from_front" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos_from_front[2:0]</obj_property>
+		<obj_property name="ObjectShortName">data_pos_from_front[2:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/proc_data_from_front" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/proc_data_from_front</obj_property>
+		<obj_property name="ObjectShortName">proc_data_from_front</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/find_header_behind" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/find_header_behind</obj_property>
+		<obj_property name="ObjectShortName">find_header_behind</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/header_data_behind" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/header_data_behind[23:0]</obj_property>
+		<obj_property name="ObjectShortName">header_data_behind[23:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos_from_behind" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos_from_behind[2:0]</obj_property>
+		<obj_property name="ObjectShortName">data_pos_from_behind[2:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/proc_data_from_behind" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/proc_data_from_behind</obj_property>
+		<obj_property name="ObjectShortName">proc_data_from_behind</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/find_data" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/find_data</obj_property>
+		<obj_property name="ObjectShortName">find_data</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_packet" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_packet[31:0]</obj_property>
+		<obj_property name="ObjectShortName">data_packet[31:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos_next" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/data_pos_next[2:0]</obj_property>
+		<obj_property name="ObjectShortName">data_pos_next[2:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/proc_data_from_data" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/proc_data_from_data</obj_property>
+		<obj_property name="ObjectShortName">proc_data_from_data</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/is_trailer" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/is_trailer</obj_property>
+		<obj_property name="ObjectShortName">is_trailer</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+</wave_config>
+

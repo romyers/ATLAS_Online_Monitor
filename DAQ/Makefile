@@ -1,0 +1,44 @@
+#************************************************************
+# file: Makefile
+#
+# 13. Dec. 01  MAJO created
+#
+#************************************************************
+
+CC		= g++
+RM		= rm -f
+
+
+CFLAGS	= -std=c++11 -g -Wall
+LFLAGS	= -L/usr/lib -lpcap
+INCLUDES	=
+LIBS	=
+
+# SRCS	= EthernetCap.cpp PcapDev.cpp
+SRCS	= EthernetCap.cpp 
+
+OBJS = $(SRCS:.cpp=.o)
+
+MAIN = mac_daq
+
+all:    $(MAIN)
+		@echo  Simple compiler named mycc has been compiled
+
+$(MAIN): $(OBJS) 
+		$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+
+# this is a suffix replacement rule for building .o's from .c's
+# it uses automatic variables $<: the name of the prerequisite of
+# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
+# (see the gnu make manual section about automatic variables)
+.c.o:
+		$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+
+clean:
+		$(RM) *.o *~ $(MAIN)
+
+depend: $(SRCS)
+		makedepend $(INCLUDES) $^
+
+# DO NOT DELETE THIS LINE -- make depend needs it
+

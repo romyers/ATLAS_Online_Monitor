@@ -1,0 +1,87 @@
+$date
+        2023-Sep-25 14:08:44
+$end
+$version
+        Vivado Lab Edition v2019.2 (64-bit)
+$end
+$timescale
+        1ps
+$end
+$scope module dut $end
+$var reg 1 " tdc_decoder_top_inst/inst_event_builder_triggerless/trigger_fifo_empty $end
+$var reg 29 # tdc_decoder_top_inst/inst_event_builder_triggerless/trigger_fifo_data [28:0] $end
+$var reg 1 @ tdc_decoder_top_inst/inst_event_builder_triggerless/trigger_fifo_read $end
+$var reg 1 A tdc_decoder_top_inst/inst_event_builder_triggerless/tdc_fifo_empty $end
+$var reg 40 B tdc_decoder_top_inst/inst_event_builder_triggerless/tdc_fifo_data [39:0] $end
+$var reg 1 j tdc_decoder_top_inst/inst_event_builder_triggerless/matching_busy $end
+$var reg 1 k tdc_decoder_top_inst/inst_event_builder_triggerless/tdc_fifo_read $end
+$var reg 1 l tdc_decoder_top_inst/inst_event_builder_triggerless/readout_fifo_full $end
+$var reg 40 m tdc_decoder_top_inst/inst_event_builder_triggerless/event_data [39:0] $end
+$var reg 1 7" tdc_decoder_top_inst/inst_event_builder_triggerless/event_data_ready $end
+$var reg 1 8" tdc_decoder_top_inst/inst_event_builder_triggerless/building_busy $end
+$var reg 10 9" tdc_decoder_top_inst/inst_event_builder_triggerless/hit_count [9:0] $end
+$var reg 6 C" tdc_decoder_top_inst/inst_event_builder_triggerless/state [5:0] $end
+$var reg 6 I" tdc_decoder_top_inst/inst_event_builder_triggerless/nextstate [5:0] $end
+$var reg 1 O" _TRIGGER $end
+$var reg 1 P" _WINDOW $end
+$var reg 1 Q" _GAP $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+1"
+b11110010000010001011110011010 #
+0@
+1A
+b0 B
+0j
+0k
+0l
+b0 m
+07"
+08"
+b0 9"
+b1 C"
+b1 I"
+0O"
+1P"
+0Q"
+$end
+#512
+0"
+b11110010000110110010011000001 #
+b10 I"
+1O"
+#513
+1@
+18"
+b10 C"
+b100 I"
+#514
+1"
+0@
+1j
+b100 C"
+#519
+0j
+b1000 I"
+#520
+b1010000000011110010000110110010011000001 m
+17"
+b1000 C"
+b10000 I"
+#521
+b0 m
+07"
+b10000 C"
+b100000 I"
+#522
+b1100000000001111001000010000000000000000 m
+17"
+08"
+b100000 C"
+b1 I"
+#523
+b0 m
+07"
+b1 C"

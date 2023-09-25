@@ -1,0 +1,5 @@
+[ libminiDAQ_CINT.so ]
+# List of selected classes
+class EthernetCap
+class PcapDev
+header EthernetCap.h

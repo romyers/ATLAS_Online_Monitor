@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<wave_config>
+	<wave_state>
+	</wave_state>
+	<db_ref_list>
+		<db_ref path="/home/muonuser/git_folder/phase2_MiniDAQ/.Xil/vivado_lab-8417-localhost.localdomain/hw_1/wave/hw_ila_data_1/hw_ila_data_1.wdb" id="1" type="auto">
+			<top_modules>
+				<top_module name="top">
+				</top_module>
+			</top_modules>
+		</db_ref>
+	</db_ref_list>
+	<WVObjectSize size="12">
+	</WVObjectSize>
+	<wvobject fp_name="num_active_ports_1" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">num_active_ports_1[4:0]</obj_property>
+		<obj_property name="ObjectShortName">num_active_ports_1[4:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="sa_done_1" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">sa_done_1</obj_property>
+		<obj_property name="ObjectShortName">sa_done_1</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="lock_OBUF_1" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">lock_OBUF_1</obj_property>
+		<obj_property name="ObjectShortName">lock_OBUF_1</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="active_chains_1" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">active_chains_1[17:0]</obj_property>
+		<obj_property name="ObjectShortName">active_chains_1[17:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="JTAG_busy" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">JTAG_busy</obj_property>
+		<obj_property name="ObjectShortName">JTAG_busy</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdi_tdo_equal_1" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdi_tdo_equal_1</obj_property>
+		<obj_property name="ObjectShortName">tdi_tdo_equal_1</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="chain_success_1" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">chain_success_1[5:0]</obj_property>
+		<obj_property name="ObjectShortName">chain_success_1[5:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="elink_ttc_org" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">elink_ttc_org</obj_property>
+		<obj_property name="ObjectShortName">elink_ttc_org</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdo_IBUF" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdo_IBUF[17:0]</obj_property>
+		<obj_property name="ObjectShortName">tdo_IBUF[17:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdi_OBUF" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdi_OBUF[17:0]</obj_property>
+		<obj_property name="ObjectShortName">tdi_OBUF[17:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tck_OBUF" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tck_OBUF[17:0]</obj_property>
+		<obj_property name="ObjectShortName">tck_OBUF[17:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tms_OBUF" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tms_OBUF[17:0]</obj_property>
+		<obj_property name="ObjectShortName">tms_OBUF[17:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+</wave_config>
+

@@ -1,0 +1,185 @@
+----------------------------------------------------------------------------------
+-- Company: Umich
+-- Engineer: Xueye Hu
+-- 
+-- Create Date: 10/30/2020 04:26:03 PM
+-- Design Name: 
+-- Module Name: tdc_decoder_top - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+package bus_multiplexer_pkg is
+    type conf2b_array is array(natural range <>) of std_logic_vector(1 downto 0);
+end package;
+    
+--! Xilinx devices library:
+library unisim;
+use unisim.vcomponents.all;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use work.bus_multiplexer_pkg.all;
+
+entity tdc_decoder_master_top is
+  Port ( 
+
+        reset_checker_i_m  : in  std_logic;
+        ser320_clk_i_m     : in  std_logic;
+        ser320_clkEn_i_m   : in  std_logic;
+
+        data_rate_i_m      : in  std_logic;
+
+        elink_config_i_m   : in  conf2b_array(27 downto 0);
+
+        error_detected_o_m : out std_logic_vector(27 downto 0);
+
+        userDataUpLink_i_m : in  std_logic_vector(229 downto 0)
+);
+end tdc_decoder_master_top;
+
+architecture Behavioral of tdc_decoder_master_top is
+
+--  component amt_gtx_decode_320mbps is      
+--       Port (
+--               user_rst                                                   : in std_logic;
+--               RESET_I                                                    : in  std_logic;             
+--               RX_FRAMECLK_I                                              : in  std_logic; 
+               
+--               amt_tdc_h16_din                                            : in  std_logic_vector(7 downto 0);
+--               amt_tdc_h17_din                                            : in  std_logic_vector(7 downto 0);  
+--               RX_DATA_I                                                  : in  std_logic_vector(229 downto 0);                      
+--               RX_EXTRA_DATA_WIDEBUS_I                                    : in  std_logic_vector(31 downto 0);                 
+--               GBT_RX_READY_I                                             : in std_logic
+--          );
+--  end component;
+  
+
+    type elink_320m_T        is array(integer range <>) of std_logic_vector(7 downto 0);
+    signal elink_320m_s      : elink_320m_T(27 downto 0);  -- Maximum of 28 links @ 320Mbps
+    
+    signal reset320_s        : std_logic;
+    signal rst_dst_s         : std_logic;  
+    
+    signal TDC0_CH1_IN          : std_logic_vector(7 downto 0);          
+    signal TDC0_CH2_IN          : std_logic_vector(7 downto 0);  
+    signal TDC1_CH1_IN          : std_logic_vector(7 downto 0);
+    signal TDC1_CH2_IN          : std_logic_vector(7 downto 0);      
+    signal TDC2_CH1_IN          : std_logic_vector(7 downto 0);
+    signal TDC2_CH2_IN          : std_logic_vector(7 downto 0);         
+    signal TDC3_CH1_IN          : std_logic_vector(7 downto 0);
+    signal TDC3_CH2_IN          : std_logic_vector(7 downto 0);
+    signal TDC4_CH1_IN          : std_logic_vector(7 downto 0);
+    signal TDC4_CH2_IN          : std_logic_vector(7 downto 0);
+    signal TDC5_CH1_IN          : std_logic_vector(7 downto 0);
+    signal TDC5_CH2_IN          : std_logic_vector(7 downto 0);
+    signal TDC6_CH1_IN          : std_logic_vector(7 downto 0);    
+    signal TDC6_CH2_IN          : std_logic_vector(7 downto 0);    
+    signal TDC7_CH1_IN          : std_logic_vector(7 downto 0);    
+    signal TDC7_CH2_IN          : std_logic_vector(7 downto 0);     
+    signal TDC8_CH1_IN          : std_logic_vector(7 downto 0);    
+    signal TDC8_CH2_IN          : std_logic_vector(7 downto 0); 
+    signal TDC9_CH1_IN          : std_logic_vector(7 downto 0);    
+    signal TDC9_CH2_IN          : std_logic_vector(7 downto 0); 
+
+    signal SCA0_PRI          : std_logic_vector(7 downto 0);
+    signal SCA0_AUX          : std_logic_vector(7 downto 0);    
+    signal SCA1_PRI          : std_logic_vector(7 downto 0);
+    signal SCA1_AUX          : std_logic_vector(7 downto 0); 
+    signal SCA2_PRI          : std_logic_vector(7 downto 0);
+    signal SCA2_AUX          : std_logic_vector(7 downto 0);
+    
+    signal TTC_ENC           : std_logic_vector(7 downto 0);
+        
+begin
+
+    reset_synch_proc: process(reset_checker_i_m, ser320_clk_i_m)
+        begin
+            if reset_checker_i_m = '1' then
+                rst_dst_s  <= '1';
+                reset320_s <= '1';
+            elsif rising_edge(ser320_clk_i_m) then
+                rst_dst_s  <= '0';
+                reset320_s <= rst_dst_s;
+            end if;
+    end process;
+
+-- 320Mbps elink bits extracted from uplink 230bit (master LpGBT)
+    elink_320m_s(0)     <= userDataUpLink_i_m(7 downto 0);       
+    elink_320m_s(1)     <= userDataUpLink_i_m(15 downto 8);  
+    elink_320m_s(2)     <= userDataUpLink_i_m(23 downto 16); 
+    elink_320m_s(3)     <= userDataUpLink_i_m(31 downto 24); 
+    elink_320m_s(4)     <= userDataUpLink_i_m(39 downto 32); 
+    elink_320m_s(5)     <= userDataUpLink_i_m(47 downto 40); 
+    elink_320m_s(6)     <= userDataUpLink_i_m(55 downto 48); 
+    elink_320m_s(7)     <= userDataUpLink_i_m(63 downto 56); 
+    elink_320m_s(8)     <= userDataUpLink_i_m(71 downto 64); 
+    elink_320m_s(9)     <= userDataUpLink_i_m(79 downto 72); 
+    elink_320m_s(10)    <= userDataUpLink_i_m(87 downto 80);
+    elink_320m_s(11)    <= userDataUpLink_i_m(95 downto 88);
+    elink_320m_s(12)    <= userDataUpLink_i_m(103 downto 96);
+    elink_320m_s(13)    <= userDataUpLink_i_m(111 downto 104);
+    elink_320m_s(14)    <= userDataUpLink_i_m(119 downto 112);
+    elink_320m_s(15)    <= userDataUpLink_i_m(127 downto 120);
+    elink_320m_s(16)     <= userDataUpLink_i_m(135 downto 128);
+    elink_320m_s(17)     <= userDataUpLink_i_m(143 downto 136);
+    elink_320m_s(18)     <= userDataUpLink_i_m(151 downto 144);
+    elink_320m_s(19)     <= userDataUpLink_i_m(159 downto 152);
+    elink_320m_s(20)     <= userDataUpLink_i_m(167 downto 160);
+    elink_320m_s(21)     <= userDataUpLink_i_m(175 downto 168);
+    elink_320m_s(22)     <= userDataUpLink_i_m(183 downto 176);
+    elink_320m_s(23)     <= userDataUpLink_i_m(191 downto 184);
+    elink_320m_s(24)     <= userDataUpLink_i_m(199 downto 192);
+    elink_320m_s(25)     <= userDataUpLink_i_m(207 downto 200);
+    elink_320m_s(26)     <= userDataUpLink_i_m(215 downto 208);
+    elink_320m_s(27)     <= userDataUpLink_i_m(223 downto 216);
+
+-- TDC data extracted from 320Mbps elink bits 
+
+    TDC0_CH1_IN <= elink_320m_s(27);
+    TDC0_CH2_IN <= elink_320m_s(26);
+    TDC1_CH1_IN <= elink_320m_s(21);
+    TDC1_CH2_IN <= elink_320m_s(20);
+    TDC2_CH1_IN <= elink_320m_s(25);
+    TDC2_CH2_IN <= elink_320m_s(24);    
+    TDC3_CH1_IN <= elink_320m_s(19);
+    TDC3_CH2_IN <= elink_320m_s(18);
+    TDC4_CH1_IN <= elink_320m_s(23);
+    TDC4_CH2_IN <= elink_320m_s(22);
+
+    TDC5_CH1_IN <= elink_320m_s(4);
+    TDC5_CH2_IN <= elink_320m_s(5);
+    TDC6_CH1_IN <= elink_320m_s(0);
+    TDC6_CH2_IN <= elink_320m_s(1);
+    TDC7_CH1_IN <= elink_320m_s(6);
+    TDC7_CH2_IN <= elink_320m_s(7);    
+    TDC8_CH1_IN <= elink_320m_s(2);
+    TDC8_CH2_IN <= elink_320m_s(3);
+    TDC9_CH1_IN <= elink_320m_s(8);
+    TDC9_CH2_IN <= elink_320m_s(9);
+
+-- SCA data extracted from 320Mbps elink bits 
+
+    SCA0_PRI    <= elink_320m_s(15);
+    SCA0_AUX    <= elink_320m_s(17);
+    SCA1_PRI    <= elink_320m_s(12);
+    SCA1_AUX    <= elink_320m_s(11);    
+    SCA2_PRI    <= elink_320m_s(14);
+    SCA2_AUX    <= elink_320m_s(13);   
+    TTC_ENC     <= elink_320m_s(10);
+
+end Behavioral;

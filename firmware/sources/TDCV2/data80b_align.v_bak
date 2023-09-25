@@ -1,0 +1,98 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Yuxiang Guo
+// 
+// Create Date: 1/02/2021 10:34:00 PM
+// Design Name: 
+// Module Name: data80b_align
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module data80b_align (
+	input clk,
+	input rst,
+	input [7:0] tdc_dline_1, 
+	input [7:0] tdc_dline_0,
+	output reg [79:0] data_80b_align,
+	output reg data_ready
+	);
+
+reg [15:0] data_r;
+always @(posedge clk) begin
+	data_r <= {tdc_dline_1[7],tdc_dline_0[7],tdc_dline_1[6],tdc_dline_0[6],tdc_dline_1[5],tdc_dline_0[5],tdc_dline_1[4],tdc_dline_0[4],
+			   tdc_dline_1[3],tdc_dline_0[3],tdc_dline_1[2],tdc_dline_0[2],tdc_dline_1[1],tdc_dline_0[1],tdc_dline_1[0],tdc_dline_0[0]};
+end
+
+reg [2:0] counter = 3'b100;
+always @(posedge clk) begin
+	if(rst) begin
+		counter <= 3'b100;
+	end else if(~|counter) begin 
+		counter <= 3'b100;
+	end else begin
+		counter <= counter - 1'b1;
+	end
+end
+
+reg [79:0] data_80b, data_80b_r, data_80b_r_pre;
+always @(posedge clk) begin
+	if(rst) data_80b <= 80'b0;
+	else data_80b <= {data_80b[63:0], data_r};
+end
+
+always @(posedge clk) begin
+	if(~|counter) data_ready <= 1'b1;
+	else data_ready <= 1'b0;
+end
+
+always @(posedge clk) begin
+	if(data_ready) begin
+		data_80b_r <= data_80b;
+		data_80b_r_pre <= data_80b_r;
+	end
+end
+
+reg [3:0] align_position;
+always @(posedge clk) begin
+	if(rst) align_position <= 4'h0;
+	else if(data_ready) begin
+		if 		(!(|data_80b_r_pre[77:73])|(&data_80b_r_pre[77:73]))  align_position <= 4'h0; 
+		else if (!(|data_80b_r_pre[76:72])|(&data_80b_r_pre[76:72]))  align_position <= 4'h1; 
+		else if (!(|data_80b_r_pre[75:71])|(&data_80b_r_pre[75:71]))  align_position <= 4'h2; 
+		else if (!(|data_80b_r_pre[74:70])|(&data_80b_r_pre[74:70]))  align_position <= 4'h3; 
+		else if (!(|data_80b_r_pre[73:69])|(&data_80b_r_pre[73:69]))  align_position <= 4'h4; 
+		else if (!(|data_80b_r_pre[72:68])|(&data_80b_r_pre[72:68]))  align_position <= 4'h5; 
+		else if (!(|data_80b_r_pre[71:67])|(&data_80b_r_pre[71:67]))  align_position <= 4'h6; 
+		else if (!(|data_80b_r_pre[70:66])|(&data_80b_r_pre[70:66]))  align_position <= 4'h7; 
+		else if (!(|data_80b_r_pre[79:75])|(&data_80b_r_pre[79:75]))  align_position <= 4'h8; 
+		else if (!(|data_80b_r_pre[78:74])|(&data_80b_r_pre[78:74]))  align_position <= 4'h9; 
+	end
+end
+
+always @(posedge clk) begin
+	if 		(align_position == 4'h0) data_80b_align <= data_80b_r_pre;			
+	else if (align_position == 4'h1) data_80b_align <= {data_80b_r_pre[78:0], data_80b_r[79]};
+	else if (align_position == 4'h2) data_80b_align <= {data_80b_r_pre[77:0], data_80b_r[79:78]};
+	else if (align_position == 4'h3) data_80b_align <= {data_80b_r_pre[76:0], data_80b_r[79:77]};
+	else if (align_position == 4'h4) data_80b_align <= {data_80b_r_pre[75:0], data_80b_r[79:76]};
+	else if (align_position == 4'h5) data_80b_align <= {data_80b_r_pre[74:0], data_80b_r[79:75]};
+	else if (align_position == 4'h6) data_80b_align <= {data_80b_r_pre[73:0], data_80b_r[79:74]};
+	else if (align_position == 4'h7) data_80b_align <= {data_80b_r_pre[72:0], data_80b_r[79:73]};
+	else if (align_position == 4'h8) data_80b_align <= {data_80b_r_pre[71:0], data_80b_r[79:72]};
+	else if (align_position == 4'h9) data_80b_align <= {data_80b_r_pre[70:0], data_80b_r[79:71]};
+end
+
+
+endmodule

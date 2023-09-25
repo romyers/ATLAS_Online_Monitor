@@ -1,0 +1,5 @@
+mac_daq
+*.o
+*.so
+CMakeFiles/
+
