@@ -1,0 +1,124 @@
+/*
+
+Xilinx Vivado Lab Edition v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:39:14 MST 2019
+
+Process ID (PID): 23803
+License: Customer
+
+Current time: 	Mon Sep 25 16:17:41 EDT 2023
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Scientific Linux release 7.9 (Nitrogen)
+OS Version: 3.10.0-1062.9.1.el7.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: :0
+Screen size: 1920x1200
+Screen resolution (DPI): 100
+Available screens: 2
+Available disk space: 27 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	muonuser
+User home directory: /home/muonuser
+User working directory: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/softwares/Xilinx/Vivado_Lab
+HDI_APPROOT: /home/softwares/Xilinx/Vivado_Lab/2019.2
+RDI_DATADIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/data
+RDI_BINDIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/bin
+
+Vivado Lab Edition preferences file location: /home/muonuser/.Xilinx/vivado_lab/2019.2/vivado_lab.xml
+Vivado Lab Edition preferences directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/
+Vivado Lab Edition layouts directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/layouts
+PlanAhead jar file location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/lib/classes/planAhead.jar
+Vivado Lab Edition log file location: 	/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.log
+Vivado Lab Edition journal file location: 	/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.jou
+Engine tmp dir: 	./.Xil/vivado_lab-23803-localhost.localdomain
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_PLANAHEAD: /home/softwares/Xilinx/Vivado_Lab/2019.2
+XILINX_VITIS: 
+XILINX_VIVADO: /home/softwares/Xilinx/Vivado_Lab/2019.2
+
+
+GUI allocated memory:	154 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 4,995 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_HARDWARE_MANAGER, "Open Hardware Manager"); // y (x, cr)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HARDWARE_MANAGER
+// Tcl Command: 'rdi::info_commands get_hw_probes'
+// bB (cr):  Open Hardware Manager : addNotify
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// TclEventType: HW_SESSION_OPEN
+// WARNING: HEventQueue.dispatchEvent() is taking  1234 ms.
+// Tcl Message: open_hw_manager 
+// TclEventType: HW_SESSION_OPEN
+// [GUI Memory]: 91 MB (+92576kb) [00:00:09]
+// [Engine Memory]: 5,050 MB (+5143656kb) [00:00:09]
+dismissDialog("Open Hardware Manager"); // bB (cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,050 MB. GUI used memory: 50 MB. Current time: 9/25/23, 4:17:43 PM EDT
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (ds, cr)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, Popup.HeavyWeightWindow)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, Popup.HeavyWeightWindow)
+selectMenuItem((HResource) null, "localhost:3121,xilinx_tcf/Xilinx/000017def52c01,PARAM.FREQUENCY:3000000"); // ai (cr, Popup.HeavyWeightWindow)
+// bB (cr):  Open Hardware Target : addNotify
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -url localhost:3121 -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-2222] Launching hw_server... INFO: [Labtools 27-2221] Launch Output:  ****** Xilinx hw_server v2019.2   **** Build date : Nov  6 2019 at 22:13:42     ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042 INFO: [Labtools 27-3417] Launching cs_server... 
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: INFO: [Labtools 27-2221] Launch Output: [?1034h  ****** Xilinx cs_server v2019.2.0   **** Build date : Nov 07 2019-00:41:48     ** Copyright 2017-2019 Xilinx, Inc. All Rights Reserved.    
+// Tcl Message: current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01] 
+// TclEventType: HW_TARGET_CHANGE
+// Tcl Message: set_property PARAM.FREQUENCY 3000000 [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01] 
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// WARNING: HEventQueue.dispatchEvent() is taking  2115 ms.
+// Tcl Message: open_hw_target 
+// Tcl Message: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/000017def52c01 
+// Tcl Message: current_hw_device [get_hw_devices xc7a35t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a35t_0] 0] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// [GUI Memory]: 112 MB (+18006kb) [00:00:27]
+// [Engine Memory]: 6,188 MB (+929164kb) [00:00:27]
+// WARNING: HEventQueue.dispatchEvent() is taking  6308 ms.
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s). INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s). 
+// HMemoryUtils.trashcanNow. Engine heap size: 6,188 MB. GUI used memory: 83 MB. Current time: 9/25/23, 4:18:03 PM EDT
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:22 ; elapsed = 00:00:08 . Memory (MB): peak = 7420.422 ; gain = 36.828 ; free physical = 3896 ; free virtual = 40510 
+// Elapsed time: 12 seconds
+dismissDialog("Open Hardware Target"); // bB (cr)
+// [GUI Memory]: 132 MB (+14455kb) [00:05:22]
+// HMemoryUtils.trashcanNow. Engine heap size: 6,190 MB. GUI used memory: 77 MB. Current time: 9/25/23, 4:48:04 PM EDT

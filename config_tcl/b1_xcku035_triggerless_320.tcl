@@ -53,7 +53,7 @@ set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/tri
 
 set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/bc_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
 commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/bc_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE 4080 [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
+set_property OUTPUT_VALUE 4070 [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
 commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
 set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/enable_matching -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
 commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/enable_matching} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]

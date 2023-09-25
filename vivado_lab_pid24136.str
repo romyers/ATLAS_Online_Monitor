@@ -1,0 +1,797 @@
+/*
+
+Xilinx Vivado Lab Edition v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:39:14 MST 2019
+
+Process ID (PID): 24136
+License: Customer
+
+Current time: 	Mon Sep 25 16:18:23 EDT 2023
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Scientific Linux release 7.9 (Nitrogen)
+OS Version: 3.10.0-1062.9.1.el7.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: :0
+Screen size: 1920x1200
+Screen resolution (DPI): 100
+Available screens: 2
+Available disk space: 27 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	muonuser
+User home directory: /home/muonuser
+User working directory: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/softwares/Xilinx/Vivado_Lab
+HDI_APPROOT: /home/softwares/Xilinx/Vivado_Lab/2019.2
+RDI_DATADIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/data
+RDI_BINDIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/bin
+
+Vivado Lab Edition preferences file location: /home/muonuser/.Xilinx/vivado_lab/2019.2/vivado_lab.xml
+Vivado Lab Edition preferences directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/
+Vivado Lab Edition layouts directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/layouts
+PlanAhead jar file location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/lib/classes/planAhead.jar
+Vivado Lab Edition log file location: 	/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.log
+Vivado Lab Edition journal file location: 	/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.jou
+Engine tmp dir: 	./.Xil/vivado_lab-24136-localhost.localdomain
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_PLANAHEAD: /home/softwares/Xilinx/Vivado_Lab/2019.2
+XILINX_VITIS: 
+XILINX_VIVADO: /home/softwares/Xilinx/Vivado_Lab/2019.2
+
+
+GUI allocated memory:	200 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 5,023 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_HARDWARE_MANAGER, "Open Hardware Manager"); // y (x, cr)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HARDWARE_MANAGER
+// Tcl Command: 'rdi::info_commands get_hw_probes'
+// bB (cr):  Open Hardware Manager : addNotify
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// TclEventType: HW_SESSION_OPEN
+// WARNING: HEventQueue.dispatchEvent() is taking  1319 ms.
+// Tcl Message: open_hw_manager 
+// TclEventType: HW_SESSION_OPEN
+// [GUI Memory]: 95 MB (+97553kb) [00:00:08]
+// [Engine Memory]: 5,047 MB (+5141031kb) [00:00:08]
+dismissDialog("Open Hardware Manager"); // bB (cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,052 MB. GUI used memory: 51 MB. Current time: 9/25/23, 4:18:24 PM EDT
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (ds, cr)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, Popup.HeavyWeightWindow)
+selectMenuItem((HResource) null, "localhost:3121,xilinx_tcf/Digilent/210299A573C5,PARAM.FREQUENCY:3000000"); // ai (cr, Popup.HeavyWeightWindow)
+// bB (cr):  Open Hardware Target : addNotify
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -url localhost:3121 -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042 INFO: [Labtools 27-3414] Connected to existing cs_server. 
+// Tcl Message: current_hw_target [get_hw_targets */xilinx_tcf/Digilent/210299A573C5] 
+// Tcl Message: ERROR: [Labtoolstcl 44-199] No matching targets found on connected servers: localhost Resolution: If needed connect the desired target to a server and use command refresh_hw_server. Then rerun the get_hw_targets command. 
+// Tcl Message: ERROR: [Common 17-39] 'get_hw_targets' failed due to earlier errors. 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'get_hw_targets' failed due to earlier errors.  
+// cO (cr): Critical Messages: addNotify
+dismissDialog("Open Hardware Target"); // bB (cr)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (cO)
+dismissDialog("Critical Messages"); // cO (cr)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (ds, cr)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, Popup.HeavyWeightWindow)
+selectMenu(PAResourceOtoP.ProgramDebugTab_AVAILABLE_TARGETS_ON_SERVER, "Available Targets on Server"); // af (ao, Popup.HeavyWeightWindow)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ai (ao, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+// aN (cr): Open New Hardware Target: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// HOptionPane Error: 'A server which has the same host name is already connected. Enter a different valid remote host name or select 'Local Server' before proceeding. (Duplicate Host Name)'
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+selectButton("CANCEL", "Cancel"); // JButton (j, aN)
+// 'H' command handler elapsed time: 4 seconds
+dismissDialog("Open New Hardware Target"); // aN (cr)
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "localhost (2) ; Connected", 0, "Connected", 1, true); // t (O, cr) - Node
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "localhost (2) ; Connected", 0, "Connected", 1, true, false, false, false, true, false); // t (O, cr) - Popup Trigger - Node
+selectMenuItem(PAResourceCommand.PACommandNames_CLOSE_SERVER, "Close Server"); // ai (ao, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_CLOSE_SERVER
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// Tcl Message: disconnect_hw_server localhost:3121 
+// [GUI Memory]: 112 MB (+12538kb) [00:00:27]
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (ds, cr)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, Popup.HeavyWeightWindow)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ai (ao, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+// aN (cr): Open New Hardware Target: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// bB (aN):  Open Server : addNotify
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+dismissDialog("Open Target"); // bB (aN)
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+dismissDialog("Close Target"); // bB (aN)
+selectTable(PAResourceTtoZ.TargetChooserPanel_TARGET_CHOOSER_TABLE, "xilinx_tcf ; Xilinx/00000000000000 ; 6000000", 0, "6000000", 2); // bO (O, aN)
+selectTable(PAResourceTtoZ.TargetChooserPanel_TARGET_CHOOSER_TABLE, "xilinx_tcf ; Xilinx/00000000000000 ; 6000000", 0, "6000000", 2); // bO (O, aN)
+editTable(PAResourceTtoZ.TargetChooserPanel_TARGET_CHOOSER_TABLE, "6000000", 0, "JTAG Clock Frequency", 2); // bO (O, aN)
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+dismissDialog("Open Target"); // bB (aN)
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// TclEventType: HW_TARGET_CHANGE
+dismissDialog("Close Target"); // bB (aN)
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+dismissDialog("Open Target"); // bB (aN)
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+dismissDialog("Close Target"); // bB (aN)
+selectTable(PAResourceTtoZ.TargetChooserPanel_TARGET_CHOOSER_TABLE, "xilinx_tcf ; Xilinx/00000000000000 ; 3000000", 0, "3000000", 2); // bO (O, aN)
+editTable(PAResourceTtoZ.TargetChooserPanel_TARGET_CHOOSER_TABLE, "3000000", 0, "JTAG Clock Frequency", 2); // bO (O, aN)
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+dismissDialog("Open Target"); // bB (aN)
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+dismissDialog("Close Target"); // bB (aN)
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+dismissDialog("Open Target"); // bB (aN)
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+dismissDialog("Close Target"); // bB (aN)
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// TclEventType: HW_OBJECT_DELETE
+// bB (aN):  Open Hardware Target : addNotify
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -url localhost:3121 -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042 INFO: [Labtools 27-3414] Connected to existing cs_server. 
+// Tcl Message: current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/00000000000000] 
+// TclEventType: HW_TARGET_CHANGE
+// Tcl Message: set_property PARAM.FREQUENCY 1500000 [get_hw_targets */xilinx_tcf/Xilinx/00000000000000] 
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// Tcl Message: open_hw_target 
+// Tcl Message: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/00000000000000 
+// Tcl Message: current_hw_device [get_hw_devices xcku035_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcku035_0] 0] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,090 MB. GUI used memory: 55 MB. Current time: 9/25/23, 4:19:04 PM EDT
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// [GUI Memory]: 123 MB (+5362kb) [00:00:53]
+// [GUI Memory]: 140 MB (+11100kb) [00:01:02]
+// [GUI Memory]: 164 MB (+18488kb) [00:01:09]
+// [GUI Memory]: 187 MB (+15536kb) [00:01:13]
+// WARNING: HEventQueue.dispatchEvent() is taking  23003 ms.
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s). 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// [GUI Memory]: 226 MB (+30247kb) [00:01:17]
+// [Engine Memory]: 6,166 MB (+908639kb) [00:01:17]
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:50 ; elapsed = 00:00:34 . Memory (MB): peak = 7416.656 ; gain = 1110.926 ; free physical = 2046 ; free virtual = 38669 
+// Elapsed time: 35 seconds
+selectButton("FINISH", "Finish"); // JButton (j, aN)
+// 'H' command handler elapsed time: 48 seconds
+dismissDialog("Open Hardware Target"); // bB (aN)
+dismissDialog("Open New Hardware Target"); // aN (cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 6,185 MB. GUI used memory: 147 MB. Current time: 9/25/23, 4:19:35 PM EDT
+// Elapsed time: 12 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "hw_vios", 13); // i (h, cr)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_SPECIFY_PROBES_FILE_AND_REFRESH, "Specify the probes file and refresh the device"); // d (c, cr)
+// bK (cr): Refresh Device: addNotify
+selectButton(PAResourceQtoS.RefreshDeviceDialog_SPECIFY_DEBUG_PROBES_FILE, (String) null); // t (an, bK)
+setFileChooser("/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx");
+selectButton(PAResourceQtoS.RefreshDeviceDialog_REFRESH_DEVICE, "Refresh"); // a (bK)
+// TclEventType: HW_DEVICE_CHANGE
+// Run Command: PAResourceCommand.PACommandNames_REFRESH_DEVICE
+// Tcl Message: set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+dismissDialog("Refresh Device"); // bK (cr)
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xcku035_0] 0] 
+// bB (cr):  Refresh Device : addNotify
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s). 
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_3] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_4] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_5] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:06 ; elapsed = 00:00:08 . Memory (MB): peak = 7422.273 ; gain = 0.000 ; free physical = 1983 ; free virtual = 38607 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"gbtsc_inst/ic_inst/rx_inst/ila_ic_rx_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"gbtsc_inst/ic_inst/tx_inst/ila_ic_tx_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_3 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder_triggerless/ila_event_builder_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_4 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder_triggermode/ila_event_builder_triggermode_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_5 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_trigger_interface/ila_trigger_interface_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,297 MB. GUI used memory: 149 MB. Current time: 9/25/23, 4:20:10 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_6 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_7 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Waveform: addNotify
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_8 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[1].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_9 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[1].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Waveform: addNotify
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_10 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_11 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_12 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[3].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_13 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[3].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// Elapsed time: 11 seconds
+dismissDialog("Refresh Device"); // bB (cr)
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectButton(RDIResource.HPopupTitle_CLOSE, (String) null); // k (n, ResizableWindow)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectButton(RDIResource.HPopupTitle_CLOSE, (String) null); // k (n, ResizableWindow)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_CANCEL, "Cancel"); // a (E, ResizableWindow)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_4]", 0, true); // N (O, ResizableWindow) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/rollover[11:0] ; [H] FFF ;  ; Output ; hw_vio_4", 4, "tdc_decoder_top_inst/rollover[11:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/match_window[11:0] ; [H] 03C ;  ; Output ; hw_vio_4", 3, "tdc_decoder_top_inst/match_window[11:0]", 0, true); // g (O, cr) - Node
+typeControlKey(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, (String) null, 'a'); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/rollover[11:0] ; [H] FFF ;  ; Output ; hw_vio_4", 4, "tdc_decoder_top_inst/rollover[11:0]", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.LabtoolsMenu_RADIX, "Radix"); // af (ao, cr)
+selectMenu(PAResourceItoN.LabtoolsMenu_NAME, "Name"); // af (ao, cr)
+selectMenuItem(PAResourceItoN.LabtoolsMenu_SHORT, "Short"); // aq (cr)
+// Run Command: PAResourceCommand.PACommandNames_DISPLAY_PROBE_SHORT_NAME
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/bc_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/enable_matching -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/rollover -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/search_margin -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/trigger_redge -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/enable_relative_trigger_data -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/reject_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/rst_160_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/trigger_latency -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]  
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "search_margin[11:0] ; [H] 064 ;  ; Output ; hw_vio_4", 5, "search_margin[11:0]", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.LabtoolsMenu_RADIX, "Radix"); // af (ao, cr)
+selectMenuItem(PAResourceItoN.LabtoolsMenu_UNSIGNED_DECIMAL, "Unsigned Decimal"); // aq (cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_UNSIGNED_DECIMAL_RADIX
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/bc_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/enable_matching -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/rollover -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/search_margin -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/trigger_redge -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/enable_relative_trigger_data -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/reject_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/rst_160_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/trigger_latency -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "coarse_count_offset[11:0] ; [U] 4080 ;  ; Output ; hw_vio_4", 7, "coarse_count_offset[11:0]", 0, true); // g (O, cr) - Node
+// Elapsed time: 110 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "coarse_count_offset[11:0] ; [U] 4080 ;  ; Output ; hw_vio_4", 7, "[U] 4080", 1, true); // g (O, cr) - Node
+// Elapsed time: 17 seconds
+setText("Value:", "4060"); // bW (i, ResizableWindow)
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE 4060 [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_3]", 0, true); // N (O, ResizableWindow) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "rst_160_vio ; [B] 0 ;  ; Output ; hw_vio_4", 10, "rst_160_vio", 0, false); // g (O, cr)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_1, tdc_decoder_top_inst/correct_counter_th[19:0]]", 13, true); // N (O, ResizableWindow) - Node
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_1, tdc_decoder_top_inst/ttc_master_reset_vio]", 21, false, true, false, false, false, false); // N (O, ResizableWindow) - Shift Key
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_OK, "OK"); // a (E, ResizableWindow)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_event_reset_vio ; [B] 0 ;  ; Output ; hw_vio_1", 5, "tdc_decoder_top_inst/ttc_event_reset_vio", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/locked_dline1[3:0] ; [H] 2 ;  ; Input ; hw_vio_1", 8, "tdc_decoder_top_inst/locked_dline1[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/locked_dline0[3:0] ; [H] 2 ;  ; Input ; hw_vio_1", 7, "tdc_decoder_top_inst/locked_dline0[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; [B] 0 ;  ; Output ; hw_vio_1", 4, "tdc_decoder_top_inst/ttc_bc_reset_vio", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; [B] 0 ;  ; Output ; hw_vio_1", 4, "[B] 0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; [B] 1 ;  ; Output ; hw_vio_1", 4, "tdc_decoder_top_inst/ttc_bc_reset_vio", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; [B] 1 ;  ; Output ; hw_vio_1", 4, "tdc_decoder_top_inst/ttc_bc_reset_vio", 0, false, false, false, false, true, false); // g (O, cr) - Popup Trigger
+selectMenuItem(PAResourceItoN.LabtoolsMenu_ACTIVE_HIGH_BUTTON, "Active-High Button"); // aq (ao, cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_VALUE_ACTIVE_HIGH_MODE
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; 0 ;  ; Output ; hw_vio_1", 4, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; 0 ;  ; Output ; hw_vio_1", 4, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+typeControlKey(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, (String) null, 'a'); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/global_rst ; [B] 0 ;  ; Output ; hw_vio_1", 3, "tdc_decoder_top_inst/global_rst", 0, false, false, false, false, true, false); // g (O, cr) - Popup Trigger
+selectMenu(PAResourceItoN.LabtoolsMenu_RADIX, "Radix"); // af (ao, cr)
+selectMenuItem(PAResourceItoN.LabtoolsMenu_BINARY, "Binary"); // aq (cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_BINARY_RADIX
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/correct_counter_th -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/enable_320M -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/enable_K28_1 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/ttc_event_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/ttc_master_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline0 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline1 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; 0 ;  ; Output ; hw_vio_1", 4, "tdc_decoder_top_inst/ttc_bc_reset_vio", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_event_reset_vio ; [B] 0 ;  ; Output ; hw_vio_1", 5, "tdc_decoder_top_inst/ttc_event_reset_vio", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_master_reset_vio ; [B] 0 ;  ; Output ; hw_vio_1", 6, "tdc_decoder_top_inst/ttc_master_reset_vio", 0, false); // g (O, cr)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_CANCEL, "Cancel"); // a (E, ResizableWindow)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "coarse_count_offset[11:0] ; [U] 4060 ;  ; Output ; hw_vio_4", 7, "coarse_count_offset[11:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "enable_relative_trigger_data ; [B] 0 ;  ; Output ; hw_vio_4", 8, "enable_relative_trigger_data", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "reject_offset[11:0] ; [U] 300 ;  ; Output ; hw_vio_4", 9, "reject_offset[11:0]", 0, true); // g (O, cr) - Node
+// Elapsed time: 40 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "coarse_count_offset[11:0] ; [U] 4060 ;  ; Output ; hw_vio_4", 7, "coarse_count_offset[11:0]", 0, true); // g (O, cr) - Node
+// Elapsed time: 141 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "coarse_count_offset[11:0] ; [U] 4060 ;  ; Output ; hw_vio_4", 7, "[U] 4060", 1, true); // g (O, cr) - Node
+setText("Value:", "4070"); // bW (i, ResizableWindow)
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE 4070 [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 73 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; 0 ;  ; Output ; hw_vio_1", 4, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/ttc_bc_reset_vio ; 0 ;  ; Output ; hw_vio_1", 4, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/correct_counter_th[19:0] ; [B] 1111_0100_0010_0100_0000 ;  ; Output ; hw_vio_1", 0, "tdc_decoder_top_inst/correct_counter_th[19:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "tdc_decoder_top_inst/correct_counter_th[19:0] ; [B] 1111_0100_0010_0100_0000 ;  ; Output ; hw_vio_1", 0, "tdc_decoder_top_inst/correct_counter_th[19:0]", 0, true, false, false, false, true, false); // g (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.LabtoolsMenu_RADIX, "Radix"); // af (ao, cr)
+selectMenuItem(PAResourceItoN.LabtoolsMenu_UNSIGNED_DECIMAL, "Unsigned Decimal"); // aq (cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_UNSIGNED_DECIMAL_RADIX
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// Tcl Message: set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/correct_counter_th -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,433 MB. GUI used memory: 156 MB. Current time: 9/25/23, 4:50:10 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
