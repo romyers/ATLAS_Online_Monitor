@@ -80,11 +80,10 @@ std::string getFileName(std::string filePath, bool withExtension = true, char se
     return "";
 }
 
+void configureGStyle() {
 
-int DecodeOffline(TString filename = "run_20210906_100742.dat") {
   gROOT->SetBatch(kTRUE); // set to batch mode to inprove the speed
-  int maxEventCount = 100000000;
-  // int maxEventCount = 100;
+
   // gStyle->SetOptStat(10); //only print entries
   gStyle->SetOptStat(1110);  //std, mean, entris, name printed
   // gStyle->SetTitleX(999.);//hist no title
@@ -98,16 +97,25 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
   gStyle->SetStatH(0.25);                
   // Set height of stat-box (fraction of pad size)
 
+}
+
+int DecodeOffline(TString filename = "run_20210906_100742.dat") {
+
+  configureGStyle();
+
+  int maxEventCount = 100000000;
+  // int maxEventCount = 100;
+
   double match_window = 1.5;
+
   // open input file
-  
   // TString input_filename = "/home/mdt-user/phase2_MiniDAQ/ROOT_plot/data/";
   TString input_filename = "data/";
   TString fn = TString(filename);
   input_filename += filename;
   ifstream data_in_flow;
   std::cout << input_filename.Data() << std::endl;
-  data_in_flow.open(input_filename.Data());
+  data_in_flow.open(input_filename.Data(), std::ios::binary);
 
   data_in_flow.seekg(0, data_in_flow.end);
   int data_in_flow_length = data_in_flow.tellg(); // get file size
@@ -654,4 +662,3 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
   //gROOT->SetBatch(kFALSE);
   return 0;
 }
-    
