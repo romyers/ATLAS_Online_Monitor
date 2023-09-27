@@ -1,9 +1,8 @@
 
 /*******************************************************************************
   file name: DecodeRawData.cxx
-  author: Zhe Yang
-  created: 01/25/2019
-  last modified: 04/26/2019
+  author: Zhe Yang (1/25/2019-4/26/2019)
+
 
   description:
   -Decode .raw data from HPTDC and save data to ntuple
@@ -26,6 +25,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <vector>
+#include <string>
 
 // ROOT includes
 #include "TFile.h"
@@ -59,11 +59,8 @@
 #define HEADER_WORD 31
 #define TRAILER_WORD 30
 
-
-
 using namespace std;
 using namespace Muon;
-
 
 /*
  * Get File Name from a Path with or without extension
@@ -99,7 +96,77 @@ void configureGStyle() {
 
 }
 
-int DecodeOffline(TString filename = "run_20210906_100742.dat") {
+ifstream prepareInputStream(const string &filename) {
+
+  string path = "data/" + filename;
+
+  ifstream in(path, ios::binary);
+
+  cout << "Opened for data read: " << path << endl;
+
+  return in;
+
+}
+
+// Returns fileStream to its original position when done.
+int sizeOfFile(ifstream &fileStream) {
+
+  // Get the original position
+  int initialPosition = fileStream.tellg();
+
+  // Seek to end and get the position of the last character
+  fileStream.seekg(0, fileStream.end);
+  int result = fileStream.tellg();
+
+  // Return to the original position
+  fileStream.seekg(initialPosition, fileStream.beg);
+
+  return result;
+
+}
+
+bool hasValidFileLength(ifstream &fileStream) {
+
+  int length = sizeOfFile(fileStream);
+  if(length <= 0) {
+    cout << "file name incorrect" << endl;
+    cout << "file size = " << length << endl;
+    return false;
+  } else {
+    cout << "file size = " << length << endl;
+    return true;
+  }
+
+}
+
+void makeDirectory(const string &path) {
+
+  if(mkdir(path.data(), 0777) == -1) {
+    cerr << strerror(errno) << endl;
+  }
+
+}
+
+void setWorkingDirectory(const string &relativePath) {
+
+  chdir(relativePath.data());
+
+}
+
+void buildOutputDirectory(const string &dirName) {
+
+  cout << "Creating output directory" << endl;
+  makeDirectory("output");
+
+  cout << "Creating directory " << dirName << endl;
+  makeDirectory(string("output/") + dirName);
+
+  cout << "Creating NoiseRate directory" << endl;
+  makeDirectory(string("output/") + dirName + "/NoiseRate");
+
+}
+
+int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
 
   configureGStyle();
 
@@ -108,47 +175,15 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
 
   double match_window = 1.5;
 
-  // open input file
-  // TString input_filename = "/home/mdt-user/phase2_MiniDAQ/ROOT_plot/data/";
-  TString input_filename = "data/";
+  // TODO: Why make a TString?
   TString fn = TString(filename);
-  input_filename += filename;
-  ifstream data_in_flow;
-  std::cout << input_filename.Data() << std::endl;
-  data_in_flow.open(input_filename.Data(), std::ios::binary);
 
-  data_in_flow.seekg(0, data_in_flow.end);
-  int data_in_flow_length = data_in_flow.tellg(); // get file size
-  if (data_in_flow_length <=0) {
-    printf("file name incorrect!\n");
-    printf("file size = %d\n",data_in_flow_length);
+  ifstream data_in_flow = prepareInputStream(filename);
+
+  // Validate file length
+  if(!hasValidFileLength(data_in_flow)) {
     return 1;
   }
-  else{
-    printf("file size = %d\n",data_in_flow_length);
-  }
-  data_in_flow.seekg(0, data_in_flow.beg);
-
-  // create output file
-  system("mkdir output");
-  chdir("output");
-  char output_directoryname[256];
-  strcpy(output_directoryname, filename);
-  strcat(output_directoryname, ".dir");
-  std::cout << "creating directory " << output_directoryname << std::endl;
-  if (mkdir(output_directoryname, 0777) == -1) {
-    cerr << strerror(errno) << endl;
-  }
-  chdir(output_directoryname);
-  system("mkdir NoiseRate");
-  char output_filename[256];
-  strcpy(output_filename, filename);
-  strcat(output_filename, ".out");
-
-  char output_root_filename[200];
-  strcpy(output_root_filename, output_filename);
-  strcat(output_root_filename, ".root");
-  TFile *p_output_rootfile = new TFile(output_root_filename, "RECREATE");
 
 
   // prepare file structure for event display
@@ -199,6 +234,20 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
 
   TString h_name;
 
+  /////////////////////////////////////////////////////////////////////////////
+  // create output directory structure
+  /////////////////////////////////////////////////////////////////////////////
+
+  string output_dir_name = filename + ".dir";
+  
+  buildOutputDirectory(output_dir_name);
+  setWorkingDirectory(string("output/") + output_dir_name);
+
+  string output_filename = filename + ".out";
+  string output_root_filename = output_filename + ".root";
+
+  TFile *p_output_rootfile = new TFile(output_root_filename.data(), "RECREATE");
+
   for (Int_t tdc_id = 0; tdc_id != Geometry::MAX_TDC; tdc_id++) {
    if (geo.IsActiveTDC(tdc_id)) {    
     // create output directories
@@ -240,6 +289,9 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
       }
    }
   } // end for: all TDC
+  /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -300,19 +352,22 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
   unsigned long event_print = 100;
 
 
+  /////////////////////////////////////////////////////////////////////////////
+  /////////////////// DECODE //////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
   int nloop = 0;
   int readbytes = 0;
   while (data_in_flow.read(readbuff, 5)  && total_events<maxEventCount) {
     // while (data_in_flow.read((char *) &word, 4)  && nloop<maxEventCount) {
     nloop++;
-    word = (((uint64_t)readbuff[4])&0xff) +
-          ((((uint64_t)readbuff[3])&0xff)<<8)+
-          ((((uint64_t)readbuff[2])&0xff)<<16)+
-          ((((uint64_t)readbuff[1])&0xff)<<24)+
-          ((((uint64_t)readbuff[0])&0xff)<<32);
-          //networking uses big-endian while processor uses small-endian, so a byte-swap is used here.
 
-    // word = readbuff[0] + readbuff[0]*256 + readbuff[0]*65536 + readbuff[0]*16777216 + readbuff[0]*4294967296;
+    // TODO: Pull this out to a function.
+    // Byte swap from big-endian to little-endian
+    word = 0;
+    for(uint8_t byte = 0; byte < 5; ++byte) {
+      word += (((uint64_t) readbuff[4 - byte]) & 0xff) << byte * 8;
+    }
+
     header = word >> 36; // get the four bits header of this word
     header_type = static_cast<unsigned int>((header.to_ulong()));
 
@@ -364,7 +419,7 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
       if(trailer_sig.HitCount()!=0){
         event = Event(header_sig,trailer_sig,sigVec);
         // DoHitFinding(&event,tc,ncut,0);
-       DoHitFinding(&event,tc,0,0);
+        DoHitFinding(&event,tc,0,0);
         //DoHitClustering(&event, geo);
         pass_event_check = kTRUE;
         //pass_event_check = CheckEvent(event, geo);
@@ -508,6 +563,9 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
     cout << "No event! Terminated." << endl;
     return 1;
   }
+  /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
 
   /* plot the time spectrum for leading and trailing edge */
   cout << "Making plots... " << endl;
@@ -576,7 +634,9 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
 
       chdir("NoiseRate");
       h_name.Form("tdc_%d_hit_rate", tdc_id);
-      sprintf(output_filename, "tdc_%d_hit_rate.png", tdc_id);
+      char buffer[256];
+      sprintf(buffer, "tdc_%d_hit_rate.png", tdc_id);
+      output_filename = string(buffer);
       p_tdc_hit_rate_graph[tdc_id] = new TGraph(Geometry::MAX_TDC_CHANNEL, p_tdc_hit_rate_x, p_tdc_hit_rate[tdc_id]);
       p_tdc_hit_rate_graph[tdc_id]->SetFillColor(4);
       p_tdc_hit_rate_graph[tdc_id]->SetTitle(h_name);
@@ -600,7 +660,7 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
       xlabel -> DrawText(0.5, 0.8, text_content.c_str());
       TLine *l = new TLine(-0.5,0.5,23.5,0.5);
       l->Draw();
-      p_output_canvas->SaveAs(output_filename);
+      p_output_canvas->SaveAs(output_filename.data());
       chdir("..");
       delete p_tdc_hit_rate_graph[tdc_id];
 
@@ -609,27 +669,32 @@ int DecodeOffline(TString filename = "run_20210906_100742.dat") {
       chdir(directory_name);
 
       p_tdc_tdc_time_corrected[tdc_id]->Draw();
-      sprintf(output_filename, "tdc_%d_tdc_time_spectrum_corrected.png", tdc_id);
-      p_output_canvas->SaveAs(output_filename);
+      sprintf(buffer, "tdc_%d_tdc_time_spectrum_corrected.png", tdc_id);
+      output_filename = string(buffer);
+      p_output_canvas->SaveAs(output_filename.data());
       
       p_tdc_adc_time[tdc_id]->Draw();
-      sprintf(output_filename, "tdc_%d__adc_time_spectrum.png", tdc_id);
-      p_output_canvas->SaveAs(output_filename);
+      sprintf(buffer, "tdc_%d__adc_time_spectrum.png", tdc_id);
+      output_filename = string(buffer);
+      p_output_canvas->SaveAs(output_filename.data());
 
       for (Int_t channel_id = 0; channel_id != Geometry::MAX_TDC_CHANNEL;channel_id++) {
         if (geo.IsActiveTDCChannel(tdc_id, channel_id)||(tdc_id==geo.TRIGGER_MEZZ)) {
 
           p_tdc_time_corrected[tdc_id][channel_id]->Draw();
-          sprintf(output_filename,"tdc_%d__channel_%d__tdc_time_spectrum_corrected.png",tdc_id, channel_id);
-          p_output_canvas->SaveAs(output_filename);
+          sprintf(buffer,"tdc_%d__channel_%d__tdc_time_spectrum_corrected.png",tdc_id, channel_id);
+          output_filename = string(buffer);
+          p_output_canvas->SaveAs(output_filename.data());
           
           p_tdc_time[tdc_id][channel_id]->Draw();
-          sprintf(output_filename,"tdc_%d__channel_%d__tdc_time_spectrum.png",tdc_id, channel_id);
-          p_output_canvas->SaveAs(output_filename);
+          sprintf(buffer,"tdc_%d__channel_%d__tdc_time_spectrum.png",tdc_id, channel_id);
+          output_filename = string(buffer);
+          p_output_canvas->SaveAs(output_filename.data());
 
           p_adc_time[tdc_id][channel_id]->Draw();
-          sprintf(output_filename, "tdc_%d__channel_%d__adc_time_spectrum.png",tdc_id, channel_id);
-          p_output_canvas->SaveAs(output_filename);
+          sprintf(buffer, "tdc_%d__channel_%d__adc_time_spectrum.png",tdc_id, channel_id);
+          output_filename = string(buffer);
+          p_output_canvas->SaveAs(output_filename.data());
         }
       }
       chdir("..");
