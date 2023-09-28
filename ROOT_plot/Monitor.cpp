@@ -5,6 +5,8 @@
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu
+ * 
+ * NOTE: This assumes triggerless mode.
  */
 
 #pragma once
@@ -23,6 +25,9 @@
 
 #include "src/Signal.cpp"
 #include "src/Event.cpp"
+#include "src/HitFinder.cpp"
+#include "src/TimeCorrection.cpp"
+#include "src/Geometry.cpp"
 
 #include <unistd.h>
 
@@ -38,6 +43,12 @@ using namespace std;
 
 const size_t  EVENT_SIZE_CUTOFF = 1000;
 const double  POLL_INTERVAL     = 0.1;
+
+// TODO: This is just a hard-coded computation. 
+//       It would be cleaner as a singleton.
+const TimeCorrection timeCorrection = TimeCorrection();
+
+
 
 void Monitor(const string &filename);
 
@@ -57,7 +68,12 @@ void debug_print(const Event &e);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+// TODO: Clean this up
+Geometry geo = Geometry();
+
 void Monitor(const string &filename) {
+
+	geo.SetRunN(0);
 
 	FileAppendMonitor inputWatcher(filename, true);
 	ifstream          dataStream  (filename      );
@@ -85,15 +101,89 @@ void Monitor(const string &filename) {
 
 }
 
+// TODO: Pull out validators
+// TODO: Test validators
+// TODO: We don't have event numbers, which we need to have for error reporting
+// TODO: Combine this with signal buffer validation. Either this can be done
+//       with access to the buffer or buffer validation can be done here.
+//       If it happens in buffer validation, we can still keep track of signal
+//       count.
+bool validateSignal(const Signal &sig) {
+
+	if(sig.Type() == Signal::HEADER)  return true;
+	if(sig.Type() == Signal::TRAILER) return true;
+
+	if(!geo.IsActiveTDC(sig.TDC())) {
+
+		string msg = "ERROR -- Unexpected data TDCID = ";
+		msg += to_string(sig.TDC());
+		msg += ", Channel = ";
+		msg += to_string(sig.Channel());
+
+		ErrorLogger::getInstance()->logError(
+			msg
+		);
+
+		return false;
+
+	}
+
+	if(sig.Channel() == Signal::TDC_HEADER_CHNL) {
+
+		return true;
+
+	}
+
+	if(sig.Channel() == Signal::TDC_TRAILER_CHNL) {
+
+		return true;
+
+	}
+
+	if(sig.Channel() == Signal::TDC_ERROR_CHNL) {
+
+		// TODO: Extract error info
+
+		return false;
+
+	}
+
+	if(sig.Channel() >= Geometry::MAX_TDC_CHANNEL) {
+
+		string msg = "ERROR -- Unexpected data TDCID = ";
+		msg += to_string(sig.TDC());
+		msg += ", Channel = ";
+		msg += to_string(sig.Channel());
+
+		ErrorLogger::getInstance()->logError(
+			msg
+		);
+
+		return false;
+
+	}
+
+	return true;
+
+}
+
 void extractSignals(deque<Signal> &buffer, istream &dataStream) {
 
-	char readBuffer[Signal::DATA_SIZE];
+	char readBuffer[Signal::WORD_SIZE];
 
-	while(remainingChars(dataStream) >= Signal::DATA_SIZE) {
+	while(remainingChars(dataStream) >= Signal::WORD_SIZE) {
 
-		dataStream.read(readBuffer, Signal::DATA_SIZE);
+		dataStream.read(readBuffer, Signal::WORD_SIZE);
 
-		buffer.push_back(ParseSignal(readBuffer, Signal::DATA_SIZE));
+		Signal sig = ParseSignal(readBuffer, Signal::WORD_SIZE);
+
+		if(validateSignal(sig)) {
+
+			buffer.push_back(sig);
+
+		}
+
+		// TODO: Even invalid signals should contribute to the total event signals
 
 	}
 
@@ -105,11 +195,17 @@ void extractEvents(deque<Event> &buffer, deque<Signal> &signals) {
 
 		if(signals.empty()) return;
 
+		// TODO: Put this dropping of invalid events in a separate function and
+		//       call it at the top level
 		if(!validateSignalBuffer(signals, iter)) {
 
 			dropFirstEvent(signals);
 
 			iter = signals.begin();
+
+			// TODO: Move logic from validateSignalBuffer to event validation
+			//       logic that runs after an event has been assembled, matching
+			//       what's done for signal validation
 
 		} else if(iter->Type() == Signal::TRAILER) {
 
@@ -126,6 +222,22 @@ void extractEvents(deque<Event> &buffer, deque<Signal> &signals) {
 
 }
 
+// TODO: Better name, better structure
+void handleEvent(Event &e) {
+
+	// Ignore empty events
+	if(e.Trailer().HitCount() == 0) return;
+
+	DoHitFinding(&e, timeCorrection, 0, 0);
+	// TODO: No hit clustering?
+
+	e.SetPassCheck(true);
+	e.CheckClusterTime();
+
+	debug_print(e);
+
+}
+
 void processEvents(deque<Event> &events) {
 
 	while(!events.empty()) {
@@ -133,10 +245,7 @@ void processEvents(deque<Event> &events) {
 		Event e = events.front();
 		events.pop_front();
 
-		debug_print(e);
-
-		// TODO: Extract integrated data from e
-		//         -- review DecodeOffline and see what data it's getting
+		handleEvent(e);
 
 	}
 
@@ -219,11 +328,30 @@ void debug_print(const Event &e) {
 
 	cout << "EVENT TRAILER:" << endl;
 	cout << "\tType: " << e.Trailer().Type() << endl;
+	cout << "\tHit Count: " << e.Trailer().HitCount() << endl;
 
 	for(size_t i = 0; i < e.Signals().size(); ++i) {
 
 		cout << "SIGNAL " << i + 1 << endl;
 		cout << "\tType: " << e.Signals()[i].Type() << endl;
+		cout << "\tTDC: " << e.Signals()[i].TDC() << endl;
+		cout << "\tChannel: " << e.Signals()[i].Channel() << endl;
+		cout << endl;
+
+	}
+
+	for(size_t i = 0; i < e.Hits().size(); ++i) {
+
+		cout << "HIT " << i + 1 << endl;
+		cout << "\tDrift Time: " << e.Hits()[i].DriftTime() << endl;
+		cout << endl;
+
+	}
+
+	for(size_t i = 0; i < e.Clusters().size(); ++i) {
+
+		cout << "CLUSTER " << i + 1 << endl;
+		cout << "\tSize: " << e.Clusters()[i].Size() << endl;
 		cout << endl;
 
 	}

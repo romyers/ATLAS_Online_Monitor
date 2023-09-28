@@ -43,7 +43,6 @@ namespace Muon {
    39-37     36-32    31-24         23-12  11           10        9-0
    3'CSMID   5'TDCID  8'b1111_0000  12'b0  trigger_lost time_out  TDC_hit_count
 
-
    Trailer:
    39-36     35-28    27-16       15-10   9-0  
    4'b1100   8'b0     12'EventID  6'b0    10'HitCount
@@ -67,9 +66,15 @@ namespace Muon {
     int Width()        const;
     int HitCount()     const; 
     int TDCHeaderEID() const;   
-    static const short HEADER    = 0b1010;
-    static const short TRAILER   = 0b1100;
-    static const short DATA_SIZE = 5; // bytes
+
+    static const short HEADER           = 0b1010 ; // bits 37-39
+    static const short TRAILER          = 0b1100 ; // bits 37-39
+
+    static const int   TDC_ERROR_CHNL   = 0b11101; // bits 27-31
+    static const int   TDC_HEADER_CHNL  = 0b11111; // bits 27-31
+    static const int   TDC_TRAILER_CHNL = 0b11110; // bits 27-31
+
+    static const short WORD_SIZE        = 5      ; // bytes
 
   private:
     int type        ;

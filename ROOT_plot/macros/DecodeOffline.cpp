@@ -361,7 +361,6 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
     // while (data_in_flow.read((char *) &word, 4)  && nloop<maxEventCount) {
     nloop++;
 
-    // TODO: Pull this out to a function.
     // Byte swap from big-endian to little-endian
     word = 0;
     for(uint8_t byte = 0; byte < 5; ++byte) {
