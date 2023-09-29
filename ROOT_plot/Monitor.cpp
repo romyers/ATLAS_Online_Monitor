@@ -17,10 +17,10 @@
 #include <vector>
 #include <deque>
 #include <algorithm>
+#include <exception>
 
-#include "macros/ParseSignal.cpp"
+#include "macros/SignalReader.cpp"
 #include "macros/Display.cpp"
-#include "macros/FileAppendMonitor/FileAppendMonitor.cpp"
 #include "macros/ErrorLogger.cpp"
 
 #include "src/Signal.cpp"
@@ -37,9 +37,11 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO: Catch the erroneous case where we have no header and no trailer.
-//       The logic we have now won't catch any issues with the stream until
-//       a trailer shows up.
+// TODO: If we hit the event size cutoff, we need to keep dropping signals
+//       until we get to a header
+
+// TODO: Runtime is slower since I moved away from the buffering logic I used in
+//       the commit from 9-28-2023
 
 const size_t  EVENT_SIZE_CUTOFF = 1000;
 const double  POLL_INTERVAL     = 0.1;
@@ -52,15 +54,12 @@ const TimeCorrection timeCorrection = TimeCorrection();
 
 void Monitor(const string &filename);
 
-void extractSignals(deque<Signal> &buffer, istream       &dataStream);
-void extractEvents (deque<Event > &buffer, deque<Signal> &signals   );
-void processEvents (deque<Event > &events                           );
+void processEvent(Event &e);
 
-void dropFirstEvent(deque<Signal> &signals);
+bool validateSignal(const Signal &sig);
+bool validateEvent (const Event  &e  );
 
-bool validateSignalBuffer(const deque<Signal> &signals, deque<Signal>::iterator it);
-
-unsigned long remainingChars(istream &dataStream);
+int getRunNumber();
 
 void debug_print(const Event &e);
 
@@ -68,34 +67,75 @@ void debug_print(const Event &e);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO: Clean this up
-Geometry geo = Geometry();
+// TODO: Clean this up -- make Geometry a singleton and just get the instance
+//       when we need it
 
 void Monitor(const string &filename) {
 
-	geo.SetRunN(0);
+	Geometry::getInstance()->SetRunN(getRunNumber());
 
-	FileAppendMonitor inputWatcher(filename, true);
-	ifstream          dataStream  (filename      );
+	SignalReader reader(filename);
 
-	deque<Signal> signalBuffer;
+	vector<Signal> signalBuffer;
 	deque<Event > eventBuffer ;
 
 	while(true) {
 
-		if(inputWatcher.hasAppend()) {
+		// TODO: I don't like forcing exception handling on ALMOST EVERY loop...
+		//       I'd really like to return a bool instead, but I don't like
+		//       modifying a signal or signal buffer reference here
+		try {
 
-			inputWatcher.clearAppend();
-			dataStream  .clear      ();
+			// TODO: Skip this signal if the signal buffer doesn't start with
+			//       an event header
 
-			extractSignals(signalBuffer, dataStream  );
-			extractEvents (eventBuffer , signalBuffer);
+			Signal sig = reader.readSignal();
 
-			processEvents(eventBuffer);
+			if(validateSignal(sig)) {
 
-		} 
+				signalBuffer.push_back(sig);
 
-		sleep(POLL_INTERVAL);
+			}
+
+			if(signalBuffer.back().Type() == Signal::TRAILER) {
+
+				Event e(signalBuffer.front(), signalBuffer.back(),
+					vector<Signal>(
+						signalBuffer.begin() + 1, 
+						signalBuffer.end() - 1
+					)
+				);
+
+				if(validateEvent(e)) {
+
+					processEvent(e);
+
+					eventBuffer.push_back(e);
+
+				}
+
+				signalBuffer.clear();
+
+			}
+
+			if(signalBuffer.size() > EVENT_SIZE_CUTOFF) {
+
+				string msg = "WARNING -- Dropping large event -- cutoff is ";
+				msg += to_string(EVENT_SIZE_CUTOFF);
+				msg += " signals";
+
+				ErrorLogger::getInstance()->logError(msg);
+
+				// TODO: We need to skip to the next header...
+				signalBuffer.clear();
+
+			}
+
+		} catch (const ExtractionException &e) {
+
+			sleep(POLL_INTERVAL);
+
+		}
 
 	}
 
@@ -113,6 +153,9 @@ bool validateSignal(const Signal &sig) {
 	if(sig.Type() == Signal::HEADER)  return true;
 	if(sig.Type() == Signal::TRAILER) return true;
 
+	ErrorLogger &logger = *ErrorLogger::getInstance();
+	Geometry    &geo    = *Geometry::getInstance   ();
+
 	if(!geo.IsActiveTDC(sig.TDC())) {
 
 		string msg = "ERROR -- Unexpected data TDCID = ";
@@ -120,9 +163,7 @@ bool validateSignal(const Signal &sig) {
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		ErrorLogger::getInstance()->logError(
-			msg
-		);
+		logger.logError(msg);
 
 		return false;
 
@@ -155,9 +196,7 @@ bool validateSignal(const Signal &sig) {
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		ErrorLogger::getInstance()->logError(
-			msg
-		);
+		logger.logError(msg);
 
 		return false;
 
@@ -167,65 +206,62 @@ bool validateSignal(const Signal &sig) {
 
 }
 
-void extractSignals(deque<Signal> &buffer, istream &dataStream) {
+bool validateEvent(const Event &e) {
 
-	char readBuffer[Signal::WORD_SIZE];
+	ErrorLogger &logger = *ErrorLogger::getInstance();
 
-	while(remainingChars(dataStream) >= Signal::WORD_SIZE) {
+	if(e.Header().Type() != Signal::HEADER) {
 
-		dataStream.read(readBuffer, Signal::WORD_SIZE);
+		logger.logError(
+			"WARNING -- Dropping headerless event"
+		);
 
-		Signal sig = ParseSignal(readBuffer, Signal::WORD_SIZE);
-
-		if(validateSignal(sig)) {
-
-			buffer.push_back(sig);
-
-		}
-
-		// TODO: Even invalid signals should contribute to the total event signals
+		return false;
 
 	}
 
-}
+	if(e.Trailer().Type() != Signal::TRAILER) {
 
-void extractEvents(deque<Event> &buffer, deque<Signal> &signals) {
+		logger.logError(
+			"WARNING -- Dropping trailerless event"
+		);
 
-	for(auto iter = signals.begin() + 1; iter != signals.end(); ++iter) {
+		return false;
 
-		if(signals.empty()) return;
+	}
 
-		// TODO: Put this dropping of invalid events in a separate function and
-		//       call it at the top level
-		if(!validateSignalBuffer(signals, iter)) {
+	for(const Signal &sig : e.Signals()) {
 
-			dropFirstEvent(signals);
+		if(sig.Type() == Signal::HEADER) {
 
-			iter = signals.begin();
-
-			// TODO: Move logic from validateSignalBuffer to event validation
-			//       logic that runs after an event has been assembled, matching
-			//       what's done for signal validation
-
-		} else if(iter->Type() == Signal::TRAILER) {
-
-			buffer.emplace_back(signals.front(), *iter,
-				vector<Signal>(signals.begin() + 1, iter)
+			logger.logError(
+				"WARNING -- Dropping event with multiple headers"
 			);
-			signals.erase(signals.begin(), iter + 1);
 
-			iter = signals.begin();
+			return false;
+
+		}
+
+		if(sig.Type() == Signal::TRAILER) {
+
+			logger.logError(
+				"WARNING -- Dropping event with multiple trailers"
+			);
+
+			return false;
 
 		}
 
 	}
 
+	return true;
+
 }
 
-// TODO: Better name, better structure
-void handleEvent(Event &e) {
+void processEvent(Event &e) {
 
 	// Ignore empty events
+	// TODO: Should empty events go on the event buffer?
 	if(e.Trailer().HitCount() == 0) return;
 
 	DoHitFinding(&e, timeCorrection, 0, 0);
@@ -238,82 +274,10 @@ void handleEvent(Event &e) {
 
 }
 
-void processEvents(deque<Event> &events) {
 
-	while(!events.empty()) {
+int getRunNumber() {
 
-		Event e = events.front();
-		events.pop_front();
-
-		handleEvent(e);
-
-	}
-
-}
-
-void dropFirstEvent(deque<Signal> &signals) {
-
-	auto nextHeader = find_if(
-		signals.begin() + 1, signals.end(), [](const Signal &arg){
-			return arg.Type() == Signal::HEADER;
-		}
-	);
-
-	signals.erase(signals.begin(), nextHeader);
-
-}
-
-bool validateSignalBuffer(
-	const deque<Signal> &signals, 
-	deque<Signal>::iterator it
-) {
-
-	if(it - signals.begin() > EVENT_SIZE_CUTOFF) {
-
-		string msg = "WARNING -- Dropping large event -- cutoff is ";
-		msg += to_string(EVENT_SIZE_CUTOFF);
-		msg += " signals";
-
-		ErrorLogger::getInstance()->logError(msg);
-
-		return false;
-
-	}
-
-	if(signals.front().Type() != Signal::HEADER) {
-
-		ErrorLogger::getInstance()->logError(
-				"WARNING -- Dropping headerless event"
-		);
-
-		return false;
-
-	}
-
-	if(it->Type() == Signal::HEADER) {
-
-		ErrorLogger::getInstance()->logError(
-			"WARNING -- Dropping event with multiple headers"
-		);
-
-		return false;
-
-	}
-
-	return true;
-
-}
-
-// TODO: Find a faster way to do this. rdbuf->in_avail()?
-unsigned long remainingChars(istream &dataStream) {
-
-	streampos pos = dataStream.tellg();
-	dataStream.seekg(0, dataStream.end);
-	streampos end = dataStream.tellg();
-
-	dataStream.seekg(pos, dataStream.beg);
-
-	return (end - pos);
+	return 0;
 
 }
 
@@ -343,7 +307,12 @@ void debug_print(const Event &e) {
 	for(size_t i = 0; i < e.Hits().size(); ++i) {
 
 		cout << "HIT " << i + 1 << endl;
+		cout << "\tTDC: " << e.Hits()[i].TDC() << endl;
+		cout << "\tChannel: " << e.Hits()[i].Channel() << endl;
+		cout << "\tTDCTime: " << e.Hits()[i].TDCTime() << endl;
+		cout << "\tADCTime: " << e.Hits()[i].ADCTime() << endl;
 		cout << "\tDrift Time: " << e.Hits()[i].DriftTime() << endl;
+		cout << "\tCorrected Time: " << e.Hits()[i].CorrTime() << endl;
 		cout << endl;
 
 	}

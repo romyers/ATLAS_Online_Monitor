@@ -23,8 +23,13 @@ namespace Muon {
    */
   class Geometry {
   public:
+    /*
+     * NOTE: I've left the constructor public to preserve backwards
+     *       compatibility. But any new code should use this as a singleton, 
+     *       using the static getInstance function to obtain a geometry.
+     *         -- Robert Myers (9-29-2023)
+     */
     Geometry();
-    ~Geometry();
 
     void   Draw              (int eventN);
     void   Draw              (int eventN, double xmin, double ymin, double xmax, double ymax, TString additionalText="");
@@ -64,6 +69,8 @@ namespace Muon {
     short TDC_ML [Geometry::MAX_TDC];
     short TDC_COL[Geometry::MAX_TDC];
 
+    static Geometry *getInstance();
+
   private:
     void ResetAdjacencyMatrix();
     bitset<Geometry::MAX_TDC*Geometry::MAX_TDC_CHANNEL> adj[Geometry::MAX_TDC*Geometry::MAX_TDC_CHANNEL];
@@ -76,7 +83,23 @@ namespace Muon {
     vector<TEllipse*> drawable;
     vector<TGraph*>    axes;
     vector<TPaveText*> text;
+
+    static Geometry *instance;
+
   };
+
+  Geometry *Geometry::instance = nullptr;
+  Geometry *Geometry::getInstance() {
+
+    if(instance == nullptr) {
+
+      instance = new Geometry();
+
+    }
+
+    return instance;
+
+  }
 
   Geometry::Geometry() {
 
@@ -126,11 +149,6 @@ namespace Muon {
     axes.at(0)->SetTitle("event");
     axes.at(0)->SetMarkerStyle(0);
   } // end method: Geometry initialization
-
-
-  Geometry::~Geometry() {
-    
-  }
 
   void Geometry::Draw(int eventN) {
     TString title;
