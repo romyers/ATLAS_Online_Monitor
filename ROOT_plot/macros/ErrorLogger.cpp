@@ -13,14 +13,18 @@
 #include <vector>
 #include <iostream>
 #include <stdio.h>
+#include <algorithm>
 
 using namespace std;
 
+const string EMPTY_TYPE = "";
+
 struct ErrorData {
 
-	ErrorData(const string &msg) : msg(msg) {}
+	ErrorData(const string &msg, const string &type) : msg(msg), type(type) {}
 
-	string msg;
+	const string msg;
+	const string type;
 
 };
 
@@ -31,11 +35,11 @@ public:
 	ErrorLogger   (      ErrorLogger &other) = delete;
 	void operator=(const ErrorLogger &other) = delete;
 
-	void clear          (                 );
-	void logError       (const string &msg);
-	void setOutputStream(ostream &out     );
+	void clear          (                                                   );
+	void logError       (const string  &msg, const string &type = EMPTY_TYPE);
+	void setOutputStream(      ostream &out                                 );
 
-	size_t countErrors() const;
+	size_t countErrors(const string &type = EMPTY_TYPE) const;
 
 	static ErrorLogger *getInstance();
 
@@ -61,11 +65,14 @@ void ErrorLogger::clear() {
 
 }
 
-void ErrorLogger::logError(const string &msg) {
+void ErrorLogger::logError(
+	const string &msg, 
+	const string &type = EMPTY_TYPE
+) {
 
 	*errorStream << msg << endl;
 
-	errors.emplace_back(msg);
+	errors.emplace_back(msg, type);
 
 }
 
@@ -75,9 +82,17 @@ void ErrorLogger::setOutputStream(ostream &out) {
 
 }
 
-size_t ErrorLogger::countErrors() const {
+size_t ErrorLogger::countErrors(const string &type = EMPTY_TYPE) const {
 
-	return errors.size();
+	if(type == EMPTY_TYPE) return errors.size();
+
+	return count_if(
+		errors.cbegin(), 
+		errors.cend(), 
+		[type](const ErrorData &e) {
+			return e.type == type;
+		}
+	);
 
 }
 

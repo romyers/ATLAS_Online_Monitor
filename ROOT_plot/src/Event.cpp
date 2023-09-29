@@ -17,6 +17,11 @@ namespace Muon {
    * Author: Kevin Nelson                        *
    * Date:   May    2019                         *
    * Update: May 21 2019                         *
+   *                                             *
+   * Updated for phase 2 online monitor sofware  *
+   *                                             *
+   * Author: Robert Myers                        *
+   * Date:   October 2023                        *
    ***********************************************
    */
   class Event : public RecoObject {
@@ -27,6 +32,7 @@ namespace Muon {
                   vector <Cluster> clusts, vector<Track> trks);
     Event(const Event &e);
 
+    int             ID      () const;
     Signal          Header  () const;
     Signal          Trailer () const;
     vector<Signal>  Signals () const;
@@ -157,12 +163,13 @@ namespace Muon {
     update();
   }
   
-  Signal          Event::Header  () const {return hd     ;}
-  Signal          Event::Trailer () const {return trl    ;}
-  vector<Signal>  Event::Signals () const {return sigs   ;}
-  vector<Hit>     Event::Hits    () const {return hits   ;}
-  vector<Cluster> Event::Clusters() const {return clusters;}
-  vector<Track>   Event::Tracks  () const {return tracks ;}
+  int             Event::ID      () const { return Header().HeaderEID(); }
+  Signal          Event::Header  () const { return hd                  ; }
+  Signal          Event::Trailer () const { return trl                 ; }
+  vector<Signal>  Event::Signals () const { return sigs                ; }
+  vector<Hit>     Event::Hits    () const { return hits                ; }
+  vector<Cluster> Event::Clusters() const { return clusters            ; }
+  vector<Track>   Event::Tracks  () const { return tracks              ; }
   
   bool Event::Pass() const {
     return pass;

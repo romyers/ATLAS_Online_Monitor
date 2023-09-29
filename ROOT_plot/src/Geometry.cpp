@@ -3,6 +3,8 @@
 #ifndef MUON_GEOMETRY
 #define MUON_GEOMETRY
 
+// TODO: A lot of this we'll want to be able to configure from the GUI
+
 
 namespace Muon {
 

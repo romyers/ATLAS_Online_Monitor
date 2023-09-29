@@ -53,9 +53,7 @@ void StartMonitor(const string &filename) {
 		monitor.refresh();
 
 		// TODO: I could consider maintaining a consistent refresh rate by
-		//       sleeping until certain clock times or by keeping a clock
-		//       in a separate thread that tells us when to refresh. But I can
-		//       wait until I have a good reason to do this.
+		//       sleeping until certain clock times
 		sleep(1 / REFRESH_RATE);
 
 	}

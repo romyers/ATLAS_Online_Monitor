@@ -20,6 +20,10 @@
 using namespace Muon;
 using namespace std;
 
+// TODO: This does three different things. Break it up.
+
+const string SIGNAL_ERROR = "signal";
+
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(char *data, uint8_t dataSize);
 
@@ -101,8 +105,8 @@ Signal SignalReader::extractSignal() {
 //       count.
 bool validateSignal(const Signal &sig) {
 
-	if(sig.Type() == Signal::HEADER)  return true;
-	if(sig.Type() == Signal::TRAILER) return true;
+	if(sig.isEventHeader ()) return true;
+	if(sig.isEventTrailer()) return true;
 
 	ErrorLogger &logger = *ErrorLogger::getInstance();
 	Geometry    &geo    = *Geometry::getInstance   ();
@@ -114,25 +118,16 @@ bool validateSignal(const Signal &sig) {
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg);
+		logger.logError(msg, SIGNAL_ERROR);
 
 		return false;
 
 	}
 
-	if(sig.Channel() == Signal::TDC_HEADER_CHNL) {
+	if(sig.isTDCHeader ()) return true;
+	if(sig.isTDCTrailer()) return true;
 
-		return true;
-
-	}
-
-	if(sig.Channel() == Signal::TDC_TRAILER_CHNL) {
-
-		return true;
-
-	}
-
-	if(sig.Channel() == Signal::TDC_ERROR_CHNL) {
+	if(sig.isTDCError  ()) {
 
 		// TODO: Extract error info
 
@@ -147,7 +142,7 @@ bool validateSignal(const Signal &sig) {
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg);
+		logger.logError(msg, SIGNAL_ERROR);
 
 		return false;
 

@@ -4,10 +4,15 @@
  * for reconstruction in         *
  * sMDT chambers                 *
  *                               *
- * Author:        Yuxiang Guo    *
- * Date:          Mar 13, 2021   *
+ * Author       : Yuxiang Guo    *
+ * Date         : Mar 13, 2021   *
  * Last Modified: Mar 13, 2021   *
  *                               *
+ * Updated for phase 2 online    *
+ * monitor software              *
+ *                               *
+ * Author:        Robert Myers   *
+ * Date  :        October 2023   *
  *********************************
  */
 
@@ -54,18 +59,24 @@ namespace Muon {
     Signal();
     Signal(uint64_t word);
 
-    int Type()         const;
-    int HeaderEID()    const;
-    int TrailerEID()   const;
-    int TriggerLEdge() const;
-    int CSMID()        const;
-    int TDC()          const;
-    int Channel()      const;
-    int Mode()         const;    
-    int LEdge()        const;  
-    int Width()        const;
-    int HitCount()     const; 
-    int TDCHeaderEID() const;   
+    int Type           () const;
+    int HeaderEID      () const;
+    int TrailerEID     () const;
+    int TriggerLEdge   () const;
+    int CSMID          () const;
+    int TDC            () const;
+    int Channel        () const;
+    int Mode           () const;    
+    int LEdge          () const;  
+    int Width          () const;
+    int HitCount       () const; 
+    int TDCHeaderEID   () const;   
+
+    bool isEventHeader () const;
+    bool isEventTrailer() const;
+    bool isTDCHeader   () const;
+    bool isTDCTrailer  () const;
+    bool isTDCError    () const;
 
     static const short HEADER           = 0b1010 ; // bits 37-39
     static const short TRAILER          = 0b1100 ; // bits 37-39
@@ -142,18 +153,24 @@ namespace Muon {
     tdc_eventid   = static_cast<int>((_tdc_eventid.to_ulong()));
   }
 
-  int Signal:: Type()         const {return type        ;}
-  int Signal:: HeaderEID()    const {return eventid     ;}
-  int Signal:: TrailerEID()   const {return eventid_t   ;}
-  int Signal:: TriggerLEdge() const {return triggerledge;}
-  int Signal:: CSMID()        const {return csmid       ;}
-  int Signal:: TDC()          const {return tdcid       ;}
-  int Signal:: Channel()      const {return chnlid      ;}
-  int Signal:: Mode()         const {return mode        ;}
-  int Signal:: LEdge()        const {return ledge       ;}
-  int Signal:: Width()        const {return width       ;}
-  int Signal:: HitCount()     const {return hitcount    ;}
-  int Signal:: TDCHeaderEID() const {return tdc_eventid ;}
+  int  Signal:: Type          () const { return type                         ; }
+  int  Signal:: HeaderEID     () const { return eventid                      ; }
+  int  Signal:: TrailerEID    () const { return eventid_t                    ; }
+  int  Signal:: TriggerLEdge  () const { return triggerledge                 ; }
+  int  Signal:: CSMID         () const { return csmid                        ; }
+  int  Signal:: TDC           () const { return tdcid                        ; }
+  int  Signal:: Channel       () const { return chnlid                       ; }
+  int  Signal:: Mode          () const { return mode                         ; }
+  int  Signal:: LEdge         () const { return ledge                        ; }
+  int  Signal:: Width         () const { return width                        ; }
+  int  Signal:: HitCount      () const { return hitcount                     ; }
+  int  Signal:: TDCHeaderEID  () const { return tdc_eventid                  ; }
+
+  bool Signal:: isEventHeader () const { return Type   () == HEADER          ; }
+  bool Signal:: isEventTrailer() const { return Type   () == TRAILER         ; }
+  bool Signal:: isTDCHeader   () const { return Channel() == TDC_HEADER_CHNL ; }
+  bool Signal:: isTDCTrailer  () const { return Channel() == TDC_TRAILER_CHNL; }
+  bool Signal:: isTDCError    () const { return Channel() == TDC_ERROR_CHNL  ; }
 
 }
 #endif

@@ -114,6 +114,6 @@ bool isEvent(const vector<Signal> &signals) {
 
 	if(signals.empty()) return false;
 
-	return signals.back().Type() == Signal::TRAILER;
+	return signals.back().isEventTrailer();
 
 }

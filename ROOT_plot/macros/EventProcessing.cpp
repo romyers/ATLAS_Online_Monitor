@@ -10,6 +10,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "macros/ErrorLogger.cpp"
 
@@ -18,9 +19,13 @@
 #include "src/HitFinder.cpp"
 #include "src/TimeCorrection.cpp"
 
+const string EVENT_ERROR = "event";
+
 Event assembleEvent(      vector<Signal>  signals);
 bool  validateEvent(const Event          &e      );
 void  processEvent (      Event          &e      );
+
+// TODO: This does three different things. Break it up.
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,20 +48,22 @@ bool validateEvent(const Event &e) {
 
 	ErrorLogger &logger = *ErrorLogger::getInstance();
 
-	if(e.Header().Type() != Signal::HEADER) {
+	if(!e.Header().isEventHeader()) {
 
 		logger.logError(
-			"WARNING -- Dropping headerless event"
+			"WARNING -- Dropping headerless event",
+			EVENT_ERROR
 		);
 
 		return false;
 
 	}
 
-	if(e.Trailer().Type() != Signal::TRAILER) {
+	if(!e.Trailer().isEventTrailer()) {
 
 		logger.logError(
-			"WARNING -- Dropping trailerless event"
+			"WARNING -- Dropping trailerless event",
+			EVENT_ERROR
 		);
 
 		return false;
@@ -65,20 +72,22 @@ bool validateEvent(const Event &e) {
 
 	for(const Signal &sig : e.Signals()) {
 
-		if(sig.Type() == Signal::HEADER) {
+		if(sig.isEventHeader()) {
 
 			logger.logError(
-				"WARNING -- Dropping event with multiple headers"
+				"WARNING -- Dropping event with multiple headers",
+				EVENT_ERROR
 			);
 
 			return false;
 
 		}
 
-		if(sig.Type() == Signal::TRAILER) {
+		if(sig.isEventTrailer()) {
 
 			logger.logError(
-				"WARNING -- Dropping event with multiple trailers"
+				"WARNING -- Dropping event with multiple trailers",
+				EVENT_ERROR
 			);
 
 			return false;
