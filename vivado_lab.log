@@ -2,8 +2,8 @@
 # Vivado Lab Edition v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
 # 
-# Start of session at: Mon Sep 25 16:18:11 2023
-# Process ID: 24136
+# Start of session at: Thu Sep 28 12:36:59 2023
+# Process ID: 11373
 # Current directory: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert
 # Command line: vivado_lab
 # Log file: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.log
@@ -11,15 +11,6 @@
 #-----------------------------------------------------------
 start_gui
 open_hw_manager
-connect_hw_server -url localhost:3121 -allow_non_jtag
-INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
-INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
-INFO: [Labtools 27-3414] Connected to existing cs_server.
-current_hw_target [get_hw_targets */xilinx_tcf/Digilent/210299A573C5]
-ERROR: [Labtoolstcl 44-199] No matching targets found on connected servers: localhost
-Resolution: If needed connect the desired target to a server and use command refresh_hw_server. Then rerun the get_hw_targets command.
-ERROR: [Common 17-39] 'get_hw_targets' failed due to earlier errors.
-disconnect_hw_server localhost:3121
 INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
 INFO: [Labtools 27-3414] Connected to existing cs_server.
@@ -27,109 +18,433 @@ connect_hw_server -url localhost:3121 -allow_non_jtag
 INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
 INFO: [Labtools 27-3414] Connected to existing cs_server.
-current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/00000000000000]
-set_property PARAM.FREQUENCY 1500000 [get_hw_targets */xilinx_tcf/Xilinx/00000000000000]
+current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01]
+set_property PARAM.FREQUENCY 3000000 [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01]
 open_hw_target
-INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/00000000000000
-current_hw_device [get_hw_devices xcku035_0]
-refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcku035_0] 0]
-INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
-INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
-refresh_hw_device: Time (s): cpu = 00:00:50 ; elapsed = 00:00:34 . Memory (MB): peak = 7416.656 ; gain = 1110.926 ; free physical = 2046 ; free virtual = 38669
-set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
-set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
-refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
-INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
-INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/000017def52c01
+current_hw_device [get_hw_devices xc7a35t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
+refresh_hw_device: Time (s): cpu = 00:00:21 ; elapsed = 00:00:11 . Memory (MB): peak = 7356.051 ; gain = 1054.301 ; free physical = 2434 ; free virtual = 38137
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
 INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_2]
 INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_3]
 INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_4]
 INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_5]
-refresh_hw_device: Time (s): cpu = 00:00:06 ; elapsed = 00:00:08 . Memory (MB): peak = 7422.273 ; gain = 0.000 ; free physical = 1983 ; free virtual = 38607
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"gbtsc_inst/ic_inst/rx_inst/ila_ic_rx_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"gbtsc_inst/ic_inst/tx_inst/ila_ic_tx_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_3 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder_triggerless/ila_event_builder_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_4 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder_triggermode/ila_event_builder_triggermode_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_5 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_trigger_interface/ila_trigger_interface_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_6 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_7 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_8 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[1].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_9 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[1].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_10 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_11 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_12 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[3].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]]
-display_hw_ila_data [ get_hw_ila_data hw_ila_data_13 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[3].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]]
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/bc_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/enable_matching -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/rollover -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/search_margin -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/trigger_redge -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/enable_relative_trigger_data -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/reject_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/rst_160_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property NAME.SELECT short [get_hw_probes tdc_decoder_top_inst/trigger_latency -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]] 
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/bc_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/enable_matching -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/rollover -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/search_margin -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/trigger_redge -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/enable_relative_trigger_data -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/reject_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/rst_160_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/trigger_latency -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE 4060 [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_6]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_7]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_8]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"ila_top_inst"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_JTAG_master/ila_jtag_master_inst"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_3 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/ila_config_mezz_inst"}]]
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b0_xc7a_triggerless_320.tcl
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup0 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/rising_is_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/width_select} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_high_speed} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_packet} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_data_debug} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/auto_roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_8b10b} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_event_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_notify} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_insert} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_legacy} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_pair} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/full_width_res} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bunch_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 80 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/event_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 256 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 60 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/match_window} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/syn_packet_number} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes JTAG_readback -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_data_length_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes lock_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes sa_done -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_bits_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_instr_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes config_done_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes tdi_tdo_equal -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes enable_vio_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX UNSIGNED [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 010 [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {clk_div} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b2_xc7a_triggerless_320.tcl
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 2000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+ERROR: [Labtools 27-3165] End of startup status: LOW
+program_hw_devices: Time (s): cpu = 00:00:05 ; elapsed = 00:00:08 . Memory (MB): peak = 7547.660 ; gain = 28.219 ; free physical = 3081 ; free virtual = 37452
+INFO: [Common 17-344] 'program_hw_devices' was cancelled
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7547.660 ; gain = 0.000 ; free physical = 3048 ; free virtual = 37423
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
+WARNING: [Labtools 27-1952] VIO hw_probe OUTPUT_VALUE properties for hw_vio(s) [hw_vio_5 hw_vio_6] differ from output values in the VIO core(s).
+Resolution: 
+To synchronize the hw_probes properties and the VIO core outputs choose one of the following alternatives:
+  1) Execute the command 'Commit Output Values to VIO Core', to write down the hw_probe values to the core.
+  2) Execute the command 'Refresh Input and Output Values from VIO Core', to update the hw_probe properties with the core values.
+  3) First restore initial values in the core with the command 'Reset VIO Core Outputs', and then execute the command 'Refresh Input and Output Values from VIO Core'.
+commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"config_loop_inst/vio_loop_config_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b0_xc7a_triggerless_320.tcl
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup0 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/rising_is_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/width_select} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_high_speed} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_packet} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_data_debug} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/auto_roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_8b10b} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_event_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_notify} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_insert} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_legacy} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_pair} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/full_width_res} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bunch_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 80 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/event_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 256 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 60 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/match_window} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/syn_packet_number} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes JTAG_readback -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_data_length_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes lock_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes sa_done -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_bits_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_instr_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes config_done_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes tdi_tdo_equal -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes enable_vio_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX UNSIGNED [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 010 [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {clk_div} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b2_xc7a_triggerless_320.tcl
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 2000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
 startgroup
-set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+set_property OUTPUT_VALUE 1 [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+commit_hw_vio [get_hw_probes {ASD_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
 endgroup
 startgroup
-set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
+set_property OUTPUT_VALUE 0 [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+commit_hw_vio [get_hw_probes {ASD_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
 endgroup
-startgroup
-set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-endgroup
-startgroup
-set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-endgroup
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/correct_counter_th -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/enable_320M -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/enable_K28_1 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/ttc_event_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/ttc_master_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline0 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property INPUT_VALUE_RADIX BINARY [get_hw_probes tdc_decoder_top_inst/locked_dline1 -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-set_property OUTPUT_VALUE 4070 [get_hw_probes tdc_decoder_top_inst/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]]
-startgroup
-set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-endgroup
-startgroup
-set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-endgroup
-startgroup
-set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-endgroup
-startgroup
-set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/ttc_bc_reset_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/ttc_bc_reset_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
-endgroup
-set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes tdc_decoder_top_inst/correct_counter_th -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]

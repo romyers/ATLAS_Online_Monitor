@@ -23,11 +23,28 @@
 
 namespace Muon {
 
+  struct TDCErrorData {
+
+    unsigned int  TDC         = 0;
+    unsigned int  LSBChannel1 = 0;
+    unsigned int  LSBChannel2 = 0;
+    unsigned int  LSBFlag1    = 0;
+    unsigned int  LSBFlag2    = 0;
+    unsigned long K28_6_flag  = 0;
+
+  };
+
   /*
    * Signal is a nice wrapper to a TDC2 word
 
    * 
    * The packet format is:
+
+   ////////////////////////////////////////////////////////////////////////////
+
+   In triggerless mode:
+
+
    Header:
    39-36     35-29    28-17        16-0  
    4'b1010   7'b0     12'EventID   17'TriggerLEdge
@@ -51,6 +68,30 @@ namespace Muon {
    Trailer:
    39-36     35-28    27-16       15-10   9-0  
    4'b1100   8'b0     12'EventID  6'b0    10'HitCount
+
+   ////////////////////////////////////////////////////////////////////////////
+
+   And in triggered mode:
+
+   Header:
+   39-36     35-29    28-17        16-0  
+   4'b1010   7'b0     12'EventID   17'TriggerLEdge
+
+   TDC Data:
+   39-37     36-32    31-27       26-25   24-8      7-0
+   3'b000    5'TDCID  5'CHNLID    2'mode  17'LEdge  8'Width
+
+   TDC Header:
+   39-37     36-32    31-24         23-12         11-0
+   3'b000    5'TDCID  8'b1111_1000  TDC_Event_ID  trigger_BCID
+
+   TDC Trailer:
+   39-37     36-32    31-24         23-12  11           10        9-0
+   3'b000    5'TDCID  8'b1111_0000  12'b0  trigger_lost time_out  TDC_hit_count
+
+   Trailer:
+   39-36     35-32                31-28                 27-16       15                    14                     13-10  9-0  
+   4'b1100   4'TDC header count   4'TDC trailer count   12'EventID  1'header count error  1'trailer count error  4'b0   10'HitCount
    */
 
 
@@ -78,6 +119,8 @@ namespace Muon {
     bool isTDCTrailer  () const;
     bool isTDCError    () const;
 
+    TDCErrorData getTDCError() const;
+
     static const short HEADER           = 0b1010 ; // bits 37-39
     static const short TRAILER          = 0b1100 ; // bits 37-39
 
@@ -101,6 +144,8 @@ namespace Muon {
     int hitcount    ;
     int tdc_eventid ;
 
+    TDCErrorData errorData;
+
   };
 
   Signal::Signal() {
@@ -108,9 +153,6 @@ namespace Muon {
   }
   
   Signal::Signal(uint64_t word) {
-
-
-
 
     bitset<4>  _type;
     bitset<12> _eventid;
@@ -151,6 +193,25 @@ namespace Muon {
     width         = static_cast<int>((_width.to_ulong()));
     hitcount      = static_cast<int>((_hitcount.to_ulong()));
     tdc_eventid   = static_cast<int>((_tdc_eventid.to_ulong()));
+
+    if(isTDCError()) {
+
+      bitset<8> K28_6_flag  = word >> 16;
+      bitset<3> LSBFlag2    = word >> 13;
+      bitset<5> LSBChannel2 = word >> 8 ;
+      bitset<3> LSBFlag1    = word >> 5 ;
+      bitset<5> LSBChannel1 = word >> 0 ;
+
+      errorData.TDC         = TDC();
+
+      errorData.K28_6_flag  = static_cast<unsigned int>(K28_6_flag.to_ulong ());
+      errorData.LSBFlag2    = static_cast<unsigned int>(LSBFlag2.to_ulong   ());
+      errorData.LSBChannel2 = static_cast<unsigned int>(LSBChannel2.to_ulong());
+      errorData.LSBFlag1    = static_cast<unsigned int>(LSBFlag1.to_ulong   ());
+      errorData.LSBChannel1 = static_cast<unsigned int>(LSBChannel1.to_ulong());
+
+    }
+
   }
 
   int  Signal:: Type          () const { return type                         ; }
@@ -171,6 +232,8 @@ namespace Muon {
   bool Signal:: isTDCHeader   () const { return Channel() == TDC_HEADER_CHNL ; }
   bool Signal:: isTDCTrailer  () const { return Channel() == TDC_TRAILER_CHNL; }
   bool Signal:: isTDCError    () const { return Channel() == TDC_ERROR_CHNL  ; }
+
+  TDCErrorData Signal::getTDCError() const { return errorData; }
 
 }
 #endif

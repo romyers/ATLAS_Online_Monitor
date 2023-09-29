@@ -13,12 +13,12 @@ namespace Muon {
            double corr_time, int _tdc, int _chan);
     ~Hit() {};
 
-    double     TDCTime  ();
-    double     ADCTime  ();
-    double     DriftTime();
-    double     CorrTime ();
-    int        TDC      ();
-    int        Channel  ();
+    double     TDCTime  () const;
+    double     ADCTime  () const;
+    double     DriftTime() const;
+    double     CorrTime () const;
+    int        TDC      () const;
+    int        Channel  () const;
     void       Draw     () override;     
   private:
     double     tdctime;
@@ -47,13 +47,13 @@ namespace Muon {
     chan       = _chan;
   }
 
-  double Hit::TDCTime()  {return tdctime;}
-  double Hit::ADCTime()  {return adctime;}
-  double Hit::DriftTime(){return driftTime;}
-  double Hit::CorrTime() {return corrTime;}
-  int    Hit::TDC()      {return tdc;}
-  int    Hit::Channel()  {return chan;}  
-  void   Hit::Draw()     {}
+  double Hit::TDCTime()   const{return tdctime;}
+  double Hit::ADCTime()   const{return adctime;}
+  double Hit::DriftTime() const{return driftTime;}
+  double Hit::CorrTime()  const{return corrTime;}
+  int    Hit::TDC()       const{return tdc;}
+  int    Hit::Channel()   const{return chan;}  
+  void   Hit::Draw()           {}
   
   // double Hit::TimeError() {
   //   if (corrTime < 90)

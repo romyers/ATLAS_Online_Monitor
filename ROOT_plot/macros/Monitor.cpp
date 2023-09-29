@@ -16,9 +16,10 @@
 #include <vector>
 #include <fstream>
 
-#include "macros/SignalProcessing.cpp"
-#include "macros/EventProcessing.cpp"
+#include "macros/SignalDecoding.cpp"
+#include "macros/EventDecoding.cpp"
 #include "macros/ErrorLogger.cpp"
+#include "macros/PlotMaker.cpp"
 
 #include "src/Signal.cpp"
 #include "src/Event.cpp"
@@ -43,10 +44,11 @@ private:
 
 	SignalReader reader;
 
-	vector<Signal> signalBuffer;
-	vector<Event > eventBuffer ;
-
+	vector<Signal> signalBuffer   ;
+	vector<Event > eventBuffer    ;
 	vector<Event > processedEvents;
+
+	PlotMaker plotter;
 
 };
 
@@ -78,23 +80,35 @@ void Monitor::refresh() {
 
 		Signal sig = reader.extractSignal();
 
-		if(validateSignal(sig)) {
+		if(validateSignalErrors(sig)) {
 
 			signalBuffer.push_back(sig);
 
+		} else {
+
+			cerr << "Dropped signal" << endl;
+
 		}
+
+		validateSignalWarnings(sig);
 
 		if(isEvent(signalBuffer)) {
 
 			Event e = assembleEvent(signalBuffer);
 
-			if(validateEvent(e)) {
+			if(validateEventErrors(e)) {
 
 				eventBuffer.push_back(e);
+
+			} else {
+
+				cerr << "Dropped event" << endl;
 
 			}
 
 			signalBuffer.clear();
+
+			validateEventWarnings(e);
 
 		}
 
@@ -104,6 +118,10 @@ void Monitor::refresh() {
 
 		processEvent(e);
 		processedEvents.push_back(e);
+
+		plotter.binEvent(e);
+
+		// TODO: Display the event
 
 	}
 	eventBuffer.clear();

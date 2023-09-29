@@ -349,7 +349,7 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
   unsigned long event_signals = 0;
   unsigned long total_signals_pass = 0;
   unsigned long total_events_fail  = 0;
-  unsigned long event_print = 100;
+  unsigned long event_print = 100; // Print feedback every [event_print] events
 
 
   /////////////////////////////////////////////////////////////////////////////

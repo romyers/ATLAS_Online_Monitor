@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<wave_config>
+	<wave_state>
+	</wave_state>
+	<db_ref_list>
+		<db_ref path="/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_11/hw_ila_data_11.wdb" id="1" type="auto">
+			<top_modules>
+				<top_module name="top">
+				</top_module>
+			</top_modules>
+		</db_ref>
+	</db_ref_list>
+	<WVObjectSize size="19">
+	</WVObjectSize>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/tdc_hit_data_sync" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/tdc_hit_data_sync[31:0]</obj_property>
+		<obj_property name="ObjectShortName">tdc_hit_data_sync[31:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/sync_fifo_empty" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/sync_fifo_empty</obj_property>
+		<obj_property name="ObjectShortName">sync_fifo_empty</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/matched_data" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/matched_data[31:0]</obj_property>
+		<obj_property name="ObjectShortName">matched_data[31:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/match_valid" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/match_valid</obj_property>
+		<obj_property name="ObjectShortName">match_valid</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_data_out" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_data_out[31:0]</obj_property>
+		<obj_property name="ObjectShortName">ram_data_out[31:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/waddr" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/waddr[9:0]</obj_property>
+		<obj_property name="ObjectShortName">waddr[9:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/raddr" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/raddr[9:0]</obj_property>
+		<obj_property name="ObjectShortName">raddr[9:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/saddr" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/saddr[9:0]</obj_property>
+		<obj_property name="ObjectShortName">saddr[9:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_empty" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_empty</obj_property>
+		<obj_property name="ObjectShortName">ram_empty</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_full" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_full</obj_property>
+		<obj_property name="ObjectShortName">ram_full</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_read" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ram_read</obj_property>
+		<obj_property name="ObjectShortName">ram_read</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/state" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/state[4:0]</obj_property>
+		<obj_property name="ObjectShortName">state[4:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/next" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/next[4:0]</obj_property>
+		<obj_property name="ObjectShortName">next[4:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/in_range_keep" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/in_range_keep</obj_property>
+		<obj_property name="ObjectShortName">in_range_keep</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/in_range_match" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/in_range_match</obj_property>
+		<obj_property name="ObjectShortName">in_range_match</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/in_range_search" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/in_range_search</obj_property>
+		<obj_property name="ObjectShortName">in_range_search</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/trigger_fifo_empty" type="logic" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/trigger_fifo_empty</obj_property>
+		<obj_property name="ObjectShortName">trigger_fifo_empty</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/trigger_reg" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/trigger_reg[16:0]</obj_property>
+		<obj_property name="ObjectShortName">trigger_reg[16:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+	<wvobject fp_name="tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/trigger_coarse" type="array" db_ref_id="1">
+		<obj_property name="ElementShortName">tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/trigger_coarse[11:0]</obj_property>
+		<obj_property name="ObjectShortName">trigger_coarse[11:0]</obj_property>
+		<obj_property name="DisplayName">FullPathName</obj_property>
+		<obj_property name="Radix">HEXRADIX</obj_property>
+	</wvobject>
+</wave_config>
+

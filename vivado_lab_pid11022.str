@@ -1,0 +1,1118 @@
+/*
+
+Xilinx Vivado Lab Edition v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:39:14 MST 2019
+
+Process ID (PID): 11022
+License: Customer
+
+Current time: 	Thu Sep 28 12:36:35 EDT 2023
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Scientific Linux release 7.9 (Nitrogen)
+OS Version: 3.10.0-1062.9.1.el7.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: :0
+Screen size: 1920x1200
+Screen resolution (DPI): 100
+Available screens: 2
+Available disk space: 27 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	muonuser
+User home directory: /home/muonuser
+User working directory: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/softwares/Xilinx/Vivado_Lab
+HDI_APPROOT: /home/softwares/Xilinx/Vivado_Lab/2019.2
+RDI_DATADIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/data
+RDI_BINDIR: /home/softwares/Xilinx/Vivado_Lab/2019.2/bin
+
+Vivado Lab Edition preferences file location: /home/muonuser/.Xilinx/vivado_lab/2019.2/vivado_lab.xml
+Vivado Lab Edition preferences directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/
+Vivado Lab Edition layouts directory: /home/muonuser/.Xilinx/vivado_lab/2019.2/layouts
+PlanAhead jar file location: 	/home/softwares/Xilinx/Vivado_Lab/2019.2/lib/classes/planAhead.jar
+Vivado Lab Edition log file location: 	/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.log
+Vivado Lab Edition journal file location: 	/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.jou
+Engine tmp dir: 	./.Xil/vivado_lab-11022-localhost.localdomain
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_PLANAHEAD: /home/softwares/Xilinx/Vivado_Lab/2019.2
+XILINX_VITIS: 
+XILINX_VIVADO: /home/softwares/Xilinx/Vivado_Lab/2019.2
+
+
+GUI allocated memory:	157 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 4,999 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+selectButton(PAResourceEtoH.GettingStartedView_OPEN_HARDWARE_MANAGER, "Open Hardware Manager"); // y (x, cr)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HARDWARE_MANAGER
+// Tcl Command: 'rdi::info_commands get_hw_probes'
+// bB (cr):  Open Hardware Manager : addNotify
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// TclEventType: HW_SESSION_OPEN
+// WARNING: HEventQueue.dispatchEvent() is taking  1204 ms.
+// Tcl Message: open_hw_manager 
+// TclEventType: HW_SESSION_OPEN
+// [GUI Memory]: 94 MB (+96092kb) [00:00:09]
+// [Engine Memory]: 5,059 MB (+5152856kb) [00:00:09]
+dismissDialog("Open Hardware Manager"); // bB (cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,059 MB. GUI used memory: 50 MB. Current time: 9/28/23, 12:36:37 PM EDT
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (ds, cr)
+selectMenu(PAResourceOtoP.ProgramDebugTab_OPEN_RECENTLY_OPENED_TARGET, "Recent Targets"); // af (ao, Popup.HeavyWeightWindow)
+selectMenuItem(PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD, "Open New Target..."); // ai (ao, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_TARGET_WIZARD
+// aN (cr): Open New Hardware Target: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// bB (aN):  Open Server : addNotify
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_TARGET_CHANGE
+// bB (aN):  Open Target : addNotify
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_TARGET_CLOSE
+// bB (aN):  Close Target : addNotify
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+dismissDialog("Open Target"); // bB (aN)
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+dismissDialog("Close Target"); // bB (aN)
+selectButton("NEXT", "Next >"); // JButton (j, aN)
+// TclEventType: HW_OBJECT_DELETE
+// bB (aN):  Open Hardware Target : addNotify
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_SERVER_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server -url localhost:3121 -allow_non_jtag 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042 INFO: [Labtools 27-3414] Connected to existing cs_server. 
+// Tcl Message: current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/00000000000000] 
+// TclEventType: HW_TARGET_CHANGE
+// Tcl Message: set_property PARAM.FREQUENCY 6000000 [get_hw_targets */xilinx_tcf/Xilinx/00000000000000] 
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// Tcl Message: open_hw_target 
+// Tcl Message: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/00000000000000 
+// Tcl Message: current_hw_device [get_hw_devices xcku035_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcku035_0] 0] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// [GUI Memory]: 137 MB (+39862kb) [00:00:36]
+// [GUI Memory]: 169 MB (+26671kb) [00:00:45]
+// [GUI Memory]: 211 MB (+34999kb) [00:00:52]
+// TclEventType: HW_DEVICE_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  25348 ms.
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s). 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,089 MB. GUI used memory: 157 MB. Current time: 9/28/23, 12:37:21 PM EDT
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// [Engine Memory]: 6,130 MB (+857884kb) [00:00:56]
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:56 ; elapsed = 00:00:32 . Memory (MB): peak = 7379.734 ; gain = 1078.641 ; free physical = 3504 ; free virtual = 39206 
+// Elapsed time: 34 seconds
+selectButton("FINISH", "Finish"); // JButton (j, aN)
+// 'H' command handler elapsed time: 43 seconds
+dismissDialog("Open Hardware Target"); // bB (aN)
+dismissDialog("Open New Hardware Target"); // aN (cr)
+// Elapsed time: 20 seconds
+selectButton(PAResourceItoN.IlaProbeTablePanel_SPECIFY_PROBES_FILE_AND_REFRESH, "Specify the probes file and refresh the device"); // d (c, cr)
+// bK (cr): Refresh Device: addNotify
+selectButton(PAResourceQtoS.RefreshDeviceDialog_SPECIFY_DEBUG_PROBES_FILE, (String) null); // t (an, bK)
+setFileChooser("/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx");
+selectButton(PAResourceQtoS.RefreshDeviceDialog_REFRESH_DEVICE, "Refresh"); // a (bK)
+// TclEventType: HW_DEVICE_CHANGE
+// Run Command: PAResourceCommand.PACommandNames_REFRESH_DEVICE
+// Tcl Message: set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+dismissDialog("Refresh Device"); // bK (cr)
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// bB (cr):  Refresh Device : addNotify
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xcku035_0] 0] 
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s). 
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_3] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_4] INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_5] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"gbtsc_inst/ic_inst/rx_inst/ila_ic_rx_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"gbtsc_inst/ic_inst/tx_inst/ila_ic_tx_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_3 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder_triggerless/ila_event_builder_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// [GUI Memory]: 227 MB (+6031kb) [00:01:34]
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_4 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_event_builder_triggermode/ila_event_builder_triggermode_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,290 MB. GUI used memory: 149 MB. Current time: 9/28/23, 12:38:02 PM EDT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_5 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/inst_trigger_interface/ila_trigger_interface_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_6 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_7 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[0].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_8 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[1].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_9 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[1].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_10 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_11 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[2].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_12 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[3].inst_tdcv2_decoder/channel_align_32b_trigger_inst/ila_channel_align_trigger_inst"}]] 
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_OPEN_WCFG
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// Waveform: addNotify
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: display_hw_ila_data [ get_hw_ila_data hw_ila_data_13 -of_objects [get_hw_ilas -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/tdcv2_decoder_wrapper_master/tdcv2_decoder[3].inst_tdcv2_decoder/trigger_matching_inst/ila_ram_inst"}]] 
+dismissDialog("Refresh Device"); // bB (cr)
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "hw_vios", 13); // i (h, cr)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_2, tdc_decoder_top_inst/tdc_received_40bit_dline0[7][43:0]]", 28, true); // N (O, ResizableWindow) - Node
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_CANCEL, "Cancel"); // a (E, ResizableWindow)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_5]", 0, true); // N (O, ResizableWindow) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_downlinkrdy_s ; [B] 1 ;  ; Input ; hw_vio_5", 42, "lpgbtfpga_downlinkrdy_s", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; [B] 0 ;  ; Output ; hw_vio_5", 41, "uplinkRst_i", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; [B] 0 ;  ; Output ; hw_vio_5", 41, "uplinkRst_i", 0, false, false, false, false, true, false); // g (O, cr) - Popup Trigger
+selectMenuItem(PAResourceItoN.LabtoolsMenu_ACTIVE_HIGH_BUTTON, "Active-High Button"); // aq (ao, cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_VALUE_ACTIVE_HIGH_MODE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_uplinkrdy_s ; [B] 0 ;  ; Input ; hw_vio_5", 59, "lpgbtfpga_uplinkrdy_s", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; 0 ;  ; Output ; hw_vio_5", 41, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 218 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenuItem(RDIResourceCommand.RDICommands_RUN_SCRIPT, "Run Tcl Script..."); // ai (cr, Popup.HeavyWeightWindow)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+// Run Command: RDIResourceCommand.RDICommands_RUN_SCRIPT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+setFileChooser("/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl");
+// Source Tcl File: '/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl'
+// Tcl Command: 'source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl'
+// bB (cr):  Source Tcl Script : addNotify
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: # startgroup # set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] # commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] # endgroup 
+// 'cJ' command handler elapsed time: 10 seconds
+dismissDialog("Source Tcl Script"); // bB (cr)
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBES, (String) null); // E (c, cr)
+selectButton(RDIResource.HPopupTitle_CLOSE, (String) null); // k (n, ResizableWindow)
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_1, correct_counter_th[19:0]]", 1, true); // N (O, ResizableWindow) - Node
+selectTree(PAResourceOtoP.ProbesView_PROBES_TREE, "[root, hw_vio_1, locked_dline1[3:0]]", 6, true, true, false, false, false, false); // N (O, ResizableWindow) - Shift Key - Node
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_OK, "OK"); // a (E, ResizableWindow)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "locked_dline1[3:0] ; [B] 0010 ;  ; Input ; hw_vio_1", 1, "locked_dline1[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "locked_dline0[3:0] ; [B] 0010 ;  ; Input ; hw_vio_1", 0, "locked_dline0[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "locked_dline0[3:0] ; [B] 0010 ;  ; Input ; hw_vio_1", 0, "locked_dline0[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "locked_dline1[3:0] ; [B] 0010 ;  ; Input ; hw_vio_1", 1, "locked_dline1[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "locked_dline0[3:0] ; [B] 0010 ;  ; Input ; hw_vio_1", 0, "locked_dline0[3:0]", 0, true); // g (O, cr) - Node
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "locked_dline1[3:0] ; [B] 0010 ;  ; Input ; hw_vio_1", 1, "locked_dline1[3:0]", 0, true); // g (O, cr) - Node
+// Elapsed time: 26 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_uplinkrdy_s ; [B] 1 ;  ; Input ; hw_vio_5", 59, "lpgbtfpga_uplinkrdy_s", 0, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_uplinkrdy_s ; [B] 1 ;  ; Input ; hw_vio_5", 59, "[B] 1", 1, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_uplinkrdy_s ; [B] 1 ;  ; Input ; hw_vio_5", 59, "[B] 1", 1, false); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_uplinkrdy_s ; [B] 1 ;  ; Input ; hw_vio_5", 59, "[B] 1", 1, false); // g (O, cr)
+// Elapsed time: 10 seconds
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "lpgbtfpga_uplinkrdy_s ; [B] 1 ;  ; Input ; hw_vio_5", 59, "[B] 1", 1, false); // g (O, cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 158 MB. Current time: 9/28/23, 1:08:02 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 1:38:02 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 2:08:02 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 2:38:02 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 3:08:02 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 3:38:02 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 4:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 4:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 5:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 5:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 6:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 6:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 7:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 7:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 8:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 8:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 9:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/28/23, 9:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 10:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 10:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 11:08:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/28/23, 11:38:03 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 12:08:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 12:38:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 1:08:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 1:38:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 2:08:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 2:38:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 3:08:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 3:38:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 4:08:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 4:38:03 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 5:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 5:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 6:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 6:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 7:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 7:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 8:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 8:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 9:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 9:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 10:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 10:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 11:08:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 11:38:04 AM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 12:08:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 12:38:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 152 MB. Current time: 9/29/23, 1:08:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,409 MB. GUI used memory: 151 MB. Current time: 9/29/23, 1:38:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,423 MB. GUI used memory: 152 MB. Current time: 9/29/23, 2:08:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,423 MB. GUI used memory: 152 MB. Current time: 9/29/23, 2:38:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,423 MB. GUI used memory: 152 MB. Current time: 9/29/23, 3:08:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,423 MB. GUI used memory: 151 MB. Current time: 9/29/23, 3:38:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,423 MB. GUI used memory: 151 MB. Current time: 9/29/23, 4:08:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 6,423 MB. GUI used memory: 151 MB. Current time: 9/29/23, 4:38:04 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 102169 seconds
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "xcku035_0 (19) ; Programmed", 2, "xcku035_0 (19)", 0, true, false, false, false, true, false); // t (O, cr) - Popup Trigger - Node
+selectMenuItem(PAResourceCommand.PACommandNames_PROGRAM_FPGA, "Program Device..."); // ai (ao, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_PROGRAM_FPGA
+// bC (cr): Program Device: addNotify
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectButton(PAResourceOtoP.ProgramFpgaDialog_SPECIFY_BITSTREAM_FILE, (String) null); // t (an, bC)
+setFileChooser("/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit");
+selectButton(PAResourceOtoP.ProgramFpgaDialog_PROGRAM, "Program"); // a (bC)
+// bB (cr):  Program Device : addNotify
+dismissDialog("Program Device"); // bC (cr)
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0] 
+// TclEventType: HW_OBJECT_DELETE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: program_hw_devices [get_hw_devices xcku035_0] 
+// HMemoryUtils.trashcanNow. Engine heap size: 6,433 MB. GUI used memory: 151 MB. Current time: 9/29/23, 5:06:35 PM EDT
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-3164] End of startup status: HIGH 
+// Tcl Message: program_hw_devices: Time (s): cpu = 00:00:51 ; elapsed = 00:00:48 . Memory (MB): peak = 7740.316 ; gain = 0.000 ; free physical = 3094 ; free virtual = 37452 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xcku035_0] 0] 
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// [Engine Memory]: 6,440 MB (+3454kb) [28:30:55]
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// Tcl Message: INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s). INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s). 
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_DELAYED_MODEL_EVENT
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_UPDATE_COMMANDS
+// TclEventType: WAVEFORM_UPDATE_TITLE
+// TclEventType: WAVEFORM_GLASSPANE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_ILA_CHANGE
+// Tcl Message: refresh_hw_device: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 7740.316 ; gain = 0.000 ; free physical = 3061 ; free virtual = 37419 
+// 'I' command handler elapsed time: 67 seconds
+// Elapsed time: 54 seconds
+dismissDialog("Program Device"); // bB (cr)
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: WAVEFORM_UPDATE_WAVEFORM
+// TclEventType: WAVEFORM_MODEL_EVENT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 11 seconds
+selectTreeTableHeader(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "Name", 0); // g (O, cr)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; 0 ;  ; Output ; hw_vio_5", 58, "0", 1, true); // g (O, cr) - Node
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "uplinkRst_i ; 0 ;  ; Output ; hw_vio_5", 58, "0", 1, true); // g (O, cr) - Node
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 17 seconds
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "xilinx_tcf/Xilinx/00000000000000 (1) ; Open", 1, "xilinx_tcf/Xilinx/00000000000000 (1)", 0, true, false, false, false, true, false); // t (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenuItem(RDIResourceCommand.RDICommands_RUN_SCRIPT, "Run Tcl Script..."); // ai (cr, Popup.HeavyWeightWindow)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+// Run Command: RDIResourceCommand.RDICommands_RUN_SCRIPT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+dismissFileChooser();
+// 'cJ' command handler elapsed time: 7 seconds
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 77 seconds
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "hw_vio_1 ; OK - Outputs Reset", 17, "hw_vio_1", 0, false); // t (O, cr)
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "hw_vio_5 ; OK", 21, "hw_vio_5", 0, false, true, false, false, false, false); // t (O, cr) - Shift Key
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "hw_vio_3 ; OK - Outputs Reset", 19, "hw_vio_3", 0, false, false, false, false, true, false); // t (O, cr) - Popup Trigger
+selectMenuItem(PAResourceCommand.PACommandNames_COMMIT_VIO_OUTPUTS, "Commit Output Values to VIO Core"); // ai (ao, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_COMMIT_VIO_OUTPUTS
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]\   [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_BER_inst"}]\   [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_hit_inst"}]\   [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]\   [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}] 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 14 seconds
+selectTreeTable(PAResourceEtoH.HardwareTreePanel_HARDWARE_TREE_TABLE, "xilinx_tcf/Xilinx/00000000000000 (1) ; Open", 1, "xilinx_tcf/Xilinx/00000000000000 (1)", 0, true, false, false, false, true, false); // t (O, cr) - Popup Trigger - Node
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenuItem(RDIResourceCommand.RDICommands_RUN_SCRIPT, "Run Tcl Script..."); // ai (cr, Popup.HeavyWeightWindow)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+// Run Command: RDIResourceCommand.RDICommands_RUN_SCRIPT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+dismissFileChooser();
+// 'cJ' command handler elapsed time: 3 seconds
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+selectButton(PAResourceTtoZ.VioProbesTreeTablePanel_ADD_PROBE, "VioProbeTablePanel_new"); // E (f, cr)
+selectButton(RDIResource.HPopupTitle_CLOSE, (String) null); // k (n, ResizableWindow)
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "global_rst ; [B] 0 ;  ; Output ; hw_vio_1", 5, "global_rst", 0, false, false, false, false, true, false); // g (O, cr) - Popup Trigger
+selectMenuItem(PAResourceItoN.LabtoolsMenu_ACTIVE_HIGH_BUTTON, "Active-High Button"); // aq (ao, cr)
+// Run Command: PAResourceCommand.PACommandNames_SET_VIO_VALUE_ACTIVE_HIGH_MODE
+selectTreeTable(PAResourceTtoZ.VioProbesTreeTablePanel_VIO_PROBES_TREE_TABLE, "global_rst ; 0 ;  ; Output ; hw_vio_1", 5, "0", 1, false); // g (O, cr)
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 1 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: startgroup 
+// Tcl Message: set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] 
+// Tcl Message: endgroup 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Elapsed time: 25 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cr)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+selectMenuItem(RDIResourceCommand.RDICommands_RUN_SCRIPT, "Run Tcl Script..."); // ai (cr, Popup.HeavyWeightWindow)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cr)
+// Run Command: RDIResourceCommand.RDICommands_RUN_SCRIPT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+setFileChooser("/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl");
+// Source Tcl File: '/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl'
+// Tcl Command: 'source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl'
+// bB (cr):  Source Tcl Script : addNotify
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// Tcl Message: source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl 
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+// TclEventType: DEBUG_PROBE_CHANGE
+// TclEventType: HW_VIO_CHANGE
+// Tcl Message: # startgroup # set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] # commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]] # endgroup 
+// 'cJ' command handler elapsed time: 8 seconds
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE
+dismissDialog("Source Tcl Script"); // bB (cr)
+// HMemoryUtils.trashcanNow. Engine heap size: 6,443 MB. GUI used memory: 153 MB. Current time: 9/29/23, 5:36:35 PM EDT
+// TclEventType: HW_VIO_PROBE_VALUE_CHANGE

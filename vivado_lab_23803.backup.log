@@ -41,3 +41,5 @@ refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a35t_0] 0]
 INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
 INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
 refresh_hw_device: Time (s): cpu = 00:00:22 ; elapsed = 00:00:08 . Memory (MB): peak = 7420.422 ; gain = 36.828 ; free physical = 3896 ; free virtual = 40510
+exit
+INFO: [Common 17-206] Exiting vivado_lab at Tue Sep 26 10:57:13 2023...

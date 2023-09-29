@@ -142,7 +142,7 @@ int PcapDev::packetReceiver(){
         pcap_dispatch(pcapHandle_,1, gotPacket,NULL);
     }else{
         //#ifdef DEBUG
-                cout<<"Select timeout on fd:"<<fd<<" Return code: "<<ret<<endl;
+            cout<<"Select timeout on fd:"<<fd<<" Return code: "<<ret<<endl;
         //#endif
     }
     return ret;
@@ -297,17 +297,34 @@ int main(int argc, char **argv){
     	p_ecap->setCheckPacketFlagTrue();
 
     PcapDev *p_Dev = new PcapDev();
-    signal(SIGUSR1,signalHandler);
+    signal(SIGUSR1,signalHandler); // TODO: This is a hacky way to stop the run
+                                   //       Just intercept ctrl+c or accept a 
+                                   //       stop command from cin
 
+    // TODO: A LOT of logic is hidden inside the while loop condition. Better
+    //       to move it into the while loop and condition on something else.
+    // TODO: Cleaner solution to replace the global daq_stop variable?
     int i_packet = 0;
     while(p_Dev->packetReceiver()!=0 && daq_stop==false){
+
         i_packet++;
-	if(i_packet%1000 == 0) std::cout << "Recorded "<< i_packet << " packets " << std::endl;
+
+        // Provide user feedback every 1000 packets
+    	if(i_packet%1000 == 0) {
+            std::cout << "Recorded "<< i_packet << " packets " << std::endl;
+        }
+
+        // Stop at max_packets
         if(i_packet == max_packets) break;
+
     }
+
     delete p_ecap;
     delete p_Dev;
+
     cout<<"//////Run finished!//////"<<endl;
     cout<< i_packet << " packets recorded " << endl;
+
     return 0;
+
 }
