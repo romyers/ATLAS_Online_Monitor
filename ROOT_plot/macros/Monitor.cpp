@@ -27,13 +27,6 @@
 //////////////////////// INTERFACE ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO: All config parameters should be in a centralized place
-/**
- * The maximum number of signals that an event 
- * can include without being dropped.
- */	
-const size_t  EVENT_SIZE_CUTOFF = 1000;
-
 /**
  * Provides state and functionality for the online monitor.
  */
@@ -101,25 +94,6 @@ void Monitor::refresh() {
 
 			}
 
-			signalBuffer.clear();
-
-		}
-
-		// TODO: Try to move this somewhere else. It clutters my loop.
-		// TODO: Do I really need to do this validation? We'll catch it when
-		//       we miss trailers because the next trailer won't match the
-		//       header
-		if(signalBuffer.size() > EVENT_SIZE_CUTOFF) {
-
-			string msg = "WARNING -- Dropping large event -- cutoff is ";
-			msg += to_string(EVENT_SIZE_CUTOFF);
-			msg += " signals";
-
-			ErrorLogger::getInstance()->logError(msg);
-
-			// TODO: We need to skip to the next header
-			//         -- Or just let event validation take care of it.
-			//            This will produce two errors though...
 			signalBuffer.clear();
 
 		}

@@ -17,13 +17,13 @@
 
 #include <string>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "macros/Monitor.cpp"
-#include "macros/Display.cpp"
 
 #include "src/Geometry.cpp"
 
-#include <unistd.h>
+#include "monitorConfig.cpp"
 
 using namespace std;
 
@@ -33,24 +33,10 @@ using namespace std;
 
 // TODO: Replace singletons with globals where it makes sense to do so
 
-// TODO: All config parameters should be in a centralized place
-/**
- * The approximate rate at which the monitor is refreshed. Note that the
- * monitor will fall short of this rate if it must process too much data
- * at a time.
- */
-const double REFRESH_RATE = 10.; // Hz
-
 /**
  * Macro defining the entry command for the monitor.
  */
 void StartMonitor(const string &filename);
-
-/**
- * A function setting the run number. Can be edited to control how runs are
- * distinguished.
- */
-inline int getRunNumber() { return 0; }
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////// IMPLEMENTATION ////////////////////////////////////
