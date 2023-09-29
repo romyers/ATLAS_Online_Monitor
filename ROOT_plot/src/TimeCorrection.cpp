@@ -23,14 +23,33 @@ namespace Muon {
    *******************************************
    */
 
+  // Updated to be a singleton on 9-29-23
+  // (author Robert Myers)
+
   class TimeCorrection {
   public:
+    // NOTE: Constructor left public for backwards compatibility.
     TimeCorrection();
-    double SlewCorrection(double width);
+    double SlewCorrection(double width) const;
+    static TimeCorrection* getInstance();
   private:
-    double WidthToCharge(double width);
+    double WidthToCharge(double width) const;
     vector<double> adcTable;
+    static TimeCorrection *instance;
   };
+
+  TimeCorrection *TimeCorrection::instance = nullptr;
+  TimeCorrection *TimeCorrection::getInstance() {
+
+    if(instance == nullptr) {
+
+      instance = new TimeCorrection();
+
+    }
+
+    return instance;
+
+  }
 
   TimeCorrection::TimeCorrection() {
     // initialize the table of corrections
@@ -40,12 +59,12 @@ namespace Muon {
     }
   }
 
-  double TimeCorrection::SlewCorrection(double width) {
+  double TimeCorrection::SlewCorrection(double width) const {
     if ( width >= 400.0 || width < 0) return 0;
     else return adcTable.at(static_cast<int>(width));    
   }
   
-  double TimeCorrection::WidthToCharge(double width) {
+  double TimeCorrection::WidthToCharge(double width) const {
     return std::exp(1.11925e+00 + 2.08708e-02 * (width*25.0/32.0));
   }
   

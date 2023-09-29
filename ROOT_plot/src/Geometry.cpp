@@ -23,6 +23,7 @@ namespace Muon {
    */
   class Geometry {
   public:
+    
     /*
      * NOTE: I've left the constructor public to preserve backwards
      *       compatibility. But any new code should use this as a singleton, 

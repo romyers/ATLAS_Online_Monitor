@@ -7,6 +7,8 @@
  * Contact: romyers@umich.edu
  */
 
+#pragma once
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -29,11 +31,11 @@ public:
 	ErrorLogger   (      ErrorLogger &other) = delete;
 	void operator=(const ErrorLogger &other) = delete;
 
-	void clear          ();
+	void clear          (                 );
 	void logError       (const string &msg);
-	void setOutputStream(ostream &out);
+	void setOutputStream(ostream &out     );
 
-	size_t countErrors();
+	size_t countErrors() const;
 
 	static ErrorLogger *getInstance();
 
@@ -73,7 +75,7 @@ void ErrorLogger::setOutputStream(ostream &out) {
 
 }
 
-size_t ErrorLogger::countErrors() {
+size_t ErrorLogger::countErrors() const {
 
 	return errors.size();
 

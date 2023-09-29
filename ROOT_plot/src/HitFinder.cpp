@@ -22,7 +22,7 @@ int rollover_bindiff_cal(int a, int b, int rollover){
     return bindiff;
 }
 
-void DoHitFinding(Event *e, TimeCorrection tc, Noisecut ncut, int relative) {
+void DoHitFinding(Event *e, const TimeCorrection &tc, Noisecut ncut, int relative) {
   Hit h;
   double adc_time   = 0;
   double tdc_time   = 0;
@@ -46,7 +46,7 @@ void DoHitFinding(Event *e, TimeCorrection tc, Noisecut ncut, int relative) {
   }
 }
 
-void DoHitFinding(Event *e, TimeCorrection tc, double adc_cut, int relative) {
+void DoHitFinding(Event *e, const TimeCorrection &tc, double adc_cut, int relative) {
   Hit h;
   double adc_time   = 0;
   double tdc_time   = 0;

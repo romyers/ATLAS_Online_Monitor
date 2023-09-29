@@ -62,6 +62,59 @@ namespace Muon {
     bool            hasBadHitTime = kFALSE;
   };
 
+  /**
+   * Provides a stream insertion operator for easy debug printing.
+   * 
+   * @author Robert Myers
+   */
+  ostream &operator<<(ostream &out, const Event &e) {
+
+    cout << "------------------------------------" << endl;
+    cout << "EVENT SIGNAL COUNT: " << e.Signals().size() << endl;
+    cout << "PRINTING EVENT:" << endl << endl;
+
+    cout << "EVENT HEADER:" << endl;
+    cout << "\tType: " << e.Header().Type() << endl;
+
+    cout << "EVENT TRAILER:" << endl;
+    cout << "\tType: " << e.Trailer().Type() << endl;
+    cout << "\tHit Count: " << e.Trailer().HitCount() << endl;
+
+    for(size_t i = 0; i < e.Signals().size(); ++i) {
+
+      cout << "SIGNAL " << i + 1 << endl;
+      cout << "\tType: " << e.Signals()[i].Type() << endl;
+      cout << "\tTDC: " << e.Signals()[i].TDC() << endl;
+      cout << "\tChannel: " << e.Signals()[i].Channel() << endl;
+      cout << endl;
+
+    }
+
+    for(size_t i = 0; i < e.Hits().size(); ++i) {
+
+      cout << "HIT " << i + 1 << endl;
+      cout << "\tTDC: " << e.Hits()[i].TDC() << endl;
+      cout << "\tChannel: " << e.Hits()[i].Channel() << endl;
+      cout << "\tTDCTime: " << e.Hits()[i].TDCTime() << endl;
+      cout << "\tADCTime: " << e.Hits()[i].ADCTime() << endl;
+      cout << "\tDrift Time: " << e.Hits()[i].DriftTime() << endl;
+      cout << "\tCorrected Time: " << e.Hits()[i].CorrTime() << endl;
+      cout << endl;
+
+    }
+
+    for(size_t i = 0; i < e.Clusters().size(); ++i) {
+
+      cout << "CLUSTER " << i + 1 << endl;
+      cout << "\tSize: " << e.Clusters()[i].Size() << endl;
+      cout << endl;
+
+    }
+
+    return out;
+
+  }
+
   Event::Event() {
     hd       = Signal();
     trl      = Signal();

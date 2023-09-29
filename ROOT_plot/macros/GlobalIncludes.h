@@ -1,3 +1,5 @@
+#pragma once;
+
 #define ADC_HIST_TOTAL_BIN 256 // set bin quantity of the plot
 #define TDC_HIST_TOTAL_BIN 512 // 
 #define ADC_HIST_LEFT 0 // 
