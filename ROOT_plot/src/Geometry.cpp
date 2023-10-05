@@ -72,7 +72,7 @@ namespace Muon {
     short TDC_ML [Geometry::MAX_TDC];
     short TDC_COL[Geometry::MAX_TDC];
 
-    static Geometry *getInstance();
+    static Geometry &getInstance();
 
   private:
     void ResetAdjacencyMatrix();
@@ -87,18 +87,11 @@ namespace Muon {
     vector<TGraph*>    axes;
     vector<TPaveText*> text;
 
-    static Geometry *instance;
-
   };
 
-  Geometry *Geometry::instance = nullptr;
-  Geometry *Geometry::getInstance() {
+  Geometry &Geometry::getInstance() {
 
-    if(instance == nullptr) {
-
-      instance = new Geometry();
-
-    }
+    static Geometry instance;
 
     return instance;
 

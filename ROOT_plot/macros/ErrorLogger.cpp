@@ -1,7 +1,8 @@
 /**
  * @file ErrorLogger.cpp
  *
- * @brief A simple singleton error logger that stores and counts errors.
+ * @brief A simple threadsafe singleton error logger that stores and counts 
+ * errors.
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu
@@ -14,6 +15,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <algorithm>
+#include <mutex>
 
 using namespace std;
 
@@ -41,7 +43,7 @@ public:
 
 	size_t countErrors(const string &type = EMPTY_TYPE) const;
 
-	static ErrorLogger *getInstance();
+	static ErrorLogger &getInstance();
 
 private:
 
@@ -51,17 +53,17 @@ private:
 
 	ostream *errorStream;
 
-	static ErrorLogger *instance;
+	mutable mutex errorLock;
 
 };
-
-ErrorLogger *ErrorLogger::instance = nullptr;
 
 ErrorLogger::ErrorLogger() : errorStream(&cerr) {}
 
 void ErrorLogger::clear() {
 
+	errorLock.lock();
 	errors.clear();
+	errorLock.unlock();
 
 }
 
@@ -70,37 +72,52 @@ void ErrorLogger::logError(
 	const string &type = EMPTY_TYPE
 ) {
 
+	errorLock.lock();
 	*errorStream << msg << endl;
-
 	errors.emplace_back(msg, type);
+	errorLock.unlock();
 
 }
 
 void ErrorLogger::setOutputStream(ostream &out) {
 
+	errorLock.lock();
 	errorStream = &out;
+	errorLock.unlock();
 
 }
 
 size_t ErrorLogger::countErrors(const string &type = EMPTY_TYPE) const {
 
-	if(type == EMPTY_TYPE) return errors.size();
+	size_t val;
 
-	return count_if(
-		errors.cbegin(), 
-		errors.cend(), 
-		[type](const ErrorData &e) {
-			return e.type == type;
-		}
-	);
+	errorLock.lock();
+
+	if(type == EMPTY_TYPE) {
+
+		val = errors.size();
+
+	} else {
+
+		val = count_if(
+			errors.cbegin(),
+			errors.cend(),
+			[type](const ErrorData &e) {
+				return e.type == type;
+			}
+		);
+
+	}
+
+	errorLock.unlock();
+
+	return val;
 
 }
 
-ErrorLogger *ErrorLogger::getInstance() {
+ErrorLogger &ErrorLogger::getInstance() {
 
-	if(instance == nullptr) {
-		instance = new ErrorLogger();
-	}
+	static ErrorLogger instance;
 
 	return instance;
 

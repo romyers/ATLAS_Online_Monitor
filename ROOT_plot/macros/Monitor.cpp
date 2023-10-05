@@ -14,12 +14,13 @@
 #pragma once
 
 #include <vector>
-#include <fstream>
+#include <istream>
 
 #include "macros/SignalDecoding.cpp"
 #include "macros/EventDecoding.cpp"
 #include "macros/ErrorLogger.cpp"
 #include "macros/PlotMaker.cpp"
+#include "macros/LockableStream.cpp"
 
 #include "src/Signal.cpp"
 #include "src/Event.cpp"
@@ -28,6 +29,11 @@
 //////////////////////// INTERFACE ////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+// TODO: Preserve ability to read from a file source
+
+// TODO: Let the monitor just take in a data stream, and choose between an
+//       ifstream and another kind of stream at a higher level.
+
 /**
  * Provides state and functionality for the online monitor.
  */
@@ -35,7 +41,7 @@ class Monitor {
 
 public:
 
-	Monitor(const string &filename);
+	Monitor(LockableStream &in);
 
 	bool isStale();
 	void refresh();
@@ -66,7 +72,8 @@ bool isEvent(const vector<Signal> &signals);
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Monitor::Monitor(const string &filename) : reader(filename) {}
+Monitor::Monitor(LockableStream &in) 
+	: reader(in) {}
 
 bool Monitor::isStale() {
 

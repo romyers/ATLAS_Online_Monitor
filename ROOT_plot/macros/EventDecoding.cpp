@@ -50,9 +50,10 @@ Event assembleEvent(vector<Signal> signals) {
 // TODO: Separate errors that we drop the event for and errors that we 
 //       report without dropping the event
 //         -- validateEventErrors and validateEventWarnings
+// TODO: Use exceptions?
 bool validateEventErrors(const Event &e) {
 
-	ErrorLogger &logger = *ErrorLogger::getInstance();
+	ErrorLogger &logger = ErrorLogger::getInstance();
 
 	if(!e.Header().isEventHeader()) {
 
@@ -134,6 +135,6 @@ void processEvent(Event &e) {
 	e.CheckClusterTime();
 
 	// DEBUG
-	cout << e << endl;
+	// cout << e << endl;
 
 }

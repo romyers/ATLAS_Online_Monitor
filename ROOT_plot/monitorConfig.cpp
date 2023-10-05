@@ -16,4 +16,8 @@ const double GUI_REFRESH_RATE  = 30.; //Hz
  * A function setting the run number. Can be edited to control how runs are
  * distinguished.
  */
-inline int getRunNumber() { return 0; }
+inline int getRunNumber() {
+
+    return 0;
+
+}

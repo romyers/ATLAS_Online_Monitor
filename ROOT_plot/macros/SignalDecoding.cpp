@@ -11,8 +11,10 @@
 
 #include <stdio.h>
 #include <string>
+#include <istream>
 
 #include "macros/ErrorLogger.cpp"
+#include "macros/LockableStream.cpp"
 
 #include "src/Signal.cpp"
 #include "src/Geometry.cpp"
@@ -26,7 +28,7 @@ const string SIGNAL_ERROR = "signalErr" ;
 const string SIGNAL_WARN  = "signalWarn";
 
 // Byte swap from big-endian to little-endian or vice versa
-uint64_t byteSwap(char *data, uint8_t dataSize);
+uint64_t byteSwap(uint64_t data, uint8_t dataSize);
 
 // An exception thrown when a signal extraction fails
 class ExtractionException : public exception {};
@@ -38,14 +40,14 @@ class SignalReader {
 
 public:
 
-	SignalReader(const string &filename);
+	SignalReader(LockableStream &in);
 
 	bool   isReady      ();
 	Signal extractSignal();
 
 private:
 
-	ifstream dataStream;
+	LockableStream &dataStream;
 
 };
 
@@ -76,19 +78,23 @@ void validateSignalWarnings(const Signal &sig);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-SignalReader::SignalReader(const string &filename) :
-	dataStream(filename) {}
+SignalReader::SignalReader(LockableStream &in) :
+	dataStream(in) {}
 
 bool SignalReader::isReady() {
 
+	// TODO: What if no dataStream.end?
+
 	// Get initial and end positions for the stream
-	streampos initialPos = dataStream.tellg();
-	dataStream.seekg(0, dataStream.end);
-	streampos endPos = dataStream.tellg();
+	dataStream.lock();
+	streampos initialPos = dataStream.stream->tellg();
+	dataStream.stream->seekg(0, dataStream.stream->end);
+	streampos endPos = dataStream.stream->tellg();
 
 	// Reset the stream
-	dataStream.clear();
-	dataStream.seekg(initialPos, dataStream.beg);
+	dataStream.stream->clear();
+	dataStream.stream->seekg(initialPos, dataStream.stream->beg);
+	dataStream.unlock();
 
 	// Return true if there are at least WORD_SIZE characters left on the
 	// stream
@@ -96,13 +102,23 @@ bool SignalReader::isReady() {
 
 }
 
+// TODO: It's faster if we read all available signals at once and parse them
+//       into signals later
+// TODO: Remember the power of memcpy and static casting for parsing things
+//         -- build the right struct and you can memcpy right into it very fast
 Signal SignalReader::extractSignal() {
 
 	char readBuffer[Signal::WORD_SIZE];
 
-	dataStream.read(readBuffer, Signal::WORD_SIZE);
+	dataStream.lock();
+	dataStream.stream->read(readBuffer, Signal::WORD_SIZE);
+	dataStream.unlock();
 
-	uint64_t word = byteSwap(readBuffer, Signal::WORD_SIZE);
+	uint64_t word = 0;
+	memcpy(&word, readBuffer, Signal::WORD_SIZE);
+
+	// TODO: Consider moving the byteswap to PCapSessionhandler?
+	word = byteSwap(word, Signal::WORD_SIZE);
 
 	return Signal(word);
 
@@ -120,8 +136,8 @@ bool validateSignalErrors(const Signal &sig) {
 	if(sig.isEventHeader ()) return true;
 	if(sig.isEventTrailer()) return true;
 
-	ErrorLogger &logger = *ErrorLogger::getInstance();
-	Geometry    &geo    = *Geometry::getInstance   ();
+	ErrorLogger &logger = ErrorLogger::getInstance();
+	Geometry    &geo    = Geometry::getInstance   ();
 
 	if(!geo.IsActiveTDC(sig.TDC())) {
 
@@ -206,11 +222,16 @@ void validateSignalWarnings(const Signal &sig) {
 
 }
 
-uint64_t byteSwap(char *data, uint8_t dataSize) {
+uint64_t byteSwap(uint64_t data, uint8_t dataSize) {
 
 	uint64_t result = 0;
 	for(uint8_t byte = 0; byte < dataSize; ++byte) {
-		result += (((uint64_t) data[dataSize - byte - 1]) & 0xff) << byte * 8;
+
+		uint64_t temp = data >> 8 * (dataSize - byte - 1);
+		temp = temp & 0xff;
+
+		result += temp << 8 * byte;
+
 	}
 
 	return result;
