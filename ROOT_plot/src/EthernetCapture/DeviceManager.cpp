@@ -28,6 +28,7 @@ public:
 
     void initialize();
     PCapDevice getDevice(int deviceNumber);
+    vector<PCapDevice> getAllDevices();
 
     void printDevices(ostream &out) const;
 
@@ -95,6 +96,32 @@ PCapDevice DeviceManager::getDevice(int deviceNumber) {
     }
 
     return PCapDevice(d);
+
+}
+
+vector<PCapDevice> DeviceManager::getAllDevices() {
+
+    if(!devices) {
+
+        throw logic_error(
+            "DeviceManager::getDevice -- DeviceManager must be initialized before use."
+        );
+
+    }
+
+    vector<PCapDevice> deviceList;
+
+    pcap_if_t *d = devices;
+
+    while(d) {
+
+        deviceList.push_back(PCapDevice(d));
+        d = d->next;
+
+    }
+
+    return deviceList;
+
 
 }
 

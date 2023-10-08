@@ -131,6 +131,7 @@ void Monitor::refresh() {
 		// TODO: Display the event
 
 	}
+
 	eventBuffer.clear();
 
 }

@@ -32,7 +32,7 @@ TCanvas *rate_canvas = new TCanvas("c3", "Hit Rate Plots",2160,0,1800,750);
 TCanvas *trigger_rate_canvas = new TCanvas("c4", "Trigger Board",1440,750,400,300);
 TCanvas *residual_canvas = new TCanvas("c5", "Residuals", 2100,900,400,300);
 TCanvas *EDCanvas = new TCanvas("c6", "Event Display", 2700, 900, 800, 800);
-TCanvas *eff_canvas = new TCanvas("C7", "Efficiency", 2300, 900, 400, 300);
+TCanvas *eff_canvas = new TCanvas("c7", "Efficiency", 2300, 900, 400, 300);
 
 struct Plots {
 

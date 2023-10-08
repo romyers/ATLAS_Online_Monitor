@@ -216,7 +216,7 @@ void StartMonitor(const string &filename = "") {
 	}
 
 	// THIS MUST BE CALLED BEFORE STARTING ANY THREADS.
-	// It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly call threads.
+	// It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly terminate threads.
 	// It must also be called after we're done getting user input or we'll
 	// get weird behavior where code will run expecting data that does not
 	// exist, since it does not interrupt anything
@@ -267,6 +267,8 @@ void StartMonitor(const string &filename = "") {
 		cout << "Saving packet data to: " << outputFile << endl;
 
 		// TODO: Main shouldn't need to care about packet counting
+		// TODO: If the data stream is a stringstream, it needs to be reset
+		//       each loop, or else it will act like a memory leak
 		int i = 0;
 		while(!Terminator::getInstance().isTerminated()) {
 
@@ -287,10 +289,12 @@ void StartMonitor(const string &filename = "") {
 		/////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////
 
+		fileWriter.close();
+
 		cout << "Run finished!" << endl;
 		cout << i << " packets recorded." << endl;
 
-		cout << "Shut down data capture." << endl; // TODO: mutex
+		cout << "Suspended data capture." << endl; // TODO: mutex
 
 	});
 
@@ -315,7 +319,7 @@ void StartMonitor(const string &filename = "") {
 
 		}
 
-		cout << "Shut down UI." << endl; // TODO: mutex
+		cout << "Suspended UI." << endl; // TODO: mutex
 
 	});
 
@@ -329,13 +333,52 @@ void StartMonitor(const string &filename = "") {
 
 	while(!Terminator::getInstance().isTerminated()) {
 
+		// TODO: Performance analysis. I'd like this loop to run faster
+		//         -- I think binning and drawing is our weak point. Let's
+		//            bin every event before drawing
+
+		// FIXME: In file reading mode, this will read the whole file before
+		//        terminating on ctrl+c
+
 		monitor.refresh();
+
+		// TODO: This is hacky; fix it. The idea here is to clear processed
+		//       data from the dataStream so we don't produce a de facto
+		//       memory leak. But we'd rather the code not have to care what
+		//       kind of stream dataStream is. Perhaps we make our own kind
+		//       of iostream that clears after read?
+		//       https://stackoverflow.com/questions/63034484/how-to-create-stream-which-handles-both-input-and-output-in-c
+		//       https://stackoverflow.com/questions/12410961/c-connect-output-stream-to-input-stream
+		//       https://stackoverflow.com/questions/26346320/how-to-redirect-input-stream-to-output-stream-in-one-line
+		// TODO: We might be able to hook our file and data output streams
+		//       together so we only have to write to one of them:
+		//       https://stackoverflow.com/questions/1760726/how-can-i-compose-output-streams-so-output-goes-multiple-places-at-once
+		// TODO: Might it make sense to make the data stream unbuffered? See:
+		//       https://stackoverflow.com/questions/52581080/usage-of-output-stream-buffer-in-context-to-stdcout-and-stdendl
+		// TODO: Anyway, we can revisit how we want to handle the data streams
+		//       later. For now, this will suffice.
+		dataStream.lock();
+		stringstream *temp = dynamic_cast<stringstream*>(dataStream.stream);
+		if(temp) {
+			string unread = temp->eof() ?
+				"" : temp->str().substr(temp->tellg());
+			temp->str(unread);
+		}
+		dataStream.unlock();
 
 		this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
 
 	}
 
-	cout << "Shut down decoder." << endl; // TODO: mutex
+	// TODO: Again, I would rather avoid caring about the type of stream.
+	dataStream.lock();
+	fstream *temp = dynamic_cast<fstream*>(dataStream.stream);
+	if(temp) {
+		temp->close();
+	}
+	dataStream.unlock();
+
+	cout << "Suspended data decoding." << endl; // TODO: mutex
 
 	dataCaptureThread.join();
 	UIThread.join();
