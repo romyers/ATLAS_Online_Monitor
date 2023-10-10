@@ -1,6 +1,13 @@
+/**
+ * @file DataSourcePanel.cpp
+ *
+ * @brief TODO: Write
+ *
+ * @author Robert Myers
+ * Contact: romyers@umich.edu
+ */
 
-
-#pragma once;
+#pragma once
 
 #include <string>
 
@@ -12,6 +19,8 @@
 using namespace std;
 using namespace Muon;
 
+// TODO: I haven't been very rigorous with this. Get more rigorous.
+
 class DataSourcePanel : public TGVerticalFrame {
 
 public:
@@ -21,50 +30,35 @@ public:
 
     // OPERATIONS
 
-    void showFileSelector       (          );
-    void showDeviceSelector     (          );
+    void showFileSelector       ();
+    void showDeviceSelector     ();
 
-    void setTypeToFile          (          );
-    void setTypeToNetworkDevice (          );
-
-    void setDeviceName          (char *name);
-    void setFilename            (char *name);
-
-    void revertSettings         (          );
-    void commitSettings         (          );
+    void revertSettings         ();
+    void commitSettings         ();
 
 private:
 
     // VIEW
 
     ///////////////////////////////////////////////////////////////////////////
-    TGHorizontalFrame *sourceTypePanel;
+    TGVerticalFrame *sourceTypePanel;
 
         TGLabel *dataSourceLabel;
 
         TGButtonGroup *menu;
 
-            TGRadioButton *fileButton;
-            TGRadioButton *deviceButton;
+            TGRadioButton  *fileButton    ;
+            FileSelector   *fileSelector  ;
 
+            TGRadioButton  *deviceButton  ;
+            DeviceSelector *deviceSelector;
 
-    TGVerticalFrame *selectorPanel;
-
-        DeviceSelector *deviceSelector;
-        FileSelector   *fileSelector;
 
     TGButtonGroup *commitPanel;
 
         TGTextButton *revertButton;
         TGTextButton *applyButton;
     ///////////////////////////////////////////////////////////////////////////
-
-    // DATA
-
-    int    dataSourceType ;
-
-    string inputDevicename;
-    string inputFilename  ;
 
     // TODO: Add a flag determining whether this has unsaved changes
 
@@ -74,25 +68,6 @@ private:
 
 };
 
-void DataSourcePanel::makeConnections() {
-
-    // TODO: Should we do the GUI connections and data model connections
-    //       separately?
-
-    fileButton    ->Connect("Clicked()", "DataSourcePanel", this, "showFileSelector()"        );
-    fileButton    ->Connect("Clicked()", "DataSourcePanel", this, "setTypeToFile()"           );
-
-    deviceButton  ->Connect("Clicked()", "DataSourcePanel", this, "showDeviceSelector()"      );
-    deviceButton  ->Connect("Clicked()", "DataSourcePanel", this, "setTypeToNetworkDevice()"  );
-
-    deviceSelector->Connect("Selected(char*)", "DataSourcePanel", this, "setDeviceName(char*)");
-    fileSelector  ->Connect("Selected(char*)", "DataSourcePanel", this, "setFilename(char*)"  );
-
-    revertButton  ->Connect("Clicked()", "DataSourcePanel", this, "revertSettings()"          );
-    applyButton   ->Connect("Clicked()", "DataSourcePanel", this, "commitSettings()"          );
-
-}
-
 DataSourcePanel::DataSourcePanel(const TGWindow *p) 
     : TGVerticalFrame(p) {
 
@@ -101,31 +76,26 @@ DataSourcePanel::DataSourcePanel(const TGWindow *p)
 
     ///////////////////////////////////////////////////////////////////////////
 
-    sourceTypePanel = new TGHorizontalFrame(this);
-    AddFrame(sourceTypePanel, new TGLayoutHints(kLHintsCenterX, 0, 0, 0, 0));
+    sourceTypePanel = new TGVerticalFrame(this);
+    AddFrame(sourceTypePanel, new TGLayoutHints(kLHintsLeft, 10, 10, 10, 10));
 
         dataSourceLabel = new TGLabel(sourceTypePanel, "Data Source:");
-        sourceTypePanel->AddFrame(dataSourceLabel, new TGLayoutHints(kLHintsCenterY, 0, 0, 0, 0));
+        sourceTypePanel->AddFrame(dataSourceLabel, new TGLayoutHints(kLHintsLeft, 0, 0, 0, 0));
 
-        menu = new TGButtonGroup(sourceTypePanel, "", kHorizontalFrame);
-        sourceTypePanel->AddFrame(menu, new TGLayoutHints(kLHintsCenterY, 0, 0, 0, 0));
+        menu = new TGButtonGroup(sourceTypePanel, "", kVerticalFrame);
+        sourceTypePanel->AddFrame(menu, new TGLayoutHints(kLHintsCenterX, 0, 0, 0, 0));
 
-            fileButton   = new TGRadioButton(menu, "File"          );
+            fileButton   = new TGRadioButton(menu, "DAT File");
+            menu->AddFrame(fileButton, new TGLayoutHints(kLHintsLeft));
+
+            fileSelector = new FileSelector(menu);
+            menu->AddFrame(fileSelector, new TGLayoutHints(kLHintsLeft, 30, 0, 10, 0));
+
             deviceButton = new TGRadioButton(menu, "Network Device");
+            menu->AddFrame(deviceButton, new TGLayoutHints(kLHintsLeft));
 
-    ///////////////////////////////////////////////////////////////////////////
-
-    // TODO: Break this out into a custom element that holds a vector of panels and
-    //       functionality for switching between them
-
-    selectorPanel = new TGVerticalFrame(this);
-    AddFrame(selectorPanel, new TGLayoutHints(kLHintsCenterX, 0, 0, 0, 0));
-
-        deviceSelector = new DeviceSelector(selectorPanel);
-        selectorPanel->AddFrame(deviceSelector, new TGLayoutHints(kLHintsCenterY, 0, 0, 0, 0));
-
-        fileSelector = new FileSelector(selectorPanel);
-        selectorPanel->AddFrame(fileSelector, new TGLayoutHints(kLHintsCenterX, 0, 0, 0, 0));
+            deviceSelector = new DeviceSelector(menu);
+            menu->AddFrame(deviceSelector, new TGLayoutHints(kLHintsLeft, 30, 0, 10, 0));
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -149,11 +119,20 @@ DataSourcePanel::DataSourcePanel(const TGWindow *p)
     // DEFAULTS
     // FIXME: fileSelector is not initially hidden.
     deviceButton->SetState(kButtonDown);
+    deviceSelector->initialize();
     showDeviceSelector();
-    dataSourceType = State::NETWORK_DEVICE_SOURCE;
 
-    inputDevicename = "";
-    inputFilename = "";
+    revertSettings();
+
+}
+
+void DataSourcePanel::makeConnections() {
+
+    fileButton  ->Connect("Clicked()", "DataSourcePanel", this, "showFileSelector()"        );
+    deviceButton->Connect("Clicked()", "DataSourcePanel", this, "showDeviceSelector()"      );
+
+    revertButton->Connect("Clicked()", "DataSourcePanel", this, "revertSettings()"          );
+    applyButton ->Connect("Clicked()", "DataSourcePanel", this, "commitSettings()"          );
 
 }
 
@@ -165,109 +144,86 @@ DataSourcePanel::~DataSourcePanel() {
     
 void DataSourcePanel::showFileSelector() {
 
-    selectorPanel->HideFrame(deviceSelector);
-    selectorPanel->ShowFrame(fileSelector);
+    fileSelector->enable();
+    deviceSelector->disable();
 
 }
 
 void DataSourcePanel::showDeviceSelector() {
 
-
-    if(!deviceSelector->ready()) {
-
-        deviceSelector->initialize();
-
-    }
-    selectorPanel->HideFrame(fileSelector);
-    selectorPanel->ShowFrame(deviceSelector);
-
-}
-
-void DataSourcePanel::setDeviceName(char *name) {
-
-    inputDevicename = name;
-
-}
-
-void DataSourcePanel::setFilename(char *name) {
-
-    inputFilename = name;
-
-}
-
-void DataSourcePanel::setTypeToFile() {
-
-    dataSourceType = State::DAT_FILE_SOURCE;
-
-}
-
-void DataSourcePanel::setTypeToNetworkDevice() {
-
-    dataSourceType = State::NETWORK_DEVICE_SOURCE;
+    fileSelector->disable();
+    deviceSelector->enable();
 
 }
 
 void DataSourcePanel::revertSettings() {
 
 
-    State::DAQState &state = State::DAQState::getState();
+    State::DAQState state = State::DAQState::getState();
 
     char buffer[256];
-
-    state.lock();
-
-    // NOTE: Setting the device name will trigger an event that will update
-    //       DataSourcePanel::inputDeviceName
     strcpy(buffer, state.inputDevicename.data());
     deviceSelector->setDeviceName(buffer);
 
-    strcpy(buffer, state.inputFilename.data());
-    fileSelector->setFilename(buffer);
+    fileSelector->setFilename(state.inputFilename);
 
-    dataSourceType = state.dataSource;
-
-    if(dataSourceType == State::NETWORK_DEVICE_SOURCE) {
-
-        deviceButton->Clicked();
-        deviceButton->SetState(kButtonDown);
-
-    } else if(dataSourceType == State::DAT_FILE_SOURCE) {
+    if(state.dataSource == State::DAT_FILE_SOURCE) {
 
         fileButton->Clicked();
         fileButton->SetState(kButtonDown);
 
-    }
+    } else if(state.dataSource == State::NETWORK_DEVICE_SOURCE) {
 
-    state.unlock();
+        deviceButton->Clicked();
+        deviceButton->SetState(kButtonDown);
+
+    } else {
+
+        throw std::logic_error("DataSourcePanel::revertSettings cannot find a valid data source in DAQState.");
+
+    }
 
 }
 
 void DataSourcePanel::commitSettings() {
 
-    State::DAQState &state = State::DAQState::getState();
+    // NOTE: We can ensure the DAQState won't go out of date if we lock
+    //       it. But there shouldn't be anything messing with DAQState 
+    //       concurrently with commitSettings, so let's just guarantee
+    //       with validation and come back later if we need to.
+
+    State::DAQState state = State::DAQState::getState();
 
     // TODO: Validation -- e.g. network device must exist
 
-    state.lock();
+    state.inputFilename = fileSelector->getFilename();
+    state.inputDevicename = deviceSelector->getDeviceName();
 
-    state.dataSource      = dataSourceType ;
+    if(fileButton->GetState() == kButtonDown) {
 
-    switch(dataSourceType) {
+        state.dataSource = State::DAT_FILE_SOURCE;
 
-        case State::DAT_FILE_SOURCE:
-            state.inputFilename = inputFilename;
-            break;
+    } else if(deviceButton->GetState() == kButtonDown) {
 
-        case State::NETWORK_DEVICE_SOURCE:
-            state.inputDevicename = inputDevicename;
-            break;
+        state.dataSource = State::NETWORK_DEVICE_SOURCE;
 
-        default:
-            throw logic_error("DataSourcePanel::commitSettings tried to commit bad data source type.");
-            break;
+    } else {
+
+        throw std::logic_error("DataSourcePanel::commitSettings cannot find a data input source type selection.");
 
     }
 
-    state.unlock();
+    bool success = state.commit();
+    
+    if(!success) {
+
+        throw std::logic_error(
+            "DataSourcePanel::commitSettings could not commit settings. "
+            "Make sure nothing is committing DAQState concurrently with "
+            "commitSettings, or reimplement commitSettings to handle "
+            "concurrent state commits."
+        );
+
+    }
 
 }

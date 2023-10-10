@@ -1,3 +1,11 @@
+/**
+ * @file DeviceSelectorPanel.cpp
+ *
+ * @brief TODO: Write
+ *
+ * @author Robert Myers
+ * Contact: romyers@umich.edu
+ */
 
 #pragma once
 
@@ -7,7 +15,9 @@
 
 using namespace std;
 
-class DeviceSelector : public TGHorizontalFrame {
+// TODO: Return a whole PCapDevice rather than just its name
+
+class DeviceSelector : public TGVerticalFrame {
 
     RQ_OBJECT("DeviceSelector");
 
@@ -26,15 +36,8 @@ public:
     void enable();
     void disable();
 
+    string getDeviceName();
     void setDeviceName(char *name);
-
-    // SIGNALS
-
-    void Selected(char *name) {}
-
-    // OPERATIONS 
-
-    void emitDeviceName(char *name); // *SIGNAL*
 
 private:
 
@@ -49,13 +52,20 @@ private:
 
 };
 
+string DeviceSelector::getDeviceName() {
+
+    if(!dropdown->GetSelectedEntry()) return "";
+
+    return string(dropdown->GetSelectedEntry()->GetTitle());
+
+}
+
 void DeviceSelector::setDeviceName(char *name) {
 
     // FIXME: The current entry must be cleared if name is blank
-    if(name == "") {
+    if(!strcmp(name, "")) {
 
-        dropdown->Select(-1);
-        emitDeviceName(name);
+        dropdown->Select(0);
         return;
 
     }
@@ -64,38 +74,28 @@ void DeviceSelector::setDeviceName(char *name) {
 
     if(!entryID) {
 
-        throw NetworkDeviceException("Selected device does not exist.");
+        // We can handle this quietly. If user selects a nonexistent device,
+        // we've done something very wrong. But it might happen on settings
+        // state load if a previously used device has been disconnected. In 
+        // that case, we really just want to clear the default setting.
+        dropdown->Select(0);
+        return;
 
     }
 
     dropdown->Select(entryID, false);
 
-    emitDeviceName(name);
-
-}
-
-void DeviceSelector::emitDeviceName(char *name) {
-
-    Emit("Selected(char*)", name);
-
 }
 
 DeviceSelector::DeviceSelector(const TGWindow *p) 
-    : TGHorizontalFrame(p), initialized(false) {
+    : TGVerticalFrame(p), initialized(false) {
 
     label = new TGLabel(this, "Select Device:");
-    AddFrame(label, new TGLayoutHints(kLHintsCenterY, 5, 5, 5, 5));
+    AddFrame(label, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
 
 
     dropdown = new TGComboBox(this);
-    AddFrame(dropdown, new TGLayoutHints(kLHintsCenterY, 5, 5, 5, 5));
-
-    dropdown->Connect(
-        "Selected(char*)", 
-        "DeviceSelector", 
-        this, 
-        "emitDeviceName(char*)"
-    );
+    AddFrame(dropdown, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
 
     dropdown->Resize(150, 20);
 
@@ -103,7 +103,7 @@ DeviceSelector::DeviceSelector(const TGWindow *p)
 
 DeviceSelector::~DeviceSelector() {
 
-    TGHorizontalFrame::~TGHorizontalFrame();
+    TGVerticalFrame::~TGVerticalFrame();
 
 }
 
@@ -113,6 +113,8 @@ void DeviceSelector::initialize() {
     devices.initialize();
 
     vector<PCapDevice> deviceList = devices.getAllDevices();
+
+    dropdown->AddEntry("(None)", 0);
 
     for(int i = 0; i < deviceList.size(); ++i) {
 
@@ -140,6 +142,8 @@ void DeviceSelector::enable() {
 }
 
 void DeviceSelector::disable() {
+
+    // TODO: Selections in the box are not grayed out
 
     dropdown->SetEnabled(false);
 

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "macros/UIWindows/EntryWindow/Components/DataSourcePanel.cpp"
+#include "macros/UIWindows/EntryWindow/EntryOperations.cpp"
 
 #include "src/ProgramControl/Terminator.cpp"
 
@@ -51,7 +52,8 @@ private:
 
 void EntryMenu::makeConnections() {
 
-    exitButton->Connect("Clicked()", "Terminator", &Terminator::getInstance(), "terminate()");
+    exitButton ->Connect("Clicked()", "EntryOperations", nullptr, "exitAll()");
+    startButton->Connect("Clicked()", "EntryOperations", nullptr, "startRun()");
 
 }
 

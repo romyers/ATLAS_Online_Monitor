@@ -17,6 +17,7 @@
 #include "macros/UIFramework/GUIMainFrame.cpp"
 
 #include "macros/UIWindows/EntryWindow/EntryMenu.cpp"
+#include "macros/UIWindows/EntryWindow/EntryOperations.cpp"
 
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/SigHandlers.cpp"
@@ -30,6 +31,7 @@ using namespace Muon;
 // TODO: This needs a better place to live
 mutex UILock;
 
+const string STATE_STORAGE = "settings.txt";
 
 void StartDAQ() {
 
@@ -38,6 +40,8 @@ void StartDAQ() {
     // THIS MUST BE CALLED BEFORE STARTING ANY THREADS.
     // It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly terminate threads.
     setTerminationHandlers(flagForTermination);
+
+    EntryOperations::readState(STATE_STORAGE);
 
     // Start the UI update thread
     thread UIThread([](){
@@ -74,6 +78,8 @@ void StartDAQ() {
 
     // Wait for the threads to be done before terminating
     UIThread.join();
+
+    EntryOperations::saveState(STATE_STORAGE);
 
     mainFrame->Cleanup();
     delete mainFrame;

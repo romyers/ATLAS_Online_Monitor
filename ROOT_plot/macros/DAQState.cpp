@@ -11,84 +11,187 @@
 
 #include <string>
 #include <mutex>
+#include <iostream>
+#include <algorithm>
+#include <map>
 
 using namespace std;
 
 namespace Muon {
 namespace State {
 
-	// TODO: Optional data persistence so e.g. it will remember the last network
-	//       device that was selected
+	string trim(const string &str);
 
 	// TODO: Operations on DAQState that a gui element can connect to.
+
+	// TODO: Split out a POD struct, and let the logic exist in a controller
+	//       for that struct
 
 	// DAQState::dataSource values
 	const int DAT_FILE_SOURCE       = 1;
 	const int NETWORK_DEVICE_SOURCE = 2;
 
-	const string EMPTY = "";
+	class DAQState {
 
-	// NOTE: Lock the DAQState before reading/writing data, and unlock after. 
-	//       Don't lock anything else while the stateLock is locked 
-	//       unless you're familiar with and know how to avoid deadlocks.
-	//       Use a pattern like:
-	//
-	//           DAQState &state = DAQState::getState();
-	//
-	//           state.lock();
-	//           int dataSource = DAQState.dataSource;
-	//           state.unlock();
-	//
-	//           // Do something with dataSource
-	//
-	//       If you're sure a state member will never be read and written
-	//       by two threads at once, you can skip locking it. But be careful.
-
-	struct DAQState {
+	public:
 
 		int    dataSource      = NETWORK_DEVICE_SOURCE;
 
-		string inputFilename   = EMPTY                ;
-		string inputDevicename = EMPTY                ;
+		string inputFilename   = "";
+		string inputDevicename = "";
 
-		// Locks and unlocks an internal mutex.
-		void lock  ();
-		void unlock();
+		bool commit(bool force = false);
+		void update(); // Sets this state to match the current committed state
 
-		DAQState      (      DAQState &other) = delete;
-		void operator=(const DAQState &other) = delete;
+		// TODO: Semantically, it should be clear that we're only printing 
+		//       persistent state data. Perhaps we have separate classes for
+		//       persistent and nonpersistent data united through a common
+		//       interface that implements all the control logic.
 
-		static DAQState &getState();
+		friend ostream &operator<<(ostream &out, const DAQState &state);
+		friend istream &operator>>(istream &in ,       DAQState &state);
+
+		static DAQState getState();
 
 	private:
 
+		unsigned int commitNumber = 0;
+
+		static DAQState masterState;
+
+		static mutex stateLock;
+
 		DAQState();
 
-		mutex stateLock;
+		bool isOutdated();
 
 	};
 
+	DAQState DAQState::masterState;
+
+	mutex DAQState::stateLock;
+
 	DAQState::DAQState() {}
 
-	DAQState &DAQState::getState() {
+	bool DAQState::commit(bool force = false) {
 
-		// TODO: Thread safety? Do we need to protect this declaration with a
-		//       mutex?
-		static DAQState state; 
+		stateLock.lock();
+
+		if(!force) {
+
+			if(isOutdated()) {
+
+				// TODO: Better to throw an exception here?
+
+				stateLock.unlock();
+				return false;
+
+			}
+
+		}
+
+		++commitNumber;
+		masterState = *this;
+
+		stateLock.unlock();
+
+		return true;
+
+	}
+
+	void DAQState::update() {
+
+		stateLock.lock();
+		*this = masterState;
+		stateLock.unlock();
+
+	}
+
+	DAQState DAQState::getState() {
+
+		stateLock.lock();
+		DAQState state = masterState;
+		stateLock.unlock();
 
 		return state;
 
 	}
 
-	void DAQState::lock() {
+	bool DAQState::isOutdated() {
 
-		stateLock.lock();
+		return commitNumber < masterState.commitNumber;
 
 	}
 
-	void DAQState::unlock() {
+	// TODO: Consider a more standard format, e.g. JSON
+	ostream &operator<<(ostream &out, const DAQState &state) {
 
-		stateLock.unlock();
+		out << "Data Source: "       << state.dataSource      << endl;
+		out << "Input Device Name: " << state.inputDevicename << endl;
+		out << "Input File Name: "   << state.inputFilename   << endl;
+
+		return out;
+
+	}
+
+	// NOTE: A templated JSON parser would be nice. It can store data
+	//       in a map tree structure.
+	//       Consider:
+	//       https://kishoreganesh.com/post/writing-a-json-parser-in-cplusplus/
+	// TODO: Add a 'serialize' function that turns the DAQState into a string
+	istream &operator>>(istream &in, DAQState &state) {
+
+		map<string, string> tokens;
+
+		string key;
+		while(getline(in, key, ':')) {
+
+			string value;
+			getline(in, value);
+
+			key   = trim(key  );
+			value = trim(value);
+
+			tokens[key] = value;
+
+		}
+
+		if(tokens["Data Source"] == "") {
+
+			state.dataSource = 0;
+
+		} else {
+
+			state.dataSource = stoi(tokens["Data Source"]);
+
+		}
+
+		state.inputDevicename = tokens["Input Device Name"];
+		state.inputFilename = tokens["Input File Name"];
+
+		return in;
+
+	}
+
+	string trim(const string &str) {
+
+		string result = str;
+
+		// Trim left whitespace
+		result.erase(result.begin(), find_if(result.begin(), result.end(), [](unsigned char c) {
+
+			return !isspace(c);
+
+		}));
+
+		// Trim right whitespace
+		result.erase(find_if(result.rbegin(), result.rend(), [](unsigned char c) {
+
+			return !isspace(c);
+
+		}).base(), result.end());
+
+		return result;
 
 	}
 

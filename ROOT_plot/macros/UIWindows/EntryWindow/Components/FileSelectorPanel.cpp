@@ -1,10 +1,17 @@
+/**
+ * @file FileSelectorPanel.cpp
+ *
+ * @brief TODO: Write
+ *
+ * @author Robert Myers
+ * Contact: romyers@umich.edu
+ */
 
 #pragma once
 
 using namespace std;
 
-
-class FileSelector : public TGHorizontalFrame {
+class FileSelector : public TGVerticalFrame {
 
     RQ_OBJECT("FileSelector");
 
@@ -18,66 +25,61 @@ public:
     void enable();
     void disable();
 
-    void setFilename(char *name);
+    string getFilename();
 
-    // SIGNALS
-    void Selected(char *name) {}
-
-    // OPERATIONS
-    void emitFilename(char *name); // *SIGNAL*
+    void setFilename(const string &name);
 
 private:
 
     // VIEW
 
+    ///////////////////////////////////////////////////////////////////////////
     TGLabel      *label        ;
-
-    TGTextButton *browserButton;
+    TGTextEntry  *entryField   ;
+    ///////////////////////////////////////////////////////////////////////////
 
 };
 
+string FileSelector::getFilename() {
+
+    return string(entryField->GetText());
+
+}
+
+void FileSelector::setFilename(const string &name) {
+
+    entryField->SetText(name.data(), false);
+
+}
+
 FileSelector::FileSelector(const TGWindow *p) 
-    : TGHorizontalFrame(p) {
+    : TGVerticalFrame(p) {
 
     label = new TGLabel(this, "Select Data File:");
-    AddFrame(label, new TGLayoutHints(kLHintsCenterY, 5, 5, 5, 5));
+    AddFrame(label, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
 
-    browserButton = new TGTextButton(this, "Select File");
-    AddFrame(browserButton, new TGLayoutHints(kLHintsCenterY, 5, 5, 5, 5));
+    entryField = new TGTextEntry(this);
+    AddFrame(entryField, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
 
 }
 
 FileSelector::~FileSelector() {
 
-    TGHorizontalFrame::~TGHorizontalFrame();
-
-}
-
-void FileSelector::emitFilename(char *name) {
-
-    Emit("Selected(char*)", name);
-
-}
-
-void FileSelector::setFilename(char *name) {
-
-    // TODO: Implement
-
-    emitFilename(name);
+    TGVerticalFrame::~TGVerticalFrame();
 
 }
 
 void FileSelector::enable() {
 
     label->Enable();
-    browserButton->SetEnabled(true);
+    entryField->SetEnabled(true);
 
 
 }
 
 void FileSelector::disable() {
 
-    browserButton->SetEnabled(false);
+    entryField->SetEnabled(false);
     label->Disable();
 
 }
