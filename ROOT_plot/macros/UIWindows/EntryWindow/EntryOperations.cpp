@@ -27,9 +27,15 @@
 #include "src/ProgramControl/Threads.cpp"
 #include "src/Geometry.cpp"
 
+// TEMP
+#include "macros/DataModel/DAQData.cpp"
+
 using namespace std;
 using namespace Muon;
 using namespace State;
+
+// TEMP
+TRootEmbeddedCanvas *c;
 
 namespace Muon {
 namespace EntryOperations {
@@ -209,6 +215,19 @@ namespace EntryOperations {
 
 		state.tempState.runStarted = true;
 		state.commit(); // NOTE: This shouldn't fail
+
+		// TEMP
+		// Quick prototyping
+		TGMainFrame *histFrame = new TGMainFrame(gClient->GetRoot(), 500, 500);
+
+		c = new TRootEmbeddedCanvas("Histograms", histFrame, 450, 450);
+		histFrame->AddFrame(c, new TGLayoutHints(kLHintsCenterX));
+
+		// Set up the main window now that it has all its components
+        histFrame->SetWindowName("Histograms");
+        histFrame->MapSubwindows();
+        histFrame->Resize(histFrame->GetDefaultSize());
+        histFrame->MapWindow();
 
 	}
 
