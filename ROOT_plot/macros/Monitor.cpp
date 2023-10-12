@@ -120,16 +120,21 @@ void Monitor::refresh() {
 
 	for(Event &e : eventBuffer) {
 
-		processEvent(e);
+		// Condition ignores empty events
+		if(e.Trailer().HitCount() != 0) {
 
-		DAQData &data = DAQData::getInstance();
+			processEvent(e);
 
-		data.lock();
-		data.processedEvents.push_back(e);
-		data.plots.binEvent(e);
-		data.unlock();
+			DAQData &data = DAQData::getInstance();
 
-		// TODO: Display the event
+			data.lock();
+			data.processedEvents.push_back(e);
+			data.plots.binEvent(e);
+			data.unlock();
+
+			// TODO: Display the event
+
+		}
 
 	}
 

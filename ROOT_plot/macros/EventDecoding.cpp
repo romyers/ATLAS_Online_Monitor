@@ -124,10 +124,6 @@ void validateEventWarnings(const Event &e) {
 
 void processEvent(Event &e) {
 
-	// Ignore empty events
-	// TODO: Should empty events go on the event buffer?
-	if(e.Trailer().HitCount() == 0) return;
-
 	DoHitFinding(&e, *TimeCorrection::getInstance(), 0, 0);
 	// TODO: No hit clustering?
 
