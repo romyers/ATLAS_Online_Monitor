@@ -1,14 +1,15 @@
 /**
  * @file GUIMainFrame.cpp
  *
- * @brief Extension of TGMainFrame that closes the entire application when the
- * UI is closed.
+ * @brief Extension of TGMainFrame that sets the terminator flag when closed.
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu
  */
 
 #pragma once
+
+#include "src/ProgramControl/Terminator.cpp"
 
 using namespace std;
 
@@ -21,11 +22,9 @@ public:
     // Overriding this function allows us to control the behavior of the close button.
     virtual void CloseWindow() override {
 
-    	// TODO: Emit an event that we'll catch somewhere else to call the Terminator
-
         TGMainFrame::CloseWindow();
 
-        gApplication->Terminate(0);
+        Terminator::getInstance().terminate();
 
     }
 

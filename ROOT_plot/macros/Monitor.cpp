@@ -134,6 +134,9 @@ void Monitor::refresh() {
 
 	eventBuffer.clear();
 
+	// NOTE: processedEvents will maintain a record of each event received
+	//       by the monitor
+
 }
 
 bool isEvent(const vector<Signal> &signals) {

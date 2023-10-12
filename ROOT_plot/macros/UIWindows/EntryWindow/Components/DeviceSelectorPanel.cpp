@@ -55,6 +55,7 @@ private:
 string DeviceSelector::getDeviceName() {
 
     if(!dropdown->GetSelectedEntry()) return "";
+    if(dropdown->GetSelected() == 0) return "";
 
     return string(dropdown->GetSelectedEntry()->GetTitle());
 
@@ -75,9 +76,10 @@ void DeviceSelector::setDeviceName(char *name) {
     if(!entryID) {
 
         // We can handle this quietly. If user selects a nonexistent device,
-        // we've done something very wrong. But it might happen on settings
-        // state load if a previously used device has been disconnected. In 
-        // that case, we really just want to clear the default setting.
+        // we've done something very wrong. But the program might try it
+        // on settings state load if a previously used device has been 
+        // disconnected. In that case, we really just want to clear the default
+        // setting.
         dropdown->Select(0);
         return;
 
@@ -91,11 +93,11 @@ DeviceSelector::DeviceSelector(const TGWindow *p)
     : TGVerticalFrame(p), initialized(false) {
 
     label = new TGLabel(this, "Select Device:");
-    AddFrame(label, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
+    AddFrame(label, new TGLayoutHints(kLHintsLeft));
 
 
     dropdown = new TGComboBox(this);
-    AddFrame(dropdown, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
+    AddFrame(dropdown, new TGLayoutHints(kLHintsLeft));
 
     dropdown->Resize(150, 20);
 

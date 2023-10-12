@@ -56,8 +56,8 @@ private:
 
     TGButtonGroup *commitPanel;
 
-        TGTextButton *revertButton;
         TGTextButton *applyButton;
+        TGTextButton *revertButton;
     ///////////////////////////////////////////////////////////////////////////
 
     // TODO: Add a flag determining whether this has unsaved changes
@@ -80,10 +80,10 @@ DataSourcePanel::DataSourcePanel(const TGWindow *p)
     AddFrame(sourceTypePanel, new TGLayoutHints(kLHintsLeft, 10, 10, 10, 10));
 
         dataSourceLabel = new TGLabel(sourceTypePanel, "Data Source:");
-        sourceTypePanel->AddFrame(dataSourceLabel, new TGLayoutHints(kLHintsLeft, 0, 0, 0, 0));
+        sourceTypePanel->AddFrame(dataSourceLabel, new TGLayoutHints(kLHintsLeft));
 
         menu = new TGButtonGroup(sourceTypePanel, "", kVerticalFrame);
-        sourceTypePanel->AddFrame(menu, new TGLayoutHints(kLHintsCenterX, 0, 0, 0, 0));
+        sourceTypePanel->AddFrame(menu, new TGLayoutHints(kLHintsCenterX));
 
             fileButton   = new TGRadioButton(menu, "DAT File");
             menu->AddFrame(fileButton, new TGLayoutHints(kLHintsLeft));
@@ -101,10 +101,13 @@ DataSourcePanel::DataSourcePanel(const TGWindow *p)
 
 
     commitPanel = new TGButtonGroup(this, "", kHorizontalFrame);
-    AddFrame(commitPanel, new TGLayoutHints(kLHintsRight, 0, 0, 0, 0));
+    AddFrame(commitPanel, new TGLayoutHints(kLHintsRight));
+
+        applyButton  = new TGTextButton(commitPanel, "Apply Changes" );
+        commitPanel->AddFrame(applyButton, new TGLayoutHints(kLHintsRight));
 
         revertButton = new TGTextButton(commitPanel, "Undo Changes");
-        applyButton  = new TGTextButton(commitPanel, "Apply Changes" );
+        commitPanel->AddFrame(revertButton, new TGLayoutHints(kLHintsRight));
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -162,17 +165,17 @@ void DataSourcePanel::revertSettings() {
     State::DAQState state = State::DAQState::getState();
 
     char buffer[256];
-    strcpy(buffer, state.inputDevicename.data());
+    strcpy(buffer, state.persistentState.inputDevicename.data());
     deviceSelector->setDeviceName(buffer);
 
-    fileSelector->setFilename(state.inputFilename);
+    fileSelector->setFilename(state.persistentState.inputFilename);
 
-    if(state.dataSource == State::DAT_FILE_SOURCE) {
+    if(state.persistentState.dataSource == State::DAT_FILE_SOURCE) {
 
         fileButton->Clicked();
         fileButton->SetState(kButtonDown);
 
-    } else if(state.dataSource == State::NETWORK_DEVICE_SOURCE) {
+    } else if(state.persistentState.dataSource == State::NETWORK_DEVICE_SOURCE) {
 
         deviceButton->Clicked();
         deviceButton->SetState(kButtonDown);
@@ -196,16 +199,16 @@ void DataSourcePanel::commitSettings() {
 
     // TODO: Validation -- e.g. network device must exist
 
-    state.inputFilename = fileSelector->getFilename();
-    state.inputDevicename = deviceSelector->getDeviceName();
+    state.persistentState.inputFilename = fileSelector->getFilename();
+    state.persistentState.inputDevicename = deviceSelector->getDeviceName();
 
     if(fileButton->GetState() == kButtonDown) {
 
-        state.dataSource = State::DAT_FILE_SOURCE;
+        state.persistentState.dataSource = State::DAT_FILE_SOURCE;
 
     } else if(deviceButton->GetState() == kButtonDown) {
 
-        state.dataSource = State::NETWORK_DEVICE_SOURCE;
+        state.persistentState.dataSource = State::NETWORK_DEVICE_SOURCE;
 
     } else {
 

@@ -5,6 +5,11 @@
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu
+ * 
+ * To add new temporary state, simply add a member to the TemporaryState
+ * struct. To add new persistent state, add a member to the PersistantState 
+ * struct, then update DAQState::readPersistentState() and 
+ * DAQState::writePersistentState with readers and writers for the new member.
  */
 
 #pragma once
@@ -31,25 +36,33 @@ namespace State {
 	const int DAT_FILE_SOURCE       = 1;
 	const int NETWORK_DEVICE_SOURCE = 2;
 
+	struct PersistentState {
+
+		int dataSource         = NETWORK_DEVICE_SOURCE;
+
+		string inputFilename   = ""                   ;
+		string inputDevicename = ""                   ;
+
+	};
+
+	struct TemporaryState {
+
+
+
+	};
+
 	class DAQState {
 
 	public:
 
-		int    dataSource      = NETWORK_DEVICE_SOURCE;
-
-		string inputFilename   = "";
-		string inputDevicename = "";
+		PersistentState persistentState;
+		TemporaryState  tempState      ;
 
 		bool commit(bool force = false);
 		void update(); // Sets this state to match the current committed state
 
-		// TODO: Semantically, it should be clear that we're only printing 
-		//       persistent state data. Perhaps we have separate classes for
-		//       persistent and nonpersistent data united through a common
-		//       interface that implements all the control logic.
-
-		friend ostream &operator<<(ostream &out, const DAQState &state);
-		friend istream &operator>>(istream &in ,       DAQState &state);
+		bool readPersistentState (istream &in );
+		void writePersistentState(ostream &out);
 
 		static DAQState getState();
 
@@ -66,6 +79,48 @@ namespace State {
 		bool isOutdated();
 
 	};
+
+	void DAQState::writePersistentState(ostream &out) {
+
+		out << "Data Source: "       << persistentState.dataSource      << endl;
+		out << "Input Device Name: " << persistentState.inputDevicename << endl;
+		out << "Input File Name: "   << persistentState.inputFilename   << endl;
+
+	}
+
+	bool DAQState::readPersistentState(istream &in) {
+
+		map<string, string> tokens;
+
+		string key;
+		while(getline(in, key, ':')) {
+
+			string value;
+			getline(in, value);
+
+			key   = trim(key  );
+			value = trim(value);
+
+			tokens[key] = value;
+
+		}
+
+		if(tokens["Data Source"] == "") {
+
+			persistentState.dataSource = 0;
+
+		} else {
+
+			persistentState.dataSource = stoi(tokens["Data Source"]);
+
+		}
+
+		persistentState.inputDevicename = tokens["Input Device Name"];
+		persistentState.inputFilename   = tokens["Input File Name"  ];
+
+		return true;
+
+	}
 
 	DAQState DAQState::masterState;
 
@@ -120,56 +175,6 @@ namespace State {
 	bool DAQState::isOutdated() {
 
 		return commitNumber < masterState.commitNumber;
-
-	}
-
-	// TODO: Consider a more standard format, e.g. JSON
-	ostream &operator<<(ostream &out, const DAQState &state) {
-
-		out << "Data Source: "       << state.dataSource      << endl;
-		out << "Input Device Name: " << state.inputDevicename << endl;
-		out << "Input File Name: "   << state.inputFilename   << endl;
-
-		return out;
-
-	}
-
-	// NOTE: A templated JSON parser would be nice. It can store data
-	//       in a map tree structure.
-	//       Consider:
-	//       https://kishoreganesh.com/post/writing-a-json-parser-in-cplusplus/
-	// TODO: Add a 'serialize' function that turns the DAQState into a string
-	istream &operator>>(istream &in, DAQState &state) {
-
-		map<string, string> tokens;
-
-		string key;
-		while(getline(in, key, ':')) {
-
-			string value;
-			getline(in, value);
-
-			key   = trim(key  );
-			value = trim(value);
-
-			tokens[key] = value;
-
-		}
-
-		if(tokens["Data Source"] == "") {
-
-			state.dataSource = 0;
-
-		} else {
-
-			state.dataSource = stoi(tokens["Data Source"]);
-
-		}
-
-		state.inputDevicename = tokens["Input Device Name"];
-		state.inputFilename = tokens["Input File Name"];
-
-		return in;
 
 	}
 

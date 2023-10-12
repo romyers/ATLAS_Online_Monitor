@@ -11,6 +11,10 @@
 
 #include "macros/DAQState.cpp"
 
+#include "macros/UIFramework/UIException.cpp"
+
+#include "macros/UIWindows/LogWindow/LogOperations.cpp"
+
 #include "src/ProgramControl/Terminator.cpp"
 
 #include <fstream>
@@ -28,25 +32,42 @@ namespace EntryOperations {
 
 	void startRun() {
 
+
 		State::DAQState state = State::DAQState::getState();
 
-		cout << "Ethernet device: " << state.inputDevicename << endl;
-		cout << "Filename: " << state.inputFilename << endl;
+		if(state.persistentState.dataSource == State::DAT_FILE_SOURCE) {
 
-		if(state.dataSource == State::DAT_FILE_SOURCE) {
+			if(state.persistentState.inputFilename == "") {
+
+				throw UIException("Please select a DAT file.");
+
+				return;
+
+			}
 
 			cout << "File source selected" << endl;
 
-		} else if (state.dataSource == State::NETWORK_DEVICE_SOURCE) {
+		} else if (state.persistentState.dataSource == State::NETWORK_DEVICE_SOURCE) {
+
+			if(state.persistentState.inputDevicename == "") {
+
+				throw UIException("Please select a network device.");
+
+				return;
+
+			}
 
 			cout << "Network source selected" << endl;
 
 		}
 
+		cout << "Ethernet device: " << state.persistentState.inputDevicename << endl;
+		cout << "Filename: " << state.persistentState.inputFilename << endl;
+
 		cout << endl << "ERROR: NOT YET IMPLEMENTED" << endl;
 		cout << "\tTo start a data run, try running testDecode.sh instead" << endl;
 
-		cout << state << endl;
+		state.writePersistentState(cout);
 
 	}
 
@@ -83,16 +104,21 @@ namespace EntryOperations {
 
 		State::DAQState state = State::DAQState::getState();
 
-		stateSource >> state;
+		if(!state.readPersistentState(stateSource)) {
+
+			stateSource.close();
+			return false;
+
+		}
 
 		if(!state.commit()) {
 
+			stateSource.close();
 			return false;
 
 		}
 
 		stateSource.close();
-
 		return true;
 
 	}
@@ -109,7 +135,7 @@ namespace EntryOperations {
 
 		State::DAQState state = State::DAQState::getState();
 
-		stateDest << state;
+		state.writePersistentState(stateDest);
 
 		stateDest.close();
 

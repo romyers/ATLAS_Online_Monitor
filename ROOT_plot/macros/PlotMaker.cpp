@@ -264,24 +264,31 @@ void PlotMaker::binEvent(const Event &e) {
 	// TODO: Go through DAQ.cpp and find everything we need to include
 	// TODO: Make sure all plots print
 	// TODO: Clean up and redesign UI
+	// TODO: Split up binning and drawing so we can delay draw until we're done
+	//       binning
 
 	for(const Hit &hit : e.Hits()) {
 
 		plots.p_tdc_tdc_time_corrected[hit.TDC()]->Fill(hit.CorrTime());
-		plots.p_tdc_adc_time[hit.TDC()]->Fill(hit.ADCTime());
+		plots.p_tdc_adc_time          [hit.TDC()]->Fill(hit.ADCTime ());
 
-		plots.p_tdc_time_corrected[hit.TDC()][hit.Channel()]->Fill(hit.CorrTime());
+		// TODO: We can wait to make these until the end
+		plots.p_tdc_time_corrected[hit.TDC()][hit.Channel()]->Fill(hit.CorrTime ());
 		plots.p_tdc_time          [hit.TDC()][hit.Channel()]->Fill(hit.DriftTime());
-		plots.p_adc_time          [hit.TDC()][hit.Channel()]->Fill(hit.ADCTime());
+		plots.p_adc_time          [hit.TDC()][hit.Channel()]->Fill(hit.ADCTime  ());
 
 		int hitL, hitC;
 		Geometry::getInstance().GetHitLayerColumn(hit.TDC(), hit.Channel(), &hitL, &hitC);
 
 		plots.hitByLC->Fill(hitC, hitL);
 		if(hit.CorrTime() < 0 || hit.CorrTime() > 400) { // TODO: Magic numbers
+
 			plots.badHitByLC->Fill(hitC, hitL);
+		
 		} else {
+		
 			plots.goodHitByLC->Fill(hitC, hitL);
+		
 		}
 		plots.p_hits_distribution[hitL]->Fill(hitC);
 

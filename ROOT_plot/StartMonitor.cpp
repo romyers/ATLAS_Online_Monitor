@@ -304,12 +304,7 @@ void StartMonitor(const string &filename = "") {
 
 	thread UIThread([]() {
 
-		// TODO: Proper way to terminate the GUI? It hangs sometimes if I
-		//       ctrl+c out. This is behavior we want to avoid.
-		//         -- Now ctrl+c will simply not close the GUI thread, and the
-		//            user will have to close it manually. Still not quite what
-		//            I want.
-		while(true) {
+		while(!Terminator::getInstance().isTerminated()) {
 
 			UILock.lock();
 			gSystem->ProcessEvents();
@@ -387,5 +382,7 @@ void StartMonitor(const string &filename = "") {
 	dataStream.stream = nullptr;
 
 	cout << "Shut down complete!" << endl;
+
+	gApplication->Terminate(0);
 
 }

@@ -56,10 +56,10 @@ FileSelector::FileSelector(const TGWindow *p)
     : TGVerticalFrame(p) {
 
     label = new TGLabel(this, "Select Data File:");
-    AddFrame(label, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
+    AddFrame(label, new TGLayoutHints(kLHintsLeft));
 
     entryField = new TGTextEntry(this);
-    AddFrame(entryField, new TGLayoutHints(kLHintsLeft, 5, 5, 5, 5));
+    AddFrame(entryField, new TGLayoutHints(kLHintsLeft));
 
 }
 

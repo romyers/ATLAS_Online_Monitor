@@ -1,5 +1,5 @@
 /**
- * @file SiglHandlers.cpp
+ * @file SigHandlers.cpp
  *
  * @brief Handlers for system signals.
  *
@@ -19,15 +19,13 @@ void setTerminationHandlers(void (*handler)(int));
 
 void forceExit(int signal) {
 
-    cout << endl << "Forced shutdown." << endl;
+    gApplication->Terminate(0);
 
-    exit(0);
+    exit(0); // In case Terminate on gApplication doesn't do the job.
 
 }
 
 void flagForTermination(int signal) {
-
-    cout << endl << "Beginning shutdown." << endl;
 
     Terminator::getInstance().terminate();
 
