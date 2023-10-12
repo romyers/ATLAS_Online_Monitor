@@ -41,6 +41,8 @@ namespace EntryOperations {
 
 		Terminator::getInstance().terminate();
 
+		// TODO: Close UI windows
+
 	}
 
 	bool directoryExists(const string &path) {
@@ -91,6 +93,8 @@ namespace EntryOperations {
 
 	}
 
+	// TODO: startRun should be coupled with monitor functionality, not the
+	//       entry view. Move the logic.
 	void startRun() {
 
 		DAQState state = DAQState::getState();

@@ -60,9 +60,9 @@ public:
 
 	void binEvent(const Event &e);
 
-private:
-
 	Plots plots;
+
+private:
 
 };
 

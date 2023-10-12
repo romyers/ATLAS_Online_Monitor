@@ -105,6 +105,15 @@ void StartDAQ() {
 
             }
 
+            // TODO: Make sure all windows are closed without double deletion.
+            //       Otherwise we will find that the GUI will stay open until
+            //       every thread terminates.
+            //         -- Really though we want the data capture thread to
+            //            terminate immediately
+            //         -- A window manager might be useful here. ExitAll
+            //            can delete all the windows, and then we can just
+            //            rewire the normal CloseWindow signal
+
         })
 
     );
@@ -118,6 +127,7 @@ void StartDAQ() {
     ProgramFlow::joinAllThreads();
     
     // Save DAQState to file
+    //   -- TODO: Consider saving DAQState on startRun too
     state.update();
     state.save(STATE_STORAGE);
 
