@@ -57,6 +57,8 @@ void EntryView::makeConnections() {
     exitButton ->Connect("Clicked()", "EntryOperations", nullptr, "exitAll()");
     startButton->Connect("Clicked()", "EntryOperations", nullptr, "startRun()");
 
+    // TODO: Disable the settings menu and start button when a run is started
+
 }
 
 EntryView::EntryView(

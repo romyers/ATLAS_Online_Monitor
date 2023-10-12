@@ -93,8 +93,9 @@ void StartDAQ() {
 
                     // TODO: More sophisticated error handling. We should
                     //       be logging these errors too.
+                    // TODO: Multiple types of error titles
                     Error::popupAlert(
-                        gClient->GetRoot(), "UI Error", e.what()
+                        gClient->GetRoot(), "Error", e.what()
                     );
 
                 }

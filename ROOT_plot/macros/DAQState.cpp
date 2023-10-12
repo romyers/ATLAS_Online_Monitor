@@ -42,7 +42,7 @@ namespace State {
 
 	struct TemporaryState {
 
-
+		bool runStarted = false;
 
 	};
 

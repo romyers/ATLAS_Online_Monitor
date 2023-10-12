@@ -231,6 +231,8 @@ int PCapSessionHandler::bufferPackets() {
 	//       of condition we can check and wait for explicitly at a higher
 	//       level
 	// FIXME: This doesn't work yet -- pselect ignores signals
+	//        Also, this will only ever catch SIGINT -- not termination from
+	//        the terminator
 	sigset_t signalSet;
 	sigemptyset(&signalSet);
 	sigaddset(&signalSet, SIGINT );
@@ -246,7 +248,13 @@ int PCapSessionHandler::bufferPackets() {
 
 	} else if(ret) {
 
-		// TODO: Consider fetching into a char[] and returning that
+		// Q: Why are we only processing one packet at a time? We might as
+		//    well be using pcap_next
+		// TODO: Once I have plotting hooked back up, see what happens if I
+		//       process all packets with -1 instead of 1.
+		// TODO: If we do this, we'll have to make sure we keep counting
+		//       all packets by retrieving the packet processed num from
+		//       pcap_dispatch (it's the return value unless in error state)
 		pcap_dispatch(
 			handler, 
 			1, 
