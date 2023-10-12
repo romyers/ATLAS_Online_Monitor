@@ -19,8 +19,8 @@
 #include "macros/SignalDecoding.cpp"
 #include "macros/EventDecoding.cpp"
 #include "macros/ErrorLogger.cpp"
-#include "macros/PlotMaker.cpp"
 #include "macros/LockableStream.cpp"
+#include "macros/DataModel/DAQData.cpp"
 
 #include "src/Signal.cpp"
 #include "src/Event.cpp"
@@ -50,11 +50,8 @@ private:
 
 	SignalReader reader;
 
-	vector<Signal> signalBuffer   ;
-	vector<Event > eventBuffer    ;
-	vector<Event > processedEvents;
-
-	PlotMaker plotter;
+	vector<Signal> signalBuffer;
+	vector<Event > eventBuffer ;
 
 };
 
@@ -124,9 +121,13 @@ void Monitor::refresh() {
 	for(Event &e : eventBuffer) {
 
 		processEvent(e);
-		processedEvents.push_back(e);
 
-		plotter.binEvent(e);
+		DAQData &data = DAQData::getInstance();
+
+		data.lock();
+		data.processedEvents.push_back(e);
+		data.plots.binEvent(e);
+		data.unlock();
 
 		// TODO: Display the event
 

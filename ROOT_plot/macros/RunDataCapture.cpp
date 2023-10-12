@@ -142,8 +142,6 @@ namespace DataCapture {
         cout << "Run finished!" << endl;
         cout << i << " packets recorded." << endl;
 
-        cout << "Suspended data capture." << endl; // TODO: mutex
-
     }
 
 }

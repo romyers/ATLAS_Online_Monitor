@@ -126,6 +126,8 @@ void StartDAQ() {
 
     // Wait for the threads to be done before terminating
     ProgramFlow::joinAllThreads();
+
+    cout << "Processed " << DAQData::getInstance().processedEvents.size() << " events." << endl;
     
     // Save DAQState to file
     //   -- TODO: Consider saving DAQState on startRun too
