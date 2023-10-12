@@ -27,11 +27,6 @@ namespace State {
 
 	string trim(const string &str);
 
-	// TODO: Operations on DAQState that a gui element can connect to.
-
-	// TODO: Split out a POD struct, and let the logic exist in a controller
-	//       for that struct
-
 	// DAQState::dataSource values
 	const int DAT_FILE_SOURCE       = 1;
 	const int NETWORK_DEVICE_SOURCE = 2;
@@ -58,8 +53,11 @@ namespace State {
 		PersistentState persistentState;
 		TemporaryState  tempState      ;
 
-		bool commit(bool force = false);
 		void update(); // Sets this state to match the current committed state
+		bool commit(bool force = false);
+
+		bool load(const string &filename);
+		bool save(const string &filename);
 
 		bool readPersistentState (istream &in );
 		void writePersistentState(ostream &out);
@@ -79,6 +77,49 @@ namespace State {
 		bool isOutdated();
 
 	};
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	bool DAQState::load(const string &filename) {
+
+		ifstream stateSource(filename);
+		if(!stateSource.is_open()) {
+
+			return false;
+
+		}
+
+		if(!readPersistentState(stateSource)) {
+
+			stateSource.close();
+			return false;
+
+		}
+
+		stateSource.close();
+		return true;
+
+	}
+
+	bool DAQState::save(const string &filename) {
+
+		ofstream stateDest(filename);
+		if(!stateDest.is_open()) {
+
+			return false;
+
+		}
+
+		writePersistentState(stateDest);
+
+		stateDest.close();
+
+		return true;
+
+	}
+
 
 	void DAQState::writePersistentState(ostream &out) {
 

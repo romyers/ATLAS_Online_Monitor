@@ -120,7 +120,6 @@ DataSourcePanel::DataSourcePanel(const TGWindow *p)
     applyButton ->Resize(50, 20);
 
     // DEFAULTS
-    // FIXME: fileSelector is not initially hidden.
     deviceButton->SetState(kButtonDown);
     deviceSelector->initialize();
     showDeviceSelector();

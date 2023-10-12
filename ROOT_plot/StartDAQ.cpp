@@ -20,13 +20,10 @@
 
 #include "monitorConfig.cpp"
 
-#include "macros/UIFramework/GUIMainFrame.cpp"
-
+#include "macros/DAQState.cpp"
+#include "macros/ErrorLogger.cpp"
+#include "macros/UIFramework/UIException.cpp"
 #include "macros/UIWindows/EntryWindow/EntryView.cpp"
-#include "macros/UIWindows/EntryWindow/EntryOperations.cpp"
-
-#include "macros/UIWindows/LogWindow/LogOperations.cpp"
-
 #include "macros/UIWindows/AlertBox/AlertOperations.cpp"
 
 #include "src/ProgramControl/Terminator.cpp"
@@ -39,41 +36,53 @@ using namespace Muon;
 // TODO: Look at this for using QT in root:
 //       https://root.cern/doc/v606/QtFileDialog_8C.html
 
-// TODO: This needs a better place to live
-
 const string STATE_STORAGE = "settings.txt";
 
 void StartDAQ() {
 
-    // TODO: Set up default settings and settings persistence
+    // TODO: We want a console logger class to replace cout too.
+    ErrorLogger::getInstance().setOutputStream(cerr);
+
+    // Read in DAQState from file
+    State::DAQState state = State::DAQState::getState();
+    state.load(STATE_STORAGE);
+    state.commit();
 
     // THIS MUST BE CALLED BEFORE STARTING ANY THREADS.
     // It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly terminate threads.
     setTerminationHandlers(flagForTermination);
 
-    EntryOperations::readState(STATE_STORAGE);
-
     ///////////////////////////////////////////////////////////////////////////
-    ////////////////////// START UI UPDATE THREAD /////////////////////////////
+    //////////////////////////// SET UP UI ////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
-    mutex UILock;
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(
 
         thread ([](){
 
-            GUIMainFrame *mainFrame = new GUIMainFrame(gClient->GetRoot());
+            // Create the main window
+            TGMainFrame *mainFrame = new TGMainFrame(gClient->GetRoot());
 
+            // Create the menu displayed on the main window
             EntryView *menu = new EntryView(mainFrame, 500, 350);
             mainFrame->AddFrame(menu, new TGLayoutHints(kLHintsCenterX));
 
+            // Set up the main window now that it has all its components
             mainFrame->SetWindowName("DAQ Manager");
             mainFrame->MapSubwindows();
             mainFrame->Resize(mainFrame->GetDefaultSize());
             mainFrame->MapWindow();
 
-            // TODO: Terminate this loop on exit conditions
+            // Wire up the main window's close button to the terminator
+            mainFrame->Connect(
+                "CloseWindow()", 
+                "EntryOperations", 
+                nullptr, 
+                "exitAll()"
+            );
+
+            // Run the UI update loop
             while(!Terminator::getInstance().isTerminated()) {
 
                 try {
@@ -82,28 +91,24 @@ void StartDAQ() {
 
                 } catch (UIException &e) {
 
-                    Error::popupAlert(gClient->GetRoot(), "UI Error", e.what());
+                    // TODO: More sophisticated error handling. We should
+                    //       be logging these errors too.
+                    Error::popupAlert(
+                        gClient->GetRoot(), "UI Error", e.what()
+                    );
 
                 }
 
-                this_thread::sleep_for(chrono::milliseconds((int)(1000 / GUI_REFRESH_RATE)));
+                this_thread::sleep_for(
+                    chrono::milliseconds((int)(1000 / GUI_REFRESH_RATE))
+                );
 
             }
-
-            mainFrame->Cleanup();
-
-            delete mainFrame;
-            mainFrame = nullptr;
 
         })
 
     );
-
     ProgramFlow::threadLock.unlock();
-
-    ///////////////////////////////////////////////////////////////////////////
-    /////////////////////// SET UP ENTRY UI WINDOW ////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
     ////////////////////////////// CLEANUP ////////////////////////////////////
@@ -112,7 +117,9 @@ void StartDAQ() {
     // Wait for the threads to be done before terminating
     ProgramFlow::joinAllThreads();
     
-    EntryOperations::saveState(STATE_STORAGE);
+    // Save DAQState to file
+    state.update();
+    state.save(STATE_STORAGE);
 
     cout << "Shutdown" << endl;
 

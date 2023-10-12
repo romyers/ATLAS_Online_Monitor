@@ -19,8 +19,6 @@ using namespace std;
 
 class DeviceSelector : public TGVerticalFrame {
 
-    RQ_OBJECT("DeviceSelector");
-
 public:
 
     DeviceSelector(const TGWindow *p);

@@ -20,20 +20,6 @@
 
 using namespace std;
 
-// TODO: Eventually I'll want to revamp this. Right now I'm in get 
-//       things working and clean up later mode
-// NOTE: EASY CLEANUP: Consolidate all the plots into an std::map. A lot of
-//       things become easier if we just iterate over it
-
-// TODO: Make a map of these
-TCanvas *adc_canvas = new TCanvas("c1", "ADC Plots",0,0,2160,750);
-TCanvas *tdc_canvas = new TCanvas("c2", "TDC Plots",0,750,2160,750);
-TCanvas *rate_canvas = new TCanvas("c3", "Hit Rate Plots",2160,0,1800,750);
-TCanvas *trigger_rate_canvas = new TCanvas("c4", "Trigger Board",1440,750,400,300);
-TCanvas *residual_canvas = new TCanvas("c5", "Residuals", 2100,900,400,300);
-TCanvas *EDCanvas = new TCanvas("c6", "Event Display", 2700, 900, 800, 800);
-TCanvas *eff_canvas = new TCanvas("c7", "Efficiency", 2300, 900, 400, 300);
-
 struct Plots {
 
 	Plots();
@@ -235,27 +221,6 @@ Plots::Plots() {
 
 PlotMaker::PlotMaker() {
 
-	UILock.lock();
-
-	// TODO: These divisions should be determined by histogram array sizes
-	adc_canvas->Divide(6, 2);
-	tdc_canvas->Divide(6, 2);
-	rate_canvas->Divide(6, 2);
-
-	for(int i = 0; i < 11; ++i) {
-
-		adc_canvas->cd(i + 1);
-		plots.p_tdc_adc_time[i]->Draw();
-		adc_canvas->Update();
-
-		tdc_canvas->cd(i + 1);
-		plots.p_tdc_tdc_time_corrected[i]->Draw();
-		tdc_canvas->Update();
-
-	}
-
-	UILock.unlock();
-
 }
 
 void PlotMaker::binEvent(const Event &e) {
@@ -293,18 +258,6 @@ void PlotMaker::binEvent(const Event &e) {
 		plots.p_hits_distribution[hitL]->Fill(hitC);
 
 		int panelIndex = hit.TDC() + 1;
-
-		UILock.lock();
-
-		adc_canvas->cd(panelIndex);
-		plots.p_tdc_adc_time[hit.TDC()]->Draw();
-		adc_canvas->Update();
-
-		tdc_canvas->cd(panelIndex);
-		plots.p_tdc_tdc_time_corrected[hit.TDC()]->Draw();
-		tdc_canvas->Update();
-
-		UILock.unlock();
 
 	}
 

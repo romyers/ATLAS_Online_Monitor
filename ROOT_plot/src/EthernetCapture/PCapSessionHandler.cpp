@@ -42,15 +42,16 @@ public:
 	PCapSessionHandler ();
 	~PCapSessionHandler();
 
-	void setCheckPackets  (bool            val   );
-	void initializeSession(PCapDevice     &device);
+	void setCheckPackets  (      bool        val       );
+	void initializeSession(      PCapDevice &device    );
+	void initializeSession(const string     &deviceName);
 
-	int  bufferPackets    (                      );
-	void writePackets     (LockableStream &out   );
-	void writePackets     (ostream        &out   );
-	void clearBuffer      (                      );
+	int  bufferPackets    (                            );
+	void writePackets     (LockableStream   &out       );
+	void writePackets     (ostream          &out       );
+	void clearBuffer      (                            );
 
-	bool isReady          (                      );
+	bool isReady          (                            );
 
 private:
 
@@ -87,18 +88,18 @@ void PCapSessionHandler::setCheckPackets(bool val) {
 
 }
 
-void PCapSessionHandler::initializeSession(PCapDevice &device) {
+void PCapSessionHandler::initializeSession(const string &deviceName) {
 
 	char errorBuffer[PCAP_ERRBUF_SIZE];
 
     // Arguments: device name, snap length, promiscuous mode, to_ms, error_buffer
-	handler = pcap_open_live(device.name(), 65536, 1, 10000, errorBuffer);
+	handler = pcap_open_live(deviceName.data(), 65536, 1, 10000, errorBuffer);
 	if(!handler) {
 
 		handler = nullptr;
 
 		throw NetworkDeviceException(
-			string("Could not open device ") + device.name() + " : " + errorBuffer
+			string("Could not open device ") + deviceName + " : " + errorBuffer
 		);
 
 	}
@@ -137,6 +138,14 @@ void PCapSessionHandler::initializeSession(PCapDevice &device) {
     // filter program for a pcap structure by a call to
     // pcap_setfilter(3PCAP).
 	pcap_freecode(&fcode);
+
+
+
+}
+
+void PCapSessionHandler::initializeSession(PCapDevice &device) {
+
+	initializeSession(device.name());
 
 }
 

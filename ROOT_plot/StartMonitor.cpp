@@ -41,25 +41,6 @@ using namespace std;
 ////////////////////////////// INTERFACE //////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO: Replace singletons with globals where it makes sense to do so
-
-// TODO: We will have to multithread; otherwise waiting for monitor refreshes
-//       blocks the UI.
-
-// FIXME: Ctrl+c only kills the main thread, and if we try to join the UIThread
-//        the terminal will block, forcing us to restart the terminal
-
-// TODO: Try to clean up the multithreading. Ideally all display logic, 
-//       including the threading, should be collocated so that we don't need
-//       the ugly global mutex. Then we can just call 'startDisplay' or 
-//       similar, which will build the UI and start the UI thread. It can
-//       also be responsible for pulling events from the monitor and binning
-//       them into histograms so that the monitor doesn't have to know about
-//       the binning and plotting.
-//         -- Also make sure anyone working with this in the future doesn't
-//            need to know how to multithread unless they're messing with the
-//            GUI framework itself.
-
 // TODO: Rethink the semantics of Monitor. We've made our labels as if it's a
 //       display element when really it does data decoding. It should be the
 //       UI element that does the 'refreshing', for example.
@@ -67,19 +48,9 @@ using namespace std;
 // TODO: Examine this for ROOT tips:
 //       https://mightynotes.wordpress.com/2020/02/15/cern-root-tips-and-tricks/
 
-// TODO: Can I get rid of the multithreading if I put a call to processEvents 
-//       in the right spot?
-
 // TODO: Call getpid() for the run? Do we need to give it a pid?
 
 // TODO: Config GUI for options like whether to show lost packets
-
-// TODO: Threadsafe stream wrapper?
-
-// TODO: Cout calls and thread safety
-
-// TODO: Intercept quit root to close down nicely
-// TODO: Once we ctrl+c once, we should be able to force kill by ctrl+c again
 
 // TODO: Split out all cout calls to a console logger object. Easy to make it
 //       threadsafe or switch the stream we're logging to
@@ -365,7 +336,12 @@ void StartMonitor(const string &filename = "") {
 
 	}
 
+	cout << "Suspended data decoding." << endl; // TODO: mutex
+
+	dataCaptureThread.join();
+
 	// TODO: Again, I would rather avoid caring about the type of stream.
+	// TODO: We don't really need to lock here
 	dataStream.lock();
 	fstream *temp = dynamic_cast<fstream*>(dataStream.stream);
 	if(temp) {
@@ -373,13 +349,10 @@ void StartMonitor(const string &filename = "") {
 	}
 	dataStream.unlock();
 
-	cout << "Suspended data decoding." << endl; // TODO: mutex
-
-	dataCaptureThread.join();
-	UIThread.join();
-
 	if(dataStream.stream) delete dataStream.stream;
 	dataStream.stream = nullptr;
+
+	UIThread.join();
 
 	cout << "Shut down complete!" << endl;
 

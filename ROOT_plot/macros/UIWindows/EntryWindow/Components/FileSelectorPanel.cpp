@@ -13,8 +13,6 @@ using namespace std;
 
 class FileSelector : public TGVerticalFrame {
 
-    RQ_OBJECT("FileSelector");
-
 public:
 
     FileSelector(const TGWindow *p);
