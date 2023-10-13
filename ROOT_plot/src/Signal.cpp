@@ -26,12 +26,12 @@ namespace Muon {
 
   struct TDCErrorData {
 
-    unsigned char  TDC         = 0;
-    unsigned char  LSBChannel1 = 0;
-    unsigned char  LSBChannel2 = 0;
-    unsigned char  LSBFlag1    = 0;
-    unsigned char  LSBFlag2    = 0;
-    unsigned char  K28_6_flag  = 0;
+    uint8_t  TDC         = 0;
+    uint8_t  LSBChannel1 = 0;
+    uint8_t  LSBChannel2 = 0;
+    uint8_t  LSBFlag1    = 0;
+    uint8_t  LSBFlag2    = 0;
+    uint8_t  K28_6_flag  = 0;
 
   };
 
@@ -101,19 +101,19 @@ namespace Muon {
     Signal();
     Signal(uint64_t word);
 
-    unsigned char  Type           () const;
-    unsigned short HeaderEID      () const;
-    unsigned short TrailerEID     () const;
-    unsigned int   TriggerLEdge   () const;
-    unsigned char  CSMID          () const;
-    unsigned char  TDC            () const;
-    unsigned char  Channel        () const;
-    unsigned char  Mode           () const;    
-    unsigned int   LEdge          () const;  
-    unsigned char  Width          () const;
-    unsigned short HitCount       () const; 
-    unsigned short TDCHeaderEID   () const;   
-    unsigned char  TDCErrorIdent  () const;
+    uint8_t  Type           () const;
+    uint16_t HeaderEID      () const;
+    uint16_t TrailerEID     () const;
+    uint32_t TriggerLEdge   () const;
+    uint8_t  CSMID          () const;
+    uint8_t  TDC            () const;
+    uint8_t  Channel        () const;
+    uint8_t  Mode           () const;    
+    uint32_t LEdge          () const;  
+    uint8_t  Width          () const;
+    uint16_t HitCount       () const; 
+    uint16_t TDCHeaderEID   () const;   
+    uint8_t  TDCErrorIdent  () const;
 
     bool isEventHeader () const;
     bool isEventTrailer() const;
@@ -123,30 +123,30 @@ namespace Muon {
 
     TDCErrorData getTDCError() const;
 
-    static const unsigned char HEADER           = 0b1010    ; // bits 37-39
-    static const unsigned char TRAILER          = 0b1100    ; // bits 37-39
+    static const uint8_t HEADER           = 0b1010    ; // bits 37-39
+    static const uint8_t TRAILER          = 0b1100    ; // bits 37-39
 
-    static const unsigned char TDC_ERROR_CHNL   = 0b11101   ; // bits 27-31
-    static const unsigned char TDC_HEADER_CHNL  = 0b11111   ; // bits 27-31
-    static const unsigned char TDC_TRAILER_CHNL = 0b11110   ; // bits 27-31
-    static const unsigned char TDC_ERROR_IDENT  = 0b11101000; // bits 24-31
+    static const uint8_t TDC_ERROR_CHNL   = 0b11101   ; // bits 27-31
+    static const uint8_t TDC_HEADER_CHNL  = 0b11111   ; // bits 27-31
+    static const uint8_t TDC_TRAILER_CHNL = 0b11110   ; // bits 27-31
+    static const uint8_t TDC_ERROR_IDENT  = 0b11101000; // bits 24-31
 
-    static const unsigned char WORD_SIZE        = 5         ; // bytes
+    static const uint8_t WORD_SIZE        = 5         ; // bytes
 
   private:
-    unsigned char  type        ;
-    unsigned short eventid     ;
-    unsigned short eventid_t   ;
-    unsigned int   triggerledge;
-    unsigned char  csmid       ;
-    unsigned char  tdcid       ;
-    unsigned char  chnlid      ;
-    unsigned char  mode        ;
-    unsigned int   ledge       ;
-    unsigned char  width       ;
-    unsigned short hitcount    ;
-    unsigned short tdc_eventid ;
-    unsigned char  tdc_errorid ;
+    uint8_t  type        ;
+    uint16_t eventid     ;
+    uint16_t eventid_t   ;
+    uint32_t triggerledge;
+    uint8_t  csmid       ;
+    uint8_t  tdcid       ;
+    uint8_t  chnlid      ;
+    uint8_t  mode        ;
+    uint32_t ledge       ;
+    uint8_t  width       ;
+    uint16_t hitcount    ;
+    uint16_t tdc_eventid ;
+    uint8_t  tdc_errorid ;
 
     TDCErrorData errorData;
 
@@ -186,19 +186,19 @@ namespace Muon {
     _tdc_eventid  = word >> 12;
     _tdc_errorid  = word >> 24;
 
-    type          = static_cast<unsigned char >((_type        .to_ulong()));
-    eventid       = static_cast<unsigned short>((_eventid     .to_ulong()));
-    eventid_t     = static_cast<unsigned short>((_eventid_t   .to_ulong()));
-    triggerledge  = static_cast<unsigned int  >((_triggerledge.to_ulong()));
-    csmid         = static_cast<unsigned char >((_csmid       .to_ulong()));
-    tdcid         = static_cast<unsigned char >((_tdcid       .to_ulong()));
-    chnlid        = static_cast<unsigned char >((_chnlid      .to_ulong()));
-    mode          = static_cast<unsigned char >((_mode        .to_ulong()));
-    ledge         = static_cast<unsigned int  >((_ledge       .to_ulong()));
-    width         = static_cast<unsigned char >((_width       .to_ulong()));
-    hitcount      = static_cast<unsigned short>((_hitcount    .to_ulong()));
-    tdc_eventid   = static_cast<unsigned short>((_tdc_eventid .to_ulong()));
-    tdc_errorid   = static_cast<unsigned char >((_tdc_errorid .to_ulong()));
+    type          = static_cast<uint8_t >((_type        .to_ulong()));
+    eventid       = static_cast<uint16_t>((_eventid     .to_ulong()));
+    eventid_t     = static_cast<uint16_t>((_eventid_t   .to_ulong()));
+    triggerledge  = static_cast<uint32_t>((_triggerledge.to_ulong()));
+    csmid         = static_cast<uint8_t >((_csmid       .to_ulong()));
+    tdcid         = static_cast<uint8_t >((_tdcid       .to_ulong()));
+    chnlid        = static_cast<uint8_t >((_chnlid      .to_ulong()));
+    mode          = static_cast<uint8_t >((_mode        .to_ulong()));
+    ledge         = static_cast<uint32_t>((_ledge       .to_ulong()));
+    width         = static_cast<uint8_t >((_width       .to_ulong()));
+    hitcount      = static_cast<uint16_t>((_hitcount    .to_ulong()));
+    tdc_eventid   = static_cast<uint16_t>((_tdc_eventid .to_ulong()));
+    tdc_errorid   = static_cast<uint8_t >((_tdc_errorid .to_ulong()));
 
     if(isTDCError()) {
 
@@ -210,29 +210,29 @@ namespace Muon {
 
       errorData.TDC         = TDC();
 
-      errorData.K28_6_flag  = static_cast<unsigned char>(K28_6_flag .to_ulong());
-      errorData.LSBFlag2    = static_cast<unsigned char>(LSBFlag2   .to_ulong());
-      errorData.LSBChannel2 = static_cast<unsigned char>(LSBChannel2.to_ulong());
-      errorData.LSBFlag1    = static_cast<unsigned char>(LSBFlag1   .to_ulong());
-      errorData.LSBChannel1 = static_cast<unsigned char>(LSBChannel1.to_ulong());
+      errorData.K28_6_flag  = static_cast<uint8_t>(K28_6_flag .to_ulong());
+      errorData.LSBFlag2    = static_cast<uint8_t>(LSBFlag2   .to_ulong());
+      errorData.LSBChannel2 = static_cast<uint8_t>(LSBChannel2.to_ulong());
+      errorData.LSBFlag1    = static_cast<uint8_t>(LSBFlag1   .to_ulong());
+      errorData.LSBChannel1 = static_cast<uint8_t>(LSBChannel1.to_ulong());
 
     }
 
   }
 
-  unsigned char  Signal:: Type          () const { return type                               ; }
-  unsigned short Signal:: HeaderEID     () const { return eventid                            ; }
-  unsigned short Signal:: TrailerEID    () const { return eventid_t                          ; }
-  unsigned int   Signal:: TriggerLEdge  () const { return triggerledge                       ; }
-  unsigned char  Signal:: CSMID         () const { return csmid                              ; }
-  unsigned char  Signal:: TDC           () const { return tdcid                              ; }
-  unsigned char  Signal:: Channel       () const { return chnlid                             ; }
-  unsigned char  Signal:: Mode          () const { return mode                               ; }
-  unsigned int   Signal:: LEdge         () const { return ledge                              ; }
-  unsigned char  Signal:: Width         () const { return width                              ; }
-  unsigned short Signal:: HitCount      () const { return hitcount                           ; }
-  unsigned short Signal:: TDCHeaderEID  () const { return tdc_eventid                        ; }
-  unsigned char  Signal:: TDCErrorIdent () const { return tdc_errorid                        ; }
+  uint8_t  Signal:: Type          () const { return type                               ; }
+  uint16_t Signal:: HeaderEID     () const { return eventid                            ; }
+  uint16_t Signal:: TrailerEID    () const { return eventid_t                          ; }
+  uint32_t Signal:: TriggerLEdge  () const { return triggerledge                       ; }
+  uint8_t  Signal:: CSMID         () const { return csmid                              ; }
+  uint8_t  Signal:: TDC           () const { return tdcid                              ; }
+  uint8_t  Signal:: Channel       () const { return chnlid                             ; }
+  uint8_t  Signal:: Mode          () const { return mode                               ; }
+  uint32_t Signal:: LEdge         () const { return ledge                              ; }
+  uint8_t  Signal:: Width         () const { return width                              ; }
+  uint16_t Signal:: HitCount      () const { return hitcount                           ; }
+  uint16_t Signal:: TDCHeaderEID  () const { return tdc_eventid                        ; }
+  uint8_t  Signal:: TDCErrorIdent () const { return tdc_errorid                        ; }
 
   bool           Signal:: isEventHeader () const { return Type         () == HEADER          ; }
   bool           Signal:: isEventTrailer() const { return Type         () == TRAILER         ; }
