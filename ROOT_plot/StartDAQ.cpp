@@ -23,8 +23,9 @@
 #include "macros/DAQState.cpp"
 #include "macros/ErrorLogger.cpp"
 #include "macros/UIFramework/UIException.cpp"
-#include "macros/UIWindows/EntryWindow/EntryView.cpp"
 #include "macros/UIWindows/AlertBox/AlertOperations.cpp"
+
+#include "MainMenu/Views/EntryView.cpp"
 
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/SigHandlers.cpp"

@@ -25,12 +25,13 @@
 
 #include "analysis/MonitorHooks.cpp"
 
-#include "macros/Monitor.cpp"
 #include "macros/ErrorLogger.cpp"
 
+#include "DAQMonitor/PacketDecoding/src/Monitor.cpp"
+#include "DAQMonitor/EthernetCapture/src/DeviceSelector.cpp"
+#include "DAQMonitor/EthernetCapture/src/PCapSessionHandler.cpp"
+
 #include "src/Geometry.cpp"
-#include "src/EthernetCapture/DeviceSelector.cpp"
-#include "src/EthernetCapture/PCapSessionHandler.cpp"
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/SigHandlers.cpp"
 #include "src/DataModel/DAQData.cpp"
