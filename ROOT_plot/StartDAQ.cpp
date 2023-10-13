@@ -26,7 +26,6 @@
 #include "macros/UIWindows/EntryWindow/EntryView.cpp"
 #include "macros/UIWindows/AlertBox/AlertOperations.cpp"
 
-#include "src/DataModel/DAQData.cpp"
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/SigHandlers.cpp"
 #include "src/ProgramControl/Threads.cpp"
@@ -136,9 +135,6 @@ void StartDAQ() {
 
     // Wait for the threads to be done before terminating
     ProgramFlow::joinAllThreads();
-
-    // TODO: Should this include empty events?
-    cout << "Processed " << DAQData::getInstance().processedEvents.size() << " nonempty events." << endl;
     
     // Save DAQState to file
     //   -- TODO: Consider saving DAQState on startRun too

@@ -7,6 +7,13 @@
  * Contact: romyers@umich.edu
  * 
  * Adapted from the old EthernetCap.cpp.
+ * 
+ * NOTE: It's reallllllly nontrivial to get a member function into
+ *       pcap_dispatch, so I've had to stick with static functions.
+ *       As a result, there is a lot of static data that is shared
+ *       between session handlers and needs to be reset every run
+ *       with the static reset method. This is far from optimal, 
+ *       but any workaround will take too long to figure out.
  */
 
 // TODO: Separate data source/format-specific logic from data source/format
@@ -19,6 +26,7 @@
 #include <vector>
 #include <sys/socket.h>
 #include <signal.h>
+#include <functional>
 
 #include "macros/LockableStream.cpp"
 
@@ -53,7 +61,19 @@ public:
 
 	bool isReady          (                            );
 
+	static void reset     (                            );
+
 private:
+
+	void temp(
+		u_char *useless, 
+		const struct pcap_pkthdr *pkthdr, 
+		const u_char *packet_data
+	) {
+
+		cout << "yay" << endl;
+
+	}
 
 	pcap_t *handler;
 
@@ -81,6 +101,13 @@ int  PCapSessionHandler::lastPacket(-1);
 vector<unsigned char> PCapSessionHandler::packetBuffer;
 
 PCapSessionHandler::PCapSessionHandler() : handler(nullptr) {}
+
+void PCapSessionHandler::reset() {
+
+	lastPacket = -1;
+	packetBuffer.clear();
+
+}
 
 void PCapSessionHandler::setCheckPackets(bool val) {
 
@@ -261,6 +288,7 @@ int PCapSessionHandler::bufferPackets() {
 			packetListener,
 			NULL
 		);
+
 
 	} else {
 

@@ -118,7 +118,7 @@ namespace DataCapture {
         //       each loop, or else it will act like a memory leak
         // TODO: Place the termination condition with the thread
         int i = 0;
-        while(!Terminator::getInstance().isTerminated()) {
+        while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
 
             sessionHandler.bufferPackets(          ); // Retrieves and buffers packets from device
             sessionHandler.writePackets (dataStream); // Writes buffered packets to dataStream

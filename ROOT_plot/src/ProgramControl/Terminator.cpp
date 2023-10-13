@@ -27,6 +27,7 @@ public:
     bool isTerminated(const string &flag = TERMINATE_ALL_FLAG) const;
 
     void terminate(const string &flag = TERMINATE_ALL_FLAG);
+    void clearFlag(const string &flag);
 
     static Terminator &getInstance();
 
@@ -82,6 +83,14 @@ void Terminator::terminate(
     termLock.lock();
     terminateFlags.insert(flag);
     termLock.unlock();
+
+}
+
+void Terminator::clearFlag(
+    const string &flag
+) {
+
+    terminateFlags.erase(flag);
 
 }
 

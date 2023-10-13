@@ -33,6 +33,14 @@ public:
 
     virtual ~EntryView() override;
 
+    // OPERATIONS
+
+    void disableStartButton();
+    void enableStartButton ();
+
+    void disableStopButton ();
+    void enableStopButton  ();
+
 private:
 
     // VIEW
@@ -55,17 +63,17 @@ private:
 
 void EntryView::makeConnections() {
 
-    exitButton ->Connect("Clicked()", "EntryOperations", nullptr, "exitAll()");
+    exitButton ->Connect("Clicked()", "EntryOperations", nullptr        , "exitAll()"           );
 
-    startButton->Connect("Clicked()", "EntryOperations", nullptr, "startRun()");
-    startButton->Connect("Clicked()", "DataSourcePanel", dataSourcePanel, "disable()");
+    startButton->Connect("Clicked()", "EntryView"      , this           , "enableStopButton()"  );
+    startButton->Connect("Clicked()", "EntryView"      , this           , "disableStartButton()");
+    startButton->Connect("Clicked()", "EntryOperations", nullptr        , "startRun()"          );
+    startButton->Connect("Clicked()", "DataSourcePanel", dataSourcePanel, "disable()"           );
 
-    stopButton->Connect("Clicked()", "EntryOperations", nullptr, "stopRun()");
-    stopButton->Connect("Clicked()", "DataSourcePanel", dataSourcePanel, "enable()");
-
-    // TODO: Disable the settings menu and start button when a run is started
-
-    // TODO: Hook up stop button
+    stopButton->Connect("Clicked()", "EntryView"       , this           , "disableStopButton()" );
+    stopButton->Connect("Clicked()", "EntryView"       , this           , "enableStartButton()" );
+    stopButton->Connect("Clicked()", "EntryOperations" , nullptr        , "stopRun()"           );
+    stopButton->Connect("Clicked()", "DataSourcePanel" , dataSourcePanel, "enable()"            );
 
 }
 
@@ -104,6 +112,8 @@ EntryView::EntryView(
 
     makeConnections();
 
+    disableStopButton();
+
 }
 
 EntryView::~EntryView() {
@@ -111,3 +121,9 @@ EntryView::~EntryView() {
     TGCompositeFrame::~TGCompositeFrame();
 
 }
+
+void EntryView::disableStartButton() { startButton->SetEnabled(false); }
+void EntryView::enableStartButton () { startButton->SetEnabled(true ); }
+
+void EntryView::disableStopButton () { stopButton->SetEnabled (false); }
+void EntryView::enableStopButton  () { stopButton->SetEnabled (true ); }

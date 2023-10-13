@@ -33,7 +33,7 @@ namespace Decoder {
         Monitor monitor(dataStream);
 
         // TODO: Move termination condition up to where the thread is defined
-        while(!Terminator::getInstance().isTerminated()) {
+        while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
 
             // TODO: Performance analysis. I'd like this loop to run faster
             //         -- I think binning and drawing is our weak point. Let's

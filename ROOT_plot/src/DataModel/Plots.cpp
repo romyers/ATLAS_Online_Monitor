@@ -55,6 +55,8 @@ struct Plots {
 
 	void binEvent(const Event &e);
 
+	void clear();
+
 };
 
 Plots::Plots() {
@@ -247,5 +249,64 @@ void Plots::binEvent(const Event &e) {
 		int panelIndex = hit.TDC() + 1;
 
 	}
+
+}
+
+void Plots::clear() {
+
+	// TODO: We can also delete and remake everything to reset.
+
+	p_leading_time ->Reset();
+	p_trailing_time->Reset();
+
+	for(TH1F *h : p_hits_distribution) { h->Reset(); }
+
+	for(vector<TH1F*> &v : p_tdc_time) {
+
+		for(TH1F *h : v) h->Reset();
+
+	}
+
+	for(vector<TH1F*> &v : p_tdc_time_original) {
+
+		for(TH1F *h : v) h->Reset();
+
+	}
+
+	for(vector<TH1F*> &v : p_tdc_time_corrected) {
+
+		for(TH1F *h : v) h->Reset();
+
+	}
+
+	for(vector<TH1F*> &v : p_tdc_time_selected) {
+
+		for(TH1F *h : v) h->Reset();
+
+	}
+
+	for(vector<TH1F*> &v : p_adc_time) {
+
+		for(TH1F *h : v) h->Reset();
+
+	}            ;
+
+
+	for(TH1F *h : p_tdc_tdc_time_original ) { h->Reset(); }
+	for(TH1F *h : p_tdc_tdc_time_corrected) { h->Reset(); }
+	for(TH1F *h : p_tdc_tdc_time_selected ) { h->Reset(); }
+	for(TH1F *h : p_tdc_adc_time          ) { h->Reset(); }
+	for(TH1F *h : p_tdc_channel           ) { h->Reset(); }
+
+	for(TH2F *h : p_adc_vs_tdc            ) { h->Reset(); }
+
+	delete p_tdc_hit_rate_graph;
+	p_tdc_hit_rate_graph = nullptr;
+	// TODO: Remake the hit rate graph
+
+
+	hitByLC    ->Reset();
+	badHitByLC ->Reset();
+	goodHitByLC->Reset();
 
 }

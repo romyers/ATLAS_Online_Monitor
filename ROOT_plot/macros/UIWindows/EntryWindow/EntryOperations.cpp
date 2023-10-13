@@ -26,8 +26,6 @@
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/Threads.cpp"
 #include "src/Geometry.cpp"
-
-// TEMP
 #include "src/DataModel/DAQData.cpp"
 
 using namespace std;
@@ -50,7 +48,15 @@ namespace EntryOperations {
 
 	void stopRun() {
 
-		cout << "TODO: Stop Run not implemented!" << endl;
+		if(!State::DAQState::getState().tempState.runStarted) {
+
+			throw UIException(
+				"Please start a run."
+			);
+
+		}
+
+		Terminator::getInstance().terminate("RUN_FLAG");
 
 	}
 
@@ -131,13 +137,26 @@ namespace EntryOperations {
 	//       can condition on.
 	void startRun() {
 
+		// TODO: Since ErrorLogger is application-wide, we don't want to do
+		//       this. But we also need to count per-run errors.
+		ErrorLogger::getInstance().clear();
+
 		DAQState state = DAQState::getState();
+
+        // Clear the DAQData of any data from a previous run
+        DAQData &data = DAQData::getInstance();
+        data.lock();
+        data.clear();
+        data.unlock();
+
+        // Resets all the static data stored in session handlers
+        PCapSessionHandler::reset();
+
 
 		if(state.tempState.runStarted) {
 
 			throw UIException(
-				"The current run must be terminated before\n"
-				"a new run may be initiated."
+				"Please finish the current run before starting a new run."
 			);
 
 		}
@@ -205,6 +224,12 @@ namespace EntryOperations {
 			dataCaptureThread.join();
 			decodeThread     .join();
 
+		    // TODO: Should this include empty events?
+		    cout << "Processed " 
+		    	 << DAQData::getInstance().processedEvents.size() 
+		    	 << " nonempty events." 
+		    	 << endl;
+
 			// TODO: Again, I would rather avoid caring about the type of stream.
 			// TODO: We don't really need to lock here
 			dataStream.lock();
@@ -221,6 +246,10 @@ namespace EntryOperations {
 			state.tempState.runStarted = false;
 			state.commit();
 
+			// Once the run is shut down, we can clear the
+			// run flag if it exists
+			Terminator::getInstance().clearFlag("RUN_FLAG");
+
 		}));
 
 		ProgramFlow::threadLock.unlock();
@@ -228,11 +257,8 @@ namespace EntryOperations {
 		// TEMP
 		// Quick prototyping
 		TGMainFrame *histFrame = new TGMainFrame(gClient->GetRoot(), 500, 500);
-
 		c = new TRootEmbeddedCanvas("Histograms", histFrame, 450, 450);
 		histFrame->AddFrame(c, new TGLayoutHints(kLHintsCenterX));
-
-		// Set up the main window now that it has all its components
         histFrame->SetWindowName("Histograms");
         histFrame->MapSubwindows();
         histFrame->Resize(histFrame->GetDefaultSize());

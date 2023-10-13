@@ -34,6 +34,12 @@ struct DAQData {
     void lock  () const; // Locks an internal mutex
     void unlock() const; // Unlocks an internal mutex
 
+    /**
+     * Clears all data stored in the DAQData. Clear is called at the
+     * beginning of each run to clear any latent data from the last run.
+     */
+    void clear();
+
     // DAQData should not be copied
     DAQData       (      DAQData &other) = delete;
     void operator=(const DAQData &other) = delete;
@@ -65,3 +71,10 @@ DAQData &DAQData::getInstance() {
 
 void DAQData::lock  () const { dataLock.lock  (); }
 void DAQData::unlock() const { dataLock.unlock(); }
+
+void DAQData::clear () {
+
+    processedEvents.clear();
+    plots.clear();
+
+}

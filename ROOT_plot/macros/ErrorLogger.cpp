@@ -37,9 +37,9 @@ public:
 	ErrorLogger   (      ErrorLogger &other) = delete;
 	void operator=(const ErrorLogger &other) = delete;
 
-	void clear          (                                                   );
-	void logError       (const string  &msg, const string &type = EMPTY_TYPE);
-	void setOutputStream(      ostream &out                                 );
+	void clear            (                                                   );
+	void logError         (const string  &msg, const string &type = EMPTY_TYPE);
+	void setOutputStream  (      ostream &out                                 );
 
 	size_t countErrors(const string &type = EMPTY_TYPE) const;
 
