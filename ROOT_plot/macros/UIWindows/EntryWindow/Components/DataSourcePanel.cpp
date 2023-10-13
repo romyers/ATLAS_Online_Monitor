@@ -36,6 +36,9 @@ public:
     void revertSettings         ();
     void commitSettings         ();
 
+    void enable                 ();
+    void disable                ();
+
 private:
 
     // VIEW
@@ -181,7 +184,10 @@ void DataSourcePanel::revertSettings() {
 
     } else {
 
-        throw std::logic_error("DataSourcePanel::revertSettings cannot find a valid data source in DAQState.");
+        throw std::logic_error(
+            "DataSourcePanel::revertSettings cannot "
+            "find a valid data source in DAQState."
+        );
 
     }
 
@@ -211,7 +217,10 @@ void DataSourcePanel::commitSettings() {
 
     } else {
 
-        throw std::logic_error("DataSourcePanel::commitSettings cannot find a data input source type selection.");
+        throw std::logic_error(
+            "DataSourcePanel::commitSettings cannot "
+            "find a data input source type selection."
+        );
 
     }
 
@@ -227,5 +236,43 @@ void DataSourcePanel::commitSettings() {
         );
 
     }
+
+}
+
+void DataSourcePanel::enable() {
+
+    dataSourceLabel->Enable();
+
+    // ROOT clears button states on enable for who knows
+    // what reason so we have to save the state first.
+    EButtonState fileDown   = fileButton  ->GetState();
+    EButtonState deviceDown = deviceButton->GetState();
+
+    fileButton  ->SetEnabled(true);
+    deviceButton->SetEnabled(true);
+
+    fileButton  ->SetState(fileDown    );
+    deviceButton->SetState(deviceDown  );
+
+    if(fileDown   == kButtonDown) fileSelector  ->enable();
+    if(deviceDown == kButtonDown) deviceSelector->enable();
+
+    applyButton ->SetEnabled(true);
+    revertButton->SetEnabled(true);
+
+}
+
+void DataSourcePanel::disable() {
+
+    dataSourceLabel->Disable();
+
+    fileButton  ->SetEnabled(false);
+    deviceButton->SetEnabled(false);
+
+    fileSelector  ->disable();
+    deviceSelector->disable();
+
+    applyButton ->SetEnabled(false);
+    revertButton->SetEnabled(false);
 
 }

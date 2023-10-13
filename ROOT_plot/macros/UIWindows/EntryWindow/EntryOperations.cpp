@@ -48,7 +48,11 @@ namespace EntryOperations {
 
 	}
 
-	
+	void stopRun() {
+
+		cout << "TODO: Stop Run not implemented!" << endl;
+
+	}
 
 	void initializeDataStream(LockableStream &dataStream) {
 
@@ -162,6 +166,9 @@ namespace EntryOperations {
 
 		}
 
+		state.tempState.runStarted = true;
+		state.commit(); // NOTE: This shouldn't fail, but better if it's robust
+
 		// TODO: Hook up error handling on a per-thread basis. Threads should
 		//       report to a threadsafe error handler that does the error handling
 		ProgramFlow::threadLock.lock();
@@ -210,11 +217,13 @@ namespace EntryOperations {
 			if(dataStream.stream) delete dataStream.stream;
 			dataStream.stream = nullptr;
 
-		}));
-		ProgramFlow::threadLock.unlock();
+			state.update();
+			state.tempState.runStarted = false;
+			state.commit();
 
-		state.tempState.runStarted = true;
-		state.commit(); // NOTE: This shouldn't fail
+		}));
+
+		ProgramFlow::threadLock.unlock();
 
 		// TEMP
 		// Quick prototyping

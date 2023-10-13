@@ -148,6 +148,19 @@ namespace MonitorHooks {
 		// terminating before the thread has finished its execution.
 		t.join();
 
+		/*
+		 * NOTE: Terminator may now be used with an optional string
+		 *       parameter. So you can set a custom termination flag
+		 *       with Terminator::getInstance().terminate(flag) and
+		 *       check the flag with 
+		 *       Terminator::getInstance().isTerminated(flag).
+		 *       isTerminated will always return true if the global
+		 *       termination flag (the one set by a parameter-less
+		 *       call to terminate()) has been set. Be careful
+		 *       about setting that flag because it will terminate
+		 *       the entire program.
+		 */
+
 	}
 
 	/**

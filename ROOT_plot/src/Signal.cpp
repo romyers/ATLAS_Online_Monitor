@@ -98,30 +98,30 @@ namespace Muon {
 
   class Signal {
   public:
-    Signal();
+    Signal(             );
     Signal(uint64_t word);
 
-    uint8_t  Type           () const;
-    uint16_t HeaderEID      () const;
-    uint16_t TrailerEID     () const;
-    uint32_t TriggerLEdge   () const;
-    uint8_t  CSMID          () const;
-    uint8_t  TDC            () const;
-    uint8_t  Channel        () const;
-    uint8_t  Mode           () const;    
-    uint32_t LEdge          () const;  
-    uint8_t  Width          () const;
-    uint16_t HitCount       () const; 
-    uint16_t TDCHeaderEID   () const;   
-    uint8_t  TDCErrorIdent  () const;
+    uint8_t      Type           () const;
+    uint16_t     HeaderEID      () const;
+    uint16_t     TrailerEID     () const;
+    uint32_t     TriggerLEdge   () const;
+    uint8_t      CSMID          () const;
+    uint8_t      TDC            () const;
+    uint8_t      Channel        () const;
+    uint8_t      Mode           () const;    
+    uint32_t     LEdge          () const;  
+    uint8_t      Width          () const;
+    uint16_t     HitCount       () const; 
+    uint16_t     TDCHeaderEID   () const;   
+    uint8_t      TDCErrorIdent  () const;
 
-    bool isEventHeader () const;
-    bool isEventTrailer() const;
-    bool isTDCHeader   () const;
-    bool isTDCTrailer  () const;
-    bool isTDCError    () const;
+    bool         isEventHeader  () const;
+    bool         isEventTrailer () const;
+    bool         isTDCHeader    () const;
+    bool         isTDCTrailer   () const;
+    bool         isTDCError     () const;
 
-    TDCErrorData getTDCError() const;
+    TDCErrorData getTDCError    () const;
 
     static const uint8_t HEADER           = 0b1010    ; // bits 37-39
     static const uint8_t TRAILER          = 0b1100    ; // bits 37-39

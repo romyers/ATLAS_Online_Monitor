@@ -11,8 +11,11 @@
 #pragma once
 
 #include <mutex>
+#include <set>
 
 using namespace std;
+
+const string TERMINATE_ALL_FLAG = "all";
 
 class Terminator {
 
@@ -21,9 +24,9 @@ public:
     Terminator     (      Terminator &other) = delete;
     void operator= (const Terminator &other) = delete;
 
-    bool isTerminated() const;
+    bool isTerminated(const string &flag = TERMINATE_ALL_FLAG) const;
 
-    void terminate();
+    void terminate(const string &flag = TERMINATE_ALL_FLAG);
 
     static Terminator &getInstance();
 
@@ -31,30 +34,53 @@ private:
 
     Terminator();
 
-    bool terminateFlag;
+    set<string> terminateFlags;
 
     mutable mutex termLock; // We're C++11-compliant -- no shared_mutex
 
 };
 
-Terminator::Terminator() : terminateFlag(false) {}
+Terminator::Terminator() {}
 
-bool Terminator::isTerminated() const {
+bool Terminator::isTerminated(
+    const string &flag = TERMINATE_ALL_FLAG
+) const {
+
+    // TODO: Check performance
 
     bool result;
 
     termLock.lock();
-    result = terminateFlag;
+
+    if(terminateFlags.count(flag) == 0) {
+
+        result = false;
+
+    } else {
+
+        result = true;
+
+    }
+
+    // We always terminate if the terminate all flag is set
+    if(terminateFlags.count(TERMINATE_ALL_FLAG) != 0) {
+
+        result = true;
+
+    }
+
     termLock.unlock();
 
     return result;
 
 }
 
-void Terminator::terminate() {
+void Terminator::terminate(
+    const string &flag = TERMINATE_ALL_FLAG
+) {
 
     termLock.lock();
-    terminateFlag = true;
+    terminateFlags.insert(flag);
     termLock.unlock();
 
 }

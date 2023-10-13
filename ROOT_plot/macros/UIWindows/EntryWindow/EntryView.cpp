@@ -44,6 +44,7 @@ private:
     TGButtonGroup *buttonGroup;
 
         TGTextButton *startButton;
+        TGTextButton *stopButton ;
         TGTextButton *exitButton ;
 
     // CONNECTIONS
@@ -55,9 +56,16 @@ private:
 void EntryView::makeConnections() {
 
     exitButton ->Connect("Clicked()", "EntryOperations", nullptr, "exitAll()");
+
     startButton->Connect("Clicked()", "EntryOperations", nullptr, "startRun()");
+    startButton->Connect("Clicked()", "DataSourcePanel", dataSourcePanel, "disable()");
+
+    stopButton->Connect("Clicked()", "EntryOperations", nullptr, "stopRun()");
+    stopButton->Connect("Clicked()", "DataSourcePanel", dataSourcePanel, "enable()");
 
     // TODO: Disable the settings menu and start button when a run is started
+
+    // TODO: Hook up stop button
 
 }
 
@@ -85,6 +93,9 @@ EntryView::EntryView(
 
         startButton = new TGTextButton(buttonGroup, "Start Run");
         buttonGroup->AddFrame(startButton, new TGLayoutHints(kLHintsRight));
+
+        stopButton = new TGTextButton(buttonGroup, "Stop Run");
+        buttonGroup->AddFrame(stopButton, new TGLayoutHints(kLHintsRight));
 
         exitButton  = new TGTextButton(buttonGroup, "Exit"     );
         buttonGroup->AddFrame(exitButton, new TGLayoutHints(kLHintsRight));
