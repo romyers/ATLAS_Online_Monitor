@@ -34,10 +34,40 @@
 using namespace std;
 using namespace Muon;
 
+
+// COPIED TODOS FROM START_MONITOR:
+// TODO: Rethink the semantics of Monitor. We've made our labels as if it's a
+//       display element when really it does data decoding. It should be the
+//       UI element that does the 'refreshing', for example.
+
+// TODO: Examine this for ROOT tips:
+//       https://mightynotes.wordpress.com/2020/02/15/cern-root-tips-and-tricks/
+
+// TODO: Call getpid() for the run? Do we need to give it a pid?
+
+// TODO: Config GUI for options like whether to show lost packets
+
+// TODO: Split out all cout calls to a console logger object. Easy to make it
+//       threadsafe or switch the stream we're logging to
+
+// TODO: Make the error logger threadsafe
+
+// TODO: Set Geometry::runN as in DecodeOffline.cpp
+
 // TODO: Look at this for using QT in root:
 //       https://root.cern/doc/v606/QtFileDialog_8C.html
 
 const string STATE_STORAGE = "settings.txt";
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+void startDAQ();
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void StartDAQ() {
 
