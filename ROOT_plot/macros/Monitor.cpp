@@ -20,10 +20,10 @@
 #include "macros/EventDecoding.cpp"
 #include "macros/ErrorLogger.cpp"
 #include "macros/LockableStream.cpp"
-#include "macros/DataModel/DAQData.cpp"
 
 #include "src/Signal.cpp"
 #include "src/Event.cpp"
+#include "src/DataModel/DAQData.cpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////// INTERFACE ////////////////////////////////////////////

@@ -23,20 +23,22 @@
 
 #include <sys/stat.h>
 
+#include "analysis/MonitorHooks.cpp"
+
 #include "macros/Monitor.cpp"
-#include "macros/Mutexes.cpp"
 #include "macros/ErrorLogger.cpp"
-#include "macros/DataModel/DAQData.cpp"
 
 #include "src/Geometry.cpp"
 #include "src/EthernetCapture/DeviceSelector.cpp"
 #include "src/EthernetCapture/PCapSessionHandler.cpp"
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/SigHandlers.cpp"
+#include "src/DataModel/DAQData.cpp"
 
 #include "monitorConfig.cpp"
 
 using namespace std;
+using namespace Muon;
 
 ///////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// INTERFACE //////////////////////////////////////
@@ -124,6 +126,8 @@ void StartMonitor(const string &filename = "") {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////// DATA STREAM SETUP ///////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
+
+	MonitorHooks::beforeStartRun();
 
 	LockableStream dataStream;
 	dataStream.stream = nullptr;
@@ -263,30 +267,8 @@ void StartMonitor(const string &filename = "") {
 
 		fileWriter.close();
 
-		cout << "Run finished!" << endl;
+		cout << endl << "Data capture finished!" << endl;
 		cout << i << " packets recorded." << endl;
-
-		cout << "Suspended data capture." << endl; // TODO: mutex
-
-	});
-
-	///////////////////////////////////////////////////////////////////////////
-	/////////////////////////// USER INTERFACE ////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////
-
-	thread UIThread([]() {
-
-		while(!Terminator::getInstance().isTerminated()) {
-
-			UILock.lock();
-			gSystem->ProcessEvents();
-			UILock.unlock();
-
-			this_thread::sleep_for(chrono::milliseconds((int)(1000 / GUI_REFRESH_RATE)));
-
-		}
-
-		cout << "Suspended UI." << endl; // TODO: mutex
 
 	});
 
@@ -301,6 +283,8 @@ void StartMonitor(const string &filename = "") {
 		Monitor monitor(dataStream);
 
 		while(!Terminator::getInstance().isTerminated()) {
+
+			MonitorHooks::beforeUpdateData();
 
 			// TODO: Performance analysis. I'd like this loop to run faster
 			//         -- I think binning and drawing is our weak point. Let's
@@ -335,6 +319,8 @@ void StartMonitor(const string &filename = "") {
 			}
 			dataStream.unlock();
 
+			MonitorHooks::updatedData();
+
 			this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
 
 		}
@@ -343,10 +329,14 @@ void StartMonitor(const string &filename = "") {
 
 	});
 
+	MonitorHooks::startedRun();
+
 	decodeThread     .join();
 	dataCaptureThread.join();
 
-	cout << "Processed " << DAQData::getInstance().processedEvents.size() << " events." << endl;
+	MonitorHooks::finishedRun();
+
+	cout << endl << "Processed " << DAQData::getInstance().processedEvents.size() << " events." << endl;
 
 	// TODO: Again, I would rather avoid caring about the type of stream.
 	// TODO: We don't really need to lock here
@@ -359,8 +349,6 @@ void StartMonitor(const string &filename = "") {
 
 	if(dataStream.stream) delete dataStream.stream;
 	dataStream.stream = nullptr;
-
-	UIThread.join();
 
 	cout << "Shut down complete!" << endl;
 

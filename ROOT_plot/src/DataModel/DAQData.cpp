@@ -1,0 +1,67 @@
+/**
+ * @file DAQData.cpp
+ *
+ * @brief Singleton storage for data retrieved from the DAQ. 
+ *
+ * @author Robert Myers
+ * Contact: romyers@umich.edu
+ * 
+ * CAUTION: DAQData is not innately threadsafe, and must be locked
+ * before modification to ensure thread safety. Locking and unlocking
+ * functions are provided.
+ */
+
+#pragma once
+
+#include <vector>
+
+#include "src/DataModel/Plots.cpp"
+#include "src/Event.cpp"
+
+using namespace std;
+using namespace Muon;
+
+struct DAQData {
+
+    // A vector of fully processed and populated events, with hit finding
+    // already performed.
+    vector<Event> processedEvents;
+
+    // A struct of histograms containing aggregate event data. See
+    // src/DataModel/Plots.cpp.
+    Plots plots;
+
+    void lock  () const; // Locks an internal mutex
+    void unlock() const; // Unlocks an internal mutex
+
+    // DAQData should not be copied
+    DAQData       (      DAQData &other) = delete;
+    void operator=(const DAQData &other) = delete;
+
+    // Access the singleton DAQData instance by reference here.
+    static DAQData &getInstance();
+
+private:
+
+    DAQData();
+
+    mutable mutex dataLock;
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+DAQData::DAQData() {}
+
+DAQData &DAQData::getInstance() {
+
+    static DAQData data;
+
+    return data;
+
+}
+
+void DAQData::lock  () const { dataLock.lock  (); }
+void DAQData::unlock() const { dataLock.unlock(); }
