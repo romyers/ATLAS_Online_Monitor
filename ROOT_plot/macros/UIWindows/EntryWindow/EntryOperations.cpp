@@ -28,7 +28,7 @@
 #include "src/Geometry.cpp"
 
 // TEMP
-#include "macros/DataModel/DAQData.cpp"
+#include "src/DataModel/DAQData.cpp"
 
 using namespace std;
 using namespace Muon;
