@@ -17,6 +17,8 @@
 #include "macros/ErrorLogger.cpp"
 
 #include "DAQMonitor/EthernetCapture/src/PCapSessionHandler.cpp"
+#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
+
 #include "src/ProgramControl/Terminator.cpp"
 
 using namespace std;
@@ -47,7 +49,7 @@ namespace DataCaptureIMPL {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void DataCapture::runDataCapture(LockableStream &dataStream) {
+void Muon::DataCapture::runDataCapture(LockableStream &dataStream) {
 
     using namespace DataCaptureIMPL;
 
@@ -97,18 +99,22 @@ void DataCapture::runDataCapture(LockableStream &dataStream) {
     // TODO: If the data stream is a stringstream, it needs to be reset
     //       each loop, or else it will act like a memory leak
     // TODO: Place the termination condition with the thread
-    int i = 0;
+    int packets   = 0;
+    int thousands = 0;
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
 
-        sessionHandler.bufferPackets(          ); // Retrieves and buffers packets from device
-        sessionHandler.writePackets (dataStream); // Writes buffered packets to dataStream
-        sessionHandler.writePackets (fileWriter); // Writes buffered packets to the .dat file
-        sessionHandler.clearBuffer  (          ); // Clears the packet buffer
+        packets += sessionHandler.bufferPackets(          ); // Retrieves and buffers packets from device
+        sessionHandler.writePackets            (dataStream); // Writes buffered packets to dataStream
+        sessionHandler.writePackets            (fileWriter); // Writes buffered packets to the .dat file
+        sessionHandler.clearBuffer             (          ); // Clears the packet buffer
 
-        ++i;
+        // The while loop ensures that if we e.g. buffer 2000 packets at once,
+        // we'll enumerate both thousands in cout.
+        while(packets / 1000 > thousands) {
 
-        if(i % 1000 == 0) {
-            cout << "Recorded " << i << " packets" << endl; // TODO: mutex
+            ++thousands;
+            cout << "Recorded " << thousands * 1000 << " packets" << endl;
+
         }
 
     }
@@ -120,11 +126,11 @@ void DataCapture::runDataCapture(LockableStream &dataStream) {
     fileWriter.close();
 
     cout << "Run finished!" << endl;
-    cout << i << " packets recorded." << endl;
+    cout << packets << " packets recorded." << endl;
 
 }
 
-bool DataCaptureIMPL::directoryExists(const string &path) {
+bool Muon::DataCaptureIMPL::directoryExists(const string &path) {
 
     struct stat sb;
 
@@ -138,7 +144,7 @@ bool DataCaptureIMPL::directoryExists(const string &path) {
 
 }
 
-bool DataCaptureIMPL::createDirectory(const string &path) {
+bool Muon::DataCaptureIMPL::createDirectory(const string &path) {
 
     if(mkdir(path.data(), 0777) == 0) return true;
 
@@ -146,7 +152,7 @@ bool DataCaptureIMPL::createDirectory(const string &path) {
 
 }
 
-string DataCaptureIMPL::getCurrentTimestamp(const string &format) {
+string Muon::DataCaptureIMPL::getCurrentTimestamp(const string &format) {
 
     char formatBuffer[40];
     time_t sys_time;
@@ -160,7 +166,7 @@ string DataCaptureIMPL::getCurrentTimestamp(const string &format) {
 
 }
 
-void DataCaptureIMPL::createIfMissing(const string &directoryName) {
+void Muon::DataCaptureIMPL::createIfMissing(const string &directoryName) {
 
     if(!directoryExists(directoryName)) {
 
@@ -172,7 +178,7 @@ void DataCaptureIMPL::createIfMissing(const string &directoryName) {
 
 }
 
-void DataCaptureIMPL::initializePCapSessionHandler(
+void Muon::DataCaptureIMPL::initializePCapSessionHandler(
     PCapSessionHandler &sessionHandler
 ) {
 

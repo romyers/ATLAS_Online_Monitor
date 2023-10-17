@@ -42,7 +42,7 @@ class Monitor {
 
 public:
 
-	Monitor(LockableStream &in);
+	Monitor(LockableStream &in, DAQData &dataOut);
 
 	bool isStale();
 	void refresh();
@@ -50,6 +50,8 @@ public:
 private:
 
 	SignalReader reader;
+
+	DAQData &data;
 
 	vector<Signal> signalBuffer;
 	vector<Event > eventBuffer ;
@@ -70,8 +72,8 @@ bool isEvent(const vector<Signal> &signals);
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Monitor::Monitor(LockableStream &in) 
-	: reader(in) {}
+Monitor::Monitor(LockableStream &in, DAQData &dataOut) 
+	: reader(in), data(dataOut) {}
 
 bool Monitor::isStale() {
 
@@ -125,8 +127,6 @@ void Monitor::refresh() {
 		if(e.Trailer().HitCount() != 0) {
 
 			processEvent(e);
-
-			DAQData &data = DAQData::getInstance();
 
 			data.lock();
 			data.processedEvents.push_back(e);

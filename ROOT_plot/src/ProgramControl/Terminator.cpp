@@ -15,7 +15,7 @@
 
 using namespace std;
 
-const string TERMINATE_ALL_FLAG = "all";
+const string TERMINATE_ALL_FLAG = "";
 
 class Terminator {
 

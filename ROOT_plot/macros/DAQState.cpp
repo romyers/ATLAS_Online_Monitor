@@ -33,10 +33,14 @@ namespace State {
 
 	struct PersistentState {
 
-		int dataSource         = NETWORK_DEVICE_SOURCE;
+		int    dataSource         = NETWORK_DEVICE_SOURCE;
 
-		string inputFilename   = ""                   ;
-		string inputDevicename = ""                   ;
+		bool   warnSlowFrames     = true                 ;
+		int    slowFrameTolerance = 5                    ;
+		double slowFrameDecayRate = 0.2                  ;
+
+		string inputFilename      = ""                   ;
+		string inputDevicename    = ""                   ;
 
 	};
 
@@ -123,9 +127,12 @@ namespace State {
 
 	void DAQState::writePersistentState(ostream &out) {
 
-		out << "Data Source: "       << persistentState.dataSource      << endl;
-		out << "Input Device Name: " << persistentState.inputDevicename << endl;
-		out << "Input File Name: "   << persistentState.inputFilename   << endl;
+		out << "Data Source: "           << persistentState.dataSource         << endl;
+		out << "Input Device Name: "     << persistentState.inputDevicename    << endl;
+		out << "Input File Name: "       << persistentState.inputFilename      << endl;
+		out << "Warn Slow Frames: "      << persistentState.warnSlowFrames     << endl;
+		out << "Slow Frame Tolerance: "  << persistentState.slowFrameTolerance << endl;
+		out << "Slow Frame Decay Rate: " << persistentState.slowFrameDecayRate << endl;
 
 	}
 
@@ -153,6 +160,36 @@ namespace State {
 		} else {
 
 			persistentState.dataSource = stoi(tokens["Data Source"]);
+
+		}
+
+		if(tokens["Warn Slow Frames"] == "") {
+
+			persistentState.warnSlowFrames = true;
+
+		} else {
+
+			persistentState.warnSlowFrames = stoi(tokens["Warn Slow Frames"]);
+
+		}
+
+		if(tokens["Slow Frame Tolerance"] == "") {
+
+			persistentState.slowFrameTolerance = 5;
+
+		} else {
+
+			persistentState.slowFrameTolerance = stoi(tokens["Slow Frame Tolerance"]);
+
+		}
+
+		if(tokens["Slow Frame Decay Rate"] == "") {
+
+			persistentState.slowFrameDecayRate = 0.2;
+
+		} else {
+
+			persistentState.slowFrameDecayRate = stod(tokens["Slow Frame Decay Rate"]);
 
 		}
 

@@ -17,12 +17,15 @@
 
 #include <thread>
 #include <mutex>
+#include <chrono>
+#include <cmath>
 
 #include "monitorConfig.cpp"
 
 #include "macros/DAQState.cpp"
 #include "macros/ErrorLogger.cpp"
 #include "macros/UIFramework/UIException.cpp"
+#include "macros/UIFramework/UISignals.cpp"
 #include "macros/UIWindows/AlertBox/AlertOperations.cpp"
 
 #include "MainMenu/Views/EntryView.cpp"
@@ -87,10 +90,11 @@ void StartDAQ() {
     //////////////////////////// SET UP UI ////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
+    // TODO: Move this to EntryOperations
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(
 
-        thread ([](){
+        thread([](){
 
             // Create the main window
             TGMainFrame *mainFrame = new TGMainFrame(gClient->GetRoot());
@@ -114,20 +118,33 @@ void StartDAQ() {
             );
 
             // Run the UI update loop
+            // TODO: Check Resource Red to remember how to properly track
+            //       dropped frames
+            // TODO: Now that the logic is a little more complicated, pull it
+            //       out
+            // TODO: Include a setting regarding whether to warn for slow
+            //       frames
+            int frameNum      = 0;
+            double slowFrames = 0;
             while(!Terminator::getInstance().isTerminated()) {
+
+                // Record the loop start time
+                auto UIUpdateStartTime = chrono::high_resolution_clock::now();
 
                 try {
 
                     gSystem->ProcessEvents();
 
-                    // TEMP
-                    if(c) {
+                    if(frameNum % UI_UPDATE_FRAMES == 0) {
 
-                        c->GetCanvas()->cd();
-                        DAQData::getInstance().plots.p_tdc_adc_time[1]->Draw();
-                        c->GetCanvas()->Update();
+                        // Reset it every time to prevent overflows
+                        frameNum = 0;
+
+                        UISignalBus::getInstance().onUpdate();
 
                     }
+
+                    ++frameNum;
 
                 } catch (UIException &e) {
 
@@ -140,8 +157,48 @@ void StartDAQ() {
 
                 }
 
+                // Record the loop end time
+                auto UIUpdateEndTime = chrono::high_resolution_clock::now();
+
+                // Compute how long it took the loop to run
+                chrono::duration<double> loopTime = UIUpdateEndTime - UIUpdateStartTime;
+                chrono::milliseconds updateTime = chrono::duration_cast<chrono::milliseconds>(loopTime);
+
+                DAQState state = DAQState::getState();
+
+                bool warnSlowFrames = state.persistentState.warnSlowFrames;
+
+                // Compute how long the thread should sleep to maintain a 
+                // consistent frame rate
+                int sleepTime = (int)(1000. / GUI_REFRESH_RATE) - (int)(updateTime.count());
+
+                // Deal with the case where the update loop took too long
+                if(sleepTime < 0) {
+
+                    if(warnSlowFrames) ++slowFrames;
+                    sleepTime = 0;
+
+                }
+
+                if(warnSlowFrames) {
+
+                    // If we are slow more than 5 times before slowFrames decays
+                    // we should alert the user.
+                    if(slowFrames > state.persistentState.slowFrameTolerance) {
+
+                        cerr << "UI WARNING: GUI refresh rate too fast for data updates. "
+                             << "Consider reducing GUI update framerate." << endl;
+
+                    }
+
+                    // Linear decay rate for slowFrames
+                    slowFrames -= state.persistentState.slowFrameDecayRate;
+                    slowFrames = max(slowFrames, 0.);
+
+                }
+
                 this_thread::sleep_for(
-                    chrono::milliseconds((int)(1000 / GUI_REFRESH_RATE))
+                    chrono::milliseconds(sleepTime)
                 );
 
             }

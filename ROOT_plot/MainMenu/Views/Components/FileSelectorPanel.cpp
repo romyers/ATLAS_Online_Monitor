@@ -63,8 +63,6 @@ FileSelector::FileSelector(const TGWindow *p)
 
 FileSelector::~FileSelector() {
 
-    TGVerticalFrame::~TGVerticalFrame();
-
 }
 
 void FileSelector::enable() {

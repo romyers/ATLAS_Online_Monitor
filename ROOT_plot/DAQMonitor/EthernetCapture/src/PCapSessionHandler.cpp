@@ -31,6 +31,7 @@
 #include "DAQMonitor/LockableStream.cpp"
 
 #include "DAQMonitor/EthernetCapture/src/PCapDevice.cpp"
+#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
 
 using namespace std;
 
@@ -43,6 +44,8 @@ unsigned char EVENT_TRAILER        = 0b1100                          ;
 unsigned char IDLE_WORD[WORD_SIZE] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 unsigned int  DATA_START           = 14                              ;
 
+
+// TODO: Consider pulling static members out to a singleton
 class PCapSessionHandler {
 
 public:
@@ -64,16 +67,6 @@ public:
 	static void reset     (                            );
 
 private:
-
-	void temp(
-		u_char *useless, 
-		const struct pcap_pkthdr *pkthdr, 
-		const u_char *packet_data
-	) {
-
-		cout << "yay" << endl;
-
-	}
 
 	pcap_t *handler;
 
@@ -266,25 +259,19 @@ int PCapSessionHandler::bufferPackets() {
 	sigaddset(&signalSet, SIGTERM);
 	sigaddset(&signalSet, SIGQUIT);
 
-	int ret = pselect(fd + 1, &rfds, NULL, NULL, &tv, &signalSet);
+	int selectSuccess = pselect(fd + 1, &rfds, NULL, NULL, &tv, &signalSet);
 	// See: https://man7.org/linux/man-pages/man2/select.2.html
 
-	if(-1 == ret) {
+	int packetsBuffered = 0;
+	if(-1 == selectSuccess) {
 
 		cout << "Select failed" << endl;
 
-	} else if(ret) {
+	} else if(selectSuccess) {
 
-		// Q: Why are we only processing one packet at a time? We might as
-		//    well be using pcap_next
-		// TODO: Once I have plotting hooked back up, see what happens if I
-		//       process all packets with -1 instead of 1.
-		// TODO: If we do this, we'll have to make sure we keep counting
-		//       all packets by retrieving the packet processed num from
-		//       pcap_dispatch (it's the return value unless in error state)
-		pcap_dispatch(
+		packetsBuffered = pcap_dispatch(
 			handler, 
-			1, 
+			-1, 
 			packetListener,
 			NULL
 		);
@@ -292,18 +279,11 @@ int PCapSessionHandler::bufferPackets() {
 
 	} else {
 
-		cout << "Select timeout on fd: " << fd << " Return code: " << ret << endl;
+		cout << "Select timeout on fd: " << fd << " Return code: " << selectSuccess << endl;
 
 	}
 
-	return ret;
-	// TODO: Consider using pcap_next? Or pcap_loop? Understand the differences
-	// TODO: Is there a way to check if a package is available before reading
-	//       it so I can run this in the main thread without blocking it?
-	//         -- but also we only do things in the main thread as packages
-	//            come in. Maybe we can let it block and just make sure it's
-	//            processing all available packages before letting the
-	//            session handler wait for more
+	return packetsBuffered;
 
 }
 

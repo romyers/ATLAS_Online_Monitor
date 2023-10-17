@@ -38,7 +38,7 @@
 
 #include "monitorConfig.cpp"
 
-using namespace std;
+using namespace std ;
 using namespace Muon;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -176,18 +176,20 @@ void StartMonitor(const string &filename = "") {
 
 		cout << "Saving packet data to: " << outputFile << endl;
 
-		int i = 0;
+		int packets   = 0;
+		int thousands = 0;
 		while(!Terminator::getInstance().isTerminated()) {
 
-			sessionHandler.bufferPackets(          ); // Retrieves and buffers packets from device
-			sessionHandler.writePackets (dataStream); // Writes buffered packets to dataStream
-			sessionHandler.writePackets (fileWriter); // Writes buffered packets to the .dat file
-			sessionHandler.clearBuffer  (          ); // Clears the packet buffer
+			packets += sessionHandler.bufferPackets(          ); // Retrieves and buffers packets from device
+			sessionHandler.writePackets            (dataStream); // Writes buffered packets to dataStream
+			sessionHandler.writePackets            (fileWriter); // Writes buffered packets to the .dat file
+			sessionHandler.clearBuffer             (          ); // Clears the packet buffer
 
-			++i;
+			while(packets / 1000 > thousands) {
 
-			if(i % 1000 == 0) {
-				cout << "Recorded " << i << " packets" << endl; // TODO: mutex
+				++thousands;
+				cout << "Recorded " << thousands * 1000 << " packets" << endl;
+
 			}
 
 		}
@@ -199,7 +201,7 @@ void StartMonitor(const string &filename = "") {
 		fileWriter.close();
 
 		cout << endl << "Data capture finished!" << endl;
-		cout << i << " packets recorded." << endl;
+		cout << packets << " packets recorded." << endl;
 
 	});
 
@@ -211,7 +213,7 @@ void StartMonitor(const string &filename = "") {
 
 		Geometry::getInstance().SetRunN(getRunNumber());
 
-		Monitor monitor(dataStream);
+		Monitor monitor(dataStream, DAQData::getInstance());
 
 		while(!Terminator::getInstance().isTerminated()) {
 

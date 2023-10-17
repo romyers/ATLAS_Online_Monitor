@@ -11,6 +11,8 @@
 
 #include <string>
 
+// TODO: Find a way to eliminate this include
+//         -- Collocate this component with the data capture module?
 #include "DAQMonitor/EthernetCapture/src/DeviceManager.cpp"
 
 using namespace std;
@@ -69,9 +71,9 @@ void DeviceSelector::setDeviceName(char *name) {
 
     }
 
-    int entryID = dropdown->FindEntry(name)->EntryId();
+    TGLBEntry *entry = dropdown->FindEntry(name);
 
-    if(!entryID) {
+    if(!entry) {
 
         // We can handle this quietly. If user selects a nonexistent device,
         // we've done something very wrong. But the program might try it
@@ -83,7 +85,7 @@ void DeviceSelector::setDeviceName(char *name) {
 
     }
 
-    dropdown->Select(entryID, false);
+    dropdown->Select(entry->EntryId(), false);
 
 }
 
@@ -102,8 +104,6 @@ DeviceSelector::DeviceSelector(const TGWindow *p)
 }
 
 DeviceSelector::~DeviceSelector() {
-
-    TGVerticalFrame::~TGVerticalFrame();
 
 }
 

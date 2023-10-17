@@ -20,6 +20,7 @@
 #include "DAQMonitor/LockableStream.cpp"
 #include "DAQMonitor/EthernetCapture/DataCaptureOperations.cpp"
 #include "DAQMonitor/PacketDecoding/PacketDecodingOperations.cpp"
+#include "DAQMonitor/Views/RunView.cpp"
 
 #include "macros/UIFramework/UIException.cpp"
 
@@ -39,8 +40,8 @@ using namespace State;
 namespace Muon {
 namespace DataRun {
 
-    void startRun();
-    void stopRun ();
+    void startRun     ();
+    void stopRun      ();
 
 }
 namespace DataRunIMPL {
@@ -53,9 +54,6 @@ namespace DataRunIMPL {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-
-// TEMP
-TRootEmbeddedCanvas *c;
 
 void DataRunIMPL::initializeDataStream(LockableStream &dataStream) {
 
@@ -130,13 +128,6 @@ void DataRun::startRun() {
     ErrorLogger::getInstance().clear();
 
     DAQState state = DAQState::getState();
-
-    // Clear the DAQData of any data from a previous run
-    DAQData &data = DAQData::getInstance();
-    data.lock();
-    data.clear();
-    data.unlock();
-
 
     if(state.tempState.runStarted) {
 
@@ -231,14 +222,13 @@ void DataRun::startRun() {
 
     ProgramFlow::threadLock.unlock();
 
-    // TEMP
-    // Quick prototyping
-    TGMainFrame *histFrame = new TGMainFrame(gClient->GetRoot(), 500, 500);
-    c = new TRootEmbeddedCanvas("Histograms", histFrame, 450, 450);
-    histFrame->AddFrame(c, new TGLayoutHints(kLHintsCenterX));
-    histFrame->SetWindowName("Histograms");
-    histFrame->MapSubwindows();
-    histFrame->Resize(histFrame->GetDefaultSize());
-    histFrame->MapWindow();
+    // TODO: MOVE EVERYTHING BELOW SOMEWHERE ELSE
+
+    RunView *viewer = new RunView(gClient->GetRoot());
+
+    viewer->SetWindowName("Run Viewer");
+    viewer->MapSubwindows();
+    viewer->Resize(viewer->GetDefaultSize());
+    viewer->MapWindow();
 
 }

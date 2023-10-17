@@ -118,8 +118,6 @@ EntryView::EntryView(
 
 EntryView::~EntryView() {
 
-    TGCompositeFrame::~TGCompositeFrame();
-
 }
 
 void EntryView::disableStartButton() { startButton->SetEnabled(false); }

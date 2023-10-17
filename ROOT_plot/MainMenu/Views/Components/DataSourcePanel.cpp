@@ -143,8 +143,6 @@ void DataSourcePanel::makeConnections() {
 
 DataSourcePanel::~DataSourcePanel() {
 
-    TGVerticalFrame::~TGVerticalFrame();
-
 }
     
 void DataSourcePanel::showFileSelector() {

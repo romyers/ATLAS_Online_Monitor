@@ -42,9 +42,16 @@ namespace Decoder {
 //       rather than in the run function.
 void Decoder::runDecoding(LockableStream &dataStream) {
 
+    // Clear the DAQData of any data from a previous run
+    DAQData &data = DAQData::getInstance();
+
+    data.lock  ();
+    data.clear ();
+    data.unlock();
+
     Geometry::getInstance().SetRunN(getRunNumber());
 
-    Monitor monitor(dataStream);
+    Monitor monitor(dataStream, data);
 
     // TODO: Move termination condition up to where the thread is defined
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {

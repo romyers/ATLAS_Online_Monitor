@@ -1,0 +1,33 @@
+## 2023-10-17
+
+## Added
+
+- Implemented signal bus for custom UI signals, along with an update signal 
+  that is run every few UI update frames and connected to histogram plotting.
+- Restored full ADC and TDC histogram plotting to the GUI version of the
+  monitor.
+- Added a window that opens on run start. Plotting windows can be opened and
+  close from this window. Plotting windows should now exit nicely, without
+  producing segfaults.
+
+## Changed
+
+- DAQData is now passed into the monitor from the decode thread for better
+  organization.
+- DAQData is reset at the start of the decode thread instead of the monitor
+  thread.
+- PCapSessionHandler now buffers all available packets at once with a call to
+  pcap_dispatch with negative second argument, rather than buffering them one
+  at a time. Packet counting has been updated for the new implementation.
+- UI loop now makes some naive attempts to maintain a consistent frame rate.
+
+## Fixed
+
+- DeviceSelectorPanel::setDeviceName() would attempt a null dereference if 
+  passed the name of a device that does not exist.
+- Deleting various views would induce double deletion due to erroneous explicit
+  calls to superclass destructors.
+
+## Known Issues
+
+- Occasional segfaults occur when opening and closing windows.
