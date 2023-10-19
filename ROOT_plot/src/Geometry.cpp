@@ -276,7 +276,7 @@ namespace Muon {
   }
 
   Bool_t Geometry::IsActiveTDCChannel(unsigned int tdc, unsigned int ch) const {
-    if (tdc == TRIGGER_MEZZ)
+    if (ch >= Geometry::MAX_TDC_CHANNEL)
       return 0;//ch == TRIGGER_CH;
     else
       return isActiveTDC[tdc];
@@ -361,20 +361,24 @@ namespace Muon {
 //  8  9
 //  7  1
       // TDC_ML[7]  = 0;
+      TDC_ML[0]  = 0;
       TDC_ML[1]  = 1;
+      TDC_ML[2]  = 0;
       // TDC_ML[8]  = 1;
-      TDC_ML[3]  = 0;
+      TDC_ML[3]  = 1;
 
 
       // TDC_COL[7]  = 1;
+      TDC_COL[0]  = 0;
       TDC_COL[1]  = 0;
       // TDC_COL[8]  = 1;
-      TDC_COL[3]  = 0;
+      TDC_COL[2]  = 1;
+      TDC_COL[3]  = 1;
 
       isActiveTDC.reset();
-      //isActiveTDC[0] = 1;
-      isActiveTDC[1]  = 1;
-      // isActiveTDC[2] = 1;
+      isActiveTDC[0] = 1;
+      isActiveTDC[1] = 1;
+      isActiveTDC[2] = 1;
       isActiveTDC[3] = 1;
 //       isActiveTDC[4] = 1;
 //       isActiveTDC[5] = 1;

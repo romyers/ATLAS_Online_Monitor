@@ -249,11 +249,20 @@ void DataSourcePanel::enable() {
     fileButton  ->SetEnabled(true);
     deviceButton->SetEnabled(true);
 
-    fileButton  ->SetState(fileDown    );
-    deviceButton->SetState(deviceDown  );
+    // FIXME: The file and device selectors don't reenable
+    if(fileDown == kButtonDown) {
 
-    if(fileDown   == kButtonDown) fileSelector  ->enable();
-    if(deviceDown == kButtonDown) deviceSelector->enable();
+        fileSelector->enable();
+        fileButton->SetState(kButtonDown);
+
+    }
+
+    if(deviceDown == kButtonDown) {
+
+        deviceSelector->enable();
+        deviceButton->SetState(kButtonDown);
+
+    }
 
     applyButton ->SetEnabled(true);
     revertButton->SetEnabled(true);

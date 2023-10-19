@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "macros/UIFramework/UISignals.cpp"
+
 #include "MainMenu/Views/Components/DataSourcePanel.cpp"
 #include "MainMenu/EntryOperations.cpp"
 
@@ -63,17 +65,21 @@ private:
 
 void EntryView::makeConnections() {
 
-    exitButton ->Connect("Clicked()", "EntryOperations", nullptr        , "exitAll()"           );
+    UISignalBus &bus = UISignalBus::getInstance();
 
-    startButton->Connect("Clicked()", "EntryView"      , this           , "enableStopButton()"  );
-    startButton->Connect("Clicked()", "EntryView"      , this           , "disableStartButton()");
-    startButton->Connect("Clicked()", "EntryOperations", nullptr        , "startRun()"          );
-    startButton->Connect("Clicked()", "DataSourcePanel", dataSourcePanel, "disable()"           );
+    bus.Connect("onRunStop()", "EntryView"      , this           , "disableStopButton()");
+    bus.Connect("onRunStop()", "EntryView"      , this           , "enableStartButton()");
+    bus.Connect("onRunStop()", "DataSourcePanel", dataSourcePanel, "enable()"           );
 
-    stopButton->Connect("Clicked()", "EntryView"       , this           , "disableStopButton()" );
-    stopButton->Connect("Clicked()", "EntryView"       , this           , "enableStartButton()" );
-    stopButton->Connect("Clicked()", "EntryOperations" , nullptr        , "stopRun()"           );
-    stopButton->Connect("Clicked()", "DataSourcePanel" , dataSourcePanel, "enable()"            );
+    bus.Connect("onRunStart()", "EntryView"      , this           , "enableStopButton()"  );
+    bus.Connect("onRunStart()", "EntryView"      , this           , "disableStartButton()");
+    bus.Connect("onRunStart()", "DataSourcePanel", dataSourcePanel, "disable()"           );
+
+    exitButton ->Connect("Clicked()", "EntryOperations", nullptr, "exitAll()");
+
+    startButton->Connect("Clicked()", "EntryOperations", nullptr, "startRun()");
+
+    stopButton->Connect("Clicked()", "EntryOperations" , nullptr, "stopRun()");
 
 }
 

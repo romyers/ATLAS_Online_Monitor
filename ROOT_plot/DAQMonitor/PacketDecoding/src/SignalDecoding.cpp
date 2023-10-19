@@ -31,9 +31,6 @@ const string SIGNAL_WARN  = "signalWarn";
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(uint64_t data, uint8_t dataSize);
 
-// An exception thrown when a signal extraction fails
-class ExtractionException : public exception {};
-
 /**
  * Reads signals on command from a filestream.
  */
@@ -155,27 +152,25 @@ bool validateSignalErrors(const Signal &sig) {
 
 		TDCErrorData errorData = sig.getTDCError();
 
+		msg = "ERROR -- Received TDC Error Signal:";
+
 		if(errorData.LSBFlag1 > 0) {
 
-			msg += "ERROR -- TDCID = ";
-			msg += errorData.TDC;
+			msg += "\n         \tTDCID = ";
+			msg += to_string(errorData.TDC);
 			msg += ", Channel = ";
-			msg += errorData.LSBChannel1;
+			msg += to_string(errorData.LSBChannel1);
 			msg += " overflowed!";
 
-		}
+		} if(errorData.LSBFlag2 > 0) {
 
-		if(errorData.LSBFlag2 > 0) {
-
-			if(!msg.empty()) msg += "\n";
-
-			msg += "ERROR -- TDCID = ";
-			msg += errorData.TDC;
+			msg += "\n         \tTDCID = ";
+			msg += to_string(errorData.TDC);
 			msg += ", Channel = ";
-			msg += errorData.LSBChannel2;
+			msg += to_string(errorData.LSBChannel2);
 			msg += " overflowed!";
 
-		}
+		} 
 
 		logger.logError(msg, SIGNAL_ERROR);
 
@@ -199,17 +194,20 @@ bool validateSignalErrors(const Signal &sig) {
 
 	}
 
-	if(sig.Channel() < Geometry::MAX_TDC_CHANNEL) return true;
+	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
 
+		string msg = "ERROR -- Unexpected data TDCID = ";
+		msg += to_string(sig.TDC());
+		msg += ", Channel = ";
+		msg += to_string(sig.Channel());
 
-	string msg = "ERROR -- Unexpected data TDCID = ";
-	msg += to_string(sig.TDC());
-	msg += ", Channel = ";
-	msg += to_string(sig.Channel());
+		logger.logError(msg, SIGNAL_ERROR);
 
-	logger.logError(msg, SIGNAL_ERROR);
+		return false;
 
-	return false;
+	}
+
+	return true;
 
 }
 

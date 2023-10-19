@@ -89,6 +89,9 @@ void Monitor::refresh() {
 
 		if(validateSignalErrors(sig)) {
 
+			// TODO: We should keep some metadata if it's a TDC header or
+			//       trailer. See DecodeOffline.cpp
+
 			signalBuffer.push_back(sig);
 
 		} else {
@@ -132,8 +135,6 @@ void Monitor::refresh() {
 			data.processedEvents.push_back(e);
 			data.plots.binEvent(e);
 			data.unlock();
-
-			// TODO: Display the event
 
 		}
 

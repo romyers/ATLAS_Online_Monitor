@@ -113,7 +113,7 @@ namespace Muon {
     uint8_t      Width          () const;
     uint16_t     HitCount       () const; 
     uint16_t     TDCHeaderEID   () const;   
-    uint8_t      TDCErrorIdent  () const;
+    uint8_t      TDCHdrTrlrID   () const;
 
     bool         isEventHeader  () const;
     bool         isEventTrailer () const;
@@ -123,30 +123,31 @@ namespace Muon {
 
     TDCErrorData getTDCError    () const;
 
-    static const uint8_t HEADER           = 0b1010    ; // bits 37-39
-    static const uint8_t TRAILER          = 0b1100    ; // bits 37-39
+    static const uint8_t HEADER            = 0b1010    ; // bits 37-39
+    static const uint8_t TRAILER           = 0b1100    ; // bits 37-39
 
-    static const uint8_t TDC_ERROR_CHNL   = 0b11101   ; // bits 27-31
-    static const uint8_t TDC_HEADER_CHNL  = 0b11111   ; // bits 27-31
-    static const uint8_t TDC_TRAILER_CHNL = 0b11110   ; // bits 27-31
-    static const uint8_t TDC_ERROR_IDENT  = 0b11101000; // bits 24-31
+    static const uint8_t TDC_HEADER_IDENT  = 0b11111000; // bits 24-31
+    static const uint8_t TDC_TRAILER_IDENT = 0b11110000; // bits 24-31
+    static const uint8_t TDC_ERROR_IDENT   = 0b11101000; // bits 24-31
 
-    static const uint8_t WORD_SIZE        = 5         ; // bytes
+    static const uint8_t WORD_SIZE         = 5         ; // bytes
 
   private:
-    uint8_t  type        ;
-    uint16_t eventid     ;
-    uint16_t eventid_t   ;
-    uint32_t triggerledge;
-    uint8_t  csmid       ;
-    uint8_t  tdcid       ;
-    uint8_t  chnlid      ;
-    uint8_t  mode        ;
-    uint32_t ledge       ;
-    uint8_t  width       ;
-    uint16_t hitcount    ;
-    uint16_t tdc_eventid ;
-    uint8_t  tdc_errorid ;
+    uint8_t  type         ;
+    uint16_t eventid      ;
+    uint16_t eventid_t    ;
+    uint32_t triggerledge ;
+    uint8_t  csmid        ;
+    uint8_t  tdcid        ;
+    uint8_t  chnlid       ;
+    uint8_t  mode         ;
+    uint32_t ledge        ;
+    uint8_t  width        ;
+    uint16_t hitcount     ;
+    uint16_t tdc_eventid  ;
+    uint8_t  tdc_hdrTrlrID;
+
+    bitset<40> word; // DEBUG
 
     TDCErrorData errorData;
 
@@ -158,47 +159,47 @@ namespace Muon {
   
   Signal::Signal(uint64_t word) {
 
-    bitset<4>  _type        ;
-    bitset<12> _eventid     ;
-    bitset<12> _eventid_t   ;
-    bitset<17> _triggerledge;
-    bitset<3>  _csmid       ;
-    bitset<5>  _tdcid       ;
-    bitset<5>  _chnlid      ;
-    bitset<2>  _mode        ;
-    bitset<17> _ledge       ;
-    bitset<8>  _width       ;
-    bitset<10> _hitcount    ;
-    bitset<12> _tdc_eventid ;
-    bitset<8>  _tdc_errorid ;
+    bitset<4>  _type         ;
+    bitset<12> _eventid      ;
+    bitset<12> _eventid_t    ;
+    bitset<17> _triggerledge ;
+    bitset<3>  _csmid        ;
+    bitset<5>  _tdcid        ;
+    bitset<5>  _chnlid       ;
+    bitset<2>  _mode         ;
+    bitset<17> _ledge        ;
+    bitset<8>  _width        ;
+    bitset<10> _hitcount     ;
+    bitset<12> _tdc_eventid  ;
+    bitset<8>  _tdc_hdrTrlrID;
 
-    _type         = word >> 36;
-    _eventid      = word >> 17;
-    _eventid_t    = word >> 16;
-    _triggerledge = word >>  0;
-    _csmid        = word >> 37;
-    _tdcid        = word >> 32;
-    _chnlid       = word >> 27;
-    _mode         = word >> 25;
-    _ledge        = word >>  8;
-    _width        = word >>  0;
-    _hitcount     = word >>  0;
-    _tdc_eventid  = word >> 12;
-    _tdc_errorid  = word >> 24;
+    _type          = word >> 36;
+    _eventid       = word >> 17;
+    _eventid_t     = word >> 16;
+    _triggerledge  = word >>  0;
+    _csmid         = word >> 37;
+    _tdcid         = word >> 32;
+    _chnlid        = word >> 27;
+    _mode          = word >> 25;
+    _ledge         = word >>  8;
+    _width         = word >>  0;
+    _hitcount      = word >>  0;
+    _tdc_eventid   = word >> 12;
+    _tdc_hdrTrlrID = word >> 24;
 
-    type          = static_cast<uint8_t >((_type        .to_ulong()));
-    eventid       = static_cast<uint16_t>((_eventid     .to_ulong()));
-    eventid_t     = static_cast<uint16_t>((_eventid_t   .to_ulong()));
-    triggerledge  = static_cast<uint32_t>((_triggerledge.to_ulong()));
-    csmid         = static_cast<uint8_t >((_csmid       .to_ulong()));
-    tdcid         = static_cast<uint8_t >((_tdcid       .to_ulong()));
-    chnlid        = static_cast<uint8_t >((_chnlid      .to_ulong()));
-    mode          = static_cast<uint8_t >((_mode        .to_ulong()));
-    ledge         = static_cast<uint32_t>((_ledge       .to_ulong()));
-    width         = static_cast<uint8_t >((_width       .to_ulong()));
-    hitcount      = static_cast<uint16_t>((_hitcount    .to_ulong()));
-    tdc_eventid   = static_cast<uint16_t>((_tdc_eventid .to_ulong()));
-    tdc_errorid   = static_cast<uint8_t >((_tdc_errorid .to_ulong()));
+    type           = static_cast<uint8_t >((_type         .to_ulong()));
+    eventid        = static_cast<uint16_t>((_eventid      .to_ulong()));
+    eventid_t      = static_cast<uint16_t>((_eventid_t    .to_ulong()));
+    triggerledge   = static_cast<uint32_t>((_triggerledge .to_ulong()));
+    csmid          = static_cast<uint8_t >((_csmid        .to_ulong()));
+    tdcid          = static_cast<uint8_t >((_tdcid        .to_ulong()));
+    chnlid         = static_cast<uint8_t >((_chnlid       .to_ulong()));
+    mode           = static_cast<uint8_t >((_mode         .to_ulong()));
+    ledge          = static_cast<uint32_t>((_ledge        .to_ulong()));
+    width          = static_cast<uint8_t >((_width        .to_ulong()));
+    hitcount       = static_cast<uint16_t>((_hitcount     .to_ulong()));
+    tdc_eventid    = static_cast<uint16_t>((_tdc_eventid  .to_ulong()));
+    tdc_hdrTrlrID  = static_cast<uint8_t >((_tdc_hdrTrlrID.to_ulong()));
 
     if(isTDCError()) {
 
@@ -232,15 +233,15 @@ namespace Muon {
   uint8_t  Signal:: Width         () const { return width                              ; }
   uint16_t Signal:: HitCount      () const { return hitcount                           ; }
   uint16_t Signal:: TDCHeaderEID  () const { return tdc_eventid                        ; }
-  uint8_t  Signal:: TDCErrorIdent () const { return tdc_errorid                        ; }
+  uint8_t  Signal:: TDCHdrTrlrID  () const { return tdc_hdrTrlrID                      ; }
 
-  bool           Signal:: isEventHeader () const { return Type         () == HEADER          ; }
-  bool           Signal:: isEventTrailer() const { return Type         () == TRAILER         ; }
-  bool           Signal:: isTDCHeader   () const { return Channel      () == TDC_HEADER_CHNL ; }
-  bool           Signal:: isTDCTrailer  () const { return Channel      () == TDC_TRAILER_CHNL; }
-  bool           Signal:: isTDCError    () const { return TDCErrorIdent() == TDC_ERROR_IDENT ; }
+  bool     Signal:: isEventHeader () const { return Type         () == HEADER           ; }
+  bool     Signal:: isEventTrailer() const { return Type         () == TRAILER          ; }
+  bool     Signal:: isTDCHeader   () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT ; }
+  bool     Signal:: isTDCTrailer  () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT; }
+  bool     Signal:: isTDCError    () const { return TDCHdrTrlrID () == TDC_ERROR_IDENT  ; }
 
-  TDCErrorData   Signal::getTDCError    () const { return errorData                          ; }
+  TDCErrorData Signal::getTDCError() const { return errorData                           ; }
 
 }
 #endif

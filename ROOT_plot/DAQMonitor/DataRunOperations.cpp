@@ -23,6 +23,7 @@
 #include "DAQMonitor/Views/RunView.cpp"
 
 #include "macros/UIFramework/UIException.cpp"
+#include "macros/UIFramework/UISignals.cpp"
 
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/Threads.cpp"
@@ -40,20 +41,90 @@ using namespace State;
 namespace Muon {
 namespace DataRun {
 
-    void startRun     ();
-    void stopRun      ();
+    void startRun      ();
+    void stopRun       ();
+    void openRunViewer ();
+    void closeRunViewer();
 
 }
 namespace DataRunIMPL {
 
     void initializeDataStream(LockableStream &dataStream);
 
+    class RunWindows {
+
+    public:
+
+        RunWindows    (      RunWindows &other) = delete;
+        void operator=(const RunWindows &other) = delete;
+
+        void openRunViewer       ();
+        void closeRunViewer      ();
+        void closeRunViewerWindow();
+
+        static RunWindows &getInstance();
+
+    private:
+
+        RunWindows();
+
+        RunView *viewer;
+
+    };
+
 }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+DataRunIMPL::RunWindows::RunWindows() : viewer(nullptr) {}
+
+void DataRunIMPL::RunWindows::openRunViewer() {
+
+    // TODO: Open it with the currently open plotting windows selected.
+
+    if(viewer != nullptr) return;
+
+    viewer = new RunView(gClient->GetRoot());
+
+    viewer->SetWindowName("Run Viewer");
+    viewer->MapSubwindows();
+    viewer->Resize(viewer->GetDefaultSize());
+    viewer->MapWindow();
+
+    viewer->Connect("CloseWindow()", "DataRunIMPL::RunWindows", this, "closeRunViewer()");
+
+}
+
+void DataRunIMPL::RunWindows::closeRunViewer() {
+
+    if(viewer == nullptr) return;
+
+    viewer = nullptr;
+
+}
+
+void DataRunIMPL::RunWindows::closeRunViewerWindow() {
+
+    if(viewer == nullptr) return;
+
+    RunView *temp = viewer;
+
+    closeRunViewer();
+
+    temp->CloseWindow();
+
+}
+
+DataRunIMPL::RunWindows &DataRunIMPL::RunWindows::getInstance() {
+
+    static RunWindows instance;
+
+    return instance;
+
+}
 
 void DataRunIMPL::initializeDataStream(LockableStream &dataStream) {
 
@@ -97,6 +168,18 @@ void DataRunIMPL::initializeDataStream(LockableStream &dataStream) {
 
 }
 
+void DataRun::openRunViewer() {
+
+    DataRunIMPL::RunWindows::getInstance().openRunViewer();
+
+}
+
+void DataRun::closeRunViewer() {
+
+    DataRunIMPL::RunWindows::getInstance().closeRunViewerWindow();
+
+}
+
 void DataRun::stopRun() {
 
     using namespace DataRunIMPL;
@@ -110,6 +193,9 @@ void DataRun::stopRun() {
     }
 
     Terminator::getInstance().terminate("RUN_FLAG");
+
+    // Emit a signal that the run stopped
+    UISignalBus::getInstance().onRunStop();
 
 }
 
@@ -222,13 +308,6 @@ void DataRun::startRun() {
 
     ProgramFlow::threadLock.unlock();
 
-    // TODO: MOVE EVERYTHING BELOW SOMEWHERE ELSE
-
-    RunView *viewer = new RunView(gClient->GetRoot());
-
-    viewer->SetWindowName("Run Viewer");
-    viewer->MapSubwindows();
-    viewer->Resize(viewer->GetDefaultSize());
-    viewer->MapWindow();
+    UISignalBus::getInstance().onRunStart();
 
 }

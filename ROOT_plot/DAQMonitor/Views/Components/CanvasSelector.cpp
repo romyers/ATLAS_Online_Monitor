@@ -14,6 +14,8 @@
 using namespace std;
 using namespace Muon;
 
+// TODO: Make check buttons uncheck when a plot window is closed
+
 class CanvasSelector : public TGVerticalFrame {
 
 public:
@@ -28,7 +30,8 @@ public:
 
 	// OPERATIONS
 
-	void openPlots();
+	void openPlots ();
+	void closePlots();
 
 private:
 
@@ -39,7 +42,9 @@ private:
 		TGCheckButton *ADC_Plots;
 		TGCheckButton *TDC_Plots;
 
-	TGTextButton *openButton;
+	TGButtonGroup *commandButtons;
+		TGTextButton *openButton;
+		TGTextButton *closeButton;
 
     // CONNECTIONS
 
@@ -49,7 +54,8 @@ private:
 
 void CanvasSelector::makeConnections() {
 
-	openButton->Connect("Clicked()", "CanvasSelector", this, "openPlots()");
+	openButton ->Connect("Clicked()", "CanvasSelector", this, "openPlots()");
+	closeButton->Connect("Clicked()", "CanvasSelector", this, "closePlots()");
 
 }
 
@@ -68,14 +74,23 @@ CanvasSelector::CanvasSelector(
 		TDC_Plots = new TGCheckButton(plotButtons, "TDC Plots");
 		plotButtons->AddFrame(TDC_Plots, new TGLayoutHints(kLHintsTop));
 
-	openButton = new TGTextButton(this, "Open Plots");
-	AddFrame(openButton, new TGLayoutHints(kLHintsRight));
+	commandButtons = new TGButtonGroup(this, "", kHorizontalFrame);
+	AddFrame(commandButtons, new TGLayoutHints(kLHintsCenterX));
+
+		openButton = new TGTextButton(commandButtons, "Open Selected");
+		commandButtons->AddFrame(openButton, new TGLayoutHints(kLHintsRight));
+
+		closeButton = new TGTextButton(commandButtons, "Close All");
+		commandButtons->AddFrame(closeButton, new TGLayoutHints(kLHintsRight));
 
 	makeConnections();
 
 }
 
 void CanvasSelector::openPlots() {
+
+	// TODO: It would be nice if CanvasSelecter didn't have to know what plots
+	//       exist
 
 	if(ADC_Plots->IsDown()) {
 
@@ -96,6 +111,16 @@ void CanvasSelector::openPlots() {
 		Plotting::closeTDCWindow();
 
 	}
+
+}
+	
+void CanvasSelector::closePlots() {
+
+	Plotting::closeADCWindow();
+	Plotting::closeTDCWindow();
+
+	ADC_Plots->SetState(kButtonUp);
+	TDC_Plots->SetState(kButtonUp);
 
 }
 

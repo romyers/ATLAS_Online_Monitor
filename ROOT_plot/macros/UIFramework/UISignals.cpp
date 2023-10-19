@@ -13,9 +13,6 @@
 
 #pragma once
 
-#include <algorithm>
-#include <exception>
-
 using namespace std;
 
 class UISignalBus {
@@ -28,6 +25,11 @@ public:
     void operator=(const UISignalBus &other) = delete;
 
     void onUpdate(); // *SIGNAL*
+
+    // TODO: This is too tightly coupled to data runs to belong in a general
+    //       UI element. Fix this.
+    void onRunStart(); // *SIGNAL*
+    void onRunStop (); // *SIGNAL*
 
     static UISignalBus &getInstance();
 
@@ -50,5 +52,17 @@ UISignalBus &UISignalBus::getInstance() {
 void UISignalBus::onUpdate() {
 
     Emit("onUpdate()");
+
+}
+
+void UISignalBus::onRunStart() {
+
+    Emit("onRunStart()");
+
+}
+
+void UISignalBus::onRunStop() {
+
+    Emit("onRunStop()");
 
 }

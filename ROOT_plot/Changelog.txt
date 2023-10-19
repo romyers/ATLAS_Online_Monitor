@@ -1,3 +1,38 @@
+## Known issues
+
+- Occasional segfaults occur when opening and closing windows.
+- Device selector and file selector don't reenable when a run is stopped.
+- Run viewer becomes inaccessible when closed unless the run is restarted.
+- It is not obvious to user whether settings panel has been applied.
+
+
+## 2023-10-19
+
+## Added
+
+- Added a "Close All" button to RunViewer's canvas selector that closes any
+  open plotting windows.
+
+## Changed
+
+- TDC header and trailer signals are now identified by all identifying bits
+  not just the ones that are also the channel ID.
+- Starting and stopping runs now emit signals on the UISignalBus, which are
+  connected to methods that disable and enable various UI elements.
+
+## Fixed
+
+- Fixed issue where signal validators would print unreadable characters instead
+  of integer TDC error data for TDC error signals.
+- Fixed issue where TDC header and trailer signals would be packaged into 
+  events. The decode pipeline would ultimately try to bin them into events,
+  and fail because their channels don't exist. TDC header and trailer signals
+  are now discarded from the signal buffer before it is packaged into an event.
+- Fixed issue where the run viewer would open on starting a run even if it was
+  already open.
+
+-------------------------------------------------------------------------------
+
 ## 2023-10-17
 
 ## Added
@@ -27,7 +62,3 @@
   passed the name of a device that does not exist.
 - Deleting various views would induce double deletion due to erroneous explicit
   calls to superclass destructors.
-
-## Known Issues
-
-- Occasional segfaults occur when opening and closing windows.

@@ -50,5 +50,7 @@ void EntryOperations::stopRun() {
 void EntryOperations::startRun() {
 
 	DataRun::startRun();
+
+	DataRun::openRunViewer();
 	
 }

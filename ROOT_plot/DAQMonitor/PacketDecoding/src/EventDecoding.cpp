@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "macros/ErrorLogger.cpp"
 
@@ -35,6 +36,18 @@ void  processEvent         (      Event          &e      );
 
 // TODO: We also want some metadata, as described in DecodeOffline
 Event assembleEvent(vector<Signal> signals) {
+
+	// Discard TDC headers and trailers before packaging an event
+	signals.erase(
+		remove_if(
+			signals.begin(), 
+			signals.end(), 
+			[](const Signal &sig) {
+				return sig.isTDCHeader() || sig.isTDCTrailer();
+			}
+		), 
+		signals.end()
+	);
 
 	return Event(
 		signals.front(), 

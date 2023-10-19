@@ -14,10 +14,6 @@
 
 using namespace std;
 
-// TODO: When we close the RunView, things get a little bit weird bc the
-//       run doesn't stop but we can't reopen the RunView. We should be able
-//       to do one or the other.
-
 class RunView : public TGMainFrame {
 
 public:
@@ -30,11 +26,26 @@ private:
 
 	CanvasSelector *canvasSelector;
 
+	// CONNECTIONS
+
+	void makeConnections();
+
 };
+
+void RunView::makeConnections() {
+
+	// TODO: Before we reimplement this, we need to handle the case where 
+	//       RunView stops the run while something else is stopping it or
+	//       after something else has already stopped it.
+	// Connect("CloseWindow()", "DataRun", nullptr, "stopRun()");
+
+}
 
 RunView::RunView(const TGWindow *p) : TGMainFrame(p) {
 
 	canvasSelector = new CanvasSelector(this, "Select Plots");
 	AddFrame(canvasSelector, new TGLayoutHints(kLHintsCenterX));
+
+	makeConnections();
 
 }
