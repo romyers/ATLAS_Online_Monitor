@@ -241,26 +241,18 @@ void DataSourcePanel::enable() {
 
     dataSourceLabel->Enable();
 
-    // ROOT clears button states on enable for who knows
-    // what reason so we have to save the state first.
-    EButtonState fileDown   = fileButton  ->GetState();
-    EButtonState deviceDown = deviceButton->GetState();
-
     fileButton  ->SetEnabled(true);
     deviceButton->SetEnabled(true);
 
-    // FIXME: The file and device selectors don't reenable
-    if(fileDown == kButtonDown) {
+    if(fileButton->GetState() & kButtonDown) {
 
         fileSelector->enable();
-        fileButton->SetState(kButtonDown);
 
     }
 
-    if(deviceDown == kButtonDown) {
+    if(deviceButton->GetState() & kButtonDown) {
 
         deviceSelector->enable();
-        deviceButton->SetState(kButtonDown);
 
     }
 

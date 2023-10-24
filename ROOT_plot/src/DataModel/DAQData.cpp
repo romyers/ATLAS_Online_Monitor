@@ -31,6 +31,9 @@ struct DAQData {
     // src/DataModel/Plots.cpp.
     Plots plots;
 
+    int totalEventCount = 0;
+    int packetCount     = 0;
+
     void lock  () const; // Locks an internal mutex
     void unlock() const; // Unlocks an internal mutex
 
@@ -76,5 +79,8 @@ void DAQData::clear () {
 
     processedEvents.clear();
     plots.clear();
+
+    totalEventCount = 0;
+    packetCount     = 0;
 
 }

@@ -197,7 +197,7 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
   static TimeCorrection tc = TimeCorrection();
   // static EventDisplay   ed = EventDisplay();
 
-  Noisecut ncut = Noisecut(); // TODO: Check with Yuxiang about whether to restore this functionality
+  Noisecut ncut = Noisecut();
 
 
   TH1F *p_leading_time = new TH1F("leading time spectrum", "leading time spectrum", 100, 0, 1000);
@@ -423,7 +423,7 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
         event = Event(header_sig,trailer_sig,sigVec);
         // DoHitFinding(&event,tc,ncut,0);
         DoHitFinding(&event,tc,0,0);
-        //DoHitClustering(&event, geo); // TODO: Check with Yuxiang about whether to restore this functionality
+        //DoHitClustering(&event, geo);
         pass_event_check = kTRUE;
         //pass_event_check = CheckEvent(event, geo);
         event.SetPassCheck(pass_event_check);

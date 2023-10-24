@@ -136,7 +136,8 @@ void StartMonitor(const string &filename = "") {
 	// exist, since it does not interrupt anything
 	setTerminationHandlers(flagForTermination);
 
-	MonitorHooks::beforeStartRun();
+	DAQData &data = DAQData::getInstance();
+	MonitorHooks::beforeStartRun(data);
 
 	thread dataCaptureThread([&sessionHandler, &dataStream]() {
 
@@ -209,7 +210,7 @@ void StartMonitor(const string &filename = "") {
 	/////////////////////////// DATA PROCESSING ///////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
-	thread decodeThread([&dataStream]() {
+	thread decodeThread([&dataStream, &data]() {
 
 		Geometry::getInstance().SetRunN(getRunNumber());
 
@@ -217,7 +218,7 @@ void StartMonitor(const string &filename = "") {
 
 		while(!Terminator::getInstance().isTerminated()) {
 
-			MonitorHooks::beforeUpdateData();
+			MonitorHooks::beforeUpdateData(data);
 
 			monitor.refresh();
 
@@ -232,7 +233,7 @@ void StartMonitor(const string &filename = "") {
 			}
 			dataStream.unlock();
 
-			MonitorHooks::updatedData();
+			MonitorHooks::updatedData(data);
 
 			this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
 
@@ -242,12 +243,12 @@ void StartMonitor(const string &filename = "") {
 
 	});
 
-	MonitorHooks::startedRun();
+	MonitorHooks::startedRun(data);
 
 	decodeThread     .join();
 	dataCaptureThread.join();
 
-	MonitorHooks::finishedRun();
+	MonitorHooks::finishedRun(data);
 
 	cout << endl << "Processed " << DAQData::getInstance().processedEvents.size() << " events." << endl;
 

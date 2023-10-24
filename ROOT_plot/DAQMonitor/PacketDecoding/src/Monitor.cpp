@@ -140,6 +140,12 @@ void Monitor::refresh() {
 
 	}
 
+	// TODO: Make it clear that totalEventCount does not include events that
+	//       were dropped
+	data.lock();
+	data.totalEventCount += eventBuffer.size();
+	data.unlock();
+
 	eventBuffer.clear();
 
 	// NOTE: processedEvents will maintain a record of each event received

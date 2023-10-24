@@ -20,6 +20,7 @@ using namespace std;
 
 #include "src/Geometry.cpp"
 #include "src/ProgramControl/Terminator.cpp"
+#include "src/DataModel/DAQData.cpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -28,7 +29,7 @@ using namespace std;
 namespace Muon {
 namespace Decoder {
 
-    void runDecoding(LockableStream &dataStream);
+    void runDecoding(LockableStream &dataStream, DAQData &data);
 
 }
 }
@@ -40,16 +41,7 @@ namespace Decoder {
 
 // TODO: I'd like the termination condition to be defined with the thread,
 //       rather than in the run function.
-void Decoder::runDecoding(LockableStream &dataStream) {
-
-    // Clear the DAQData of any data from a previous run
-    DAQData &data = DAQData::getInstance();
-
-    data.lock  ();
-    data.clear ();
-    data.unlock();
-
-    Geometry::getInstance().SetRunN(getRunNumber());
+void Decoder::runDecoding(LockableStream &dataStream, DAQData &data) {
 
     Monitor monitor(dataStream, data);
 
@@ -94,5 +86,18 @@ void Decoder::runDecoding(LockableStream &dataStream) {
     }
 
     cout << "Suspended data decoding." << endl; // TODO: mutex
+
+    data.lock();
+    cout << "Processed "
+         << data.totalEventCount
+         << " events."
+         << endl;
+
+    // TODO: Should this include empty events?
+    cout << "Processed " 
+         << data.processedEvents.size() 
+         << " nonempty events." 
+         << endl;
+    data.unlock();
 
 }

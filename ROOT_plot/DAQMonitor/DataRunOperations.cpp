@@ -25,9 +25,9 @@
 #include "macros/UIFramework/UIException.cpp"
 #include "macros/UIFramework/UISignals.cpp"
 
+#include "src/Geometry.cpp"
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/ProgramControl/Threads.cpp"
-#include "src/Geometry.cpp"
 #include "src/DataModel/DAQData.cpp"
 
 using namespace std;
@@ -250,39 +250,45 @@ void DataRun::startRun() {
     state.tempState.runStarted = true;
     state.commit(); // NOTE: This shouldn't fail, but better if it's robust
 
+    // Clear the DAQData of any data from a previous run
+    DAQData &data = DAQData::getInstance();
+
+    data.lock  ();
+    data.clear ();
+    data.unlock();
+
+    Geometry::getInstance().SetRunN(getRunNumber());
+
     // TODO: Hook up error handling on a per-thread basis. Threads should
     //       report to a threadsafe error handler that does the error handling
+    // TODO: It's not obvious why we make a parent thread. It's because we want
+    //       a few things to happen after the capture and decode threads are
+    //       joined. Make that more obvious.
     ProgramFlow::threadLock.lock();
-    ProgramFlow::threads.emplace_back(thread([]() {
+    ProgramFlow::threads.emplace_back(thread([&data]() {
 
         LockableStream dataStream;
         initializeDataStream(dataStream);
 
         // TODO: Put the thread termination conditions here
-        thread dataCaptureThread([&dataStream]() {
+        thread dataCaptureThread([&dataStream, &data]() {
 
             if(DAQState::getState().persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
-                DataCapture::runDataCapture(dataStream);
+                DataCapture::runDataCapture(dataStream, data);
 
             }
 
         });
 
-        thread decodeThread([&dataStream](){
+        thread decodeThread([&dataStream, &data](){
 
-            Decoder::runDecoding(dataStream);
+            Decoder::runDecoding(dataStream, data);
 
         });
 
         dataCaptureThread.join();
         decodeThread     .join();
-
-        // TODO: Should this include empty events?
-        cout << "Processed " 
-             << DAQData::getInstance().processedEvents.size() 
-             << " nonempty events." 
-             << endl;
 
         // TODO: Again, I would rather avoid caring about the type of stream.
         // TODO: We don't really need to lock here
@@ -303,6 +309,8 @@ void DataRun::startRun() {
         // Once the run is shut down, we can clear the
         // run flag if it exists
         Terminator::getInstance().clearFlag("RUN_FLAG");
+
+        cout << "Run finished!" << endl;
 
     }));
 

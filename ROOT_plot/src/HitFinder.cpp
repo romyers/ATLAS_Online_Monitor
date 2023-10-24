@@ -30,6 +30,11 @@ void DoHitFinding(Event *e, const TimeCorrection &tc, Noisecut ncut, int relativ
   double corr_time  = 0;
   // do trigger hit finding
   for (auto sig : e->Signals()) {
+
+    // Skip TDC headers and trailers
+    if(sig.isTDCHeader ()) continue;
+    if(sig.isTDCTrailer()) continue;
+
     adc_time = sig.Width()*BINSIZE*WIDTHSEL;
     if(adc_time>=ncut.ADCTimeCut(sig.TDC(),sig.Channel())){
       tdc_time = sig.LEdge()*BINSIZE;
@@ -43,7 +48,9 @@ void DoHitFinding(Event *e, const TimeCorrection &tc, Noisecut ncut, int relativ
       h = Hit(tdc_time,adc_time,drift_time,corr_time,sig.TDC(),sig.Channel());
       e->AddHit(h);
     }
+
   }
+
 }
 
 void DoHitFinding(Event *e, const TimeCorrection &tc, double adc_cut, int relative) {
@@ -54,6 +61,11 @@ void DoHitFinding(Event *e, const TimeCorrection &tc, double adc_cut, int relati
   double corr_time  = 0;
   // do trigger hit finding
   for (auto sig : e->Signals()) {
+
+    // Skip TDC headers and trailers
+    if(sig.isTDCHeader ()) continue;
+    if(sig.isTDCTrailer()) continue;
+
     adc_time = sig.Width()*BINSIZE*WIDTHSEL;
     if(adc_time>=adc_cut){
       tdc_time = sig.LEdge()*BINSIZE;

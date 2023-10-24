@@ -7,9 +7,12 @@
  * 
  * Each hook may be treated as a void 'main function' (without command line 
  * arguments) that runs at the right time in the program. Depending on which
- * lifecycle hook you're programming in, the singleton DAQData may be populated
- * with processed events and plots. Access DAQData via the 
- * DAQData::getInstance() method. See src/DataModel/DAQData.cpp for more.
+ * lifecycle hook you're programming in, the DAQData variable may be populated
+ * with processed events and plots. See src/DataModel/DAQData.cpp for more.
+ * 
+ * DAQData is currently passed in by const reference, but feel free to 
+ * remove the const condition if you need to, keeping in mind that DAQData
+ * is not meant to be written to.
  * 
  * src/ProgramControl/Terminator.cpp provides a universal termination condition
  * that can be checked for to determine if the program has been flagged for
@@ -114,7 +117,7 @@ namespace MonitorHooks {
 	 * This is called at monitor startup, before any threads are started and
 	 * before data capture and decoding begins.
 	 */
-	void beforeStartRun() {
+	void beforeStartRun(const DAQData &data) {
 
 
 
@@ -123,7 +126,7 @@ namespace MonitorHooks {
 	/**
 	 * This is called after the data capture and decoding threads are started.
 	 */
-	void startedRun() {
+	void startedRun(const DAQData &data) {
 
 		// TERMINATOR EXAMPLE:
 
@@ -168,12 +171,9 @@ namespace MonitorHooks {
 	 * decoding is finished and their respective threads joined. At this
 	 * point, DAQData will be in its final state.
 	 */
-	void finishedRun() {
+	void finishedRun(const DAQData &data) {
 
 		// DAQDATA EXAMPLE:
-
-		// Retrieve DAQData like this:
-		DAQData &data = DAQData::getInstance();
 
 		// Always lock it before using it to avoid data races, even when there
 		// shouldn't be anything messing with the DAQData concurrently.
@@ -243,7 +243,7 @@ namespace MonitorHooks {
 	 * This is called at the beginning of each decode loop, before captured
 	 * data is decoded and aggregated.
 	 */
-	void beforeUpdateData() {
+	void beforeUpdateData(const DAQData &data) {
 
 		
 
@@ -253,7 +253,7 @@ namespace MonitorHooks {
 	 * This is called at the end of each decode loop, after captured data
 	 * is decoded and aggregated.
 	 */
-	void updatedData() {
+	void updatedData(const DAQData &data) {
 
 		
 

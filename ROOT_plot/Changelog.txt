@@ -1,10 +1,40 @@
 ## Known issues
 
 - Occasional segfaults occur when opening and closing windows.
-- Device selector and file selector don't reenable when a run is stopped.
 - Run viewer becomes inaccessible when closed unless the run is restarted.
 - It is not obvious to user whether settings panel has been applied.
 
+-------------------------------------------------------------------------------
+
+## 2023-10-24
+
+## Added
+
+- DAQData now tracks:
+    Packet count
+    Event count
+- Added more validation to event decoding. Not quite everything is there yet
+  though.
+
+## Changed
+
+- DAQData is now passed around rather than accessed directly with getInstance
+  more often. Eventually, DAQData will not need to be a singleton.
+    This includes MonitorHooks.cpp, where DAQData is now meant to be accessed
+    via function parameters.
+- Events can now handle TDC headers and trailers, and TDC headers and trailers
+  need not be excluded when assembling events. The hitfinder simply ignores
+  TDC headers and trailers.
+- Signal.cpp now provides interface for reading header and trailer counts from
+  event trailers, as well as header/trailer count error flags.
+- Validation is now done on event TDC headers and trailers
+
+## Fixed
+
+- Fixed issue where the settings panel would not fully reenable when a run was
+  stopped.
+
+-------------------------------------------------------------------------------
 
 ## 2023-10-19
 
@@ -16,7 +46,8 @@
 ## Changed
 
 - TDC header and trailer signals are now identified by all identifying bits
-  not just the ones that are also the channel ID.
+  not just the ones that are also the channel ID. This is relevant in cases
+  where corrupted signals were classified as TDC headers or trailers.
 - Starting and stopping runs now emit signals on the UISignalBus, which are
   connected to methods that disable and enable various UI elements.
 

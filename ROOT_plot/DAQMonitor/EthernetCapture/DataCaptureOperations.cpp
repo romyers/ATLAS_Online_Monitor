@@ -20,6 +20,7 @@
 #include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
 
 #include "src/ProgramControl/Terminator.cpp"
+#include "src/DataModel/DAQData.cpp"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ using namespace std;
 namespace Muon {
 namespace DataCapture {
 
-    void runDataCapture(LockableStream &dataStream);
+    void runDataCapture(LockableStream &dataStream, DAQData &data);
 
 }
 namespace DataCaptureIMPL {
@@ -49,7 +50,7 @@ namespace DataCaptureIMPL {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void Muon::DataCapture::runDataCapture(LockableStream &dataStream) {
+void Muon::DataCapture::runDataCapture(LockableStream &dataStream, DAQData &data) {
 
     using namespace DataCaptureIMPL;
 
@@ -117,6 +118,10 @@ void Muon::DataCapture::runDataCapture(LockableStream &dataStream) {
 
         }
 
+        data.lock();
+        data.packetCount = packets;
+        data.unlock();
+
     }
 
     /////////////////////////////////////////////////////////
@@ -125,8 +130,8 @@ void Muon::DataCapture::runDataCapture(LockableStream &dataStream) {
 
     fileWriter.close();
 
-    cout << "Run finished!" << endl;
-    cout << packets << " packets recorded." << endl;
+    cout << "Suspended data capture." << endl;
+    cout << data.packetCount << " packets recorded." << endl;
 
 }
 

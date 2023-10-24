@@ -37,18 +37,6 @@ void  processEvent         (      Event          &e      );
 // TODO: We also want some metadata, as described in DecodeOffline
 Event assembleEvent(vector<Signal> signals) {
 
-	// Discard TDC headers and trailers before packaging an event
-	signals.erase(
-		remove_if(
-			signals.begin(), 
-			signals.end(), 
-			[](const Signal &sig) {
-				return sig.isTDCHeader() || sig.isTDCTrailer();
-			}
-		), 
-		signals.end()
-	);
-
 	return Event(
 		signals.front(), 
 		signals.back(),
@@ -64,6 +52,7 @@ Event assembleEvent(vector<Signal> signals) {
 //       report without dropping the event
 //         -- validateEventErrors and validateEventWarnings
 // TODO: Use exceptions?
+// Validation that, when failed, drops the event
 bool validateEventErrors(const Event &e) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
@@ -129,9 +118,86 @@ bool validateEventErrors(const Event &e) {
 
 }
 
+// Validation that, when failed, keeps the event but warns the user.
 void validateEventWarnings(const Event &e) {
 
+	ErrorLogger &logger = ErrorLogger::getInstance();
 
+	if(e.Trailer().HeaderCountErr()) {
+
+		logger.logError(
+			string("WARNING -- Header count error flag. Got ")
+			+ to_string(e.Trailer().TDCHdrCount())
+			+ " header(s)!",
+			EVENT_WARN
+		);
+
+	}
+
+	if(e.Trailer().TrailerCountErr()) {
+
+		logger.logError(
+			string("WARNING -- Trailer count error flag. Got ")
+			+ to_string(e.Trailer().TDCTlrCount())
+			+ " trailer(s)!",
+			EVENT_WARN
+		);
+
+	}
+
+	/*
+	if(e.Trailer().HitCount() != e.Signals().size() + [error_word_count]) {
+
+		logger.logError(
+			string("WARNING -- Hit count in trailer = ")
+			+ to_string(e.Trailer().HitCount())
+			+ ", real hit count = "
+			+ to_string(e.Signals().size())
+			+ ", error word count = TODO: IMPLEMENT",
+			EVENT_WARN
+		);
+
+	}
+	*/
+
+	int TDCHeaderCount  = 0;
+	int TDCTrailerCount = 0;
+
+	for(const Signal &sig : e.Signals()) {
+
+		if(sig.isTDCHeader ()) ++TDCHeaderCount ;
+		if(sig.isTDCTrailer()) ++TDCTrailerCount;
+
+	}
+
+	if(TDCHeaderCount != e.Trailer().TDCHdrCount()) {
+
+		logger.logError(
+			string("WARNING -- ")
+			+ to_string(TDCHeaderCount)
+			+ " found in data, event trailer indicates "
+			+ to_string(e.Trailer().TDCHdrCount())
+			+ "!",
+			EVENT_WARN
+		);
+
+	}
+
+	if(TDCTrailerCount != e.Trailer().TDCTlrCount()) {
+
+		logger.logError(
+			string("WARNING -- ")
+			+ to_string(TDCTrailerCount)
+			+ " found in data, event trailer indicates "
+			+ to_string(e.Trailer().TDCTlrCount())
+			+ "!",
+			EVENT_WARN
+		);
+
+	}
+
+	// TODO: Validate trailer hit count against e.signals().size() + error_word_count
+	//         -- make sure to exclude TDC headers and trailers
 
 }
 
@@ -142,8 +208,5 @@ void processEvent(Event &e) {
 
 	e.SetPassCheck(true);
 	e.CheckClusterTime();
-
-	// DEBUG
-	// cout << e << endl;
 
 }

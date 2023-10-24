@@ -32,22 +32,22 @@ namespace Muon {
                   vector <Cluster> clusts, vector<Track> trks);
     Event(const Event &e);
 
-    int             ID      () const;
-    Signal          Header  () const;
-    Signal          Trailer () const;
-    vector<Signal>  Signals () const;
-    vector<Hit>     Hits    () const;
-    vector<Cluster> Clusters() const;
-    vector<Track>   Tracks  () const;
-    bool            Pass    () const;
+    int             ID              () const;
+    Signal          Header          () const;
+    Signal          Trailer         () const;
+    vector<Signal>  Signals         () const;
+    vector<Hit>     Hits            () const;
+    vector<Cluster> Clusters        () const;
+    vector<Track>   Tracks          () const;
+    bool            Pass            () const;
 
     vector<Cluster> mClusters();
 
-    void   AddHit       (Hit h);
-    void   update       ();
-    void   SetPassCheck (bool b);
+    void   AddHit       (Hit h    );
+    void   update       (         );
+    void   SetPassCheck (bool b   );
     void   AddCluster   (Cluster c);
-    void   AddTrack     (Track t);
+    void   AddTrack     (Track t  );
 
     // temporary
     void CheckClusterTime();
@@ -63,9 +63,9 @@ namespace Muon {
     vector<Hit>     hits;         
     vector<Cluster> clusters;     
     vector<Track>   tracks;       
-    int             nSigs         = 0;
-    bool            pass          = kFALSE;
-    bool            hasBadHitTime = kFALSE;
+    int             nSigs           = 0     ;
+    bool            pass            = kFALSE;
+    bool            hasBadHitTime   = kFALSE;
   };
 
   /**
@@ -122,34 +122,36 @@ namespace Muon {
   }
 
   Event::Event() {
-    hd       = Signal();
-    trl      = Signal();
-    sigs     = vector<Signal>();
-    hits     = vector<Hit>();
-    clusters = vector<Cluster>();
-    tracks   = vector<Track>();
-    nSigs    = 0;
+    hd              = Signal();
+    trl             = Signal();
+    sigs            = vector<Signal>();
+    hits            = vector<Hit>();
+    clusters        = vector<Cluster>();
+    tracks          = vector<Track>();
+    nSigs           = 0;
   }
 
   Event::Event(Signal header, Signal trailer, vector<Signal> signals){
-    hd       = header;
-    trl      = trailer;
-    sigs     = signals;
-    hits     = vector<Hit>();
-    clusters = vector<Cluster>();
-    tracks   = vector<Track>();
-    nSigs    = 0;
+    hd              = header;
+    trl             = trailer;
+    sigs            = signals;
+    hits            = vector<Hit>();
+    clusters        = vector<Cluster>();
+    tracks          = vector<Track>();
+    nSigs           = 0;
+
   }
 
   Event::Event(Signal header, Signal trailer, vector<Signal> signals, vector<Hit> wirehits,
          vector<Cluster> clusts, vector<Track> trks) {
-    hd       = header;
-    trl      = trailer;
-    sigs     = signals;
-    hits     = wirehits;
-    clusters = clusts;
-    tracks   = trks;
-    nSigs    = 0;
+    hd              = header;
+    trl             = trailer;
+    sigs            = signals;
+    hits            = wirehits;
+    clusters        = clusts;
+    tracks          = trks;
+    nSigs           = 0;
+
     update();
   }
 
@@ -163,13 +165,15 @@ namespace Muon {
     update();
   }
   
-  int             Event::ID      () const { return Header().HeaderEID(); }
-  Signal          Event::Header  () const { return hd                  ; }
-  Signal          Event::Trailer () const { return trl                 ; }
-  vector<Signal>  Event::Signals () const { return sigs                ; }
-  vector<Hit>     Event::Hits    () const { return hits                ; }
-  vector<Cluster> Event::Clusters() const { return clusters            ; }
-  vector<Track>   Event::Tracks  () const { return tracks              ; }
+  int             Event::ID              () const { return Header().HeaderEID(); }
+
+  Signal          Event::Header          () const { return hd                  ; }
+  Signal          Event::Trailer         () const { return trl                 ; }
+
+  vector<Signal>  Event::Signals         () const { return sigs                ; }
+  vector<Hit>     Event::Hits            () const { return hits                ; }
+  vector<Cluster> Event::Clusters        () const { return clusters            ; }
+  vector<Track>   Event::Tracks          () const { return tracks              ; }
   
   bool Event::Pass() const {
     return pass;

@@ -101,19 +101,31 @@ namespace Muon {
     Signal(             );
     Signal(uint64_t word);
 
+    // Uncategorized
     uint8_t      Type           () const;
-    uint16_t     HeaderEID      () const;
-    uint16_t     TrailerEID     () const;
-    uint32_t     TriggerLEdge   () const;
     uint8_t      CSMID          () const;
     uint8_t      TDC            () const;
-    uint8_t      Channel        () const;
-    uint8_t      Mode           () const;    
-    uint32_t     LEdge          () const;  
-    uint8_t      Width          () const;
-    uint16_t     HitCount       () const; 
+    uint8_t      Channel        () const; 
     uint16_t     TDCHeaderEID   () const;   
     uint8_t      TDCHdrTrlrID   () const;
+
+    // TDC Data  
+    uint8_t      Mode           () const;  
+    uint32_t     LEdge          () const; 
+    uint8_t      Width          () const;
+
+
+    // Event Header
+    uint16_t     HeaderEID      () const;
+    uint32_t     TriggerLEdge   () const;
+
+    // Event Trailer
+    uint16_t     TrailerEID     () const;
+    uint8_t      TDCHdrCount    () const;
+    uint8_t      TDCTlrCount    () const;
+    uint16_t     HitCount       () const; 
+    uint8_t      HeaderCountErr () const;
+    uint8_t      TrailerCountErr() const;
 
     bool         isEventHeader  () const;
     bool         isEventTrailer () const;
@@ -146,6 +158,10 @@ namespace Muon {
     uint16_t hitcount     ;
     uint16_t tdc_eventid  ;
     uint8_t  tdc_hdrTrlrID;
+    uint8_t  tdc_hdr_count;
+    uint8_t  tdc_tlr_count;
+    uint8_t  hdrCountErr  ;
+    uint8_t  tlrCountErr  ;
 
     bitset<40> word; // DEBUG
 
@@ -172,6 +188,10 @@ namespace Muon {
     bitset<10> _hitcount     ;
     bitset<12> _tdc_eventid  ;
     bitset<8>  _tdc_hdrTrlrID;
+    bitset<4>  _tdc_hdr_count;
+    bitset<4>  _tdc_tlr_count;
+    bitset<1>  _hdrCountErr  ;
+    bitset<1>  _tlrCountErr  ;
 
     _type          = word >> 36;
     _eventid       = word >> 17;
@@ -186,6 +206,10 @@ namespace Muon {
     _hitcount      = word >>  0;
     _tdc_eventid   = word >> 12;
     _tdc_hdrTrlrID = word >> 24;
+    _tdc_hdr_count = word >> 32;
+    _tdc_tlr_count = word >> 28;
+    _hdrCountErr   = word >> 15;
+    _tlrCountErr   = word >> 14;
 
     type           = static_cast<uint8_t >((_type         .to_ulong()));
     eventid        = static_cast<uint16_t>((_eventid      .to_ulong()));
@@ -200,6 +224,10 @@ namespace Muon {
     hitcount       = static_cast<uint16_t>((_hitcount     .to_ulong()));
     tdc_eventid    = static_cast<uint16_t>((_tdc_eventid  .to_ulong()));
     tdc_hdrTrlrID  = static_cast<uint8_t >((_tdc_hdrTrlrID.to_ulong()));
+    tdc_hdr_count  = static_cast<uint8_t >((_tdc_hdr_count.to_ulong()));
+    tdc_tlr_count  = static_cast<uint8_t >((_tdc_tlr_count.to_ulong()));
+    hdrCountErr    = static_cast<uint8_t >((_hdrCountErr  .to_ulong()));
+    tlrCountErr    = static_cast<uint8_t >((_tlrCountErr  .to_ulong()));
 
     if(isTDCError()) {
 
@@ -221,27 +249,31 @@ namespace Muon {
 
   }
 
-  uint8_t  Signal:: Type          () const { return type                               ; }
-  uint16_t Signal:: HeaderEID     () const { return eventid                            ; }
-  uint16_t Signal:: TrailerEID    () const { return eventid_t                          ; }
-  uint32_t Signal:: TriggerLEdge  () const { return triggerledge                       ; }
-  uint8_t  Signal:: CSMID         () const { return csmid                              ; }
-  uint8_t  Signal:: TDC           () const { return tdcid                              ; }
-  uint8_t  Signal:: Channel       () const { return chnlid                             ; }
-  uint8_t  Signal:: Mode          () const { return mode                               ; }
-  uint32_t Signal:: LEdge         () const { return ledge                              ; }
-  uint8_t  Signal:: Width         () const { return width                              ; }
-  uint16_t Signal:: HitCount      () const { return hitcount                           ; }
-  uint16_t Signal:: TDCHeaderEID  () const { return tdc_eventid                        ; }
-  uint8_t  Signal:: TDCHdrTrlrID  () const { return tdc_hdrTrlrID                      ; }
+  uint8_t  Signal:: Type           () const { return type                                ; }
+  uint16_t Signal:: HeaderEID      () const { return eventid                             ; }
+  uint16_t Signal:: TrailerEID     () const { return eventid_t                           ; }
+  uint32_t Signal:: TriggerLEdge   () const { return triggerledge                        ; }
+  uint8_t  Signal:: CSMID          () const { return csmid                               ; }
+  uint8_t  Signal:: TDC            () const { return tdcid                               ; }
+  uint8_t  Signal:: Channel        () const { return chnlid                              ; }
+  uint8_t  Signal:: Mode           () const { return mode                                ; }
+  uint32_t Signal:: LEdge          () const { return ledge                               ; }
+  uint8_t  Signal:: Width          () const { return width                               ; }
+  uint16_t Signal:: HitCount       () const { return hitcount                            ; }
+  uint16_t Signal:: TDCHeaderEID   () const { return tdc_eventid                         ; }
+  uint8_t  Signal:: TDCHdrTrlrID   () const { return tdc_hdrTrlrID                       ; }
+  uint8_t  Signal:: TDCHdrCount    () const { return tdc_hdr_count                       ; }
+  uint8_t  Signal:: TDCTlrCount    () const { return tdc_tlr_count                       ; }
+  uint8_t  Signal:: HeaderCountErr () const { return hdrCountErr                         ; }
+  uint8_t  Signal:: TrailerCountErr() const { return tlrCountErr                         ; }
 
-  bool     Signal:: isEventHeader () const { return Type         () == HEADER           ; }
-  bool     Signal:: isEventTrailer() const { return Type         () == TRAILER          ; }
-  bool     Signal:: isTDCHeader   () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT ; }
-  bool     Signal:: isTDCTrailer  () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT; }
-  bool     Signal:: isTDCError    () const { return TDCHdrTrlrID () == TDC_ERROR_IDENT  ; }
+  bool     Signal:: isEventHeader  () const { return Type         () == HEADER           ; }
+  bool     Signal:: isEventTrailer () const { return Type         () == TRAILER          ; }
+  bool     Signal:: isTDCHeader    () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT ; }
+  bool     Signal:: isTDCTrailer   () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT; }
+  bool     Signal:: isTDCError     () const { return TDCHdrTrlrID () == TDC_ERROR_IDENT  ; }
 
-  TDCErrorData Signal::getTDCError() const { return errorData                           ; }
+  TDCErrorData Signal::getTDCError () const { return errorData                           ; }
 
 }
 #endif
