@@ -1,6 +1,6 @@
-Data Source: 2
-Input Device Name: enp0s20f0u10
-Input File Name: 
+Data Source: 1
+Input Device Name: 
+Input File Name: data/run_20231024_140648.dat
 Warn Slow Frames: 1
 Slow Frame Tolerance: 5
 Slow Frame Decay Rate: 0.2
