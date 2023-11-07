@@ -16,7 +16,7 @@ using namespace std;
 #include "monitorConfig.cpp"
 
 #include "DAQMonitor/LockableStream.cpp"
-#include "DAQMonitor/PacketDecoding/src/Monitor.cpp"
+#include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
 
 #include "src/Geometry.cpp"
 #include "src/ProgramControl/Terminator.cpp"
@@ -27,7 +27,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 namespace Muon {
-namespace Decoder {
+namespace Decode {
 
     void runDecoding(LockableStream &dataStream, DAQData &data);
 
@@ -41,9 +41,9 @@ namespace Decoder {
 
 // TODO: I'd like the termination condition to be defined with the thread,
 //       rather than in the run function.
-void Decoder::runDecoding(LockableStream &dataStream, DAQData &data) {
+void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
 
-    Monitor monitor(dataStream, data);
+    Decoder decoder(dataStream, data);
 
     // TODO: Move termination condition up to where the thread is defined
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
@@ -55,7 +55,7 @@ void Decoder::runDecoding(LockableStream &dataStream, DAQData &data) {
         // FIXME: In file reading mode, this will read the whole file before
         //        terminating on ctrl+c
 
-        monitor.refresh();
+        decoder.refresh();
 
         // TODO: This is hacky; fix it. The idea here is to clear processed
         //       data from the dataStream so we don't produce a de facto

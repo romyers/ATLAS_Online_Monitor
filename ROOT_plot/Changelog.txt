@@ -8,10 +8,19 @@
 
 ## 2023-11-7
 
+## Added
+
+- RunStats.cpp defining a GUI component displaying statistics for a data run.
+- The run viewer now contains a run stats window.
+- Added noise rate display option to canvas selector.
+- Added additional data to Plots.cpp for noise rate display. Began work on 
+  restoring the noise rate display.
+
 ## Changed
 
 - MonitorHooks now separates function interface and implementation for better
-  indenting
+  indenting.
+- Monitor.cpp renamed to the more semantically accurate Decoder.cpp.
 
 -------------------------------------------------------------------------------
 

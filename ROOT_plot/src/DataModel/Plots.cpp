@@ -25,33 +25,31 @@ struct Plots {
 
 	Plots();
 
-	TH1F *                p_leading_time          ;
-	TH1F *                p_trailing_time         ;
+	TH1F *                 p_leading_time          ;
+	TH1F *                 p_trailing_time         ;
 
-	vector<TH1F*>         p_hits_distribution     ;
+	vector<TH1F*>          p_hits_distribution     ;
 
-	vector<vector<TH1F*>> p_tdc_time              ;
-	vector<vector<TH1F*>> p_tdc_time_original     ;
-	vector<vector<TH1F*>> p_tdc_time_corrected    ;
-	vector<vector<TH1F*>> p_tdc_time_selected     ;
-	vector<vector<TH1F*>> p_adc_time              ;
-
-
-	vector<TH1F*>         p_tdc_tdc_time_original ;
-	vector<TH1F*>         p_tdc_tdc_time_corrected;
-	vector<TH1F*>         p_tdc_tdc_time_selected ;
-	vector<TH1F*>         p_tdc_adc_time          ;
-	vector<TH1F*>         p_tdc_channel           ;
-
-	vector<TH2F*>         p_adc_vs_tdc            ;
-
-	TGraph *              p_tdc_hit_rate_graph    ;
-
-	TH2D *                hitByLC                 ;
-	TH2D *                badHitByLC              ;
-	TH2D *                goodHitByLC             ;
+	vector<vector<TH1F*>>  p_tdc_time              ;
+	vector<vector<TH1F*>>  p_tdc_time_original     ;
+	vector<vector<TH1F*>>  p_tdc_time_corrected    ;
+	vector<vector<TH1F*>>  p_tdc_time_selected     ;
+	vector<vector<TH1F*>>  p_adc_time              ;
 
 
+	vector<TH1F*>          p_tdc_tdc_time_original ;
+	vector<TH1F*>          p_tdc_tdc_time_corrected;
+	vector<TH1F*>          p_tdc_tdc_time_selected ;
+	vector<TH1F*>          p_tdc_adc_time          ;
+	vector<TH1F*>          p_tdc_channel           ;
+
+	vector<TH2F*>          p_adc_vs_tdc            ;
+
+	vector<vector<double>> p_tdc_hit_rate          ;
+
+	TH2D *                 hitByLC                 ;
+	TH2D *                 badHitByLC              ;
+	TH2D *                 goodHitByLC             ; 
 
 	void binEvent(const Event &e);
 
@@ -82,11 +80,11 @@ Plots::Plots() {
 
 	}
 
-	p_tdc_time              .resize(Geometry::MAX_TDC) ;
-	p_tdc_time_original     .resize(Geometry::MAX_TDC) ;
-	p_tdc_time_corrected    .resize(Geometry::MAX_TDC) ;
-	p_tdc_time_selected     .resize(Geometry::MAX_TDC) ;
-	p_adc_time              .resize(Geometry::MAX_TDC) ;
+	p_tdc_time              .resize (Geometry::MAX_TDC) ;
+	p_tdc_time_original     .resize (Geometry::MAX_TDC) ;
+	p_tdc_time_corrected    .resize (Geometry::MAX_TDC) ;
+	p_tdc_time_selected     .resize (Geometry::MAX_TDC) ;
+	p_adc_time              .resize (Geometry::MAX_TDC) ;
 
 	p_tdc_tdc_time_original .reserve(Geometry::MAX_TDC);
 	p_tdc_tdc_time_corrected.reserve(Geometry::MAX_TDC);
@@ -96,7 +94,13 @@ Plots::Plots() {
 
 	p_adc_vs_tdc            .reserve(Geometry::MAX_TDC);
 
-	// TODO: Set up p_tdc_hit_rate_graph
+	p_tdc_hit_rate          .resize (Geometry::MAX_TDC);
+
+	for(vector<double> &vec : p_tdc_hit_rate) {
+
+		vec.resize(Geometry::MAX_TDC_CHANNEL);
+
+	}
 
 	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
@@ -218,15 +222,13 @@ void Plots::binEvent(const Event &e) {
 	// TODO: Go through DAQ.cpp and find everything we need to include
 	// TODO: Make sure all plots print
 	// TODO: Clean up and redesign UI
-	// TODO: Split up binning and drawing so we can delay draw until we're done
-	//       binning
+	// TODO: Noise rate display
 
 	for(const Hit &hit : e.Hits()) {
 
 		p_tdc_tdc_time_corrected[hit.TDC()]->Fill(hit.CorrTime());
 		p_tdc_adc_time          [hit.TDC()]->Fill(hit.ADCTime ());
 
-		// TODO: We can wait to make these until the end
 		p_tdc_time_corrected[hit.TDC()][hit.Channel()]->Fill(hit.CorrTime ());
 		p_tdc_time          [hit.TDC()][hit.Channel()]->Fill(hit.DriftTime());
 		p_adc_time          [hit.TDC()][hit.Channel()]->Fill(hit.ADCTime  ());
@@ -245,8 +247,6 @@ void Plots::binEvent(const Event &e) {
 		
 		}
 		p_hits_distribution[hitL]->Fill(hitC);
-
-		int panelIndex = hit.TDC() + 1;
 
 	}
 
@@ -289,7 +289,7 @@ void Plots::clear() {
 
 		for(TH1F *h : v) h->Reset();
 
-	}            ;
+	}
 
 
 	for(TH1F *h : p_tdc_tdc_time_original ) { h->Reset(); }
@@ -300,9 +300,12 @@ void Plots::clear() {
 
 	for(TH2F *h : p_adc_vs_tdc            ) { h->Reset(); }
 
-	delete p_tdc_hit_rate_graph;
-	p_tdc_hit_rate_graph = nullptr;
-	// TODO: Remake the hit rate graph
+	for(vector<double> &vec : p_tdc_hit_rate) {
+
+		vec.clear();
+		vec.resize(Geometry::MAX_TDC_CHANNEL);
+
+	}
 
 
 	hitByLC    ->Reset();

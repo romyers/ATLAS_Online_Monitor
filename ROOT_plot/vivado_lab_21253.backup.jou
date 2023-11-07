@@ -1,0 +1,19 @@
+#-----------------------------------------------------------
+# Vivado Lab Edition v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+# 
+# Start of session at: Tue Nov  7 09:41:21 2023
+# Process ID: 21253
+# Current directory: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot
+# Command line: vivado_lab
+# Log file: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot/vivado_lab.log
+# Journal file: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot/vivado_lab.jou
+#-----------------------------------------------------------
+start_gui
+open_hw_manager
+connect_hw_server -url localhost:3121 -allow_non_jtag
+current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/00000000000000]
+set_property PARAM.FREQUENCY 3000000 [get_hw_targets */xilinx_tcf/Xilinx/00000000000000]
+open_hw_target
+current_hw_device [get_hw_devices xcku035_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xcku035_0] 0]

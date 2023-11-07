@@ -27,7 +27,7 @@
 
 #include "macros/ErrorLogger.cpp"
 
-#include "DAQMonitor/PacketDecoding/src/Monitor.cpp"
+#include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
 #include "DAQMonitor/EthernetCapture/src/DeviceSelector.cpp"
 #include "DAQMonitor/EthernetCapture/src/PCapSessionHandler.cpp"
 
@@ -214,13 +214,13 @@ void StartMonitor(const string &filename = "") {
 
 		Geometry::getInstance().SetRunN(getRunNumber());
 
-		Monitor monitor(dataStream, DAQData::getInstance());
+		Decoder decoder(dataStream, DAQData::getInstance());
 
 		while(!Terminator::getInstance().isTerminated()) {
 
 			MonitorHooks::beforeUpdateData(data);
 
-			monitor.refresh();
+			decoder.refresh();
 
 			// Hacky fix for clearing the stringstream every loop. 
 			// TODO: Avoid the dynamic cast
@@ -239,7 +239,7 @@ void StartMonitor(const string &filename = "") {
 
 		}
 
-		cout << "Suspended data decoding." << endl; // TODO: mutex
+		cout << "Suspended data decoding." << endl;
 
 	});
 

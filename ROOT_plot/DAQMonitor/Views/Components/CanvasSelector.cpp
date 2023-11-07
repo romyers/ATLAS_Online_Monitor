@@ -30,17 +30,18 @@ public:
 
 	// OPERATIONS
 
-	void openPlots ();
-	void closePlots();
+	void openWindows ();
+	void closeWindows();
 
 private:
 
 	// VIEW
 
-	TGButtonGroup *plotButtons;
+	TGButtonGroup *windowButtons;
 
 		TGCheckButton *ADC_Plots;
 		TGCheckButton *TDC_Plots;
+		TGCheckButton *noiseDisplay;
 
 	TGButtonGroup *commandButtons;
 		TGTextButton *openButton;
@@ -54,8 +55,8 @@ private:
 
 void CanvasSelector::makeConnections() {
 
-	openButton ->Connect("Clicked()", "CanvasSelector", this, "openPlots()");
-	closeButton->Connect("Clicked()", "CanvasSelector", this, "closePlots()");
+	openButton ->Connect("Clicked()", "CanvasSelector", this, "openWindows()");
+	closeButton->Connect("Clicked()", "CanvasSelector", this, "closeWindows()");
 
 }
 
@@ -65,14 +66,17 @@ CanvasSelector::CanvasSelector(
 	UInt_t options = kChildFrame | kVerticalFrame
 ) : TGVerticalFrame(parent) {
 
-	plotButtons = new TGButtonGroup(this, title, options);
-	AddFrame(plotButtons, new TGLayoutHints(kLHintsCenterX));
+	windowButtons = new TGButtonGroup(this, title, options);
+	AddFrame(windowButtons, new TGLayoutHints(kLHintsCenterX));
 
-		ADC_Plots = new TGCheckButton(plotButtons, "ADC Plots");
-		plotButtons->AddFrame(ADC_Plots, new TGLayoutHints(kLHintsTop));
+		ADC_Plots = new TGCheckButton(windowButtons, "ADC Plots");
+		windowButtons->AddFrame(ADC_Plots, new TGLayoutHints(kLHintsTop));
 
-		TDC_Plots = new TGCheckButton(plotButtons, "TDC Plots");
-		plotButtons->AddFrame(TDC_Plots, new TGLayoutHints(kLHintsTop));
+		TDC_Plots = new TGCheckButton(windowButtons, "TDC Plots");
+		windowButtons->AddFrame(TDC_Plots, new TGLayoutHints(kLHintsTop));
+
+		noiseDisplay = new TGCheckButton(windowButtons, "Noise Rate Display");
+		windowButtons->AddFrame(noiseDisplay, new TGLayoutHints(kLHintsTop));
 
 	commandButtons = new TGButtonGroup(this, "", kHorizontalFrame);
 	AddFrame(commandButtons, new TGLayoutHints(kLHintsCenterX));
@@ -87,9 +91,9 @@ CanvasSelector::CanvasSelector(
 
 }
 
-void CanvasSelector::openPlots() {
+void CanvasSelector::openWindows() {
 
-	// TODO: It would be nice if CanvasSelecter didn't have to know what plots
+	// TODO: It would be nice if CanvasSelector didn't have to know what plots
 	//       exist
 
 	if(ADC_Plots->IsDown()) {
@@ -112,9 +116,19 @@ void CanvasSelector::openPlots() {
 
 	}
 
+	if(noiseDisplay->IsDown()) {
+
+		cout << "Noise rate display not yet implemented" << endl;
+
+	} else {
+
+
+
+	}
+
 }
 	
-void CanvasSelector::closePlots() {
+void CanvasSelector::closeWindows() {
 
 	Plotting::closeADCWindow();
 	Plotting::closeTDCWindow();

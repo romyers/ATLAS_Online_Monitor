@@ -10,7 +10,9 @@
 #pragma once
 
 #include "DAQMonitor/DataRunOperations.cpp"
+
 #include "DAQMonitor/Views/Components/CanvasSelector.cpp"
+#include "DAQMonitor/Views/Components/RunStats.cpp"
 
 using namespace std;
 
@@ -24,6 +26,7 @@ private:
 
 	// VIEW
 
+	RunStats       *runStats      ;
 	CanvasSelector *canvasSelector;
 
 	// CONNECTIONS
@@ -42,6 +45,9 @@ void RunView::makeConnections() {
 }
 
 RunView::RunView(const TGWindow *p) : TGMainFrame(p) {
+
+	runStats = new RunStats(this);
+	AddFrame(runStats, new TGLayoutHints(kLHintsCenterX, 5, 5, 5, 5));
 
 	canvasSelector = new CanvasSelector(this, "Select Plots");
 	AddFrame(canvasSelector, new TGLayoutHints(kLHintsCenterX));

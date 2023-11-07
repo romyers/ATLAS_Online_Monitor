@@ -283,7 +283,7 @@ void DataRun::startRun() {
 
         thread decodeThread([&dataStream, &data](){
 
-            Decoder::runDecoding(dataStream, data);
+            Decode::runDecoding(dataStream, data);
 
         });
 
