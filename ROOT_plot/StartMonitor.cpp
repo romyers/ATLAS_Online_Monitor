@@ -85,7 +85,9 @@ void StartMonitor(const string &filename = "") {
 			fileStream = nullptr;
 
 			ErrorLogger::getInstance().logError(
-				string("Couldn't open file ") + filename
+				string("Couldn't open file ") + filename,
+				"dataCapture",
+				FATAL
 			);
 
 			cout << "Aborted run!" << endl;
@@ -119,7 +121,7 @@ void StartMonitor(const string &filename = "") {
 
 		} catch(NetworkDeviceException &e) {
 
-			ErrorLogger::getInstance().logError(e.what());
+			ErrorLogger::getInstance().logError(e.what(), "dataCapture", FATAL);
 			cout << "Aborted run!" << endl;
 			return 1; // NOTE: We don't call the terminator here because we
 			          //       don't need to close down any threads and we
@@ -147,7 +149,7 @@ void StartMonitor(const string &filename = "") {
 
 		string runTimestamp = getCurrentTimestamp("%Y%m%d_%H%M%S");
 
-		cout << endl << "Starting run: " << runTimestamp << endl; // TODO: Add the run number to this
+		cout << endl << "Starting run: " << runTimestamp << endl; 
 
 		/////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////
@@ -163,7 +165,9 @@ void StartMonitor(const string &filename = "") {
 		if(!fileWriter.is_open()) {
 
 			ErrorLogger::getInstance().logError(
-				string("Failed to open output file: ") + outputFile
+				string("Failed to open output file: ") + outputFile,
+				"dataCapture",
+				FATAL
 			);
 			cout << "Aborted run!" << endl;
 			Terminator::getInstance().terminate();
