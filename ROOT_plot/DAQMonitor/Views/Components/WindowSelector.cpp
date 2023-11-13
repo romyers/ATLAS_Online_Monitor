@@ -1,5 +1,5 @@
 /**
- * @file CanvasSelector.cpp
+ * @file WindowSelector.cpp
  *
  * @brief TODO: Write
  *
@@ -10,23 +10,23 @@
 #pragma once
 
 #include "DAQMonitor/Plotting/PlottingOperations.cpp"
+#include "DAQMonitor/ErrorHandling/ErrorOperations.cpp"
 
 using namespace std;
 using namespace Muon;
 
 // TODO: Make check buttons uncheck when a plot window is closed
 
-class CanvasSelector : public TGVerticalFrame {
+class WindowSelector : public TGVerticalFrame {
 
 public:
 
-	CanvasSelector(
+	WindowSelector(
 		const TGWindow *parent, 
 		const string &title = "", 
 		UInt_t options = kChildFrame | kVerticalFrame
 	);
-
-	virtual ~CanvasSelector() override;
+	~WindowSelector() {}
 
 	// OPERATIONS
 
@@ -42,6 +42,7 @@ private:
 		TGCheckButton *ADC_Plots;
 		TGCheckButton *TDC_Plots;
 		TGCheckButton *noiseDisplay;
+		TGCheckButton *errorLog;
 
 	TGButtonGroup *commandButtons;
 		TGTextButton *openButton;
@@ -53,14 +54,14 @@ private:
 
 };
 
-void CanvasSelector::makeConnections() {
+void WindowSelector::makeConnections() {
 
-	openButton ->Connect("Clicked()", "CanvasSelector", this, "openWindows()");
-	closeButton->Connect("Clicked()", "CanvasSelector", this, "closeWindows()");
+	openButton ->Connect("Clicked()", "WindowSelector", this, "openWindows()");
+	closeButton->Connect("Clicked()", "WindowSelector", this, "closeWindows()");
 
 }
 
-CanvasSelector::CanvasSelector(
+WindowSelector::WindowSelector(
 	const TGWindow *parent, 
 	const string &title = "", 
 	UInt_t options = kChildFrame | kVerticalFrame
@@ -78,6 +79,9 @@ CanvasSelector::CanvasSelector(
 		noiseDisplay = new TGCheckButton(windowButtons, "Noise Rate Display");
 		windowButtons->AddFrame(noiseDisplay, new TGLayoutHints(kLHintsTop));
 
+		errorLog = new TGCheckButton(windowButtons, "Error Log");
+		windowButtons->AddFrame(errorLog, new TGLayoutHints(kLHintsTop));
+
 	commandButtons = new TGButtonGroup(this, "", kHorizontalFrame);
 	AddFrame(commandButtons, new TGLayoutHints(kLHintsCenterX));
 
@@ -91,7 +95,7 @@ CanvasSelector::CanvasSelector(
 
 }
 
-void CanvasSelector::openWindows() {
+void WindowSelector::openWindows() {
 
 	// TODO: It would be nice if CanvasSelector didn't have to know what plots
 	//       exist
@@ -126,16 +130,28 @@ void CanvasSelector::openWindows() {
 
 	}
 
+	if(errorLog->IsDown()) {
+
+		ErrorHandling::openErrorViewer();
+
+	} else {
+
+		ErrorHandling::closeErrorViewer();
+		
+	}
+
 }
 	
-void CanvasSelector::closeWindows() {
+void WindowSelector::closeWindows() {
 
 	Plotting::closeADCWindow();
 	Plotting::closeTDCWindow();
+	
+	ErrorHandling::closeErrorViewer();
 
-	ADC_Plots->SetState(kButtonUp);
-	TDC_Plots->SetState(kButtonUp);
+	ADC_Plots   ->SetState(kButtonUp);
+	TDC_Plots   ->SetState(kButtonUp);
+	noiseDisplay->SetState(kButtonUp);
+	errorLog    ->SetState(kButtonUp);
 
 }
-
-CanvasSelector::~CanvasSelector() {}

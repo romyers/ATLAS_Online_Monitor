@@ -92,6 +92,10 @@ void Decoder::refresh() {
 
 			cerr << "Dropped signal" << endl;
 
+			data.lock();
+			++data.droppedSignals;
+			data.unlock();
+
 		}
 
 		validateSignalWarnings(sig);
@@ -107,6 +111,10 @@ void Decoder::refresh() {
 			} else {
 
 				cerr << "Dropped event" << endl;
+
+				data.lock();
+				++data.droppedEvents;
+				data.unlock();
 
 			}
 

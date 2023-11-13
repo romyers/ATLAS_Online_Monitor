@@ -143,7 +143,9 @@ void DataRunIMPL::initializeDataStream(LockableStream &dataStream) {
             fileStream = nullptr;
 
             ErrorLogger::getInstance().logError(
-                string("Couldn't open file ") + state.persistentState.inputFilename
+                string("Couldn't open file ") + state.persistentState.inputFilename,
+                "runOperations",
+                FATAL
             );
 
             cout << "Aborted run!" << endl;

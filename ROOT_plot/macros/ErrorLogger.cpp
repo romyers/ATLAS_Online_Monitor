@@ -21,12 +21,25 @@ using namespace std;
 
 const string EMPTY_TYPE = "";
 
+enum ErrorLevel {
+	DEBUG,
+	WARNING,
+	ERROR,
+	FATAL,
+	UNDEFINED
+};
+
 struct ErrorData {
 
-	ErrorData(const string &msg, const string &type) : msg(msg), type(type) {}
+	ErrorData(
+		const string &msg, 
+		const string &type, 
+		ErrorLevel level
+	) : msg(msg), type(type), level(level) {}
 
 	const string msg;
 	const string type;
+	const ErrorLevel level;
 
 };
 
@@ -37,11 +50,13 @@ public:
 	ErrorLogger   (      ErrorLogger &other) = delete;
 	void operator=(const ErrorLogger &other) = delete;
 
-	void clear            (                                                   );
-	void logError         (const string  &msg, const string &type = EMPTY_TYPE);
-	void setOutputStream  (      ostream &out                                 );
+	void clear            (                                                        );
+	void logError         (const string  &msg, const string &type, ErrorLevel level);
+	void setOutputStream  (      ostream &out                                      );
 
-	size_t countErrors(const string &type = EMPTY_TYPE) const;
+	vector<ErrorData> getErrors() const;
+
+	size_t countErrors(const string &type = EMPTY_TYPE, ErrorLevel level = UNDEFINED) const;
 
 	static ErrorLogger &getInstance();
 
@@ -69,12 +84,13 @@ void ErrorLogger::clear() {
 
 void ErrorLogger::logError(
 	const string &msg, 
-	const string &type = EMPTY_TYPE
+	const string &type,
+	ErrorLevel level
 ) {
 
 	errorLock.lock();
 	*errorStream << msg << endl;
-	errors.emplace_back(msg, type);
+	errors.emplace_back(msg, type, level);
 	errorLock.unlock();
 
 }
@@ -87,13 +103,26 @@ void ErrorLogger::setOutputStream(ostream &out) {
 
 }
 
-size_t ErrorLogger::countErrors(const string &type = EMPTY_TYPE) const {
+vector<ErrorData> ErrorLogger::getErrors() const {
+
+	errorLock.lock();
+	vector<ErrorData> result = errors;
+	errorLock.unlock();
+
+	return result;
+
+}
+
+size_t ErrorLogger::countErrors(
+	const string &type = EMPTY_TYPE, 
+	ErrorLevel level = UNDEFINED
+) const {
 
 	size_t val;
 
 	errorLock.lock();
 
-	if(type == EMPTY_TYPE) {
+	if(type == EMPTY_TYPE && level == UNDEFINED) {
 
 		val = errors.size();
 
@@ -102,8 +131,22 @@ size_t ErrorLogger::countErrors(const string &type = EMPTY_TYPE) const {
 		val = count_if(
 			errors.cbegin(),
 			errors.cend(),
-			[type](const ErrorData &e) {
-				return e.type == type;
+			[&type, level](const ErrorData &e) {
+
+				if(type != EMPTY_TYPE) {
+
+					if(e.type != type) return false;
+
+				}
+
+				if(level != UNDEFINED) {
+
+					if(e.level != level) return false;
+
+				}
+
+				return true;
+				
 			}
 		);
 

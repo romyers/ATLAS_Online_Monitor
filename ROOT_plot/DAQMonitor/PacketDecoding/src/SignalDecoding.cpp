@@ -25,8 +25,7 @@ using namespace std;
 
 // TODO: This does three different things. Break it up.
 
-const string SIGNAL_ERROR = "signalErr" ;
-const string SIGNAL_WARN  = "signalWarn";
+const string SIGNAL_ERROR = "signal" ;
 
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(uint64_t data, uint8_t dataSize);
@@ -140,7 +139,7 @@ bool validateSignalErrors(const Signal &sig) {
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
@@ -172,7 +171,7 @@ bool validateSignalErrors(const Signal &sig) {
 
 		} 
 
-		logger.logError(msg, SIGNAL_ERROR);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
@@ -201,7 +200,7 @@ bool validateSignalErrors(const Signal &sig) {
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
