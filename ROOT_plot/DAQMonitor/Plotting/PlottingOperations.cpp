@@ -23,16 +23,20 @@ using namespace std;
 
 // FIXME: Sometimes we get segfaults with window opens and closes. Make it stable
 
+// TODO: Only update plots when new data comes in
+
 namespace Muon {
 namespace Plotting {
 
-	void openADCPlots  ();
-    void closeADCPlots ();
-    void closeADCWindow();
+	void openADCPlots  (int tdc = -1);
+    void closeADCPlots (int tdc = -1);
+    void closeADCWindow(int tdc = -1);
 
-    void openTDCPlots  ();
-    void closeTDCPlots ();
-    void closeTDCWindow();
+    void openTDCPlots  (int tdc = -1);
+    void closeTDCPlots (int tdc = -1);
+    void closeTDCWindow(int tdc = -1);
+
+    int getNumTDCs();
 
 }
 namespace PlottingIMPL {
@@ -60,15 +64,15 @@ namespace PlottingIMPL {
 
 		// OPERATIONS
 
-		void openADCPlots  ();
+		void openADCPlots  (int tdc = -1);
 		void runADCUpdate  ();
-		void closeADCPlots ();
-		void closeADCWindow();
+		void closeADCPlots (int tdc = -1);
+		void closeADCWindow(int tdc = -1);
 
-		void openTDCPlots  ();
+		void openTDCPlots  (int tdc = -1);
 		void runTDCUpdate  ();
-		void closeTDCPlots ();
-		void closeTDCWindow();
+		void closeTDCPlots (int tdc = -1);
+		void closeTDCWindow(int tdc = -1);
 
 		static PlotWindows &getInstance();
 
@@ -78,6 +82,9 @@ namespace PlottingIMPL {
 
 		PlotFrame tdc_plots;
 		PlotFrame adc_plots;
+
+        vector<PlotFrame> tdc_chnl_plots;
+        vector<PlotFrame> adc_chnl_plots;
 
     };
 
@@ -92,39 +99,45 @@ namespace PlottingIMPL {
 }
 }
 
-void Muon::Plotting::openADCPlots() {
+void Muon::Plotting::openADCPlots(int tdc = -1) {
 
-	PlottingIMPL::PlotWindows::getInstance().openADCPlots();
-
-}
-
-void Muon::Plotting::closeADCPlots() {
-
-	PlottingIMPL::PlotWindows::getInstance().closeADCPlots();
+	PlottingIMPL::PlotWindows::getInstance().openADCPlots(tdc);
 
 }
 
-void Muon::Plotting::closeADCWindow() {
+void Muon::Plotting::closeADCPlots(int tdc = -1) {
 
-	PlottingIMPL::PlotWindows::getInstance().closeADCWindow();
-
-}
-
-void Muon::Plotting::openTDCPlots() {
-
-	PlottingIMPL::PlotWindows::getInstance().openTDCPlots();
+	PlottingIMPL::PlotWindows::getInstance().closeADCPlots(tdc);
 
 }
 
-void Muon::Plotting::closeTDCPlots() {
+void Muon::Plotting::closeADCWindow(int tdc = -1) {
 
-	PlottingIMPL::PlotWindows::getInstance().closeTDCPlots();
+	PlottingIMPL::PlotWindows::getInstance().closeADCWindow(tdc);
 
 }
 
-void Muon::Plotting::closeTDCWindow() {
+void Muon::Plotting::openTDCPlots(int tdc = -1) {
 
-	PlottingIMPL::PlotWindows::getInstance().closeTDCWindow();
+	PlottingIMPL::PlotWindows::getInstance().openTDCPlots(tdc);
+
+}
+
+void Muon::Plotting::closeTDCPlots(int tdc = -1) {
+
+	PlottingIMPL::PlotWindows::getInstance().closeTDCPlots(tdc);
+
+}
+
+void Muon::Plotting::closeTDCWindow(int tdc = -1) {
+
+	PlottingIMPL::PlotWindows::getInstance().closeTDCWindow(tdc);
+
+}
+
+int Muon::Plotting::getNumTDCs() {
+
+    return DAQData::getInstance().plots.p_tdc_time.size();
 
 }
 
@@ -160,28 +173,65 @@ Muon::PlottingIMPL::PlotFrame Muon::PlottingIMPL::plotHistograms(
 
 }
 
-Muon::PlottingIMPL::PlotWindows::PlotWindows() {}
+Muon::PlottingIMPL::PlotWindows::PlotWindows() {
 
-void Muon::PlottingIMPL::PlotWindows::openADCPlots() {
+    DAQData &data = DAQData::getInstance();
 
-	if(adc_plots.isOpen()) return;
+    tdc_chnl_plots.resize(data.plots.p_tdc_time_corrected.size());
+    adc_chnl_plots.resize(data.plots.p_adc_time.size());
+
+    UISignalBus::getInstance().Connect(
+        "onUpdate()", 
+        "PlottingIMPL::PlotWindows", 
+        this,
+        "runTDCUpdate()"
+    );
+
+    UISignalBus::getInstance().Connect(
+        "onUpdate()",
+        "PlottingIMPL::PlotWindows", 
+        this,
+        "runADCUpdate()"
+    );
+
+}
+
+void Muon::PlottingIMPL::PlotWindows::openADCPlots(int tdc = -1) {
+
+    if(tdc == -1 && adc_plots.isOpen()) return;
+
+    if(tdc != -1 && adc_chnl_plots[tdc].isOpen()) return;
 
     DAQData &data = DAQData::getInstance();
 
     vector<TH1*> adc_plot_list;
 
-    for(TH1 *plot : data.plots.p_tdc_adc_time) {
-        adc_plot_list.push_back(plot);
+    if(tdc == -1) {
+
+        for(TH1 *plot : data.plots.p_tdc_adc_time) {
+            adc_plot_list.push_back(plot);
+        }
+
+        adc_plots = plotHistograms(adc_plot_list, "ADC Plots", 1800, 900);
+
+    } else {
+
+        cout << tdc << endl;
+
+        for(TH1 *plot : data.plots.p_adc_time[tdc]) {
+            adc_plot_list.push_back(plot);
+        }
+
+        adc_chnl_plots[tdc] = plotHistograms(
+            adc_plot_list, 
+            string(string("ADC Channel Plots, TDC ") + tdc).data(), 
+            1800, 
+            900
+        );
+
     }
 
-	adc_plots = plotHistograms(adc_plot_list, "ADC Plots", 1800, 900);
-
-    UISignalBus::getInstance().Connect(
-    	"onUpdate()", 
-    	"PlottingIMPL::PlotWindows", 
-    	this,
-    	"runADCUpdate()"
-    );
+    /*
 
     adc_plots.frame->Connect(
     	"CloseWindow()", 
@@ -189,6 +239,7 @@ void Muon::PlottingIMPL::PlotWindows::openADCPlots() {
     	this, 
     	"closeADCPlots()"
     );
+    */
 
 }
 
@@ -196,59 +247,127 @@ void Muon::PlottingIMPL::PlotWindows::runADCUpdate() {
 
 	DAQData &data = DAQData::getInstance();
 
-    for(int i = 0; i < data.plots.p_tdc_adc_time.size(); ++i) {
+    if(adc_plots.isOpen()) {
 
-    	adc_plots.canvas->GetCanvas()->cd(i + 1);
+        for(int i = 0; i < data.plots.p_tdc_adc_time.size(); ++i) {
 
-    	data.lock();
-    	data.plots.p_tdc_adc_time[i]->Draw();
-    	data.unlock();
+            adc_plots.canvas->GetCanvas()->cd(i + 1);
 
-        // TODO: Do we need to call TCanvas::Modified()?
+            data.lock();
+            data.plots.p_tdc_adc_time[i]->Draw();
+            data.unlock();
+
+            // TODO: Do we need to call TCanvas::Modified()?
+
+        }
+
+        // TODO: Check this works
+        adc_plots.canvas->GetCanvas()->Update();
 
     }
 
-    // TODO: Check this works
-    adc_plots.canvas->GetCanvas()->Update();
+    for(int tdc = 0; tdc < adc_chnl_plots.size(); ++tdc) {
+
+        if(adc_chnl_plots[tdc].isOpen()) {
+
+            for(int i = 0; i < data.plots.p_adc_time[tdc].size(); ++i) {
+
+                adc_chnl_plots[tdc].canvas->GetCanvas()->cd(i + 1);
+
+                data.lock();
+                data.plots.p_adc_time[tdc][i]->Draw();
+                data.unlock();
+
+            }
+
+            adc_chnl_plots[tdc].canvas->GetCanvas()->Update();
+
+        }
+
+    }
 
 }
 
-void Muon::PlottingIMPL::PlotWindows::closeADCPlots() {
+void Muon::PlottingIMPL::PlotWindows::closeADCPlots(int tdc = -1) {
 
-	if(!adc_plots.isOpen()) return;
+    if(tdc == -1) {
 
-	UISignalBus::getInstance().Disconnect("onUpdate()", this, "runADCUpdate()");
+        if(!adc_plots.isOpen()) return;
 
-	adc_plots = PlotFrame();
+        // UISignalBus::getInstance().Disconnect("onUpdate()", this, "runADCUpdate()");
 
-}
+        adc_plots = PlotFrame();
 
-void Muon::PlottingIMPL::PlotWindows::closeADCWindow() {
+    } else {
 
-	if(!adc_plots.isOpen()) return;
+        if(!adc_chnl_plots[tdc].isOpen()) return;
 
-	TGMainFrame *frame = adc_plots.frame;
+        adc_chnl_plots[tdc] = PlotFrame();
 
-	closeADCPlots();
-
-	frame->CloseWindow();
+    }
 
 }
 
-void Muon::PlottingIMPL::PlotWindows::openTDCPlots() {
+void Muon::PlottingIMPL::PlotWindows::closeADCWindow(int tdc = -1) {
 
-	if(tdc_plots.isOpen()) return;
+    if(tdc == -1) {
+
+        if(!adc_plots.isOpen()) return;
+
+        TGMainFrame *frame = adc_plots.frame;
+
+        closeADCPlots();
+
+        frame->CloseWindow();
+
+    } else {
+
+        if(!adc_chnl_plots[tdc].isOpen()) return;
+
+        TGMainFrame *frame = adc_chnl_plots[tdc].frame;
+
+        closeADCPlots(tdc);
+
+        frame->CloseWindow();
+
+    }
+
+}
+
+void Muon::PlottingIMPL::PlotWindows::openTDCPlots(int tdc = -1) {
+
+    if(tdc == -1 && tdc_plots.isOpen()) return;
+
+    if(tdc != -1 && tdc_chnl_plots[tdc].isOpen()) return;
 
     DAQData &data = DAQData::getInstance();
 
     vector<TH1*> tdc_plot_list;
 
-    for(TH1 *plot : data.plots.p_tdc_tdc_time_corrected) {
-        tdc_plot_list.push_back(plot);
+    if(tdc == -1) {
+
+        for(TH1 *plot : data.plots.p_tdc_tdc_time_corrected) {
+            tdc_plot_list.push_back(plot);
+        }
+
+        tdc_plots = PlottingIMPL::plotHistograms(tdc_plot_list, "TDC Plots", 1800, 900);
+
+    } else {
+
+        for(TH1 *plot : data.plots.p_tdc_time_corrected[tdc]) {
+            tdc_plot_list.push_back(plot);
+        }
+
+        tdc_chnl_plots[tdc] = PlottingIMPL::plotHistograms(
+            tdc_plot_list,
+            string(string("TDC Channel Plots, TDC ") + tdc).data(), 
+            1800, 
+            900
+        );
+
     }
 
-    tdc_plots = PlottingIMPL::plotHistograms(tdc_plot_list, "TDC Plots", 1800, 900);
-
+    /*
     UISignalBus::getInstance().Connect(
     	"onUpdate()", 
     	"PlottingIMPL::PlotWindows", 
@@ -262,6 +381,7 @@ void Muon::PlottingIMPL::PlotWindows::openTDCPlots() {
     	this, 
     	"closeTDCPlots()"
     );
+    */
 
 }
 
@@ -269,43 +389,89 @@ void Muon::PlottingIMPL::PlotWindows::runTDCUpdate() {
 
 	DAQData &data = DAQData::getInstance();
 
-    for(int i = 0; i < data.plots.p_tdc_tdc_time_corrected.size(); ++i) {
+    if(tdc_plots.isOpen()) {
 
-        tdc_plots.canvas->GetCanvas()->cd(i + 1);
+        for(int i = 0; i < data.plots.p_tdc_tdc_time_corrected.size(); ++i) {
 
-        data.lock();
-        data.plots.p_tdc_tdc_time_corrected[i]->Draw();
-        data.unlock();
+            tdc_plots.canvas->GetCanvas()->cd(i + 1);
 
-        // TODO: Do we need to call TCanvas::Modified()?
+            data.lock();
+            data.plots.p_tdc_tdc_time_corrected[i]->Draw();
+            data.unlock();
+
+            // TODO: Do we need to call TCanvas::Modified()?
+
+        }
+          
+        tdc_plots.canvas->GetCanvas()->Update();
 
     }
-    
-    // TODO: This is new -- check once I have data again    
-    tdc_plots.canvas->GetCanvas()->Update();
+
+    for(int tdc = 0; tdc < tdc_chnl_plots.size(); ++tdc) {
+
+        if(tdc_chnl_plots[tdc].isOpen()) {
+
+            for(int i = 0; i < data.plots.p_tdc_time_corrected[tdc].size(); ++i) {
+
+                tdc_chnl_plots[tdc].canvas->GetCanvas()->cd(i + 1);
+
+                data.lock();
+                data.plots.p_tdc_time_corrected[tdc][i]->Draw();
+                data.unlock();
+
+            }
+
+            tdc_chnl_plots[tdc].canvas->GetCanvas()->Update();
+
+        }
+
+    }
 	
 }
 
-void Muon::PlottingIMPL::PlotWindows::closeTDCPlots() {
+void Muon::PlottingIMPL::PlotWindows::closeTDCPlots(int tdc = -1) {
 
+    if(tdc == -1) {
 
-	if(!tdc_plots.isOpen()) return;
+        if(!tdc_plots.isOpen()) return;
 
-	UISignalBus::getInstance().Disconnect("onUpdate()", this, "runTDCUpdate()");
+        // UISignalBus::getInstance().Disconnect("onUpdate()", this, "runADCUpdate()");
 
-	tdc_plots = PlotFrame();
+        tdc_plots = PlotFrame();
+
+    } else {
+
+        if(!tdc_chnl_plots[tdc].isOpen()) return;
+
+        tdc_chnl_plots[tdc] = PlotFrame();
+
+    }
 
 }
 
-void Muon::PlottingIMPL::PlotWindows::closeTDCWindow() {
+void Muon::PlottingIMPL::PlotWindows::closeTDCWindow(int tdc = -1) {
 
-	if(!tdc_plots.isOpen()) return;
+    if(tdc == -1) {
 
-	TGMainFrame *frame = tdc_plots.frame;
+        if(!tdc_plots.isOpen()) return;
 
-	closeTDCPlots();
+        TGMainFrame *frame = tdc_plots.frame;
 
-	frame->CloseWindow();
+        closeTDCPlots();
+
+        frame->CloseWindow();
+
+    } else {
+
+        if(!tdc_chnl_plots[tdc].isOpen()) return;
+
+        TGMainFrame *frame = tdc_chnl_plots[tdc].frame;
+
+        closeTDCPlots(tdc);
+
+        frame->CloseWindow();
+
+    }
 
 }
 

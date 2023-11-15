@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "DAQMonitor/Views/Components/WindowSelector.cpp"
 #include "DAQMonitor/Views/Components/RunStats.cpp"
+#include "DAQMonitor/Views/Components/RunMenuBar.cpp"
 
 using namespace std;
 
@@ -24,8 +24,11 @@ private:
 
 	// VIEW
 
-	RunStats       *runStats      ;
-	WindowSelector *windowSelector;
+	RunMenuBar         *menuBar       ;
+
+	TGHorizontal3DLine *menuSeparator ;
+
+	RunStats           *runStats      ;
 
 	// CONNECTIONS
 
@@ -44,7 +47,13 @@ void RunView::makeConnections() {
 }
 
 RunView::RunView(const TGWindow *p) 
-	: TGMainFrame(p) {
+	: TGMainFrame(p, 1, 1, kFixedSize) {
+
+	menuBar = new RunMenuBar(this);
+	AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
+
+	menuSeparator = new TGHorizontal3DLine(this);
+	AddFrame(menuSeparator, new TGLayoutHints(kLHintsExpandX));
 
 	runStats = new RunStats(this);
 	AddFrame(
@@ -53,9 +62,8 @@ RunView::RunView(const TGWindow *p)
 		)
 	);
 
-	windowSelector = new WindowSelector(this, "Select Windows");
-	AddFrame(windowSelector, new TGLayoutHints(kLHintsCenterX));
-
 	makeConnections();
+
+	Resize(300, 250);
 
 }

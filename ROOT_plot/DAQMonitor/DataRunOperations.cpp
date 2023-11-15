@@ -14,6 +14,8 @@
 #include <thread>
 #include <sstream>
 
+#include <sys/stat.h>
+
 #include "macros/DAQState.cpp"
 #include "macros/ErrorLogger.cpp"
 
@@ -49,7 +51,8 @@ namespace DataRun {
 }
 namespace DataRunIMPL {
 
-    void initializeDataStream(LockableStream &dataStream);
+    void   initializeDataStream(LockableStream &dataStream);
+    string getCurrentTimestamp (const string   &format    );
 
     class RunWindows {
 
@@ -217,6 +220,8 @@ void DataRun::startRun() {
 
     DAQState state = DAQState::getState();
 
+    string runLabel = "";
+
     if(state.tempState.runStarted) {
 
         throw UIException(
@@ -233,8 +238,24 @@ void DataRun::startRun() {
 
         }
 
+        string filename = state.persistentState.inputFilename;
+
         cout << endl << "File source selected" << endl;
-        cout << "Filename: " << state.persistentState.inputFilename << endl;
+        cout << "Filename: " << filename << endl;
+
+        // TODO: Extract timestamp
+
+        size_t extensionPos = filename.find_last_of(".");
+
+        if(extensionPos == string::npos) {
+
+            runLabel = filename;
+
+        } else {
+
+            runLabel = filename.substr(0, extensionPos);
+
+        }
 
     } else if (state.persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
@@ -247,9 +268,12 @@ void DataRun::startRun() {
         cout << endl << "Network source selected" << endl;
         cout << "Ethernet device: " << state.persistentState.inputDevicename << endl;
 
+        runLabel = string("run_") + getCurrentTimestamp("%Y%m%d_%H%M%S");
+
     }
 
     state.tempState.runStarted = true;
+    state.tempState.runLabel = runLabel;
     state.commit(); // NOTE: This shouldn't fail, but better if it's robust
 
     // Clear the DAQData of any data from a previous run
@@ -259,25 +283,36 @@ void DataRun::startRun() {
     data.clear ();
     data.unlock();
 
-    Geometry::getInstance().SetRunN(getRunNumber());
-
     // TODO: Hook up error handling on a per-thread basis. Threads should
     //       report to a threadsafe error handler that does the error handling
     // TODO: It's not obvious why we make a parent thread. It's because we want
     //       a few things to happen after the capture and decode threads are
     //       joined. Make that more obvious.
     ProgramFlow::threadLock.lock();
-    ProgramFlow::threads.emplace_back(thread([&data]() {
+    ProgramFlow::threads.emplace_back(thread([&data, runLabel]() {
+
+        // TODO: Add the run number to this
+        cout << endl << "Starting run: " << runLabel << endl; 
+
+        // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
+        //       not include hours/minutes/seconds
+        // NOTE: This assumes the DAT filenames are formatted as "run_YYYYMMDD_HHMMSS.dat"
+        int runN = (
+            (TObjString*)(TString(
+                runLabel.substr(3, runLabel.size()).data()
+            ).Tokenize("_")->At(0))
+        )->String().Atoi();
+        Geometry::getInstance().SetRunN(runN);
 
         LockableStream dataStream;
         initializeDataStream(dataStream);
 
         // TODO: Put the thread termination conditions here
-        thread dataCaptureThread([&dataStream, &data]() {
+        thread dataCaptureThread([&dataStream, &data, runLabel]() {
 
             if(DAQState::getState().persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
-                DataCapture::runDataCapture(dataStream, data);
+                DataCapture::runDataCapture(dataStream, data, runLabel);
 
             }
 
@@ -318,5 +353,19 @@ void DataRun::startRun() {
     ProgramFlow::threadLock.unlock();
 
     UISignalBus::getInstance().onRunStart();
+
+}
+
+string Muon::DataRunIMPL::getCurrentTimestamp(const string &format) {
+
+    char formatBuffer[40];
+    time_t sys_time;
+    struct tm *timeinfo;
+    sys_time = time(0);
+    timeinfo = localtime(&sys_time);
+    memset(formatBuffer, 0, sizeof(formatBuffer));
+    strftime(formatBuffer, 40, format.data(), timeinfo);
+
+    return string(formatBuffer);
 
 }

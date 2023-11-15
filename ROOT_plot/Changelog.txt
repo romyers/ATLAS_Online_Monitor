@@ -6,10 +6,49 @@
 - Run viewer becomes inaccessible when closed unless the run is restarted.
 - It is not obvious to user whether settings panel has been applied.
 - Error log window needs some work.
+- Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
+  the GUI.
+- Plot saving does not interact well with TDC and ADC plot windows opened 
+  after the save is started.
+- Plot saving blocks the decoder.
+- Closing a progress bar window causes a segfault.
+- Undefined behavior when pressing 'Save Plot' twice. We need to disable the
+  button while plots are being saved. Use a flag in DAQState like we do for
+  startRun.
+- Closing a window does not uncheck the corresponding option in the RunMenuBar.
 
 ## NOTE:
 
 - Good place to look for segfaults -- char array overflows
+
+-------------------------------------------------------------------------------
+
+## 2023-11-15
+
+## Added
+
+- Added and implemented a module for saving plots to disk.
+- Added an interface to the Run Viewer for saving plots to disk.
+- Added a progress bar to the plot saving interface.
+- Added a menu bar to Run Viewer.
+- Added per-TDC channel plots
+
+## Changed
+
+- DAT file naming is set up in DataRunOperations now instead of 
+  DataCaptureOperations.
+- Replaced the radial window selector in the Run Viewer with a menu bar
+  popup.
+
+-------------------------------------------------------------------------------
+
+## 2023-11-14
+
+## Changed
+
+- DeviceManager now produces a warning when pcap loads devices successfully, but
+  does not find any devices. This can happen e.g. if the program is not run
+  with root privileges.
 
 -------------------------------------------------------------------------------
 
