@@ -21,6 +21,8 @@
 
 using namespace std;
 
+// TODO: Remove dependency on the progress bar
+
 namespace Muon {
 namespace PlotSaving {
 

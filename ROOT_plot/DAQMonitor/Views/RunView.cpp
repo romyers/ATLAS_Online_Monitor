@@ -25,9 +25,6 @@ private:
 	// VIEW
 
 	RunMenuBar         *menuBar       ;
-
-	TGHorizontal3DLine *menuSeparator ;
-
 	RunStats           *runStats      ;
 
 	// CONNECTIONS
@@ -51,9 +48,6 @@ RunView::RunView(const TGWindow *p)
 
 	menuBar = new RunMenuBar(this);
 	AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
-
-	menuSeparator = new TGHorizontal3DLine(this);
-	AddFrame(menuSeparator, new TGLayoutHints(kLHintsExpandX));
 
 	runStats = new RunStats(this);
 	AddFrame(

@@ -67,9 +67,9 @@ void RunStats::makeConnections() {
 
 RunStats::RunStats(
 	const TGWindow *parent
-) : TGVerticalFrame(parent, 100, 220, kVerticalFrame | kFixedSize) {
+) : TGVerticalFrame(parent, 100, 220, kVerticalFrame) {
 
-	table = new TGHtml(this, 100, 100);
+	table = new TGHtml(this, 100, 220);
 	AddFrame(table, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
 	makeConnections();

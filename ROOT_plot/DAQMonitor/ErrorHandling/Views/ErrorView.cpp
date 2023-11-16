@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <sstream>
+#include <string>
 
 #include "DAQMonitor/Views/Components/PairTable.cpp"
 
@@ -35,9 +35,9 @@ public:
 
 	ErrorView(const TGWindow *p);
 
-	void update();
+	~ErrorView();
 
-	void teardown();
+	void update();
 
 private:
 
@@ -51,7 +51,8 @@ private:
 
 	// CONNECTIONS
 
-	void makeConnections();
+	void makeConnections ();
+	void breakConnections();
 
 };
 
@@ -72,10 +73,15 @@ ErrorView::ErrorView(const TGWindow *p) : TGMainFrame(p, 800, 600, kFixedSize) {
 
 }
 
+ErrorView::~ErrorView() {
+
+	breakConnections();
+
+}
+
 void ErrorView::update() {
 
-	// TODO: Add error levels. Color error font by error level. Allow filtering
-	//       by error level (use checkbuttons for this)
+	// TODO: Allow filtering by error level (use checkbuttons for this)
 
 	// TODO: Clean up error logging system
 
@@ -129,16 +135,11 @@ void ErrorView::update() {
 
 void ErrorView::makeConnections() {
 
-	UISignalBus::getInstance().Connect(
-		"onUpdate()", 
-		"ErrorView",
-		this,
-		"update()"
-	);
+	UISignalBus::getInstance().Connect("onUpdate()", "ErrorView", this, "update()");
 
 }
 
-void ErrorView::teardown() {
+void ErrorView::breakConnections() {
 
 	UISignalBus::getInstance().Disconnect("onUpdate()", this, "update()");
 
