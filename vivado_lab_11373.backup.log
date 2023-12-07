@@ -1,0 +1,654 @@
+#-----------------------------------------------------------
+# Vivado Lab Edition v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
+# 
+# Start of session at: Thu Sep 28 12:36:59 2023
+# Process ID: 11373
+# Current directory: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert
+# Command line: vivado_lab
+# Log file: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.log
+# Journal file: /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/vivado_lab.jou
+#-----------------------------------------------------------
+start_gui
+open_hw_manager
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
+INFO: [Labtools 27-3414] Connected to existing cs_server.
+connect_hw_server -url localhost:3121 -allow_non_jtag
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
+INFO: [Labtools 27-3414] Connected to existing cs_server.
+current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01]
+set_property PARAM.FREQUENCY 3000000 [get_hw_targets */xilinx_tcf/Xilinx/000017def52c01]
+open_hw_target
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/000017def52c01
+current_hw_device [get_hw_devices xc7a35t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
+refresh_hw_device: Time (s): cpu = 00:00:21 ; elapsed = 00:00:11 . Memory (MB): peak = 7356.051 ; gain = 1054.301 ; free physical = 2434 ; free virtual = 38137
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_2]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_3]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_4]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_5]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_6]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_7]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_8]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"ila_top_inst"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_JTAG_master/ila_jtag_master_inst"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_3 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/ila_config_mezz_inst"}]]
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b0_xc7a_triggerless_320.tcl
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup0 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/rising_is_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/width_select} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_high_speed} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_packet} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_data_debug} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/auto_roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_8b10b} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_event_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_notify} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_insert} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_legacy} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_pair} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/full_width_res} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bunch_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 80 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/event_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 256 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 60 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/match_window} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/syn_packet_number} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes JTAG_readback -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_data_length_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes lock_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes sa_done -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_bits_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_instr_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes config_done_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes tdi_tdo_equal -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes enable_vio_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX UNSIGNED [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 010 [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {clk_div} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b2_xc7a_triggerless_320.tcl
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 2000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+ERROR: [Labtools 27-3165] End of startup status: LOW
+program_hw_devices: Time (s): cpu = 00:00:05 ; elapsed = 00:00:08 . Memory (MB): peak = 7547.660 ; gain = 28.219 ; free physical = 3081 ; free virtual = 37452
+INFO: [Common 17-344] 'program_hw_devices' was cancelled
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7547.660 ; gain = 0.000 ; free physical = 3048 ; free virtual = 37423
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 3 ILA core(s).
+INFO: [Labtools 27-2302] Device xc7a35t (JTAG device index = 0) is programmed with a design that has 8 VIO core(s).
+WARNING: [Labtools 27-1952] VIO hw_probe OUTPUT_VALUE properties for hw_vio(s) [hw_vio_5 hw_vio_6] differ from output values in the VIO core(s).
+Resolution: 
+To synchronize the hw_probes properties and the VIO core outputs choose one of the following alternatives:
+  1) Execute the command 'Commit Output Values to VIO Core', to write down the hw_probe values to the core.
+  2) Execute the command 'Refresh Input and Output Values from VIO Core', to update the hw_probe properties with the core values.
+  3) First restore initial values in the core with the command 'Reset VIO Core Outputs', and then execute the command 'Refresh Input and Output Values from VIO Core'.
+commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"config_loop_inst/vio_loop_config_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b0_xc7a_triggerless_320.tcl
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup0 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/rising_is_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/rising_is_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/width_select -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/width_select} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 000000 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_high_speed -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_high_speed} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_packet -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_packet} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_data_debug -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_data_debug} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bypass_bcr_distribution} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/auto_roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/auto_roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_8b10b -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_8b10b} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_event_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_event_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/disable_trigger_from_TTC} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_direct_bunch_reset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_error_notify -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_error_notify} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_insert -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_insert} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_leading -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_leading} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_legacy -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_legacy} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_master_reset_code} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_new_ttc} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 1 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_pair -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_pair} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_TDC_ID} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/enbale_fake_hit} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/full_width_res -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/full_width_res} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]] 
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/start_action_setup1 -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE_RADIX UNSIGNED [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/bunch_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/bunch_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/coarse_count_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 80 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/combine_time_out_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 0 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/event_offset -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/event_offset} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 256 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/fake_hit_time_interval} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 60 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/match_window -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/match_window} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/roll_over -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/roll_over} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property OUTPUT_VALUE 4095 [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/syn_packet_number -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/syn_packet_number} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst"}]]
+# set_property NAME.SELECT short [get_hw_probes JTAG_readback -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_data_length_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes lock_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes sa_done -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_bits_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes JTAG_instr_mezz -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes config_done_OBUF -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes tdi_tdo_equal -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]] 
+# set_property NAME.SELECT short [get_hw_probes enable_vio_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes active_chains -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX BINARY [get_hw_probes chain_success -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE_RADIX BINARY [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property INPUT_VALUE_RADIX UNSIGNED [get_hw_probes num_active_ports -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 010 [get_hw_probes clk_div -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {clk_div} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b2_xc7a_triggerless_320.tcl
+# set_property OUTPUT_VALUE 111111111111111111 [get_hw_probes mezz_enable_vio -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {mezz_enable_vio} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes rst_global -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {rst_global} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 1000
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_f -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_f} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# set_property OUTPUT_VALUE FFFFFF [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/channel_enable_r -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# commit_hw_vio [get_hw_probes {inst_Mezz_config/inst_mezz_config_vio/channel_enable_r} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]]
+# startgroup
+# set_property OUTPUT_VALUE 1 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+# after 2000
+# startgroup
+# set_property OUTPUT_VALUE 0 [get_hw_probes TDC_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# commit_hw_vio [get_hw_probes {TDC_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+# endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+commit_hw_vio [get_hw_probes {ASD_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes ASD_config -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+commit_hw_vio [get_hw_probes {ASD_config} -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"vio_top_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7771.793 ; gain = 40.020 ; free physical = 1232 ; free virtual = 35428
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+WARNING: [Labtools 27-3361] The debug hub core was not detected.
+Resolution: 
+1. Make sure the clock connected to the debug hub (dbg_hub) core is a free running clock and is active.
+2. Make sure the BSCAN_SWITCH_USER_MASK device property in Vivado Hardware Manager reflects the user scan chain setting in the design and refresh the device.  To determine the user scan chain setting in the design, open the implemented design and use 'get_property C_USER_SCAN_CHAIN [get_debug_cores dbg_hub]'.
+For more details on setting the scan chain property, consult the Vivado Debug and Programming User Guide (UG908).
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst' at location 'uuid_256E991790F35590AE1920456D0E3A71' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'vio_top_inst' at location 'uuid_3446F850A31251DD9E0E1C0298711D74' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'config_loop_inst/vio_loop_config_inst' at location 'uuid_59439DEAA91E505A9230C31C7E73A1D4' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst' at location 'uuid_67CC029B78845182A6199116BE5F28AF' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst' at location 'uuid_6F183A2248435C84B50389899D027826' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_JTAG_master/ila_jtag_master_inst' at location 'uuid_9BABC258A26D546694A68BD6ADBE1E8A' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst' at location 'uuid_C2C45EAEC999541EA1A06680B9DFE12E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst' at location 'uuid_C32336480EA65F2AAA6E1BBF60B93A64' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/ila_config_mezz_inst' at location 'uuid_C56210BC0B315A269FBA4394A5008855' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst' at location 'uuid_DE9D3CCDB133524880423D82B037267E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'ila_top_inst' at location 'uuid_E2AC59697EEC56B1889A729BAC2D5528' from probes file, since it cannot be found on the programmed device.
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7771.793 ; gain = 0.000 ; free physical = 1193 ; free virtual = 35389
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+WARNING: [Labtools 27-3361] The debug hub core was not detected.
+Resolution: 
+1. Make sure the clock connected to the debug hub (dbg_hub) core is a free running clock and is active.
+2. Make sure the BSCAN_SWITCH_USER_MASK device property in Vivado Hardware Manager reflects the user scan chain setting in the design and refresh the device.  To determine the user scan chain setting in the design, open the implemented design and use 'get_property C_USER_SCAN_CHAIN [get_debug_cores dbg_hub]'.
+For more details on setting the scan chain property, consult the Vivado Debug and Programming User Guide (UG908).
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst' at location 'uuid_256E991790F35590AE1920456D0E3A71' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'vio_top_inst' at location 'uuid_3446F850A31251DD9E0E1C0298711D74' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'config_loop_inst/vio_loop_config_inst' at location 'uuid_59439DEAA91E505A9230C31C7E73A1D4' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst' at location 'uuid_67CC029B78845182A6199116BE5F28AF' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst' at location 'uuid_6F183A2248435C84B50389899D027826' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_JTAG_master/ila_jtag_master_inst' at location 'uuid_9BABC258A26D546694A68BD6ADBE1E8A' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst' at location 'uuid_C2C45EAEC999541EA1A06680B9DFE12E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst' at location 'uuid_C32336480EA65F2AAA6E1BBF60B93A64' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/ila_config_mezz_inst' at location 'uuid_C56210BC0B315A269FBA4394A5008855' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst' at location 'uuid_DE9D3CCDB133524880423D82B037267E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'ila_top_inst' at location 'uuid_E2AC59697EEC56B1889A729BAC2D5528' from probes file, since it cannot be found on the programmed device.
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+WARNING: [Labtools 27-3361] The debug hub core was not detected.
+Resolution: 
+1. Make sure the clock connected to the debug hub (dbg_hub) core is a free running clock and is active.
+2. Make sure the BSCAN_SWITCH_USER_MASK device property in Vivado Hardware Manager reflects the user scan chain setting in the design and refresh the device.  To determine the user scan chain setting in the design, open the implemented design and use 'get_property C_USER_SCAN_CHAIN [get_debug_cores dbg_hub]'.
+For more details on setting the scan chain property, consult the Vivado Debug and Programming User Guide (UG908).
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst' at location 'uuid_256E991790F35590AE1920456D0E3A71' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'vio_top_inst' at location 'uuid_3446F850A31251DD9E0E1C0298711D74' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'config_loop_inst/vio_loop_config_inst' at location 'uuid_59439DEAA91E505A9230C31C7E73A1D4' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst' at location 'uuid_67CC029B78845182A6199116BE5F28AF' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst' at location 'uuid_6F183A2248435C84B50389899D027826' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_JTAG_master/ila_jtag_master_inst' at location 'uuid_9BABC258A26D546694A68BD6ADBE1E8A' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst' at location 'uuid_C2C45EAEC999541EA1A06680B9DFE12E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst' at location 'uuid_C32336480EA65F2AAA6E1BBF60B93A64' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/ila_config_mezz_inst' at location 'uuid_C56210BC0B315A269FBA4394A5008855' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst' at location 'uuid_DE9D3CCDB133524880423D82B037267E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'ila_top_inst' at location 'uuid_E2AC59697EEC56B1889A729BAC2D5528' from probes file, since it cannot be found on the programmed device.
+source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b0_xc7a_triggerless_320.tcl
+WARNING: [Labtoolstcl 44-169] No matching hw_vios were found.
+WARNING: [Labtoolstcl 44-131] No matching hw_probes were found.
+# set_property NAME.SELECT short [get_hw_probes inst_Mezz_config/inst_mezz_config_vio/enable_trigger_timeout -of_objects [get_hw_vios -of_objects [get_hw_devices xc7a35t_0] -filter {CELL_NAME=~"inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst"}]] 
+ERROR: [Common 17-55] 'set_property' expects at least one object.
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7771.793 ; gain = 0.000 ; free physical = 1197 ; free virtual = 35393
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+WARNING: [Labtools 27-3361] The debug hub core was not detected.
+Resolution: 
+1. Make sure the clock connected to the debug hub (dbg_hub) core is a free running clock and is active.
+2. Make sure the BSCAN_SWITCH_USER_MASK device property in Vivado Hardware Manager reflects the user scan chain setting in the design and refresh the device.  To determine the user scan chain setting in the design, open the implemented design and use 'get_property C_USER_SCAN_CHAIN [get_debug_cores dbg_hub]'.
+For more details on setting the scan chain property, consult the Vivado Debug and Programming User Guide (UG908).
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst' at location 'uuid_256E991790F35590AE1920456D0E3A71' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'vio_top_inst' at location 'uuid_3446F850A31251DD9E0E1C0298711D74' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'config_loop_inst/vio_loop_config_inst' at location 'uuid_59439DEAA91E505A9230C31C7E73A1D4' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst' at location 'uuid_67CC029B78845182A6199116BE5F28AF' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst' at location 'uuid_6F183A2248435C84B50389899D027826' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_JTAG_master/ila_jtag_master_inst' at location 'uuid_9BABC258A26D546694A68BD6ADBE1E8A' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst' at location 'uuid_C2C45EAEC999541EA1A06680B9DFE12E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst' at location 'uuid_C32336480EA65F2AAA6E1BBF60B93A64' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/ila_config_mezz_inst' at location 'uuid_C56210BC0B315A269FBA4394A5008855' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst' at location 'uuid_DE9D3CCDB133524880423D82B037267E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'ila_top_inst' at location 'uuid_E2AC59697EEC56B1889A729BAC2D5528' from probes file, since it cannot be found on the programmed device.
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7771.793 ; gain = 0.000 ; free physical = 1247 ; free virtual = 35449
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+WARNING: [Labtools 27-3361] The debug hub core was not detected.
+Resolution: 
+1. Make sure the clock connected to the debug hub (dbg_hub) core is a free running clock and is active.
+2. Make sure the BSCAN_SWITCH_USER_MASK device property in Vivado Hardware Manager reflects the user scan chain setting in the design and refresh the device.  To determine the user scan chain setting in the design, open the implemented design and use 'get_property C_USER_SCAN_CHAIN [get_debug_cores dbg_hub]'.
+For more details on setting the scan chain property, consult the Vivado Debug and Programming User Guide (UG908).
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst' at location 'uuid_256E991790F35590AE1920456D0E3A71' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'vio_top_inst' at location 'uuid_3446F850A31251DD9E0E1C0298711D74' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'config_loop_inst/vio_loop_config_inst' at location 'uuid_59439DEAA91E505A9230C31C7E73A1D4' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst' at location 'uuid_67CC029B78845182A6199116BE5F28AF' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst' at location 'uuid_6F183A2248435C84B50389899D027826' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_JTAG_master/ila_jtag_master_inst' at location 'uuid_9BABC258A26D546694A68BD6ADBE1E8A' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst' at location 'uuid_C2C45EAEC999541EA1A06680B9DFE12E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst' at location 'uuid_C32336480EA65F2AAA6E1BBF60B93A64' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/ila_config_mezz_inst' at location 'uuid_C56210BC0B315A269FBA4394A5008855' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst' at location 'uuid_DE9D3CCDB133524880423D82B037267E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'ila_top_inst' at location 'uuid_E2AC59697EEC56B1889A729BAC2D5528' from probes file, since it cannot be found on the programmed device.
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.ltx} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/lpGBT_CSM/firmware/lpgbtcsm_fpga_top_18mezz.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 7771.793 ; gain = 0.000 ; free physical = 1195 ; free virtual = 35474
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+WARNING: [Xicom 50-38] xicom: No CseXsdb register file specified for CseXsdb slave type: 0, cse driver version: 0. Slave initialization skipped.
+INFO: [Labtools 27-1434] Device xc7a35t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it.
+WARNING: [Labtools 27-3361] The debug hub core was not detected.
+Resolution: 
+1. Make sure the clock connected to the debug hub (dbg_hub) core is a free running clock and is active.
+2. Make sure the BSCAN_SWITCH_USER_MASK device property in Vivado Hardware Manager reflects the user scan chain setting in the design and refresh the device.  To determine the user scan chain setting in the design, open the implemented design and use 'get_property C_USER_SCAN_CHAIN [get_debug_cores dbg_hub]'.
+For more details on setting the scan chain property, consult the Vivado Debug and Programming User Guide (UG908).
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup0_inst' at location 'uuid_256E991790F35590AE1920456D0E3A71' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'vio_top_inst' at location 'uuid_3446F850A31251DD9E0E1C0298711D74' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'config_loop_inst/vio_loop_config_inst' at location 'uuid_59439DEAA91E505A9230C31C7E73A1D4' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup1_inst' at location 'uuid_67CC029B78845182A6199116BE5F28AF' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_setup2_inst' at location 'uuid_6F183A2248435C84B50389899D027826' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_JTAG_master/ila_jtag_master_inst' at location 'uuid_9BABC258A26D546694A68BD6ADBE1E8A' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_asd_setup_inst' at location 'uuid_C2C45EAEC999541EA1A06680B9DFE12E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control0_inst' at location 'uuid_C32336480EA65F2AAA6E1BBF60B93A64' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/ila_config_mezz_inst' at location 'uuid_C56210BC0B315A269FBA4394A5008855' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'inst_Mezz_config/inst_mezz_config_vio/vio_control1_inst' at location 'uuid_DE9D3CCDB133524880423D82B037267E' from probes file, since it cannot be found on the programmed device.
+WARNING: [Labtools 27-3413] Dropping logic core with cellname:'ila_top_inst' at location 'uuid_E2AC59697EEC56B1889A729BAC2D5528' from probes file, since it cannot be found on the programmed device.
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11373-localhost.localdomain/hw_1/wave/hw_ila_data_1/hw_ila_data_1.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11373-localhost.localdomain/hw_1/wave/hw_ila_data_2/hw_ila_data_2.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11373-localhost.localdomain/hw_1/wave/hw_ila_data_3/hw_ila_data_3.wcfg}
+exit
+INFO: [Common 17-206] Exiting vivado_lab at Wed Oct  4 14:06:37 2023...

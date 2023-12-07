@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <string>
+#include <numeric>
 
 #include "macros/GlobalIncludes.h"
 
@@ -20,8 +21,8 @@
 using namespace Muon;
 using namespace std;
 
-// TODO: Pull out initialization from default constructor, copy constructor,
-//       and copy assignment
+// TODO: Is there a better place to put this? E.g. Geometry.cpp?
+const double MATCH_WINDOW = 1.5; // us
 
 // NOTE: There should really only be one of those. DAQData holds it.
 struct Plots {
@@ -55,10 +56,14 @@ struct Plots {
 	vector<TH2F*>          p_adc_vs_tdc            ;
 
 	vector<vector<double>> p_tdc_hit_rate          ;
+	vector<TGraph*>        p_tdc_hit_rate_graph    ;
 
 	TH2D *                 hitByLC                 ;
 	TH2D *                 badHitByLC              ;
 	TH2D *                 goodHitByLC             ; 
+
+	int total_events; // TODO: I don't like tracking total events in Plots as
+	                  //       well as in DAQData. Try to do one or the other.
 
 	void binEvent(const Event &e);
 
@@ -92,18 +97,13 @@ Plots::Plots(const Plots &other) {
 
 	p_adc_vs_tdc            .reserve(Geometry::MAX_TDC);
 
-	p_tdc_hit_rate          .resize (Geometry::MAX_TDC);
-
-	for(vector<double> &vec : p_tdc_hit_rate) {
-
-		vec.resize(Geometry::MAX_TDC_CHANNEL);
-
-	}
+	p_tdc_hit_rate_graph    .reserve(Geometry::MAX_TDC);
 
 	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
-		p_tdc_adc_time          .push_back(dynamic_cast<TH1F*>(other.p_tdc_adc_time[tdc]          ->Clone()));
-		p_tdc_tdc_time_corrected.push_back(dynamic_cast<TH1F*>(other.p_tdc_tdc_time_corrected[tdc]->Clone()));
+		p_tdc_adc_time          .push_back(dynamic_cast<TH1F*  >(other.p_tdc_adc_time[tdc]          ->Clone()));
+		p_tdc_tdc_time_corrected.push_back(dynamic_cast<TH1F*  >(other.p_tdc_tdc_time_corrected[tdc]->Clone()));
+		p_tdc_hit_rate_graph    .push_back(dynamic_cast<TGraph*>(other.p_tdc_hit_rate_graph[tdc]    ->Clone()));
 
 		for(int channel = 0; channel < Geometry::MAX_TDC_CHANNEL; ++channel) {
 
@@ -159,12 +159,16 @@ Plots::Plots() {
 	p_adc_vs_tdc            .reserve(Geometry::MAX_TDC);
 
 	p_tdc_hit_rate          .resize (Geometry::MAX_TDC);
-
 	for(vector<double> &vec : p_tdc_hit_rate) {
 
 		vec.resize(Geometry::MAX_TDC_CHANNEL);
 
 	}
+
+	p_tdc_hit_rate_graph    .reserve(Geometry::MAX_TDC);
+
+	vector<double> p_tdc_hit_rate_x(Geometry::MAX_TDC_CHANNEL);
+	iota(p_tdc_hit_rate_x.begin(), p_tdc_hit_rate_x.end(), 0.);
 
 	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
@@ -202,6 +206,24 @@ Plots::Plots() {
 		));
 		p_tdc_tdc_time_corrected.back()->GetXaxis()->SetTitle("time/ns");
 		p_tdc_tdc_time_corrected.back()->GetYaxis()->SetTitle("entries");
+
+		plot_name_buffer.Form("tdc_%d_hit_rate", tdc);
+
+		TGraph *graph = new TGraph(
+			Geometry::MAX_TDC_CHANNEL,
+			&p_tdc_hit_rate_x[0],
+			&p_tdc_hit_rate[tdc][0]
+		);
+		graph->SetFillColor(4);
+		graph->SetTitle(plot_name_buffer);
+		graph->GetXaxis()->SetTitle("Channel No.");
+		double tmp_yrange = graph->GetHistogram()->GetMaximum();
+		graph->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
+		graph->GetHistogram()->SetMinimum(0);
+		graph->GetXaxis()->SetLimits(-0.5, static_cast<double>(Geometry::MAX_TDC_CHANNEL) - 0.5);
+		graph->GetYaxis()->SetTitle("Rate(kHz)");
+		p_tdc_hit_rate_graph.push_back(graph);
+
 
 		for(int channel = 0; channel < Geometry::MAX_TDC_CHANNEL; ++channel) {
 
@@ -278,6 +300,8 @@ Plots::Plots() {
 	);
 	goodHitByLC->SetStats(0);
 
+	total_events = 0;
+
 }
 
 void Plots::binEvent(const Event &e) {
@@ -288,6 +312,8 @@ void Plots::binEvent(const Event &e) {
 	// TODO: Clean up and redesign UI
 	// TODO: Noise rate display
 
+	++total_events;
+
 	for(const Hit &hit : e.Hits()) {
 
 		p_tdc_tdc_time_corrected[hit.TDC()]->Fill(hit.CorrTime());
@@ -296,6 +322,20 @@ void Plots::binEvent(const Event &e) {
 		p_tdc_time_corrected[hit.TDC()][hit.Channel()]->Fill(hit.CorrTime ());
 		p_tdc_time          [hit.TDC()][hit.Channel()]->Fill(hit.DriftTime());
 		p_adc_time          [hit.TDC()][hit.Channel()]->Fill(hit.ADCTime  ());
+
+		// Hits / total_events * (1 / MATCH_WINDOW (us)) * 1000 (us / ms)
+		p_tdc_hit_rate[hit.TDC()][hit.Channel()] 
+			= p_adc_time[hit.TDC()][hit.Channel()]->GetEntries() / total_events 
+			  *
+			  1000 / MATCH_WINDOW;
+
+		p_tdc_hit_rate_graph[hit.TDC()]->SetPoint(
+			hit.Channel(), 
+			hit.Channel(), 
+			p_tdc_hit_rate[hit.TDC()][hit.Channel()]
+		);
+		double tmp_yrange = p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->GetMaximum();
+		p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
 
 		int hitL, hitC;
 		Geometry::getInstance().GetHitLayerColumn(hit.TDC(), hit.Channel(), &hitL, &hitC);
@@ -371,9 +411,23 @@ void Plots::clear() {
 
 	}
 
+	for(TGraph *graph : p_tdc_hit_rate_graph) {
+
+		for(int i = 0; i < Geometry::MAX_TDC_CHANNEL; ++i) {
+
+			graph->SetPoint(i, i, 0.);
+			double tmp_yrange = graph->GetHistogram()->GetMaximum();
+			graph->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
+
+
+		}
+
+	}
 
 	hitByLC    ->Reset();
 	badHitByLC ->Reset();
 	goodHitByLC->Reset();
+
+	total_events = 0;
 
 }

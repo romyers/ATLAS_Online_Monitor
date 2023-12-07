@@ -24,6 +24,7 @@ public:
     UISignalBus   (      UISignalBus &other) = delete;
     void operator=(const UISignalBus &other) = delete;
 
+    // Called when the decoder finishes processing data
     void onUpdate(); // *SIGNAL*
 
     // TODO: This is too tightly coupled to data runs to belong in a general

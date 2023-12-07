@@ -48,8 +48,12 @@ namespace DataRun {
 }
 namespace DataRunIMPL {
 
-    void   initializeDataStream(LockableStream &dataStream);
-    string getCurrentTimestamp (const string   &format    );
+    void   initializeDataStream(LockableStream &dataStream   );
+    string getCurrentTimestamp (const string   &format       );
+
+    bool   directoryExists     (const string   &path         );
+    bool   createDirectory     (const string   &path         );
+    void   createIfMissing     (const string   &directoryName);
 
 }
 }
@@ -131,14 +135,19 @@ void DataRun::startRun() {
 
     using namespace DataRunIMPL;
 
-    // TODO: Since ErrorLogger is application-wide, we don't want to do
-    //       this. But we also need to count per-run errors.
+    // Reset the error logger
+    // TODO: This relegates the error logger to a per-run role, so it
+    //       should not be used at the level of the wider program.
+    //         -- Also, semantically, this sorta makes us want to 
+    //            let the error logger not be a singleton anymore.
     ErrorLogger::getInstance().clear();
+    ErrorLogger::getInstance().disconnectStreams();
 
     DAQState state = DAQState::getState();
 
     string runLabel = "";
 
+    // Abort if a run is already in progress
     if(state.tempState.runStarted) {
 
         throw UIException(
@@ -147,6 +156,7 @@ void DataRun::startRun() {
 
     }
 
+    // Set up the input source
     if(state.persistentState.dataSource == DAT_FILE_SOURCE) {
 
         if(state.persistentState.inputFilename == "") {
@@ -159,8 +169,6 @@ void DataRun::startRun() {
 
         cout << endl << "File source selected" << endl;
         cout << "Filename: " << filename << endl;
-
-        // TODO: Extract timestamp
 
         size_t extensionPos = filename.find_last_of(".");
 
@@ -191,7 +199,7 @@ void DataRun::startRun() {
 
     state.tempState.runStarted = true;
     state.tempState.runLabel = runLabel;
-    state.commit(); // NOTE: This shouldn't fail, but better if it's robust
+    state.commit(); // TODO: This shouldn't fail, but better if it's robust
 
     // Clear the DAQData of any data from a previous run
     DAQData &data = DAQData::getInstance();
@@ -208,7 +216,6 @@ void DataRun::startRun() {
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(thread([&data, runLabel]() {
 
-        // TODO: Add the run number to this
         cout << endl << "Starting run: " << runLabel << endl; 
 
         // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
@@ -220,6 +227,27 @@ void DataRun::startRun() {
             ).Tokenize("_")->At(0))
         )->String().Atoi();
         Geometry::getInstance().SetRunN(runN);
+
+        createIfMissing("./data");
+
+        string logFile("data/");
+        logFile += runLabel;
+        logFile += ".log";
+
+        ofstream logWriter(logFile);
+        if(!logWriter.is_open()) {
+
+            ErrorLogger::getInstance().logError(
+                string("Failed to open log file: ") + logFile,
+                "errorLogging",
+                FATAL
+            );
+            cout << "Aborted run!" << endl;
+
+            throw logic_error("Data capture could not open logging .log file");
+
+        }
+        ErrorLogger::getInstance().addOutputStream(logWriter);
 
         LockableStream dataStream;
         initializeDataStream(dataStream);
@@ -259,6 +287,8 @@ void DataRun::startRun() {
         state.tempState.runStarted = false;
         state.commit();
 
+        logWriter.close();
+
         // Once the run is shut down, we can clear the
         // run flag if it exists
         Terminator::getInstance().clearFlag("RUN_FLAG");
@@ -284,5 +314,39 @@ string Muon::DataRunIMPL::getCurrentTimestamp(const string &format) {
     strftime(formatBuffer, 40, format.data(), timeinfo);
 
     return string(formatBuffer);
+
+}
+
+bool Muon::DataRunIMPL::directoryExists(const string &path) {
+
+    struct stat sb;
+
+    if(stat(path.data(), &sb) == 0) {
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+bool Muon::DataRunIMPL::createDirectory(const string &path) {
+
+    if(mkdir(path.data(), 0777) == 0) return true;
+
+    return false;
+
+}
+
+void Muon::DataRunIMPL::createIfMissing(const string &directoryName) {
+
+    if(!directoryExists(directoryName)) {
+
+        createDirectory(directoryName);
+
+        cout << "Created output directory: " << directoryName << endl;
+
+    }
 
 }

@@ -38,10 +38,6 @@ namespace DataCapture {
 }
 namespace DataCaptureIMPL {
 
-    bool   directoryExists             (const string       &path          );
-    bool   createDirectory             (const string       &path          );
-    void   createIfMissing             (const string       &directoryName );
-
     void   initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
 
 }
@@ -69,8 +65,6 @@ void Muon::DataCapture::runDataCapture(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
-    createIfMissing("./data");
-
     string outputFile("data/");
     outputFile += runLabel;
     outputFile += ".dat";
@@ -85,7 +79,7 @@ void Muon::DataCapture::runDataCapture(
         );
         cout << "Aborted run!" << endl;
 
-        throw logic_error("Data capture could not open output .DAT file");
+        throw logic_error("Data capture could not open output .dat file");
 
     }
 
@@ -113,7 +107,6 @@ void Muon::DataCapture::runDataCapture(
         while(packets / 1000 > thousands) {
 
             ++thousands;
-            cout << "Recorded " << thousands * 1000 << " packets" << endl;
 
         }
 
@@ -131,40 +124,6 @@ void Muon::DataCapture::runDataCapture(
 
     cout << "Suspended data capture." << endl;
     cout << data.packetCount << " packets recorded." << endl;
-
-}
-
-bool Muon::DataCaptureIMPL::directoryExists(const string &path) {
-
-    struct stat sb;
-
-    if(stat(path.data(), &sb) == 0) {
-
-        return true;
-
-    }
-
-    return false;
-
-}
-
-bool Muon::DataCaptureIMPL::createDirectory(const string &path) {
-
-    if(mkdir(path.data(), 0777) == 0) return true;
-
-    return false;
-
-}
-
-void Muon::DataCaptureIMPL::createIfMissing(const string &directoryName) {
-
-    if(!directoryExists(directoryName)) {
-
-        createDirectory(directoryName);
-
-        cout << "Created output directory: " << directoryName << endl;
-
-    }
 
 }
 

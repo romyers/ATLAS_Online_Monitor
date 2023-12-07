@@ -23,9 +23,8 @@
 #include "monitorConfig.cpp"
 
 #include "macros/DAQState.cpp"
-#include "macros/ErrorLogger.cpp"
 #include "macros/UIFramework/UIException.cpp"
-#include "macros/UIFramework/UISignals.cpp"
+#include "macros/UIFramework/UILock.cpp"
 #include "macros/UIWindows/AlertBox/AlertOperations.cpp"
 
 #include "MainMenu/Views/EntryView.cpp"
@@ -74,8 +73,9 @@ void startDAQ();
 
 void StartDAQ() {
 
-    // TODO: We want a console logger class to replace cout too.
-    ErrorLogger::getInstance().setOutputStream(cerr);
+    // TODO: It might be nice to have a more general 'logger' that stores
+    //       everything, not just errors.
+    //         -- Can just add a new error 'type'
 
     // Read in DAQState from file
     State::DAQState state = State::DAQState::getState();
@@ -100,7 +100,7 @@ void StartDAQ() {
             TGMainFrame *mainFrame = new TGMainFrame(gClient->GetRoot());
 
             // Create the menu displayed on the main window
-            EntryView *menu = new EntryView(mainFrame, 500, 350);
+            EntryView *menu = new EntryView(mainFrame, 900, 350, kVerticalFrame);
             mainFrame->AddFrame(menu, new TGLayoutHints(kLHintsCenterX));
 
             // Set up the main window now that it has all its components
@@ -124,10 +124,7 @@ void StartDAQ() {
             //       out
             // TODO: Include a setting regarding whether to warn for slow
             //       frames
-            // TODO: A lot of this framerate stuff really is overkill. It was
-            //       useful for checking run speed, but we know things are fast
-            //       enough now
-            int frameNum      = 0;
+            // TODO: A lot of this framerate stuff really is overkill. 
             double slowFrames = 0;
             while(!Terminator::getInstance().isTerminated()) {
 
@@ -136,18 +133,12 @@ void StartDAQ() {
 
                 try {
 
+                    // TODO: This locks the UI lock for the entire event 
+                    //       processing loop. Would be nice if we didn't block
+                    //       other UI updates for the WHOLE loop.
+                    Muon::UI::UILock.lock();
                     gSystem->ProcessEvents();
-
-                    if(frameNum % UI_UPDATE_FRAMES == 0) {
-
-                        // Reset it every time to prevent overflows
-                        frameNum = 0;
-
-                        UISignalBus::getInstance().onUpdate();
-
-                    }
-
-                    ++frameNum;
+                    Muon::UI::UILock.unlock();
 
                 } catch (UIException &e) {
 
@@ -174,6 +165,11 @@ void StartDAQ() {
 
                 // Deal with the case where the update loop took too long
                 if(sleepTime < 0) {
+
+                    // TODO: I think better if we increment slowFrames by a
+                    //       measure of how slow the frame was, so e.g.
+                    //       we don't suppress the warnings if we only
+                    //       update the UI every ten frames.
 
                     if(warnSlowFrames) ++slowFrames;
                     sleepTime = 0;

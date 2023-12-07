@@ -37,8 +37,6 @@ void EntryOperations::exitAll() {
 
 	Terminator::getInstance().terminate();
 
-	// TODO: Close UI windows
-
 }
 
 void EntryOperations::stopRun() {

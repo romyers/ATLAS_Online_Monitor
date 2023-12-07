@@ -67,6 +67,11 @@ ErrorView::ErrorView(const TGWindow *p) : TGMainFrame(p, 800, 600, kFixedSize) {
 	errorPanel = new TGHtml(this, 800, 600);
 	AddFrame(errorPanel, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
+	SetWindowName("Error Log");
+    MapSubwindows();
+    Resize(GetDefaultSize());
+    MapWindow();
+    
 	update();
 
 	makeConnections();

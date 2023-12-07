@@ -15,6 +15,8 @@
 #include "macros/UIFramework/UIException.cpp"
 
 #include "DAQMonitor/Plotting/Views/HistogramPlotter.cpp"
+#include "DAQMonitor/Plotting/Views/GraphPlotter.cpp"
+#include "DAQMonitor/Plotting/Views/PlotWindow.cpp"
 
 #include "DAQMonitor/PlotSaving/PlotSavingOperations.cpp"
 
@@ -27,10 +29,10 @@ using namespace std;
 // TODO: Pull TDC and ADC plot submenus to other components
 // TODO: Break direct dependence on DAQData. Interface with the data model
 //       through an operation.
+// TODO: Clean this up -- lots of cumbersome code.
 
 const int SAVE_PLOTS_ID      = 1;
 const int SHOW_ERROR_LOG_ID  = 2;
-const int SHOW_NOISE_RATE_ID = 3;
 const int CLOSE_ALL_ID       = 4;
 const int PLOT_ENTRY_BASE    = 300000;
 
@@ -52,10 +54,21 @@ public:
 
 	}
 
-	HistogramPlotter *plot = nullptr;
+	TGPopupMenu *parent = nullptr;
+
+	PlotWindow *plot = nullptr;
 	int tdc = OVERVIEW_TDC;
 
 	int getEntryID() const { return entryID; }
+
+	void close() {
+
+		if(parent) {
+			parent->UnCheckEntry(entryID);
+		}
+		plot = nullptr;
+
+	}
 
 private:
 
@@ -75,10 +88,8 @@ public:
 	// METHODS
 
 	void openADCOverview  ();
-	void closeADCOverview ();
 
 	void openTDCOverview  ();
-	void closeTDCOverview ();
 
 	void openErrorViewer  ();
 	void closeErrorViewer ();
@@ -87,10 +98,8 @@ public:
 	void closeNoiseDisplay();
 
 	void openADCChannelPlot (PlotEntry &entry);
-	void closeADCChannelPlot(PlotEntry &entry);
 
 	void openTDCChannelPlot (PlotEntry &entry);
-	void closeTDCChannelPlot(PlotEntry &entry);
 
 private:
 
@@ -117,6 +126,8 @@ private:
 	vector<PlotEntry> adc_chnl_plots;
 	vector<PlotEntry> tdc_chnl_plots;
 
+	PlotEntry noiseDisplay;
+
 	ErrorView *errorViewer;
 
 	// CONNECTIONS
@@ -134,7 +145,6 @@ RunMenuBar::RunMenuBar(const TGWindow *p)
 	for(int i = 0; i < adc_chnl_plots.size(); ++i) {
 
 		adc_chnl_plots[i].tdc = i;
-
 	}
 
 	for(int i = 0; i < tdc_chnl_plots.size(); ++i) {
@@ -143,7 +153,7 @@ RunMenuBar::RunMenuBar(const TGWindow *p)
 
 	}
 
-	errorViewer  = nullptr;
+	errorViewer = nullptr;
 
 	fileMenu = new TGPopupMenu(gClient->GetRoot());
 	AddPopup("&File", fileMenu, new TGLayoutHints(kLHintsTop | kLHintsLeft));
@@ -188,12 +198,29 @@ RunMenuBar::RunMenuBar(const TGWindow *p)
 
 		viewMenu->AddSeparator();
 
-		viewMenu->AddEntry("Noise Rate", SHOW_NOISE_RATE_ID);
+		viewMenu->AddEntry("Noise Rate", noiseDisplay.getEntryID());
 		viewMenu->AddEntry("Error Log", SHOW_ERROR_LOG_ID);
 
 		viewMenu->AddSeparator();
 
 		viewMenu->AddEntry("Close All", CLOSE_ALL_ID);
+
+	adc_overview.parent = adcPlotSelector;
+	tdc_overview.parent = tdcPlotSelector;
+
+	for(int i = 0; i < adc_chnl_plots.size(); ++i) {
+
+		adc_chnl_plots[i].parent = adcPlotSelector;
+
+	}
+
+	for(int i = 0; i < tdc_chnl_plots.size(); ++i) {
+
+		tdc_chnl_plots[i].parent = tdcPlotSelector;
+
+	}
+
+	noiseDisplay.parent = viewMenu;
 
 	makeConnections();
 
@@ -220,7 +247,7 @@ void RunMenuBar::handleViewMenuActivate(int id) {
 			if(adcPlotSelector->IsEntryChecked(entry.getEntryID())) {
 
 				entry.plot->CloseWindow();
-				closeADCChannelPlot(entry);
+				entry.close();
 
 			} else {
 
@@ -241,7 +268,7 @@ void RunMenuBar::handleViewMenuActivate(int id) {
 			if(tdcPlotSelector->IsEntryChecked(entry.getEntryID())) {
 
 				entry.plot->CloseWindow();
-				closeTDCChannelPlot(entry);
+				entry.close();
 
 			} else {
 
@@ -260,7 +287,7 @@ void RunMenuBar::handleViewMenuActivate(int id) {
 		if(adcPlotSelector->IsEntryChecked(adc_overview.getEntryID())) {
 
 			adc_overview.plot->CloseWindow();
-			closeADCOverview();
+			adc_overview.close();
 
 		} else {
 
@@ -277,7 +304,7 @@ void RunMenuBar::handleViewMenuActivate(int id) {
 		if(tdcPlotSelector->IsEntryChecked(tdc_overview.getEntryID())) {
 
 			tdc_overview.plot->CloseWindow();
-			closeTDCOverview();
+			tdc_overview.close();
 
 		} else {
 
@@ -289,11 +316,12 @@ void RunMenuBar::handleViewMenuActivate(int id) {
 
 	}
 
-	if(id == SHOW_NOISE_RATE_ID) {
+	if(id == noiseDisplay.getEntryID()) {
 
-		if(viewMenu->IsEntryChecked(SHOW_NOISE_RATE_ID)) {
+		if(viewMenu->IsEntryChecked(noiseDisplay.getEntryID())) {
 
-			closeNoiseDisplay();
+			noiseDisplay.plot->CloseWindow();
+			noiseDisplay.close();
 
 		} else {
 
@@ -361,22 +389,9 @@ void RunMenuBar::openADCOverview() {
 		3
 	);
 
-	adc_overview.plot->SetWindowName("ADC Plots");
-	adc_overview.plot->MapSubwindows();
-	adc_overview.plot->Resize(adc_overview.plot->GetDefaultSize());
-	adc_overview.plot->MapWindow();
-
-	adc_overview.plot->Connect("CloseWindow()", "RunMenuBar", this, "closeADCOverview()");
+	adc_overview.plot->Connect("CloseWindow()", "PlotEntry", &adc_overview, "close()");
 
 	adcPlotSelector->CheckEntry(adc_overview.getEntryID());
-
-}
-
-void RunMenuBar::closeADCOverview() {
-
-	adcPlotSelector->UnCheckEntry(adc_overview.getEntryID());
-
-	adc_overview.plot = nullptr;
 
 }
 
@@ -400,22 +415,9 @@ void RunMenuBar::openTDCOverview() {
 		3
 	);
 
-	tdc_overview.plot->SetWindowName("TDC Plots");
-	tdc_overview.plot->MapSubwindows();
-	tdc_overview.plot->Resize(tdc_overview.plot->GetDefaultSize());
-	tdc_overview.plot->MapWindow();
-
-	tdc_overview.plot->Connect("CloseWindow()", "RunMenuBar", this, "closeTDCOverview()");
+	tdc_overview.plot->Connect("CloseWindow()", "PlotEntry", &tdc_overview, "close()");
 
 	tdcPlotSelector->CheckEntry(tdc_overview.getEntryID());
-
-}
-
-void RunMenuBar::closeTDCOverview() {
-
-	tdcPlotSelector->UnCheckEntry(tdc_overview.getEntryID());
-
-	tdc_overview.plot = nullptr;
 
 }
 
@@ -436,28 +438,15 @@ void RunMenuBar::openADCChannelPlot(PlotEntry &entry) {
 	entry.plot = new HistogramPlotter(
 		gClient->GetRoot(), 
 		plotList, 
-		plotTitle.data(),
+		plotTitle,
 		1800,
 		900,
 		3
 	);
 
-	entry.plot->SetWindowName(plotTitle.data());
-	entry.plot->MapSubwindows();
-	entry.plot->Resize(
-		entry.plot->GetDefaultSize()
-	);
-	entry.plot->MapWindow();
+	entry.plot->Connect("CloseWindow()", "PlotEntry", &entry, "close()");
 
 	adcPlotSelector->CheckEntry(entry.getEntryID());
-
-}
-
-void RunMenuBar::closeADCChannelPlot(PlotEntry &entry) {
-
-	adcPlotSelector->UnCheckEntry(entry.getEntryID());
-
-	entry.plot = nullptr;
 
 }
 
@@ -478,38 +467,22 @@ void RunMenuBar::openTDCChannelPlot(PlotEntry &entry) {
 	entry.plot = new HistogramPlotter(
 		gClient->GetRoot(), 
 		plotList, 
-		plotTitle.data(),
+		plotTitle,
 		1800,
 		900,
 		3
 	);
 
-	entry.plot->SetWindowName(plotTitle.data());
-	entry.plot->MapSubwindows();
-	entry.plot->Resize(entry.plot->GetDefaultSize());
-	entry.plot->MapWindow();
+	entry.plot->Connect("CloseWindow()", "PlotEntry", &entry, "close()");
 
 	tdcPlotSelector->CheckEntry(entry.getEntryID());
 
-
-}
-	
-void RunMenuBar::closeTDCChannelPlot(PlotEntry &entry) {
-
-	tdcPlotSelector->UnCheckEntry(entry.getEntryID());
-
-	entry.plot = nullptr;
 
 }
 
 void RunMenuBar::openErrorViewer() {
 
     errorViewer = new ErrorView(gClient->GetRoot());
-
-    errorViewer->SetWindowName("Error Log");
-    errorViewer->MapSubwindows();
-    errorViewer->Resize(errorViewer->GetDefaultSize());
-    errorViewer->MapWindow();
 
     errorViewer->Connect("CloseWindow()", "RunMenuBar", this, "closeErrorViewer()");
 
@@ -527,15 +500,17 @@ void RunMenuBar::closeErrorViewer() {
 
 void RunMenuBar::openNoiseDisplay() {
 
-	cout << "Noise display not yet implemented" << endl;
-	viewMenu->CheckEntry(SHOW_NOISE_RATE_ID);
+	noiseDisplay.plot = new GraphPlotter(
+		gClient->GetRoot(), 
+		data.plots.p_tdc_hit_rate_graph, 
+		"Noise Rate Display",
+		1800,
+		900,
+		3
+	);
 
-}
-
-void RunMenuBar::closeNoiseDisplay() {
-
-	viewMenu->UnCheckEntry(SHOW_NOISE_RATE_ID);
-	cout << "Noise display not yet implemented" << endl;
+	noiseDisplay.plot->Connect("CloseWindow()", "PlotEntry", &noiseDisplay, "close()");
+	viewMenu->CheckEntry(noiseDisplay.getEntryID());
 
 }
 
@@ -546,16 +521,19 @@ void RunMenuBar::closeAllWindows() {
 		closeErrorViewer();
 	}
 
-	closeNoiseDisplay();
+	if(noiseDisplay.plot) {
+		noiseDisplay.plot->CloseWindow();
+		noiseDisplay.close();
+	}
 	
 	if(adc_overview.plot) {
 		adc_overview.plot->CloseWindow();
-		closeADCOverview();
+		adc_overview.close();
 	}
 
 	if(tdc_overview.plot) {
 		tdc_overview.plot->CloseWindow();
-		closeTDCOverview();
+		tdc_overview.close();
 	}
 
 	for(PlotEntry &entry : adc_chnl_plots) {
@@ -563,7 +541,7 @@ void RunMenuBar::closeAllWindows() {
 		if(entry.plot) {
 
 			entry.plot->CloseWindow();
-			closeADCChannelPlot(entry);
+			entry.close();
 
 		}
 
@@ -574,7 +552,7 @@ void RunMenuBar::closeAllWindows() {
 		if(entry.plot) {
 
 			entry.plot->CloseWindow();
-			closeTDCChannelPlot(entry);
+			entry.close();
 
 		}
 

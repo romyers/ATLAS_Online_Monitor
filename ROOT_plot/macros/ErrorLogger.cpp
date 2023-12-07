@@ -51,8 +51,9 @@ public:
 	void operator=(const ErrorLogger &other) = delete;
 
 	void clear            (                                                        );
+	void disconnectStreams(                                                        );
 	void logError         (const string  &msg, const string &type, ErrorLevel level);
-	void setOutputStream  (      ostream &out                                      );
+	void addOutputStream  (      ostream &out                                      );
 
 	vector<ErrorData> getErrors() const;
 
@@ -65,19 +66,31 @@ private:
 	ErrorLogger();
 
 	vector<ErrorData> errors;
-
-	ostream *errorStream;
+	vector<ostream*> errorStreams;
 
 	mutable mutex errorLock;
 
 };
 
-ErrorLogger::ErrorLogger() : errorStream(&cerr) {}
+ErrorLogger::ErrorLogger() {
+
+	errorStreams.push_back(&cerr);
+
+}
 
 void ErrorLogger::clear() {
 
 	errorLock.lock();
 	errors.clear();
+	errorLock.unlock();
+
+}
+
+void ErrorLogger::disconnectStreams() {
+
+	errorLock.lock();
+	errorStreams.clear();
+	errorStreams.push_back(&cerr);
 	errorLock.unlock();
 
 }
@@ -88,17 +101,21 @@ void ErrorLogger::logError(
 	ErrorLevel level
 ) {
 
+	// TODO: Consider saving the error level with the error
+
 	errorLock.lock();
-	*errorStream << msg << endl;
+	for(ostream *stream : errorStreams) {
+		*stream << msg << endl;
+	}
 	errors.emplace_back(msg, type, level);
 	errorLock.unlock();
 
 }
 
-void ErrorLogger::setOutputStream(ostream &out) {
+void ErrorLogger::addOutputStream(ostream &out) {
 
 	errorLock.lock();
-	errorStream = &out;
+	errorStreams.push_back(&out);
 	errorLock.unlock();
 
 }

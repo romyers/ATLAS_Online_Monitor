@@ -193,7 +193,7 @@ void StartMonitor(const string &filename = "") {
 			while(packets / 1000 > thousands) {
 
 				++thousands;
-				cout << "Recorded " << thousands * 1000 << " packets" << endl;
+				cout << "\rRecorded " << thousands * 1000 << " packets";
 
 			}
 

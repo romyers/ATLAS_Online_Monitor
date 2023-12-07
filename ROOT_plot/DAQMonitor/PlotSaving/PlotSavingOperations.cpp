@@ -55,12 +55,8 @@ void Muon::PlotSaving::savePlots() {
     // TODO: Figure out behavior for saving the same run twice
     //         -- I think it should overwrite the previous save
 
-    // Plot saving should happen in a separate thread, and we should have a progress bar
-    // associated with it
-    //   -- Maybe it's okay to block the UI while saving plots though, as long as we 
-    //      provide feedback that makes it clear that the UI is blocked.
-    //   -- NOTE: It's a little tricky to do plot saving outside the UI thread -- we need
-    //            a mutex or the output canvas overwrites other plots
+    // Plot saving should happen in a separate thread, while still updating the
+    // progress bar.
 
     DAQData &data = DAQData::getInstance();
 

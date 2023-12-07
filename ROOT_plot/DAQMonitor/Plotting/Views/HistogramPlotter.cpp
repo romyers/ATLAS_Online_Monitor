@@ -14,11 +14,13 @@
 
 #include "macros/UIFramework/UISignals.cpp"
 
+#include "DAQMonitor/Plotting/Views/PlotWindow.cpp"
+
 #include "src/DataModel/DAQData.cpp"
 
 using namespace std;
 
-class HistogramPlotter : public TGMainFrame {
+class HistogramPlotter : public PlotWindow {
 
 public:
 
@@ -33,22 +35,13 @@ public:
 
 	~HistogramPlotter();
 
-	void update();
+	virtual void update() override;
 
 private:
 
 	// DATA
 
 	vector<TH1*> histograms;
-
-	// VIEW
-
-	TRootEmbeddedCanvas *canvas;
-
-	// CONNECTIONS
-
-	void makeConnections ();
-	void breakConnections();
 
 };
 
@@ -59,26 +52,14 @@ HistogramPlotter::HistogramPlotter(
 	int w = 1, 
 	int h = 1,
 	int rows = 1
-) : TGMainFrame(p), histograms(histograms) {
-
-	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);
-	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX));
-
-	int count = histograms.size();
-	int cols = count / rows;
-    if(count % rows != 0) ++cols;
-
-    canvas->GetCanvas()->Divide(cols, rows);
-
-	makeConnections();
+) : PlotWindow(p, histograms.size(), title, w, h, rows), 
+    histograms(histograms) {
 
 	update();
 
 }
 
 HistogramPlotter::~HistogramPlotter() {
-
-	breakConnections();
 
 }
 
@@ -101,22 +82,5 @@ void HistogramPlotter::update() {
 	}
 
 	canvas->GetCanvas()->Update();
-
-}
-
-void HistogramPlotter::makeConnections() {
-
-	UISignalBus::getInstance().Connect(
-		"onUpdate()", 
-		"HistogramPlotter", 
-		this, 
-		"update()"
-	);
-
-}
-
-void HistogramPlotter::breakConnections() {
-
-	UISignalBus::getInstance().Disconnect("onUpdate()", this, "update()");
 
 }

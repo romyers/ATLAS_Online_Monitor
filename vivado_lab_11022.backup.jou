@@ -77,3 +77,150 @@ set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_o
 commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
 endgroup
 source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_triggerless_320.tcl
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_BER_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_hit_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_BER_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_hit_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_1/hw_ila_data_1.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_2/hw_ila_data_2.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_3/hw_ila_data_3.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_4/hw_ila_data_4.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_5/hw_ila_data_5.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_6/hw_ila_data_6.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_7/hw_ila_data_7.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_8/hw_ila_data_8.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_9/hw_ila_data_9.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_10/hw_ila_data_10.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_11/hw_ila_data_11.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_12/hw_ila_data_12.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_13/hw_ila_data_13.wcfg}

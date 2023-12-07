@@ -50,7 +50,8 @@ private:
 
 	// CONNECTIONS
 
-	void makeConnections();
+	void makeConnections ();
+	void breakConnections();
 
 };
 
@@ -120,8 +121,14 @@ void RunStats::update() {
 
 }
 
-void RunStats::teardown() {
+void RunStats::breakConnections() {
 
 	UISignalBus::getInstance().Disconnect("onUpdate()", this, "update()");
+
+}
+
+void RunStats::teardown() {
+
+	breakConnections();
 
 }

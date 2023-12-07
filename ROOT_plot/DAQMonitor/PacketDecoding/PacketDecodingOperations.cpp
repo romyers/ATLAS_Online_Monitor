@@ -18,6 +18,9 @@ using namespace std;
 #include "DAQMonitor/LockableStream.cpp"
 #include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
 
+#include "macros/UIFramework/UISignals.cpp"
+#include "macros/UIFramework/UILock.cpp"
+
 #include "src/Geometry.cpp"
 #include "src/ProgramControl/Terminator.cpp"
 #include "src/DataModel/DAQData.cpp"
@@ -43,6 +46,12 @@ namespace Decode {
 //       rather than in the run function.
 void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
 
+    // Update data with everything zeroed out
+    // TODO: Put this with the code that clears DAQData.
+    Muon::UI::UILock.lock();
+    UISignalBus::getInstance().onUpdate();
+    Muon::UI::UILock.unlock();
+
     Decoder decoder(dataStream, data);
 
     // TODO: Move termination condition up to where the thread is defined
@@ -55,7 +64,20 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
         // FIXME: In file reading mode, this will read the whole file before
         //        terminating on ctrl+c
 
-        decoder.refresh();
+        if(decoder.isStale()) {
+
+            decoder.refresh();
+
+            // TODO: This blocks the decode thread while the plots are 
+            //       updating. Not a big deal, but it would be nice if
+            //       that didn't happen.
+            // TODO: For DAT file sources, this won't run until the entire
+            //       file has been read. Not exactly ideal.
+            Muon::UI::UILock.lock();
+            UISignalBus::getInstance().onUpdate();
+            Muon::UI::UILock.unlock();
+
+        }
 
         // TODO: This is hacky; fix it. The idea here is to clear processed
         //       data from the dataStream so we don't produce a de facto

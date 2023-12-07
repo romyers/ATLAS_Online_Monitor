@@ -387,3 +387,205 @@ source /home/muonuser/gitfolder/phase2_MiniDAQ_Robert/config_tcl/b1_xcku035_trig
 # set_property OUTPUT_VALUE 0 [get_hw_probes tdc_decoder_top_inst/global_rst -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
 # commit_hw_vio [get_hw_probes {tdc_decoder_top_inst/global_rst} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]]
 # endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:50 ; elapsed = 00:00:48 . Memory (MB): peak = 7832.520 ; gain = 67.000 ; free physical = 1286 ; free virtual = 35474
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
+WARNING: [Labtools 27-1952] VIO hw_probe OUTPUT_VALUE properties for hw_vio(s) [hw_vio_4] differ from output values in the VIO core(s).
+Resolution: 
+To synchronize the hw_probes properties and the VIO core outputs choose one of the following alternatives:
+  1) Execute the command 'Commit Output Values to VIO Core', to write down the hw_probe values to the core.
+  2) Execute the command 'Refresh Input and Output Values from VIO Core', to update the hw_probe properties with the core values.
+  3) First restore initial values in the core with the command 'Reset VIO Core Outputs', and then execute the command 'Refresh Input and Output Values from VIO Core'.
+refresh_hw_device: Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 7832.520 ; gain = 0.000 ; free physical = 1212 ; free virtual = 35421
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:49 ; elapsed = 00:00:48 . Memory (MB): peak = 7843.207 ; gain = 8.004 ; free physical = 1194 ; free virtual = 35394
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
+WARNING: [Labtools 27-1952] VIO hw_probe OUTPUT_VALUE properties for hw_vio(s) [hw_vio_4] differ from output values in the VIO core(s).
+Resolution: 
+To synchronize the hw_probes properties and the VIO core outputs choose one of the following alternatives:
+  1) Execute the command 'Commit Output Values to VIO Core', to write down the hw_probe values to the core.
+  2) Execute the command 'Refresh Input and Output Values from VIO Core', to update the hw_probe properties with the core values.
+  3) First restore initial values in the core with the command 'Reset VIO Core Outputs', and then execute the command 'Refresh Input and Output Values from VIO Core'.
+refresh_hw_device: Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 7843.207 ; gain = 0.000 ; free physical = 1178 ; free virtual = 35377
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:49 ; elapsed = 00:00:48 . Memory (MB): peak = 7843.207 ; gain = 0.000 ; free physical = 1190 ; free virtual = 35387
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
+WARNING: [Labtools 27-1952] VIO hw_probe OUTPUT_VALUE properties for hw_vio(s) [hw_vio_4] differ from output values in the VIO core(s).
+Resolution: 
+To synchronize the hw_probes properties and the VIO core outputs choose one of the following alternatives:
+  1) Execute the command 'Commit Output Values to VIO Core', to write down the hw_probe values to the core.
+  2) Execute the command 'Refresh Input and Output Values from VIO Core', to update the hw_probe properties with the core values.
+  3) First restore initial values in the core with the command 'Reset VIO Core Outputs', and then execute the command 'Refresh Input and Output Values from VIO Core'.
+refresh_hw_device: Time (s): cpu = 00:00:03 ; elapsed = 00:00:06 . Memory (MB): peak = 7843.207 ; gain = 0.000 ; free physical = 1235 ; free virtual = 35432
+commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_BER_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_hit_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes downlinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {downlinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+set_property PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property FULL_PROBES.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.ltx} [get_hw_devices xcku035_0]
+set_property PROGRAM.FILE {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/firmware/lpgbtfpga_xcku035_10g24_top.bit} [get_hw_devices xcku035_0]
+program_hw_devices [get_hw_devices xcku035_0]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:49 ; elapsed = 00:00:48 . Memory (MB): peak = 7851.211 ; gain = 8.004 ; free physical = 1256 ; free virtual = 35520
+refresh_hw_device [lindex [get_hw_devices xcku035_0] 0]
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
+WARNING: [Labtools 27-1952] VIO hw_probe OUTPUT_VALUE properties for hw_vio(s) [hw_vio_4] differ from output values in the VIO core(s).
+Resolution: 
+To synchronize the hw_probes properties and the VIO core outputs choose one of the following alternatives:
+  1) Execute the command 'Commit Output Values to VIO Core', to write down the hw_probe values to the core.
+  2) Execute the command 'Refresh Input and Output Values from VIO Core', to update the hw_probe properties with the core values.
+  3) First restore initial values in the core with the command 'Reset VIO Core Outputs', and then execute the command 'Refresh Input and Output Values from VIO Core'.
+refresh_hw_device: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 7883.766 ; gain = 32.555 ; free physical = 1188 ; free virtual = 35451
+commit_hw_vio [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_40M_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_BER_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_hit_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"tdc_decoder_top_inst/vio_trigger_inst"}]\
+  [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]
+startgroup
+set_property OUTPUT_VALUE 1 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+startgroup
+set_property OUTPUT_VALUE 0 [get_hw_probes uplinkRst_i -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+commit_hw_vio [get_hw_probes {uplinkRst_i} -of_objects [get_hw_vios -of_objects [get_hw_devices xcku035_0] -filter {CELL_NAME=~"vio_debug_inst"}]]
+endgroup
+ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Xilinx/00000000000000
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/00000000000000
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 13 ILA core(s).
+INFO: [Labtools 27-2302] Device xcku035 (JTAG device index = 0) is programmed with a design that has 5 VIO core(s).
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_1]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_3]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_4]
+INFO: [Labtools 27-1889] Uploading output probe values for VIO core [hw_vio_5]
+refresh_hw_device: Time (s): cpu = 00:00:21 ; elapsed = 00:00:17 . Memory (MB): peak = 7883.766 ; gain = 0.000 ; free physical = 948 ; free virtual = 35200
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_1/hw_ila_data_1.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_2/hw_ila_data_2.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_3/hw_ila_data_3.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_4/hw_ila_data_4.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_5/hw_ila_data_5.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_6/hw_ila_data_6.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_7/hw_ila_data_7.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_8/hw_ila_data_8.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_9/hw_ila_data_9.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_10/hw_ila_data_10.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_11/hw_ila_data_11.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_12/hw_ila_data_12.wcfg}
+save_wave_config {/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/.Xil/vivado_lab-11022-localhost.localdomain/hw_1/wave/hw_ila_data_13/hw_ila_data_13.wcfg}
+exit
+INFO: [Common 17-206] Exiting vivado_lab at Wed Oct  4 14:06:34 2023...

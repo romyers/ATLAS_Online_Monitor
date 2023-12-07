@@ -14,11 +14,13 @@
 
 using namespace std;
 
-class RunView : public TGMainFrame {
+class RunView : public TGVerticalFrame {
 
 public:
 
 	RunView(const TGWindow *p);
+
+	void update();
 
 private:
 
@@ -33,18 +35,20 @@ private:
 
 };
 
-void RunView::makeConnections() {
+void RunView::update() {
 
-	// TODO: Before we reimplement this, we need to handle the case where 
-	//       RunView stops the run while something else is stopping it or
-	//       after something else has already stopped it.
-	// Connect("CloseWindow()", "DataRun", nullptr, "stopRun()");
+	runStats->update();
+
+}
+
+void RunView::makeConnections() {
+	
 	Connect("CloseWindow()", "RunStats", runStats, "teardown()");
 
 }
 
 RunView::RunView(const TGWindow *p) 
-	: TGMainFrame(p, 1, 1, kFixedSize) {
+	: TGVerticalFrame(p, 1, 1, kFixedSize) {
 
 	menuBar = new RunMenuBar(this);
 	AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
@@ -56,8 +60,15 @@ RunView::RunView(const TGWindow *p)
 		)
 	);
 
-	makeConnections();
-
 	Resize(300, 250);
+
+	SetWindowName("Run Viewer");
+    MapSubwindows();
+    Resize(GetDefaultSize());
+    MapWindow();
+
+    runStats->update();
+
+	makeConnections();
 
 }
