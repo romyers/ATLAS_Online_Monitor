@@ -120,6 +120,8 @@ private:
 
 	// SUBVIEWS
 
+	// TODO: Pull all these out to somewhere else
+
 	PlotEntry adc_overview;
 	PlotEntry tdc_overview;
 

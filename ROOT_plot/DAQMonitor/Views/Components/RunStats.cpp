@@ -15,6 +15,7 @@
 
 #include "macros/ErrorLogger.cpp"
 #include "macros/UIFramework/UISignals.cpp"
+#include "macros/DAQState.cpp"
 
 #include "src/DataModel/DAQData.cpp"
 
@@ -57,13 +58,6 @@ private:
 
 void RunStats::makeConnections() {
 
-	UISignalBus::getInstance().Connect(
-    	"onUpdate()", 
-    	"RunStats", 
-    	this,
-    	"update()"
-    );
-
 }
 
 RunStats::RunStats(
@@ -84,6 +78,7 @@ void RunStats::update() {
 	DAQData &data = DAQData::getInstance();
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
+	// Update the table
 	data.lock();
 	statsTable.setEntry("Packets Recorded", to_string(data.packetCount));
 	statsTable.setEntry("Events Processed", to_string(data.totalEventCount));
@@ -95,11 +90,34 @@ void RunStats::update() {
 	statsTable.setEntry("Dropped Events", to_string(data.droppedEvents));
 	data.unlock();
 
-	char *htmlText = new char[statsTable.stringify().size() + 1];
+	string htmlString = statsTable.stringify();
 
+	// Append the run status
+	// TODO: This could go somewhere else
+	State::DAQState state = State::DAQState::getState();
+	if(state.tempState.runLabel != "") {
+
+		htmlString += "<h2>";
+
+		if(state.tempState.runStarted) {
+
+			htmlString += string("Started Run: ") + state.tempState.runLabel;
+
+		} else {
+
+			htmlString += string("Stopped Run: ") + state.tempState.runLabel;
+
+		}
+
+		htmlString += "</h2>";
+
+	}
+
+	// Package the html into the html GUI element
+	char *htmlText = new char[htmlString.size() + 1];
 	try{
 
-		strcpy(htmlText, statsTable.stringify().data());
+		strcpy(htmlText, htmlString.data());
 
 		table->Clear();
 

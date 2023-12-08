@@ -392,8 +392,8 @@ namespace Muon {
         TDC_ML[i]  = i%2;
         TDC_COL[i] = i/2*6;
       }
-      isActiveTDC[0] = 0;
-      isActiveTDC[1] = 0;
+      // isActiveTDC[0] = 0;
+      // isActiveTDC[1] = 0;
 
     
     ResetAdjacencyMatrix();

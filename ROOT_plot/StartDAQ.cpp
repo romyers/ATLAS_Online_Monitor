@@ -100,7 +100,7 @@ void StartDAQ() {
             TGMainFrame *mainFrame = new TGMainFrame(gClient->GetRoot());
 
             // Create the menu displayed on the main window
-            EntryView *menu = new EntryView(mainFrame, 900, 350, kVerticalFrame);
+            EntryView *menu = new EntryView(mainFrame, 1, 1, kVerticalFrame);
             mainFrame->AddFrame(menu, new TGLayoutHints(kLHintsCenterX));
 
             // Set up the main window now that it has all its components
@@ -131,14 +131,14 @@ void StartDAQ() {
                 // Record the loop start time
                 auto UIUpdateStartTime = chrono::high_resolution_clock::now();
 
+
+                // TODO: This locks the UI lock for the entire event 
+                //       processing loop. Would be nice if we didn't block
+                //       other UI updates for the WHOLE loop.
+                Muon::UI::UILock.lock();
                 try {
 
-                    // TODO: This locks the UI lock for the entire event 
-                    //       processing loop. Would be nice if we didn't block
-                    //       other UI updates for the WHOLE loop.
-                    Muon::UI::UILock.lock();
                     gSystem->ProcessEvents();
-                    Muon::UI::UILock.unlock();
 
                 } catch (UIException &e) {
 
@@ -147,6 +147,7 @@ void StartDAQ() {
                     );
 
                 }
+                Muon::UI::UILock.unlock();
 
                 // Record the loop end time
                 auto UIUpdateEndTime = chrono::high_resolution_clock::now();

@@ -25,6 +25,7 @@
 
 #include "macros/UIFramework/UIException.cpp"
 #include "macros/UIFramework/UISignals.cpp"
+#include "macros/UIFramework/UILock.cpp"
 
 #include "src/Geometry.cpp"
 #include "src/ProgramControl/Terminator.cpp"
@@ -294,6 +295,11 @@ void DataRun::startRun() {
         Terminator::getInstance().clearFlag("RUN_FLAG");
 
         cout << "Run finished!" << endl;
+
+        // TODO: Yet another hard-to-find place we do this.
+        Muon::UI::UILock.lock();
+        UISignalBus::getInstance().onUpdate();
+        Muon::UI::UILock.unlock();
 
     }));
 

@@ -146,6 +146,7 @@ void Decoder::refresh() {
 	//       were dropped
 	data.lock();
 	data.totalEventCount += eventBuffer.size();
+	data.plots.updateHitRate(data.totalEventCount);
 	data.unlock();
 
 	eventBuffer.clear();

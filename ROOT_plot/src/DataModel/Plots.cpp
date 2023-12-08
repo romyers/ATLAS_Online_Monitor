@@ -62,10 +62,8 @@ struct Plots {
 	TH2D *                 badHitByLC              ;
 	TH2D *                 goodHitByLC             ; 
 
-	int total_events; // TODO: I don't like tracking total events in Plots as
-	                  //       well as in DAQData. Try to do one or the other.
-
 	void binEvent(const Event &e);
+	void updateHitRate(int total_events);
 
 	void clear();
 
@@ -300,7 +298,29 @@ Plots::Plots() {
 	);
 	goodHitByLC->SetStats(0);
 
-	total_events = 0;
+}
+
+void Plots::updateHitRate(int total_events) {
+
+	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
+
+		for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+
+			// Hits / total_events * (1 / MATCH_WINDOW (us)) * 1000 (us / ms)
+			p_tdc_hit_rate[tdc][chnl] 
+				= p_adc_time[tdc][chnl]->GetEntries() / total_events 
+				  *
+				  1000 / MATCH_WINDOW;
+
+			p_tdc_hit_rate_graph[tdc]->SetPoint(
+				chnl, 
+				chnl, 
+				p_tdc_hit_rate[tdc][chnl]
+			);
+
+		}
+
+	}
 
 }
 
@@ -312,8 +332,6 @@ void Plots::binEvent(const Event &e) {
 	// TODO: Clean up and redesign UI
 	// TODO: Noise rate display
 
-	++total_events;
-
 	for(const Hit &hit : e.Hits()) {
 
 		p_tdc_tdc_time_corrected[hit.TDC()]->Fill(hit.CorrTime());
@@ -323,17 +341,6 @@ void Plots::binEvent(const Event &e) {
 		p_tdc_time          [hit.TDC()][hit.Channel()]->Fill(hit.DriftTime());
 		p_adc_time          [hit.TDC()][hit.Channel()]->Fill(hit.ADCTime  ());
 
-		// Hits / total_events * (1 / MATCH_WINDOW (us)) * 1000 (us / ms)
-		p_tdc_hit_rate[hit.TDC()][hit.Channel()] 
-			= p_adc_time[hit.TDC()][hit.Channel()]->GetEntries() / total_events 
-			  *
-			  1000 / MATCH_WINDOW;
-
-		p_tdc_hit_rate_graph[hit.TDC()]->SetPoint(
-			hit.Channel(), 
-			hit.Channel(), 
-			p_tdc_hit_rate[hit.TDC()][hit.Channel()]
-		);
 		double tmp_yrange = p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->GetMaximum();
 		p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
 
@@ -427,7 +434,5 @@ void Plots::clear() {
 	hitByLC    ->Reset();
 	badHitByLC ->Reset();
 	goodHitByLC->Reset();
-
-	total_events = 0;
 
 }

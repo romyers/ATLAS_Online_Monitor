@@ -10,11 +10,10 @@
 #pragma once
 
 #include "DAQMonitor/Views/Components/RunStats.cpp"
-#include "DAQMonitor/Views/Components/RunMenuBar.cpp"
 
 using namespace std;
 
-class RunView : public TGVerticalFrame {
+class RunView : public TGGroupFrame {
 
 public:
 
@@ -26,7 +25,6 @@ private:
 
 	// VIEW
 
-	RunMenuBar         *menuBar       ;
 	RunStats           *runStats      ;
 
 	// CONNECTIONS
@@ -42,16 +40,11 @@ void RunView::update() {
 }
 
 void RunView::makeConnections() {
-	
-	Connect("CloseWindow()", "RunStats", runStats, "teardown()");
 
 }
 
 RunView::RunView(const TGWindow *p) 
-	: TGVerticalFrame(p, 1, 1, kFixedSize) {
-
-	menuBar = new RunMenuBar(this);
-	AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
+	: TGGroupFrame(p, "Run Viewer", kVerticalFrame) {
 
 	runStats = new RunStats(this);
 	AddFrame(
@@ -60,12 +53,7 @@ RunView::RunView(const TGWindow *p)
 		)
 	);
 
-	Resize(300, 250);
-
-	SetWindowName("Run Viewer");
-    MapSubwindows();
-    Resize(GetDefaultSize());
-    MapWindow();
+	Resize(320, 250);
 
     runStats->update();
 

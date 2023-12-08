@@ -28,6 +28,8 @@
        file is read.
 - Hit rate display data is not saved with the rest of the plots.
 - The hit rate display x axis bounds are not quite right.
+- There is no GUI feedback distinguishing the period between when the stop
+  run button is pressed and the run is actually stopped.
 
 ## NOTE:
 
@@ -37,16 +39,24 @@
 
 ## 2023-12-07
 
-# Added
+## Added
 
 - Error logs are now continuously saved to a .log file.
-- The run view is now opened from a button in the DAQ Manager, and no longer
-  opens by default when a run is started.
+- The run viewer now includes a line providing feedback on run status.
+- Hit rate calculations are done once per decode loop, rather than with
+  every event.
+
+## Changed
+
+- The Run Viewer is now embedded in the DAQ Manager window.
+- RunStats updates are now handled by the EntryView.
+- Event counts used by Plots.cpp now come from DAQData.
 
 ## Fixed
 
-- Runview is no longer duplicated if opened while already open.
 - The total events counter is now reset when a new run is started.
+- Hit rate calculations should now be correct.
+- Fixed issue where reporting UI exceptions would deadlock the UI thread.
 
 ## Removed
 - The packet count is no longer printed to cout.
