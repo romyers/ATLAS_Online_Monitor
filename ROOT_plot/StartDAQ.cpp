@@ -140,6 +140,12 @@ void StartDAQ() {
 
                     gSystem->ProcessEvents();
 
+                    /*
+                    // TODO: Try not to have to do this every frame
+                    mainFrame->Resize(mainFrame->GetDefaultSize());
+                    cout << mainFrame->GetDefaultWidth() << " " << mainFrame->GetDefaultHeight() << endl;
+                    */
+
                 } catch (UIException &e) {
 
                     Error::popupAlert(

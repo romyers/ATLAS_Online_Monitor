@@ -29,7 +29,7 @@ const string WARNING_COLOR = "orange" ;
 const string ERROR_COLOR   = "red"    ;
 const string FATAL_COLOR   = "#880808";
 
-class ErrorView : public TGMainFrame {
+class ErrorView : public TGCompositeFrame {
 
 public:
 
@@ -62,7 +62,7 @@ string getColor(const ErrorData &error);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-ErrorView::ErrorView(const TGWindow *p) : TGMainFrame(p, 800, 600, kFixedSize) {
+ErrorView::ErrorView(const TGWindow *p) : TGCompositeFrame(p) {
 
 	errorPanel = new TGHtml(this, 800, 600);
 	AddFrame(errorPanel, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));

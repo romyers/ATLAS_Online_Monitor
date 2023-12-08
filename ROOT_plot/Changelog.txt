@@ -37,6 +37,16 @@
 
 -------------------------------------------------------------------------------
 
+## 2023-12-08
+
+## Changed
+
+- Switched to a one-window GUI layout with a tabbable viewport for 
+  viewing plots.
+- Plot windows now display plots in four rows instead of three.
+
+-------------------------------------------------------------------------------
+
 ## 2023-12-07
 
 ## Added

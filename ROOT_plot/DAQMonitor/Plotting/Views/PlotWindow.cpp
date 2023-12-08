@@ -17,7 +17,7 @@ using namespace std;
 
 // TODO: Subclass this and HistogramPlotter from something higher up.
 
-class PlotWindow : public TGMainFrame {
+class PlotWindow : public TGCompositeFrame {
 
 public:
 
@@ -32,7 +32,7 @@ public:
 
 	~PlotWindow();
 
-	virtual void CloseWindow() override;
+	void teardown();
 
 	virtual void update();
 
@@ -49,6 +49,16 @@ protected:
 
 };
 
+void PlotWindow::teardown() {
+
+	breakConnections();
+
+	delete canvas;
+	canvas = nullptr;
+
+}
+
+/*
 void PlotWindow::CloseWindow() {
 
 	breakConnections();
@@ -56,6 +66,7 @@ void PlotWindow::CloseWindow() {
 	TGMainFrame::CloseWindow();
 
 }
+*/
 
 PlotWindow::PlotWindow(
 	const TGWindow *p, 
@@ -64,7 +75,7 @@ PlotWindow::PlotWindow(
 	int w = 1, 
 	int h = 1,
 	int rows = 1
-) : TGMainFrame(p) {
+) : TGCompositeFrame(p) {
 
 	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);
 	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX));

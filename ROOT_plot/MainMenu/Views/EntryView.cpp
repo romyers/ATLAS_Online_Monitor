@@ -59,11 +59,17 @@ private:
 
     TGHorizontalFrame *mainPanel;
 
-        RunView *viewer;
+        TGVerticalFrame *leftPanel;
 
-        TGGroupFrame *settings;
+            RunView *viewer;
 
-            DataSourcePanel *dataSourcePanel;
+            TGGroupFrame *settings;
+
+                DataSourcePanel *dataSourcePanel;
+
+        TGVSplitter *splitter;
+
+        TGTab *viewport;
 
     TGHorizontalFrame *bottomPanel;
 
@@ -118,16 +124,40 @@ EntryView::EntryView(
     ///////////////////////////////////////////////////////////////////////////
 
     mainPanel = new TGHorizontalFrame(this);
-    AddFrame(mainPanel, new TGLayoutHints(kLHintsExpandX));
+    AddFrame(mainPanel, new TGLayoutHints(kLHintsExpandX, 5, 5, 5, 5));
 
-        viewer = new RunView(mainPanel);
-        mainPanel->AddFrame(viewer, new TGLayoutHints(kLHintsExpandY | kLHintsLeft, 5, 5, 5, 5));
+        leftPanel = new TGVerticalFrame(mainPanel, 430, 300, kRaisedFrame);
+        mainPanel->AddFrame(leftPanel, new TGLayoutHints(kLHintsExpandY | kLHintsLeft));
+        leftPanel->ChangeOptions(leftPanel->GetOptions() | kFixedWidth);
 
-        settings = new TGGroupFrame(mainPanel, "Settings", kVerticalFrame);
-        mainPanel->AddFrame(settings, new TGLayoutHints(kLHintsExpandY | kLHintsRight, 5, 5, 5, 5));
+            viewer = new RunView(leftPanel);
+            leftPanel->AddFrame(viewer, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5));
 
-            dataSourcePanel = new DataSourcePanel(settings);
-            settings->AddFrame(dataSourcePanel);
+            settings = new TGGroupFrame(leftPanel, "Settings", kVerticalFrame);
+            leftPanel->AddFrame(settings, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5));
+
+                dataSourcePanel = new DataSourcePanel(settings);
+                settings->AddFrame(dataSourcePanel);
+
+        splitter = new TGVSplitter(mainPanel);
+        mainPanel->AddFrame(splitter, new TGLayoutHints(kLHintsExpandY));
+
+        splitter->SetFrame(leftPanel, true);
+
+        viewport = new TGTab(mainPanel);
+        mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY));
+
+        // TODO: Base tab can be expanded into an info panel of some sort -- like a 
+        //       readme or like the info screens that pop up sometimes talking about e.g.
+        //       program title/version/usage
+        TGCompositeFrame *baseTab = new TGCompositeFrame(viewport, 1250, 850, kFixedSize);
+        viewport->AddTab("Home", baseTab);
+
+            TGLabel *baseLabel = new TGLabel(baseTab, "Open tabs from the view menu");
+            baseTab->AddFrame(baseLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
+
+        // TODO: This is an ugly solution
+        menuBar->setTabber(viewport);
 
 
     ///////////////////////////////////////////////////////////////////////////;
