@@ -67,9 +67,13 @@ private:
 
                 DataSourcePanel *dataSourcePanel;
 
-        TGVSplitter *splitter;
+        // TGVSplitter *splitter;
 
         TGTab *viewport;
+
+            TGCompositeFrame *baseTab;
+
+                TGLabel *baseLabel;
 
     TGHorizontalFrame *bottomPanel;
 
@@ -139,28 +143,28 @@ EntryView::EntryView(
                 dataSourcePanel = new DataSourcePanel(settings);
                 settings->AddFrame(dataSourcePanel);
 
-        splitter = new TGVSplitter(mainPanel);
-        mainPanel->AddFrame(splitter, new TGLayoutHints(kLHintsExpandY));
+        // splitter = new TGVSplitter(mainPanel);
+        // mainPanel->AddFrame(splitter, new TGLayoutHints(kLHintsExpandY));
 
-        splitter->SetFrame(leftPanel, true);
+        // splitter->SetFrame(leftPanel, true);
 
         viewport = new TGTab(mainPanel);
         mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY));
 
-        // TODO: Base tab can be expanded into an info panel of some sort -- like a 
-        //       readme or like the info screens that pop up sometimes talking about e.g.
-        //       program title/version/usage
-        TGCompositeFrame *baseTab = new TGCompositeFrame(viewport, 1250, 850, kFixedSize);
-        viewport->AddTab("Home", baseTab);
+            // TODO: Base tab can be expanded into an info panel of some sort -- like a 
+            //       readme or like the info screens that pop up sometimes talking about e.g.
+            //       program title/version/usage
+            baseTab = new TGCompositeFrame(viewport, 1250, 850, kFixedSize);
+            viewport->AddTab("Home", baseTab);
 
-            TGLabel *baseLabel = new TGLabel(baseTab, "Open tabs from the view menu");
-            baseTab->AddFrame(baseLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
+                baseLabel = new TGLabel(baseTab, "Open tabs from the view menu");
+                baseTab->AddFrame(baseLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
 
         // TODO: This is an ugly solution
         menuBar->setTabber(viewport);
 
 
-    ///////////////////////////////////////////////////////////////////////////;
+    ///////////////////////////////////////////////////////////////////////////
 
     bottomPanel = new TGHorizontalFrame(this);
     AddFrame(bottomPanel, new TGLayoutHints(kLHintsExpandX));

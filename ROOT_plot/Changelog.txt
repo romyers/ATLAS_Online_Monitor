@@ -37,6 +37,18 @@
 
 -------------------------------------------------------------------------------
 
+## 2023-12-09
+
+## Changed
+
+- View menu entries are no longer checked/unchecked, but simply bring 
+  tabs that are already opened to the top.
+- Began extensive rewrite of the menu bar. Objectives:
+    - Clean up the menu bar code.
+    - Create an easy-to-use interface for adding new UI tabs.
+
+-------------------------------------------------------------------------------
+
 ## 2023-12-08
 
 ## Changed

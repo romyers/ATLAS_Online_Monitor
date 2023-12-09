@@ -22,6 +22,8 @@
 
 #include "DAQMonitor/ErrorHandling/Views/ErrorView.cpp"
 
+#include "DAQMonitor/Views/Components/TabSelector.cpp"
+
 #include "src/DataModel/DAQData.cpp"
 
 using namespace std;
@@ -32,11 +34,8 @@ using namespace std;
 // TODO: Clean this up -- lots of cumbersome code.
 
 const int SAVE_PLOTS_ID      = 1;
-const int SHOW_ERROR_LOG_ID  = 2;
-const int CLOSE_ALL_ID       = 4;
-const int PLOT_ENTRY_BASE    = 300000;
 
-const int OVERVIEW_TDC       = -1;
+int createUniqueID();
 
 void removeTab(TGTab *tabs, const string &name) {
 
@@ -57,30 +56,14 @@ struct PlotEntry {
 
 public:
 
-	PlotEntry() {
-
-		// TODO: Do we care that this doesn't get reset when the run view
-		//       is closed?
-		static int instanceNum = PLOT_ENTRY_BASE;
-
-		entryID = instanceNum;
-
-		++instanceNum;
-
-	}
-
-	TGPopupMenu *parent = nullptr;
+	PlotEntry() {}
 
 	PlotWindow *plot = nullptr;
-	int tdc = OVERVIEW_TDC;
+	int tdc = -1;
 
-	int getEntryID() const { return entryID; }
+	bool isOpen() const { return plot != nullptr; }
 
 	void close() {
-
-		if(parent) {
-			parent->UnCheckEntry(entryID);
-		}
 
 		// We need to explicitly teardown the plot in order to make sure the
 		// connections are broken and the embedded canvas is destroyed.
@@ -88,10 +71,6 @@ public:
 		plot = nullptr;
 
 	}
-
-private:
-
-	int entryID;
 
 };
 
@@ -103,6 +82,8 @@ public:
 
 	void handleFileMenuActivate(int id);
 	void handleViewMenuActivate(int id);
+
+	void handleTabSelect(const char *selection);
 
 	// METHODS
 
@@ -136,7 +117,7 @@ private:
 
 	TGPopupMenu *fileMenu;
 
-	TGPopupMenu *viewMenu;
+	TabSelector *tabSelector;
 
 		TGPopupMenu *adcPlotSelector;
 		TGPopupMenu *tdcPlotSelector;
@@ -188,66 +169,49 @@ RunMenuBar::RunMenuBar(const TGWindow *p)
 		fileMenu->AddEntry("Save Plots", SAVE_PLOTS_ID);
 
 
-	viewMenu = new TGPopupMenu(gClient->GetRoot());
-	AddPopup("&View", viewMenu, new TGLayoutHints(kLHintsTop | kLHintsLeft));
-
-		viewMenu->AddSeparator();
+	tabSelector = new TabSelector(gClient->GetRoot());
+	AddPopup("&View", tabSelector, new TGLayoutHints(kLHintsTop | kLHintsLeft));
 
 		adcPlotSelector = new TGPopupMenu(gClient->GetRoot());
-		viewMenu->AddPopup("ADC Plots", adcPlotSelector);
+		tabSelector->AddPopup("ADC Plots", adcPlotSelector);
 
-			adcPlotSelector->AddEntry("ADC Overview", adc_overview.getEntryID());
+			adcPlotSelector->AddEntry("ADC Overview", createUniqueID());
 
 			adcPlotSelector->AddSeparator();
 
 			for(const PlotEntry &entry : adc_chnl_plots) {
 
+				// TODO: I don't want to have to add "ADC Channels" to everything.
+				//       Use a unique identifier other than the entry name.
 				adcPlotSelector->AddEntry(
-					string("TDC ") + entry.tdc, entry.getEntryID()
+					string("TDC ") + entry.tdc + string(" ADC Channels"), createUniqueID()
 				);
 
 			}
 
 		tdcPlotSelector = new TGPopupMenu(gClient->GetRoot());
-		viewMenu->AddPopup("TDC Plots", tdcPlotSelector);
+		tabSelector->AddPopup("TDC Plots", tdcPlotSelector);
 
-			tdcPlotSelector->AddEntry("TDC Overview", tdc_overview.getEntryID());
+			tdcPlotSelector->AddEntry("TDC Overview", createUniqueID());
 
 			tdcPlotSelector->AddSeparator();
 
 			for(const PlotEntry &entry : tdc_chnl_plots) {
 
 				tdcPlotSelector->AddEntry(
-					string("TDC ") + entry.tdc, entry.getEntryID()
+					string("TDC ") + entry.tdc + string(" TDC Channels"), createUniqueID()
 				);
 
 			}
 
-		viewMenu->AddSeparator();
+		tabSelector->AddSeparator();
 
-		viewMenu->AddEntry("Noise Rate", noiseDisplay.getEntryID());
-		viewMenu->AddEntry("Error Log", SHOW_ERROR_LOG_ID);
+		tabSelector->AddEntry("Noise Rate", createUniqueID());
+		tabSelector->AddEntry("Error Log", createUniqueID());
 
-		viewMenu->AddSeparator();
+		tabSelector->AddSeparator();
 
-		viewMenu->AddEntry("Close All", CLOSE_ALL_ID);
-
-	adc_overview.parent = adcPlotSelector;
-	tdc_overview.parent = tdcPlotSelector;
-
-	for(int i = 0; i < adc_chnl_plots.size(); ++i) {
-
-		adc_chnl_plots[i].parent = adcPlotSelector;
-
-	}
-
-	for(int i = 0; i < tdc_chnl_plots.size(); ++i) {
-
-		tdc_chnl_plots[i].parent = tdcPlotSelector;
-
-	}
-
-	noiseDisplay.parent = viewMenu;
+		tabSelector->AddEntry("Close All", createUniqueID());
 
 	makeConnections();
 
@@ -268,7 +232,7 @@ void RunMenuBar::handleCloseTab(int id) {
 
 		tdc_overview.close();
 
-	} else if(plotTitle == "Noise Display") {
+	} else if(plotTitle == "Noise Rate") {
 
 		noiseDisplay.close();
 
@@ -280,7 +244,7 @@ void RunMenuBar::handleCloseTab(int id) {
 
 		for(PlotEntry &plot : adc_chnl_plots) {
 
-			if(plotTitle == string("ADC Channel Plots, TDC ") + to_string(plot.tdc)) {
+			if(plotTitle == string("TDC ") + plot.tdc + string(" ADC Channels")) {
 
 				plot.close();
 				return;
@@ -291,7 +255,7 @@ void RunMenuBar::handleCloseTab(int id) {
 
 		for(PlotEntry &plot : tdc_chnl_plots) {
 
-			if(plotTitle == string("TDC Channel Plots, TDC ") + to_string(plot.tdc)) {
+			if(plotTitle == string("TDC ") + plot.tdc + string(" TDC Channels")) {
 
 				plot.close();
 				return;
@@ -329,134 +293,80 @@ void RunMenuBar::handleFileMenuActivate(int id) {
 
 }
 
-void RunMenuBar::handleViewMenuActivate(int id) {
+void RunMenuBar::handleTabSelect(const char *selection) {
 
-	for(PlotEntry &entry : adc_chnl_plots) {
+	string name(selection);
 
-		if(entry.getEntryID() == id) {
+	if(name == "ADC Overview") {
 
-			if(adcPlotSelector->IsEntryChecked(entry.getEntryID())) {
+		if(!adc_overview.isOpen()) openADCOverview();
+		tabber->SetTab("ADC Overview");
 
-				removeTab(tabber, string("ADC Channel Plots, TDC ") + to_string(entry.tdc));
-				entry.close();
+	} else if(name == "TDC Overview") {
 
-			} else {
+		if(!tdc_overview.isOpen()) openTDCOverview();
+		tabber->SetTab("TDC Overview");
 
-				openADCChannelPlot(entry);
+	} else if(name == "Noise Rate") {
 
-			}
+		if(!noiseDisplay.isOpen()) openNoiseDisplay();
+		tabber->SetTab("Noise Rate");
 
-			return;
+	} else if(name == "Error Log") {
 
-		}
+		if(!errorViewer) openErrorViewer();
+		tabber->SetTab("Error Log");
 
-	}
-
-	for(PlotEntry &entry : tdc_chnl_plots) {
-
-		if(entry.getEntryID() == id) {
-
-			if(tdcPlotSelector->IsEntryChecked(entry.getEntryID())) {
-
-				removeTab(tabber, string("TDC Channel Plots, TDC ") + to_string(entry.tdc));
-				entry.close();
-
-			} else {
-
-				openTDCChannelPlot(entry);
-
-			}
-
-			return;
-
-		}
-
-	}
-
-	if(id == adc_overview.getEntryID()) {
-
-		if(adcPlotSelector->IsEntryChecked(adc_overview.getEntryID())) {
-
-			removeTab(tabber, "ADC Overview");
-			adc_overview.close();
-
-		} else {
-
-			openADCOverview();
-
-		}
-
-		return;
-
-	}
-
-	if(id == tdc_overview.getEntryID()) {
-
-		if(tdcPlotSelector->IsEntryChecked(tdc_overview.getEntryID())) {
-
-			removeTab(tabber, "TDC Overview");
-			tdc_overview.close();
-
-		} else {
-
-			openTDCOverview();
-
-		}
-
-		return;
-
-	}
-
-	if(id == noiseDisplay.getEntryID()) {
-
-		if(viewMenu->IsEntryChecked(noiseDisplay.getEntryID())) {
-
-			removeTab(tabber, "Noise Display");
-			noiseDisplay.close();
-
-		} else {
-
-			openNoiseDisplay();
-
-		}
-
-		return;
-
-	}
-
-	if(id == SHOW_ERROR_LOG_ID) {
-
-		if(viewMenu->IsEntryChecked(SHOW_ERROR_LOG_ID)) {
-
-			removeTab(tabber, "Error Log");
-			closeErrorViewer();
-
-		} else {
-
-			openErrorViewer();
-
-		}
-
-		return;
-
-	}
-
-	if(id == CLOSE_ALL_ID) {
+	} else if(name == "Close All") {
 
 		closeAllWindows();
 
-		return;
+	} else {
+
+		for(int i = 0; i < adc_chnl_plots.size(); ++i) {
+
+			string plotTitle = string("TDC ") + to_string(i) + string(" ADC Channels");
+
+			if(name == plotTitle) {
+
+				if(!adc_chnl_plots[i].isOpen()) openADCChannelPlot(adc_chnl_plots[i]);
+				tabber->SetTab(plotTitle.data());
+
+				return;
+
+			}
+
+		}
+
+		for(int i = 0; i < tdc_chnl_plots.size(); ++i) {
+
+			string plotTitle = string("TDC ") + to_string(i) + string(" TDC Channels");
+
+			if(name == plotTitle) {
+
+				if(!tdc_chnl_plots[i].isOpen()) openTDCChannelPlot(tdc_chnl_plots[i]);
+				tabber->SetTab(plotTitle.data());
+
+				return;
+
+			}
+
+		}
 
 	}
-
-	throw UIException("Menu option not recognized.");
 
 }
 
 void RunMenuBar::makeConnections() {
 
 	fileMenu->Connect("Activated(Int_t)", "RunMenuBar", this, "handleFileMenuActivate(int)");
-	viewMenu->Connect("Activated(Int_t)", "RunMenuBar", this, "handleViewMenuActivate(int)");
+
+	tabSelector->getSignalBus().Connect(
+		"onSelected(const char*)", 
+		"RunMenuBar", 
+		this, 
+		"handleTabSelect(const char*)"
+	);
 
 }
 
@@ -482,13 +392,10 @@ void RunMenuBar::openADCOverview() {
 	tabber->AddTab("ADC Overview", adc_overview.plot);
 	tabber->MapSubwindows();
 	tabber->Layout();
-	tabber->SetTab("ADC Overview");
 
 	TGTabElement *tab = tabber->GetTabTab("ADC Overview");
 
 	tab->ShowClose();
-
-	adcPlotSelector->CheckEntry(adc_overview.getEntryID());
 
 }
 
@@ -514,13 +421,10 @@ void RunMenuBar::openTDCOverview() {
 	tabber->AddTab("TDC Overview", tdc_overview.plot);
 	tabber->MapSubwindows();
 	tabber->Layout();
-	tabber->SetTab("TDC Overview");
 
 	TGTabElement *tab = tabber->GetTabTab("TDC Overview");
 
 	tab->ShowClose();
-
-	tdcPlotSelector->CheckEntry(tdc_overview.getEntryID());
 
 }
 
@@ -535,8 +439,7 @@ void RunMenuBar::openADCChannelPlot(PlotEntry &entry) {
 
 	}
 
-	string plotTitle = "ADC Channel Plots, TDC ";
-	plotTitle += to_string(entry.tdc);
+	string plotTitle = string("TDC ") + to_string(entry.tdc) + string(" ADC Channels");
 
 	entry.plot = new HistogramPlotter(
 		tabber, 
@@ -549,15 +452,10 @@ void RunMenuBar::openADCChannelPlot(PlotEntry &entry) {
 	tabber->AddTab(plotTitle.data(), entry.plot);
 	tabber->MapSubwindows();
 	tabber->Layout();
-	tabber->SetTab(plotTitle.data());
 
 	TGTabElement *tab = tabber->GetTabTab(plotTitle.data());
 
 	tab->ShowClose();
-
-	// entry.plot->Connect("CloseWindow()", "PlotEntry", &entry, "close()");
-
-	adcPlotSelector->CheckEntry(entry.getEntryID());
 
 }
 
@@ -572,8 +470,7 @@ void RunMenuBar::openTDCChannelPlot(PlotEntry &entry) {
 
 	}
 
-	string plotTitle = "TDC Channel Plots, TDC ";
-	plotTitle += to_string(entry.tdc);
+	string plotTitle = string("TDC ") + to_string(entry.tdc) + string(" TDC Channels");
 
 	entry.plot = new HistogramPlotter(
 		tabber, 
@@ -586,15 +483,10 @@ void RunMenuBar::openTDCChannelPlot(PlotEntry &entry) {
 	tabber->AddTab(plotTitle.data(), entry.plot);
 	tabber->MapSubwindows();
 	tabber->Layout();
-	tabber->SetTab(plotTitle.data());
 
 	TGTabElement *tab = tabber->GetTabTab(plotTitle.data());
 
 	tab->ShowClose();
-
-	// entry.plot->Connect("CloseWindow()", "PlotEntry", &entry, "close()");
-
-	tdcPlotSelector->CheckEntry(entry.getEntryID());
 
 
 }
@@ -605,19 +497,14 @@ void RunMenuBar::openErrorViewer() {
     tabber->AddTab("Error Log", errorViewer);
 	tabber->MapSubwindows();
 	tabber->Layout();
-	tabber->SetTab("Error Log");
 
 	TGTabElement *tab = tabber->GetTabTab("Error Log");
 
 	tab->ShowClose();
 
-    viewMenu->CheckEntry(SHOW_ERROR_LOG_ID);
-
 }
 
 void RunMenuBar::closeErrorViewer() {
-
-	viewMenu->UnCheckEntry(SHOW_ERROR_LOG_ID);
 
 	errorViewer = nullptr;
 
@@ -633,16 +520,13 @@ void RunMenuBar::openNoiseDisplay() {
 		850,
 		4
 	);
-	tabber->AddTab("Noise Display", noiseDisplay.plot);
+	tabber->AddTab("Noise Rate", noiseDisplay.plot);
 	tabber->MapSubwindows();
 	tabber->Layout();
-	tabber->SetTab("Noise Display");
 
-	TGTabElement *tab = tabber->GetTabTab("Noise Display");
+	TGTabElement *tab = tabber->GetTabTab("Noise Rate");
 
 	tab->ShowClose();
-
-	viewMenu->CheckEntry(noiseDisplay.getEntryID());
 
 }
 
@@ -654,7 +538,7 @@ void RunMenuBar::closeAllWindows() {
 	}
 
 	if(noiseDisplay.plot) {
-		removeTab(tabber, "Noise Display");
+		removeTab(tabber, "Noise Rate");
 		noiseDisplay.close();
 	}
 	
@@ -672,7 +556,7 @@ void RunMenuBar::closeAllWindows() {
 
 		if(entry.plot) {
 
-			removeTab(tabber, string("ADC Channel Plots, TDC ") + to_string(entry.tdc));
+			removeTab(tabber, string("TDC ") + to_string(entry.tdc) + string(" ADC Channels"));
 			entry.close();
 
 		}
@@ -683,11 +567,21 @@ void RunMenuBar::closeAllWindows() {
 
 		if(entry.plot) {
 
-			removeTab(tabber, string("TDC Channel Plots, TDC ") + to_string(entry.tdc));
+			removeTab(tabber, string("TDC ") + to_string(entry.tdc) + string(" TDC Channels"));
 			entry.close();
 
 		}
 
 	}
+
+}
+
+int createUniqueID() {
+
+	static int counter = 0;
+
+	++counter;
+
+	return counter;
 
 }
