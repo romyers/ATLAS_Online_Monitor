@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named helloWorld
+
+# Build rule for target.
+helloWorld: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 helloWorld
+.PHONY : helloWorld
+
+# fast build rule for target.
+helloWorld/fast:
+	$(MAKE) -f CMakeFiles/helloWorld.dir/build.make CMakeFiles/helloWorld.dir/build
+.PHONY : helloWorld/fast
+
+#=============================================================================
 # Target rules for targets named DAQManager
 
 # Build rule for target.
@@ -150,6 +163,33 @@ StartDAQ.cpp.s:
 	$(MAKE) -f CMakeFiles/DAQManager.dir/build.make CMakeFiles/DAQManager.dir/StartDAQ.cpp.s
 .PHONY : StartDAQ.cpp.s
 
+macros/test.o: macros/test.cpp.o
+
+.PHONY : macros/test.o
+
+# target to build an object file
+macros/test.cpp.o:
+	$(MAKE) -f CMakeFiles/helloWorld.dir/build.make CMakeFiles/helloWorld.dir/macros/test.cpp.o
+.PHONY : macros/test.cpp.o
+
+macros/test.i: macros/test.cpp.i
+
+.PHONY : macros/test.i
+
+# target to preprocess a source file
+macros/test.cpp.i:
+	$(MAKE) -f CMakeFiles/helloWorld.dir/build.make CMakeFiles/helloWorld.dir/macros/test.cpp.i
+.PHONY : macros/test.cpp.i
+
+macros/test.s: macros/test.cpp.s
+
+.PHONY : macros/test.s
+
+# target to generate assembly for a file
+macros/test.cpp.s:
+	$(MAKE) -f CMakeFiles/helloWorld.dir/build.make CMakeFiles/helloWorld.dir/macros/test.cpp.s
+.PHONY : macros/test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -157,11 +197,15 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... helloWorld"
 	@echo "... edit_cache"
 	@echo "... DAQManager"
 	@echo "... StartDAQ.o"
 	@echo "... StartDAQ.i"
 	@echo "... StartDAQ.s"
+	@echo "... macros/test.o"
+	@echo "... macros/test.i"
+	@echo "... macros/test.s"
 .PHONY : help
 
 

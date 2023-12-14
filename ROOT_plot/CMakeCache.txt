@@ -187,6 +187,15 @@ DAQManager_BINARY_DIR:STATIC=/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT
 //Value Computed by CMake
 DAQManager_SOURCE_DIR:STATIC=/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot
 
+//The directory containing a CMake configuration file for Geant4.
+Geant4_DIR:PATH=Geant4_DIR-NOTFOUND
+
+//Value Computed by CMake
+HelloWorld_BINARY_DIR:STATIC=/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot
+
+//Value Computed by CMake
+HelloWorld_SOURCE_DIR:STATIC=/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot
+
 //Path to a library.
 ROOT_Core_LIBRARY:FILEPATH=/usr/ROOT/lib/libCore.so
 

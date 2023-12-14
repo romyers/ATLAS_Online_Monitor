@@ -60,6 +60,10 @@
   saved.
 - Began work on cmake integration.
 
+## Changed
+
+- Added include statements for ROOT functionality to prepare cmake compilation.
+
 -------------------------------------------------------------------------------
 
 ## 2023-12-09
