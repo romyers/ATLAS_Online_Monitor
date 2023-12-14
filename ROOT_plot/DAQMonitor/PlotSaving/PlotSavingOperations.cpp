@@ -11,6 +11,9 @@
 
 #include <thread>
 
+#include "TRootEmbeddedCanvas.h"
+#include "TCanvas.h"
+
 #include "macros/DAQState.cpp"
 
 #include "src/Geometry.cpp"
@@ -56,7 +59,7 @@ void Muon::PlotSaving::savePlots() {
     //         -- I think it should overwrite the previous save
 
     // Plot saving should happen in a separate thread, while still updating the
-    // progress bar.
+    // progress bar. Otherwise we block the decode thread.
 
     DAQData &data = DAQData::getInstance();
 
@@ -64,17 +67,10 @@ void Muon::PlotSaving::savePlots() {
     Plots snapshot(data.plots);
     data.unlock();
 
-    // TODO: We need to:
-    //         -- Set up the directory structure
-    //         -- Save all the plots
-
     // NOTE: We can speed things up a lot by setting gROOT->SetBatch(), but
     //       this also breaks all the graphics. Useful if saves only happen
     //       on stopRun, but not otherwise. Setting outputCanvas->SetBatch()
     //       has no effect on performance.
-
-    // TODO: Can we consider multithreading the save operation to speed things
-    //       up?
 
     TRootEmbeddedCanvas *outputCanvas = new TRootEmbeddedCanvas("Output Canvas", gClient->GetRoot());
 
@@ -118,13 +114,31 @@ void Muon::PlotSaving::savePlots() {
 
     }
 
-    float incr = 100. / (2 * activeTDCs + 3 * activeChannels);
+    // Each TDC makes a noise plot, a tdc overview plot, and an adc overview plot.
+    // Each channel makes an adc_time plot, a tdc_time plot, and a tdc_time_corrected
+    // plot.
+    float incr = 100. / (3 * activeTDCs + 3 * activeChannels);
 
     for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
         if(Geometry::getInstance().IsActiveTDC(tdc)) {
 
-            string dirName = outputDirName
+            string dirName = outputDirName + "/NoiseRate";
+
+            makeDirectory(dirName);
+
+            cout << "Created directory " << dirName << endl;
+
+            string filename = string("tdc_") + to_string(tdc) + string("_hit_rate.png");
+
+            snapshot.p_tdc_hit_rate_graph[tdc]->Draw("AB");
+            outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+            cout << "Saved TDC " << tdc << " NoiseRate plot." << endl;
+
+            progressBar->increment(incr);
+
+            dirName = outputDirName
                 + "/TDC_" 
                 + to_string(tdc) 
                 + "_of_" 
@@ -138,17 +152,19 @@ void Muon::PlotSaving::savePlots() {
             // TODO: Consider this implementation:
             //       https://root.cern/doc/v608/pad2png_8C.html
 
-            string filename = "";
-
             snapshot.p_tdc_tdc_time_corrected[tdc]->Draw("colz");
             filename = string("tdc_") + tdc + "_tdc_time_spectrum_corrected.png";
             outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+            cout << "Saved TDC " << tdc << "TDC overview plot." << endl;
 
             progressBar->increment(incr);
 
             snapshot.p_tdc_adc_time[tdc]->Draw("colz");
             filename = string("tdc_") + tdc + "_adc_time_spectrum.png";
             outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+            cout << "Saved TDC " << tdc << "ADC overview plot." << endl;
 
             progressBar->increment(incr);
 
@@ -180,6 +196,8 @@ void Muon::PlotSaving::savePlots() {
                 }
 
             }
+
+            cout << "Saved TDC " << tdc << " channel plots." << endl;
 
         }
 

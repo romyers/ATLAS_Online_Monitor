@@ -9,6 +9,10 @@
 
 #pragma once
 
+#include "TGWindow.h"
+#include "TGLabel.h"
+#include "TGTextEntry.h"
+
 using namespace std;
 
 class FileSelector : public TGVerticalFrame {

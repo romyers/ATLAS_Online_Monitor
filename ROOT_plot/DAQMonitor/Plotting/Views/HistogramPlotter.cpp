@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 
+#include "TH1.h"
+
 #include "macros/UIFramework/UISignals.cpp"
 
 #include "DAQMonitor/Plotting/Views/PlotWindow.cpp"
@@ -27,10 +29,10 @@ public:
 	HistogramPlotter(
 		const TGWindow *p, 
 		vector<TH1*> histograms, 
-		const string &title = "", 
-		int w = 1, 
-		int h = 1,
-		int rows = 1
+		const string &title, 
+		int w, 
+		int h,
+		int rows
 	);
 
 	~HistogramPlotter();

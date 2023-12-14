@@ -13,6 +13,10 @@
 #include <string>
 #include <numeric>
 
+#include "TH1.h"
+#include "TH2.h"
+#include "TGraph.h"
+
 #include "macros/GlobalIncludes.h"
 
 #include "src/Geometry.cpp"

@@ -11,6 +11,8 @@
 
 #include <string>
 
+#include "TGHtml.h"
+
 #include "DAQMonitor/Views/Components/PairTable.cpp"
 
 #include "macros/UIFramework/UISignals.cpp"

@@ -7,6 +7,9 @@
  * Contact: romyers@umich.edu
  */
 
+#include "TGWindow.h"
+#include "TGMsgBox.h"
+
 namespace Muon {
 namespace Error {
 

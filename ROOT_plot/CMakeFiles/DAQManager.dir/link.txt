@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -pipe -fsigned-char -pthread  -rdynamic CMakeFiles/DAQManager.dir/StartDAQ.cpp.o  -o DAQManager  -L/usr/ROOT/lib 

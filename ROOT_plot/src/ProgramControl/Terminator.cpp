@@ -43,9 +43,7 @@ private:
 
 Terminator::Terminator() {}
 
-bool Terminator::isTerminated(
-    const string &flag = TERMINATE_ALL_FLAG
-) const {
+bool Terminator::isTerminated(const string &flag) const {
 
     // TODO: Check performance
 
@@ -76,9 +74,7 @@ bool Terminator::isTerminated(
 
 }
 
-void Terminator::terminate(
-    const string &flag = TERMINATE_ALL_FLAG
-) {
+void Terminator::terminate(const string &flag) {
 
     termLock.lock();
     terminateFlags.insert(flag);

@@ -131,8 +131,8 @@ vector<ErrorData> ErrorLogger::getErrors() const {
 }
 
 size_t ErrorLogger::countErrors(
-	const string &type = EMPTY_TYPE, 
-	ErrorLevel level = UNDEFINED
+	const string &type, 
+	ErrorLevel level
 ) const {
 
 	size_t val;

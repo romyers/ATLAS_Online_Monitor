@@ -16,6 +16,9 @@
 
 #include <sys/stat.h>
 
+#include "TObjArray.h"
+#include "TObjString.h"
+
 #include "macros/DAQState.cpp"
 #include "macros/ErrorLogger.cpp"
 

@@ -11,6 +11,10 @@
 
 #include <string>
 
+#include "TGWindow.h"
+#include "TGLabel.h"
+#include "TGButtonGroup.h"
+
 #include "macros/DAQState.cpp"
 
 #include "MainMenu/Views/Components/DeviceSelectorPanel.cpp"

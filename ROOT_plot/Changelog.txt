@@ -30,6 +30,14 @@
 - The hit rate display x axis bounds are not quite right.
 - There is no GUI feedback distinguishing the period between when the stop
   run button is pressed and the run is actually stopped.
+- Sometimes we end up with more events than packets. I'm not sure if this is
+  valid behavior.
+
+## TODO:
+
+- Display the .dat save file to the user when starting a run.
+- Add the save progress bar to the main DAQ Manager window.
+- Eliminate need for UISignals.cpp
 
 ## NOTE:
 
@@ -39,10 +47,18 @@
 
 ## 2023-12-14
 
+## Notes
+
+- The GUI feels sluggish today. Is it possible I changed something that slowed
+  everything down? Opening tabs is slow. Decode updates seem slower too.
+
 ## Added
 
 - DAQData now keeps a vector of just the events from the latest iteration of
   the decoder.
+- Hit rate graphs are now saved alongside adc and tdc spectra when plots are
+  saved.
+- Began work on cmake integration.
 
 -------------------------------------------------------------------------------
 

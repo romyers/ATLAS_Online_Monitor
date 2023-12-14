@@ -9,6 +9,10 @@
 
 #pragma once
 
+#include "TG3DLine.h"
+#include "TGWindow.h"
+#include "TGTab.h"
+
 #include "macros/UIFramework/UISignals.cpp"
 
 #include "MainMenu/Views/Components/DataSourcePanel.cpp"
@@ -112,11 +116,11 @@ void EntryView::makeConnections() {
 }
 
 EntryView::EntryView(
-        const TGWindow *p = nullptr, 
-        int w = 1, 
-        int h = 1, 
-        int options = 0, 
-        Pixel_t back = GetDefaultFrameBackground()
+        const TGWindow *p, 
+        int w, 
+        int h, 
+        int options, 
+        Pixel_t back
 ) : TGCompositeFrame(p, w, h, options, back), viewer(nullptr) {
 
     menuBar = new RunMenuBar(this);

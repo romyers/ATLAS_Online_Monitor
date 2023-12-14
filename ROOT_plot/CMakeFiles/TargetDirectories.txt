@@ -1,0 +1,3 @@
+/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot/CMakeFiles/rebuild_cache.dir
+/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot/CMakeFiles/edit_cache.dir
+/home/muonuser/gitfolder/phase2_MiniDAQ_Robert/ROOT_plot/CMakeFiles/DAQManager.dir

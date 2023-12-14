@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 
+#include "TGTab.h"
+
 #include "macros/UIFramework/UIException.cpp"
 
 #include "DAQMonitor/Plotting/Views/HistogramPlotter.cpp"

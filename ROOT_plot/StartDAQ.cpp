@@ -20,6 +20,8 @@
 #include <chrono>
 #include <cmath>
 
+#include "TGMenu.h"
+
 #include "monitorConfig.cpp"
 
 #include "macros/DAQState.cpp"

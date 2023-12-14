@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include "TGWindow.h"
+#include "TGProgressBar.h"
+
 using namespace std;
 
 // TODO: Disable the close window button

@@ -11,6 +11,9 @@
 
 #include <string>
 
+#include "TCanvas.h"
+#include "TRootEmbeddedCanvas.h"
+
 #include "macros/UIFramework/UISignals.cpp"
 
 using namespace std;
@@ -70,11 +73,11 @@ void PlotWindow::CloseWindow() {
 
 PlotWindow::PlotWindow(
 	const TGWindow *p, 
-	int canvasPanels = 1,
-	const string &title = "", 
-	int w = 1, 
-	int h = 1,
-	int rows = 1
+	int canvasPanels,
+	const string &title, 
+	int w, 
+	int h,
+	int rows
 ) : TGCompositeFrame(p) {
 
 	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);

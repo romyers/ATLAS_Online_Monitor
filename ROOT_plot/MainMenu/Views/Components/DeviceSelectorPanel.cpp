@@ -11,6 +11,9 @@
 
 #include <string>
 
+#include "TGComboBox.h"
+#include "TGLabel.h"
+
 // TODO: Find a way to eliminate this include
 //         -- Collocate this component with the data capture module?
 #include "DAQMonitor/EthernetCapture/src/DeviceManager.cpp"

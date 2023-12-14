@@ -3,6 +3,14 @@
 #ifndef MUON_GEOMETRY
 #define MUON_GEOMETRY
 
+#include <bitset>
+
+#include "TEllipse.h"
+#include "TGraph.h"
+#include "TPaveText.h"
+
+using namespace std;
+
 // TODO: A lot of this we'll want to be able to configure from the GUI
 
 
@@ -154,7 +162,7 @@ namespace Muon {
     for (auto tube : drawable) tube->Draw();
   } // end method: Geometry :: Draw 
 
-  void Geometry::Draw(int eventN, double xmin, double ymin, double xmax, double ymax, TString additionalText="") {
+  void Geometry::Draw(int eventN, double xmin, double ymin, double xmax, double ymax, TString additionalText) {
     TString title;
     title.Form("Event %d  Run %d", eventN, runN);
     title += additionalText;

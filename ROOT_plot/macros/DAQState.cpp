@@ -19,6 +19,7 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <fstream>
 
 using namespace std;
 
@@ -207,7 +208,7 @@ namespace State {
 
 	DAQState::DAQState() {}
 
-	bool DAQState::commit(bool force = false) {
+	bool DAQState::commit(bool force) {
 
 		stateLock.lock();
 

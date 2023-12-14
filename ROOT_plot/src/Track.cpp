@@ -3,6 +3,8 @@
 #ifndef MUON_TRACK
 #define MUON_TRACK
 
+#include "TMath.h"
+
 namespace Muon {
   class Track : public RecoObject {
   public:

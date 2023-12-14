@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 
+#include "TGraph.h"
+
 #include "macros/UIFramework/UISignals.cpp"
 
 #include "DAQMonitor/Plotting/Views/PlotWindow.cpp"
@@ -50,10 +52,10 @@ private:
 GraphPlotter::GraphPlotter(
 	const TGWindow *p, 
 	vector<TGraph*> graphs, 
-	const string &title = "", 
-	int w = 1, 
-	int h = 1,
-	int rows = 1
+	const string &title, 
+	int w, 
+	int h,
+	int rows
 ) : PlotWindow(p, graphs.size(), title, w, h, rows), 
     graphs(graphs) {
 
