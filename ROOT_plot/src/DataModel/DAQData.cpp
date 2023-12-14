@@ -27,6 +27,10 @@ struct DAQData {
     // already performed.
     vector<Event> processedEvents;
 
+    // A vector of the fully processed and populated events decoded in the
+    // last decode iteration, with hit finding already performed.
+    vector<Event> newEvents;
+
     // A struct of histograms containing aggregate event data. See
     // src/DataModel/Plots.cpp.
     Plots plots;

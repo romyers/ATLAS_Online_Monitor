@@ -220,6 +220,9 @@ RunMenuBar::RunMenuBar(const TGWindow *p)
 // TODO: This shouldn't go in the run menu bar
 void RunMenuBar::handleCloseTab(int id) {
 
+	// TODO: We should select the tab just before or just after the
+	//       closed tab after closing
+
 	string plotTitle(tabber->GetTabTab(id)->GetString());
 
 	tabber->RemoveTab(id);
