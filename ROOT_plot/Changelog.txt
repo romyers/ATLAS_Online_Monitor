@@ -32,16 +32,40 @@
   run button is pressed and the run is actually stopped.
 - Sometimes we end up with more events than packets. I'm not sure if this is
   valid behavior.
+- When processing a file source, the monitor tries and fails to open a log 
+  file.
 
 ## TODO:
 
 - Display the .dat save file to the user when starting a run.
 - Add the save progress bar to the main DAQ Manager window.
 - Eliminate need for UISignals.cpp
+- Separate data aggregation from PacketDecodingOperations.
+- .dat and .log files should only be created if we are not processing a file
+  source.
 
 ## NOTE:
 
 - Good place to look for segfaults -- char array overflows
+
+-------------------------------------------------------------------------------
+
+## 2023-12-19
+
+## Added 
+
+- Added standalone executable for the decode module (under construction).
+
+## Changed
+
+- Restructured the decoder to be usable as an independent module.
+    - Removed DAQData dependence from Decoder. Data aggregation is now handled at
+      a higher level.
+    - Decoder::Refresh() now returns a data bundle, and does not store anything
+      in DAQData.
+- StartMonitor.cpp is now deprecated, and will not function. I may repair it
+  later.
+
 
 -------------------------------------------------------------------------------
 

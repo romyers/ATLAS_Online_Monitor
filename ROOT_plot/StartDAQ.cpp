@@ -13,8 +13,6 @@
 // TODO: Consider an operator pattern where the operations file maintains a
 //       global pointer to the associated view and implements an initializer
 
-#pragma once
-
 #include <thread>
 #include <mutex>
 #include <chrono>

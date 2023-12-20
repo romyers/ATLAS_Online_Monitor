@@ -14,6 +14,8 @@
 #ifndef MUON_EVENTID
 #define MUON_EVENTID
 
+#include <bitset>
+
 namespace Muon {
 
   /*

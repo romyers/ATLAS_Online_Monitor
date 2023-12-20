@@ -16,15 +16,12 @@
 #include <vector>
 #include <istream>
 
-#include "macros/ErrorLogger.cpp"
-
 #include "DAQMonitor/PacketDecoding/src/SignalDecoding.cpp"
 #include "DAQMonitor/PacketDecoding/src/EventDecoding.cpp"
 #include "DAQMonitor/LockableStream.cpp"
 
 #include "src/Signal.cpp"
 #include "src/Event.cpp"
-#include "src/DataModel/DAQData.cpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////// INTERFACE ////////////////////////////////////////////
@@ -32,20 +29,29 @@
 
 // TODO: Rename Decoder methods to something semantically more appropriate
 
+struct DecodeData {
+
+	int eventCount     = 0;
+
+	int droppedSignals = 0;
+	int droppedEvents  = 0;
+
+	vector<Event> nonemptyEvents;
+
+};
+
 class Decoder {
 
 public:
 
-	Decoder(LockableStream &in, DAQData &dataOut);
+	Decoder(LockableStream &in);
 
 	bool isStale();
-	void refresh();
+	DecodeData refresh();
 
 private:
 
 	SignalReader reader;
-
-	DAQData &data;
 
 	vector<Signal> signalBuffer;
 	vector<Event > eventBuffer ;
@@ -66,8 +72,8 @@ bool isEvent(const vector<Signal> &signals);
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Decoder::Decoder(LockableStream &in, DAQData &dataOut) 
-	: reader(in), data(dataOut) {}
+Decoder::Decoder(LockableStream &in) 
+	: reader(in) {}
 
 bool Decoder::isStale() {
 
@@ -75,7 +81,9 @@ bool Decoder::isStale() {
 
 }
 
-void Decoder::refresh() {
+DecodeData Decoder::refresh() {
+
+	DecodeData result;
 
 	while(isStale()) {
 
@@ -92,9 +100,7 @@ void Decoder::refresh() {
 
 			cerr << "Dropped signal" << endl;
 
-			data.lock();
-			++data.droppedSignals;
-			data.unlock();
+			++result.droppedSignals;
 
 		}
 
@@ -112,9 +118,7 @@ void Decoder::refresh() {
 
 				cerr << "Dropped event" << endl;
 
-				data.lock();
-				++data.droppedEvents;
-				data.unlock();
+				++result.droppedEvents;
 
 			}
 
@@ -126,38 +130,25 @@ void Decoder::refresh() {
 
 	}
 
-	data.lock();
-	data.newEvents.clear();
-	data.unlock();
+	result.eventCount = eventBuffer.size();
 
-	for(Event &e : eventBuffer) {
+	while(!eventBuffer.empty()) {
 
-		// Condition ignores empty events
+		Event &e = eventBuffer.back();
+
 		if(e.Trailer().HitCount() != 0) {
 
 			processEvent(e);
 
-			data.lock();
-			data.processedEvents.push_back(e);
-			data.newEvents.push_back(e);
-			data.plots.binEvent(e);
-			data.unlock();
+			result.nonemptyEvents.push_back(e);
 
 		}
 
+		eventBuffer.pop_back();
+
 	}
 
-	// TODO: Make it clear that totalEventCount does not include events that
-	//       were dropped
-	data.lock();
-	data.totalEventCount += eventBuffer.size();
-	data.plots.updateHitRate(data.totalEventCount);
-	data.unlock();
-
-	eventBuffer.clear();
-
-	// NOTE: processedEvents will maintain a record of each event received
-	//       by the monitor
+	return result;
 
 }
 

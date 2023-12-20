@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "TQObject.h"
+
 using namespace std;
 
 class TabSignalBus {

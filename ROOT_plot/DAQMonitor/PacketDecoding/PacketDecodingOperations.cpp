@@ -35,6 +35,11 @@ namespace Decode {
     void runDecoding(LockableStream &dataStream, DAQData &data);
 
 }
+namespace DecodeIMPL {
+
+    void aggregateEventData(const DecodeData &loopData, DAQData &data);
+
+}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,13 +51,15 @@ namespace Decode {
 //       rather than in the run function.
 void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
 
+    using namespace DecodeIMPL;
+
     // Update data with everything zeroed out
     // TODO: Put this with the code that clears DAQData.
     Muon::UI::UILock.lock();
     UISignalBus::getInstance().onUpdate();
     Muon::UI::UILock.unlock();
 
-    Decoder decoder(dataStream, data);
+    Decoder decoder(dataStream);
 
     // TODO: Move termination condition up to where the thread is defined
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
@@ -66,7 +73,11 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
 
         if(decoder.isStale()) {
 
-            decoder.refresh();
+            DecodeData loopData = decoder.refresh();
+
+            data.lock();
+            aggregateEventData(loopData, data);
+            data.unlock();
 
             // TODO: This blocks the decode thread while the plots are 
             //       updating. Not a big deal, but it would be nice if
@@ -121,5 +132,30 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
          << " nonempty events." 
          << endl;
     data.unlock();
+
+}
+
+void DecodeIMPL::aggregateEventData(const DecodeData &loopData, DAQData &data) {
+
+    data.totalEventCount += loopData.eventCount    ;
+
+    data.droppedSignals  += loopData.droppedSignals;
+    data.droppedEvents   += loopData.droppedEvents ;
+
+    data.newEvents = loopData.nonemptyEvents;
+
+    data.processedEvents.insert(
+        data.processedEvents.end(), 
+        data.newEvents.cbegin  (), 
+        data.newEvents.cend    ()
+    );
+
+    for(Event &e : data.newEvents) {
+
+        data.plots.binEvent(e);
+        
+    }
+
+    data.plots.updateHitRate(data.totalEventCount);
 
 }
