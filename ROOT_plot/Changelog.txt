@@ -50,6 +50,15 @@
 
 -------------------------------------------------------------------------------
 
+## 2023-12-20
+
+## Fixed
+
+- Fixed system-specific issue where cmake was pointed at the wrong versions of
+  gcc and g++. This should have no effect on the git repo.
+
+-------------------------------------------------------------------------------
+
 ## 2023-12-19
 
 ## Added 

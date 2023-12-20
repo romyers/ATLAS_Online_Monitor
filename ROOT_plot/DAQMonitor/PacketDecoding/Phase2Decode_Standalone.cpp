@@ -12,9 +12,9 @@
 #include <iostream>
 #include <fstream>
 
-// #include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
+#include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
 
-// #include "DAQMonitor/LockableStream.cpp"
+#include "DAQMonitor/LockableStream.cpp"
 
 using namespace std;
 
@@ -22,7 +22,6 @@ void printUsage();
 
 int main(int argc, char **argv) {
 
-	/*
 	if(argc != 2) {
 
 		cerr << "ERROR: Incorrect argument count." << endl;
@@ -74,7 +73,6 @@ int main(int argc, char **argv) {
 	cout << "Found "     << aggregateData.nonemptyEvents.size() << " nonempty events" << endl;
 	cout << "Dropped "   << aggregateData.droppedSignals        << " signals"         << endl;
 	cout << "Dropped "   << aggregateData.droppedEvents         << " events"          << endl;
-	*/
 
 	return 0;
 

@@ -18,7 +18,8 @@ include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${ROOT_LIBRARY_DIR})
 
-# add_executable(DAQManager StartDAQ.cpp)
+add_executable(DAQManager StartDAQ.cpp)
+target_link_libraries(DAQManager PUBLIC ${ROOT_LIBRARIES})
 
 add_executable(p2Decode DAQMonitor/PacketDecoding/Phase2Decode_Standalone.cpp)
 target_link_libraries(p2Decode PUBLIC ${ROOT_LIBRARIES})
