@@ -15,24 +15,15 @@
 
 #include <thread>
 #include <mutex>
-#include <chrono>
-#include <cmath>
 
 #include "TApplication.h"
 #include "TUnixSystem.h" // Needed for calls to gSystem
 
-#include "TGMenu.h"
+#include "GUI/BuildGUI.h"
 
-#include "macros/DAQState.h"
-#include "macros/UIFramework/UIException.h"
-#include "macros/UIFramework/UILock.h"
-#include "macros/UIWindows/AlertBox/AlertOperations.h"
-
-#include "MainMenu/Views/EntryView.h"
-
-#include "src/ProgramControl/SigHandlers.h"
-#include "src/ProgramControl/Threads.h"
-#include "src/ProgramControl/Terminator.h"
+#include "DAQMonitor/DAQState.h"
+#include "DAQMonitor/ProgramControl/SigHandlers.h"
+#include "DAQMonitor/ProgramControl/Threads.h"
 
 using namespace std;
 using namespace Muon;
@@ -60,18 +51,15 @@ using namespace Muon;
 // TODO: Look at this for using QT in root:
 //       https://root.cern/doc/v606/QtFileDialog_8C.html
 
+/**
+ * The settings file providing persistent storage for DAQState.
+ */
 const string STATE_STORAGE = "settings.txt";
 
 /**
  * The approximate rate at which the GUI is refreshed.
  */
 const double GUI_REFRESH_RATE  = 60.; //Hz
-
-/**
- * Update UI elements every [UI_UPDATE_FRAMES] frames, i.e.
- * GUI_REFRESH_RATE / UI_UPDATE_FRAMES times per second.
- */
-const int UI_UPDATE_FRAMES  = 15  ; // Frames
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,118 +84,16 @@ int main() {
     //////////////////////////// SET UP UI ////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
-    // TODO: Explore using app.Run() instead of manually calling 
-    //       ProcessEvents()
+    // Create the GUI for the online monitor
+    buildGUI();
 
-    // TODO: Move this to EntryOperations
+    // Start the UI event loop thread
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(
 
-        thread([](){
+        thread([]() {
 
-            // Create the main window
-            TGMainFrame *mainFrame = new TGMainFrame(gClient->GetRoot());
-
-            // Create the menu displayed on the main window
-            EntryView *menu = new EntryView(mainFrame, 1, 1, kVerticalFrame);
-            mainFrame->AddFrame(menu, new TGLayoutHints(kLHintsCenterX));
-
-            // Set up the main window now that it has all its components
-            mainFrame->SetWindowName("DAQ Manager");
-            mainFrame->MapSubwindows();
-            mainFrame->Resize(mainFrame->GetDefaultSize());
-            mainFrame->MapWindow();
-
-            // Wire up the main window's close button to the terminator
-            mainFrame->Connect(
-                "CloseWindow()", 
-                "EntryView", 
-                menu, 
-                "handlePressExit()"
-            );
-
-            // Run the UI update loop
-            // TODO: Check Resource Red to remember how to properly track
-            //       dropped frames
-            // TODO: Now that the logic is a little more complicated, pull it
-            //       out
-            // TODO: Include a setting regarding whether to warn for slow
-            //       frames
-            // TODO: A lot of this framerate stuff really is overkill. 
-            double slowFrames = 0;
-            while(!Terminator::getInstance().isTerminated()) {
-
-                // Record the loop start time
-                auto UIUpdateStartTime = chrono::high_resolution_clock::now();
-
-
-                // TODO: This locks the UI lock for the entire event 
-                //       processing loop. Would be nice if we didn't block
-                //       other UI updates for the WHOLE loop.
-                Muon::UI::UILock.lock();
-                try {
-
-                    gSystem->ProcessEvents();
-
-                } catch (UIException &e) {
-
-                    Error::popupAlert(
-                        gClient->GetRoot(), "Error", e.what()
-                    );
-
-                }
-                Muon::UI::UILock.unlock();
-
-                // Record the loop end time
-                auto UIUpdateEndTime = chrono::high_resolution_clock::now();
-
-                // Compute how long it took the loop to run
-                chrono::duration<double> loopTime = UIUpdateEndTime - UIUpdateStartTime;
-                chrono::milliseconds updateTime = chrono::duration_cast<chrono::milliseconds>(loopTime);
-
-                State::DAQState state = State::DAQState::getState();
-
-                bool warnSlowFrames = state.persistentState.warnSlowFrames;
-
-                // Compute how long the thread should sleep to maintain a 
-                // consistent frame rate
-                int sleepTime = (int)(1000. / GUI_REFRESH_RATE) - (int)(updateTime.count());
-
-                // Deal with the case where the update loop took too long
-                if(sleepTime < 0) {
-
-                    // TODO: I think better if we increment slowFrames by a
-                    //       measure of how slow the frame was, so e.g.
-                    //       we don't suppress the warnings if we only
-                    //       update the UI every ten frames.
-
-                    if(warnSlowFrames) ++slowFrames;
-                    sleepTime = 0;
-
-                }
-
-                if(warnSlowFrames) {
-
-                    // If we are slow more than 5 times before slowFrames decays
-                    // we should alert the user.
-                    if(slowFrames > state.persistentState.slowFrameTolerance) {
-
-                        cerr << "UI WARNING: GUI refresh rate too fast for data updates. "
-                             << "Consider reducing GUI update framerate." << endl;
-
-                    }
-
-                    // Linear decay rate for slowFrames
-                    slowFrames -= state.persistentState.slowFrameDecayRate;
-                    slowFrames = max(slowFrames, 0.);
-
-                }
-
-                this_thread::sleep_for(
-                    chrono::milliseconds(sleepTime)
-                );
-
-            }
+            startUILoop(GUI_REFRESH_RATE);
 
         })
 
@@ -218,7 +104,7 @@ int main() {
     ////////////////////////////// CLEANUP ////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
-    // Wait for the threads to be done before terminating
+    // Wait for all threads to be done before terminating
     ProgramFlow::joinAllThreads();
     
     // Save DAQState to file

@@ -12,20 +12,20 @@
 
 #include "DataCaptureOperations.h"
 #include "PacketDecodingOperations.h"
+#include "DAQState.h"
+#include "LockableStream.h"
 
-#include "macros/DAQState.h"
-#include "macros/ErrorLogger.h"
+#include "ProgramControl/Terminator.h"
+#include "ProgramControl/Threads.h"
+#include "DataModel/DAQData.h"
 
-#include "DAQMonitor/LockableStream.h"
+#include "Logging/ErrorLogger.h"
 
-#include "macros/UIFramework/UIException.h"
-#include "macros/UIFramework/UISignals.h"
-#include "macros/UIFramework/UILock.h"
+#include "GUI/Core/UIException.h"
+#include "GUI/Core/UISignals.h"
+#include "GUI/Core/UILock.h"
 
 #include "src/Geometry.h"
-#include "src/ProgramControl/Terminator.h"
-#include "src/ProgramControl/Threads.h"
-#include "src/DataModel/DAQData.h"
 
 using namespace std;
 using namespace Muon;

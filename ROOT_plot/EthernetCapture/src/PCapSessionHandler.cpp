@@ -5,7 +5,7 @@
 #include <functional>
 #include <cstring>
 
-#include "macros/ErrorLogger.h"
+#include "Logging/ErrorLogger.h"
 
 #include "NetworkDeviceException.h"
 

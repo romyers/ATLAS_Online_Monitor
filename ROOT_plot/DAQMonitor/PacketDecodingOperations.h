@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "DAQMonitor/LockableStream.h"
+#include "LockableStream.h"
 
-#include "src/DataModel/DAQData.h"
+#include "DataModel/DAQData.h"
 
 namespace Muon {
 namespace Decode {

@@ -7,11 +7,11 @@ using namespace std;
 
 #include "Decoder/src/Decoder.h"
 
-#include "macros/UIFramework/UISignals.h"
-#include "macros/UIFramework/UILock.h"
+#include "GUI/Core/UISignals.h"
+#include "GUI/Core/UILock.h"
 
 #include "src/Geometry.h"
-#include "src/ProgramControl/Terminator.h"
+#include "ProgramControl/Terminator.h"
 
 using namespace Muon;
 

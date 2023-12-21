@@ -1,12 +1,12 @@
 #ifdef __CINT__
 
-#include "macros/UIFramework/UISignals.h"
+#include "GUI/Core/UISignals.h"
 #pragma link C++ class UISignalBus+;
 
-#include "DAQMonitor/Views/Components/TabSelector.h"
+#include "GUI/Components/TabSelector.h"
 #pragma link C++ class TabSelector+;
 
-#include "MainMenu/Views/EntryView.h"
-#pragma link C++ class EntryView+;
+#include "GUI/Components/DAQManager.h"
+#pragma link C++ class DAQManager+;
 
 #endif

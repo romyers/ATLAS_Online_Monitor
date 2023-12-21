@@ -12,7 +12,7 @@
 #include <string>
 #include <algorithm>
 
-#include "macros/ErrorLogger.h"
+#include "Logging/ErrorLogger.h"
 
 #include "src/HitFinder.cpp"
 #include "src/TimeCorrection.cpp"

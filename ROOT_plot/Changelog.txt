@@ -57,6 +57,9 @@
   both in the standalone and in the monitor.
 - Eliminate the need to have distinct names for menu options from different
   submenus.
+- Separate Output and data directories from module directories.
+- Decouple modules from each other as much as possible.
+- Make DAQData not be a singleton anymore.
 
 -------------------------------------------------------------------------------
 
@@ -64,8 +67,9 @@
 
 ## Added
 
-- Started adding in files from the sMDT reco repo.
+- Incorporated src/reco and MuonReco folders from the sMDT reco repo.
 - Added doxygen documentation for the decoder module.
+- Added GUI folder and started moving GUI functionality into it.
 
 ## Changed
 
@@ -80,6 +84,9 @@
 - Renamed Decoder::refresh() to Decoder::decodeStream().
 - The endianness of the system architecture is now checked before byteswapping
   is performed.
+- Broke up StartDAQ.cpp::main() for easier reading.
+- Moved GUI functionality to GUI directory.
+- Renamed EntryView to DAQManager.
 
 ## Removed
 
@@ -88,6 +95,9 @@
 - Removed TabSignalBus and folded signal emission directly into the tab 
   selector.
 - Removed onRunStart() and onRunStop() signals from the UISignalBus.
+- Removed slow frame tracking from UI loop, and associated settings from
+  DAQState.
+- Removed now-superfluous directories.
 
 -------------------------------------------------------------------------------
 

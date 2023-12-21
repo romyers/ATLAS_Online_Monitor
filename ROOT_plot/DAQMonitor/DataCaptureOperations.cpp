@@ -2,14 +2,16 @@
 
 #include <fstream>
 
-#include "macros/ErrorLogger.h"
-#include "macros/UIFramework/UIException.h"
-#include "macros/DAQState.h"
+#include "Logging/ErrorLogger.h"
+
+#include "DAQState.h"
+
+#include "GUI/Core/UIException.h"
 
 #include "EthernetCapture/src/PCapSessionHandler.h"
 #include "EthernetCapture/src/NetworkDeviceException.h"
 
-#include "src/ProgramControl/Terminator.h"
+#include "ProgramControl/Terminator.h"
 
 using namespace std;
 using namespace Muon;

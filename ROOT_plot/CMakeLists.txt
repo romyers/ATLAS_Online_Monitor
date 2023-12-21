@@ -53,11 +53,11 @@ set(recoObjs_SOURCES
 )
 
 set(p2Core_HEADERS
-	macros/ErrorLogger.h
+	Logging/ErrorLogger.h
 )
 
 set(p2Core_SOURCES
-	macros/ErrorLogger.cpp
+	Logging/ErrorLogger.cpp
 )
 
 set(p2ecap_HEADERS
@@ -89,67 +89,69 @@ set(p2Decode_SOURCES
 )
 
 set(monitor_HEADERS
-	src/DataModel/DAQData.h
-	src/DataModel/Plots.h
-	src/ProgramControl/SigHandlers.h
-	src/ProgramControl/Threads.h
-	src/ProgramControl/Terminator.h
-	macros/DAQState.h
-	macros/UIFramework/UIException.h
-	macros/UIFramework/UILock.h
-	macros/UIFramework/UISignals.h
-	macros/UIWindows/AlertBox/AlertOperations.h
-	MainMenu/Views/EntryView.h
-	MainMenu/Views/Components/DataSourcePanel.h
-	MainMenu/Views/Components/DeviceSelectorPanel.h
-	MainMenu/Views/Components/FileSelectorPanel.h
+	GUI/BuildGUI.h
+	GUI/Core/UIException.h
+	GUI/Core/UILock.h
+	GUI/Core/UISignals.h
+	GUI/Core/UILoop.h
+	GUI/Core/AlertBox/AlertOperations.h
+	GUI/Components/DAQManager.h
+	GUI/Components/DataSourcePanel.h
+	GUI/Components/DeviceSelectorPanel.h
+	GUI/Components/FileSelectorPanel.h
+	GUI/Components/RunView.h
+	GUI/Components/PairTable.h
+	GUI/Components/RunMenuBar.h
+	GUI/Components/TabSelector.h
+	GUI/Components/ProgressBar.h
+	GUI/Tabs/PlotWindow.h
+	GUI/Tabs/GraphPlotter.h
+	GUI/Tabs/HistogramPlotter.h
+	GUI/Tabs/ErrorView.h
+	DAQMonitor/DAQState.h
 	DAQMonitor/DataRunOperations.h
 	DAQMonitor/LockableStream.h
-	DAQMonitor/Views/RunView.h
-	DAQMonitor/Views/Components/RunStats.h
-	DAQMonitor/Views/Components/RunMenuBar.h
-	DAQMonitor/Views/Components/PairTable.h
-	DAQMonitor/Views/Components/TabSelector.h
-	DAQMonitor/Plotting/Views/PlotWindow.h
-	DAQMonitor/Plotting/Views/GraphPlotter.h
-	DAQMonitor/Plotting/Views/HistogramPlotter.h
-	DAQMonitor/PlotSaving/PlotSavingOperations.h
-	DAQMonitor/PlotSaving/Views/ProgressBar.h
-	DAQMonitor/ErrorHandling/Views/ErrorView.h
+	DAQMonitor/PlotSavingOperations.h
 	DAQMonitor/PacketDecodingOperations.h
 	DAQMonitor/DataCaptureOperations.h
+	DAQMonitor/DataModel/DAQData.h
+	DAQMonitor/DataModel/Plots.h
+	DAQMonitor/ProgramControl/SigHandlers.h
+	DAQMonitor/ProgramControl/Threads.h
+	DAQMonitor/ProgramControl/Terminator.h
 )
 
 set(monitor_SOURCES
-	src/DataModel/DAQData.cpp
-	src/DataModel/Plots.cpp
-	src/ProgramControl/SigHandlers.cpp
-	src/ProgramControl/Threads.cpp
-	src/ProgramControl/Terminator.cpp
-	macros/DAQState.cpp
-	macros/UIFramework/UIException.cpp
-	macros/UIFramework/UILock.cpp
-	macros/UIFramework/UISignals.cpp
-	macros/UIWindows/AlertBox/AlertOperations.cpp
-	MainMenu/Views/EntryView.cpp
-	MainMenu/Views/Components/DataSourcePanel.cpp
-	MainMenu/Views/Components/DeviceSelectorPanel.cpp
-	MainMenu/Views/Components/FileSelectorPanel.cpp
+	GUI/BuildGUI.cpp
+	GUI/Core/UIException.cpp
+	GUI/Core/UILock.cpp
+	GUI/Core/UISignals.cpp
+	GUI/Core/UILoop.cpp
+	GUI/Core/AlertBox/AlertOperations.cpp
+	GUI/Components/DAQManager.cpp
+	GUI/Components/DataSourcePanel.cpp
+	GUI/Components/DeviceSelectorPanel.cpp
+	GUI/Components/FileSelectorPanel.cpp
+	GUI/Components/RunView.cpp
+	GUI/Components/PairTable.cpp
+	GUI/Components/RunMenuBar.cpp
+	GUI/Components/TabSelector.cpp
+	GUI/Components/ProgressBar.cpp
+	GUI/Tabs/PlotWindow.cpp
+	GUI/Tabs/GraphPlotter.cpp
+	GUI/Tabs/HistogramPlotter.cpp
+	GUI/Tabs/ErrorView.cpp
+	DAQMonitor/DAQState.cpp
 	DAQMonitor/DataRunOperations.cpp
 	DAQMonitor/LockableStream.cpp
-	DAQMonitor/Views/RunView.cpp
-	DAQMonitor/Views/Components/RunStats.cpp
-	DAQMonitor/Views/Components/RunMenuBar.cpp
-	DAQMonitor/Views/Components/PairTable.cpp
-	DAQMonitor/Views/Components/TabSelector.cpp
-	DAQMonitor/Plotting/Views/PlotWindow.cpp
-	DAQMonitor/Plotting/Views/GraphPlotter.cpp
-	DAQMonitor/Plotting/Views/HistogramPlotter.cpp
-	DAQMonitor/PlotSaving/PlotSavingOperations.cpp
-	DAQMonitor/PlotSaving/Views/ProgressBar.cpp
-	DAQMonitor/ErrorHandling/Views/ErrorView.cpp
+	DAQMonitor/PlotSavingOperations.cpp
 	DAQMonitor/PacketDecodingOperations.cpp
 	DAQMonitor/DataCaptureOperations.cpp
+	DAQMonitor/DataModel/DAQData.cpp
+	DAQMonitor/DataModel/Plots.cpp
+	DAQMonitor/ProgramControl/SigHandlers.cpp
+	DAQMonitor/ProgramControl/Threads.cpp
+	DAQMonitor/ProgramControl/Terminator.cpp
 )
 
 ROOT_GENERATE_DICTIONARY(G__UISignals ${monitor_HEADERS} LINKDEF LinkDef.h)

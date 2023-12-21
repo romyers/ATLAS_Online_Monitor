@@ -4,7 +4,7 @@
 #include <string>
 #include <istream>
 
-#include "macros/ErrorLogger.h"
+#include "Logging/ErrorLogger.h"
 
 #include "src/Geometry.h"
 
