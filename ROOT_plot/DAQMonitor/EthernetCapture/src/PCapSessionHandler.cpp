@@ -1,41 +1,13 @@
-/**
- * @file PCapSessionHandler.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- * 
- * Adapted from the old EthernetCap.cpp.
- * 
- * NOTE: It's reallllllly nontrivial to get a member function into
- *       pcap_dispatch, so I've had to stick with static functions.
- *       As a result, there is a lot of static data that is shared
- *       between session handlers and needs to be reset every run
- *       with the static reset method. This is far from optimal.
- */
+#include "PCapSessionHandler.h"
 
-// TODO: Separate data source/format-specific logic from data source/format
-//       independent logic for easy switching of data source later.
-//         -- e.g. pcap stuff, word size stuff, etc should be separate and
-//            collocated
-
-#pragma once
-
-#include <vector>
 #include <sys/socket.h>
 #include <signal.h>
 #include <functional>
+#include <cstring>
 
-#include "macros/ErrorLogger.cpp"
+#include "macros/ErrorLogger.h"
 
-#include "DAQMonitor/LockableStream.cpp"
-
-#include "DAQMonitor/EthernetCapture/src/PCapDevice.cpp"
-#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
-
-// TODO: This is a little bit of a messy dependency to have at this level
-#include "src/DataModel/DAQData.cpp"
+#include "NetworkDeviceException.h"
 
 using namespace std;
 
@@ -50,46 +22,6 @@ unsigned char EVENT_TRAILER        = 0b1100                          ;
 unsigned char IDLE_WORD[WORD_SIZE] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 unsigned int  DATA_START           = 14                              ;
 
-
-// TODO: Consider pulling static members out to a singleton
-class PCapSessionHandler {
-
-public:
-
-	PCapSessionHandler ();
-	~PCapSessionHandler();
-
-	void setCheckPackets  (      bool        val       );
-	void initializeSession(      PCapDevice &device    );
-	void initializeSession(const string     &deviceName);
-
-	int  bufferPackets    (                            );
-	void writePackets     (LockableStream   &out       );
-	void writePackets     (ostream          &out       );
-	void clearBuffer      (                            );
-
-	bool isReady          (                            );
-
-	static void reset     (                            );
-
-private:
-
-	pcap_t *handler;
-
-	static bool checkPackets;
-
-	static int lastPacket;
-
-	static void packetListener(
-		u_char *useless, 
-		const struct pcap_pkthdr *pkthdr, 
-		const u_char *packet_data
-	);
-
-	static vector<unsigned char> packetBuffer;
-
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -97,14 +29,16 @@ private:
 bool PCapSessionHandler::checkPackets(true);
 int  PCapSessionHandler::lastPacket(-1);
 
-vector<unsigned char> PCapSessionHandler::packetBuffer;
+PacketData PCapSessionHandler::data;
 
 PCapSessionHandler::PCapSessionHandler() : handler(nullptr) {}
 
 void PCapSessionHandler::reset() {
 
 	lastPacket = -1;
-	packetBuffer.clear();
+	data.packetBuffer.clear();
+	data.lostPackets = 0;
+	data.bufferedPackets = 0;
 
 }
 
@@ -186,8 +120,8 @@ void PCapSessionHandler::packetListener(
 
 		if(memcmp(packet_data + iter, IDLE_WORD, WORD_SIZE)) {
 
-			packetBuffer.insert(
-				packetBuffer.end(), 
+			data.packetBuffer.insert(
+				data.packetBuffer.end(), 
 				packet_data + iter, 
 				packet_data + iter + WORD_SIZE
 			);
@@ -215,11 +149,7 @@ void PCapSessionHandler::packetListener(
 					ERROR
 				);
 
-				DAQData &data = DAQData::getInstance();
-
-				data.lock();
 				data.lostPackets += missingPackets;
-				data.unlock();
 
 			}
 
@@ -238,7 +168,7 @@ void PCapSessionHandler::packetListener(
 //       https://stackoverflow.com/questions/27204444/not-able-to-catch-sigint-signal-while-using-select
 // TODO: Examine this regarding making this non-blocking:
 //       https://stackoverflow.com/questions/6715736/using-select-for-non-blocking-sockets
-int PCapSessionHandler::bufferPackets() {
+PacketData PCapSessionHandler::bufferPackets() {
 
 	if(!isReady()) {
 
@@ -278,14 +208,13 @@ int PCapSessionHandler::bufferPackets() {
 	int selectSuccess = pselect(fd + 1, &rfds, NULL, NULL, &tv, &signalSet);
 	// See: https://man7.org/linux/man-pages/man2/select.2.html
 
-	int packetsBuffered = 0;
 	if(-1 == selectSuccess) {
 
 		cout << "Select failed" << endl;
 
 	} else if(selectSuccess) {
 
-		packetsBuffered = pcap_dispatch(
+		data.bufferedPackets = pcap_dispatch(
 			handler, 
 			-1, 
 			packetListener,
@@ -299,7 +228,7 @@ int PCapSessionHandler::bufferPackets() {
 
 	}
 
-	return packetsBuffered;
+	return data;
 
 }
 
@@ -314,7 +243,7 @@ void PCapSessionHandler::writePackets(ostream &out) {
 
 	}
 
-	out.write((char*)packetBuffer.data(), packetBuffer.size());
+	out.write((char*)data.packetBuffer.data(), data.packetBuffer.size());
 	out.flush(); // Since we're not calling endl, it might not flush
 
 
@@ -347,7 +276,9 @@ void PCapSessionHandler::clearBuffer() {
 
 	}
 
-	packetBuffer.clear();
+	data.packetBuffer.clear();
+	data.lostPackets = 0;
+	data.bufferedPackets = 0;
 
 }
 

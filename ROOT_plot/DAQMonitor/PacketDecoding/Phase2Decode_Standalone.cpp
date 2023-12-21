@@ -16,6 +16,8 @@
 
 #include "DAQMonitor/LockableStream.cpp"
 
+#include "src/Geometry.h"
+
 using namespace std;
 
 void printUsage();
@@ -39,6 +41,9 @@ int main(int argc, char **argv) {
 		exit(1);
 
 	}
+
+	// This must happen to properly initialize Geometry
+	Geometry::getInstance().SetRunN(0);
 
 	LockableStream dataStream;
 	dataStream.stream = &in;

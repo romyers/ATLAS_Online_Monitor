@@ -1,46 +1,31 @@
-/**
- * @file PacketDecodingOperations.cpp
- *
- * @brief Top-level logic flow for the decoder.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
+#include "PacketDecodingOperations.h"
 
 using namespace std;
 
 #include <sstream>
+#include <thread>
 
-#include "monitorConfig.cpp"
+#include "DAQMonitor/PacketDecoding/src/Decoder.h"
 
-#include "DAQMonitor/LockableStream.cpp"
-#include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
+#include "macros/UIFramework/UISignals.h"
+#include "macros/UIFramework/UILock.h"
 
-#include "macros/UIFramework/UISignals.cpp"
-#include "macros/UIFramework/UILock.cpp"
+#include "src/Geometry.h"
+#include "src/ProgramControl/Terminator.h"
 
-#include "src/Geometry.cpp"
-#include "src/ProgramControl/Terminator.cpp"
-#include "src/DataModel/DAQData.cpp"
+/**
+ * The approximate rate at which monitor data is refreshed. Note that the
+ * monitor will fall short of this rate if it must process too much data
+ * at a time.
+ */
+const double DATA_REFRESH_RATE = 10.; // Hz
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace Muon {
-namespace Decode {
+void aggregateEventData(const DecodeData &loopData, DAQData &data);
 
-    void runDecoding(LockableStream &dataStream, DAQData &data);
-
-}
-namespace DecodeIMPL {
-
-    void aggregateEventData(const DecodeData &loopData, DAQData &data);
-
-}
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,8 +35,6 @@ namespace DecodeIMPL {
 // TODO: I'd like the termination condition to be defined with the thread,
 //       rather than in the run function.
 void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
-
-    using namespace DecodeIMPL;
 
     // Update data with everything zeroed out
     // TODO: Put this with the code that clears DAQData.
@@ -114,6 +97,7 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
         }
         dataStream.unlock();
 
+        // TODO: This thread logic should be at a higher level....
         this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
 
     }
@@ -135,7 +119,7 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
 
 }
 
-void DecodeIMPL::aggregateEventData(const DecodeData &loopData, DAQData &data) {
+void aggregateEventData(const DecodeData &loopData, DAQData &data) {
 
     data.totalEventCount += loopData.eventCount    ;
 

@@ -1,21 +1,12 @@
-/**
- * @file SigHandlers.cpp
- *
- * @brief Handlers for system signals.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "SigHandlers.h"
 
-#pragma once
+#include <signal.h>
 
-#include "src/ProgramControl/Terminator.cpp"
+#include "TApplication.h"
+
+#include "src/ProgramControl/Terminator.h"
 
 using namespace std;
-
-void forceExit             (int    signal       );
-void flagForTermination    (int    signal       );
-void setTerminationHandlers(void (*handler)(int));
 
 void forceExit(int signal) {
 

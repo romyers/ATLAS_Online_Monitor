@@ -1,36 +1,8 @@
-/**
- * @file ProgressBar.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
-
-#include "TGWindow.h"
-#include "TGProgressBar.h"
+#include "ProgressBar.h"
 
 using namespace std;
 
 // TODO: Disable the close window button
-
-class ProgressBar : public TGTransientFrame {
-
-public:
-
-	ProgressBar(const TGWindow *p);
-
-	void increment(float inc);
-
-private:
-
-	// VIEW
-
-	TGHProgressBar *bar;
-
-};
 
 ProgressBar::ProgressBar(const TGWindow *p) : TGTransientFrame(p) {
 

@@ -1,13 +1,4 @@
-/**
- * @file DataRunOperations.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
+#include "DataRunOperations.h"
 
 #include <string>
 #include <fstream>
@@ -19,21 +10,21 @@
 #include "TObjArray.h"
 #include "TObjString.h"
 
-#include "macros/DAQState.cpp"
-#include "macros/ErrorLogger.cpp"
+#include "macros/DAQState.h"
+#include "macros/ErrorLogger.h"
 
-#include "DAQMonitor/LockableStream.cpp"
-#include "DAQMonitor/EthernetCapture/DataCaptureOperations.cpp"
-#include "DAQMonitor/PacketDecoding/PacketDecodingOperations.cpp"
+#include "DAQMonitor/LockableStream.h"
+#include "DAQMonitor/EthernetCapture/DataCaptureOperations.h"
+#include "DAQMonitor/PacketDecoding/PacketDecodingOperations.h"
 
-#include "macros/UIFramework/UIException.cpp"
-#include "macros/UIFramework/UISignals.cpp"
-#include "macros/UIFramework/UILock.cpp"
+#include "macros/UIFramework/UIException.h"
+#include "macros/UIFramework/UISignals.h"
+#include "macros/UIFramework/UILock.h"
 
-#include "src/Geometry.cpp"
-#include "src/ProgramControl/Terminator.cpp"
-#include "src/ProgramControl/Threads.cpp"
-#include "src/DataModel/DAQData.cpp"
+#include "src/Geometry.h"
+#include "src/ProgramControl/Terminator.h"
+#include "src/ProgramControl/Threads.h"
+#include "src/DataModel/DAQData.h"
 
 using namespace std;
 using namespace Muon;
@@ -43,30 +34,19 @@ using namespace State;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace Muon {
-namespace DataRun {
 
-    void startRun      ();
-    void stopRun       ();
+void   initializeDataStream(LockableStream &dataStream   );
+string getCurrentTimestamp (const string   &format       );
 
-}
-namespace DataRunIMPL {
-
-    void   initializeDataStream(LockableStream &dataStream   );
-    string getCurrentTimestamp (const string   &format       );
-
-    bool   directoryExists     (const string   &path         );
-    bool   createDirectory     (const string   &path         );
-    void   createIfMissing     (const string   &directoryName);
-
-}
-}
+bool   directoryExists     (const string   &path         );
+bool   createDirectory     (const string   &path         );
+void   createIfMissing     (const string   &directoryName);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void DataRunIMPL::initializeDataStream(LockableStream &dataStream) {
+void initializeDataStream(LockableStream &dataStream) {
 
     dataStream.stream = nullptr;
 
@@ -112,8 +92,6 @@ void DataRunIMPL::initializeDataStream(LockableStream &dataStream) {
 
 void DataRun::stopRun() {
 
-    using namespace DataRunIMPL;
-
     if(!State::DAQState::getState().tempState.runStarted) {
 
         throw UIException(
@@ -136,8 +114,6 @@ void DataRun::stopRun() {
 //       the Terminator to have multiple kinds of signals our threads
 //       can condition on.
 void DataRun::startRun() {
-
-    using namespace DataRunIMPL;
 
     // Reset the error logger
     // TODO: This relegates the error logger to a per-run role, so it
@@ -312,7 +288,7 @@ void DataRun::startRun() {
 
 }
 
-string Muon::DataRunIMPL::getCurrentTimestamp(const string &format) {
+string getCurrentTimestamp(const string &format) {
 
     char formatBuffer[40];
     time_t sys_time;
@@ -326,7 +302,7 @@ string Muon::DataRunIMPL::getCurrentTimestamp(const string &format) {
 
 }
 
-bool Muon::DataRunIMPL::directoryExists(const string &path) {
+bool directoryExists(const string &path) {
 
     struct stat sb;
 
@@ -340,7 +316,7 @@ bool Muon::DataRunIMPL::directoryExists(const string &path) {
 
 }
 
-bool Muon::DataRunIMPL::createDirectory(const string &path) {
+bool createDirectory(const string &path) {
 
     if(mkdir(path.data(), 0777) == 0) return true;
 
@@ -348,7 +324,7 @@ bool Muon::DataRunIMPL::createDirectory(const string &path) {
 
 }
 
-void Muon::DataRunIMPL::createIfMissing(const string &directoryName) {
+void createIfMissing(const string &directoryName) {
 
     if(!directoryExists(directoryName)) {
 

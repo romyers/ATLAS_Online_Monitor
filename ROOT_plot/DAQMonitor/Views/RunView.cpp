@@ -1,37 +1,6 @@
-/**
- * @file RunView.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
-
-#include "DAQMonitor/Views/Components/RunStats.cpp"
+#include "RunView.h"
 
 using namespace std;
-
-class RunView : public TGGroupFrame {
-
-public:
-
-	RunView(const TGWindow *p);
-
-	void update();
-
-private:
-
-	// VIEW
-
-	RunStats           *runStats      ;
-
-	// CONNECTIONS
-
-	void makeConnections();
-
-};
 
 void RunView::update() {
 

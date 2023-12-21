@@ -7,34 +7,9 @@
  * Contact: romyers@umich.edu
  */
 
-#pragma once
-
-#include <iostream>
-#include <mutex>
-#include <functional>
+#include "LockableStream.h"
 
 using namespace std;
-
-class LockableStream {
-
-public:
-
-	LockableStream();
-
-	// We don't want copying or we'll lose the mutex
-	LockableStream(      LockableStream &other) = delete;
-	void operator=(const LockableStream &other) = delete;
-
-	void lock  ();
-	void unlock();
-
-	iostream *stream;
-
-private:
-
-	mutex m;
-
-};
 
 LockableStream::LockableStream() : stream(nullptr) {}
 

@@ -52,10 +52,28 @@
 
 ## 2023-12-20
 
+## Added 
+
+- Retrieved FindPCAP.cmake from 
+  https://github.com/bro/cmake/blob/master/FindPCAP.cmake
+  in order to link to pcap when compiling with cmake.
+- Added a standalone ethernet capture module.
+
+## Changed
+
+- Went through src folder and added required includes and namespace scoping.
+- Separated headers and source files for everything involved in the monitor.
+- PCapSessionHandler now returns a struct of data for each iteration, rather
+  than just the number of packets buffered.
+
 ## Fixed
 
 - Fixed system-specific issue where cmake was pointed at the wrong versions of
   gcc and g++. This should have no effect on the git repo.
+
+## Removed
+
+- MonitorConfig.cpp
 
 -------------------------------------------------------------------------------
 

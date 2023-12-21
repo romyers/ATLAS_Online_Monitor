@@ -1,53 +1,8 @@
-/**
- * @file GraphPlotter.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "GraphPlotter.h"
 
-#pragma once
-
-#include <vector>
-#include <string>
-
-#include "TGraph.h"
-
-#include "macros/UIFramework/UISignals.cpp"
-
-#include "DAQMonitor/Plotting/Views/PlotWindow.cpp"
-
-#include "src/DataModel/DAQData.cpp"
+#include "src/DataModel/DAQData.h"
 
 using namespace std;
-
-// TODO: Subclass this and HistogramPlotter from something higher up.
-
-class GraphPlotter : public PlotWindow {
-
-public:
-
-	GraphPlotter(
-		const TGWindow *p, 
-		vector<TGraph*> graphs, 
-		const string &title = "", 
-		int w = 1, 
-		int h = 1,
-		int rows = 1
-	);
-
-	~GraphPlotter();
-
-	virtual void update() override;
-
-private:
-
-	// DATA
-
-	vector<TGraph*> graphs;
-
-};
 
 GraphPlotter::GraphPlotter(
 	const TGWindow *p, 

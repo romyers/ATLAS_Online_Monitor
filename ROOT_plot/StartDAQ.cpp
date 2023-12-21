@@ -18,20 +18,21 @@
 #include <chrono>
 #include <cmath>
 
+#include "TApplication.h"
+#include "TUnixSystem.h"
+
 #include "TGMenu.h"
 
-#include "monitorConfig.cpp"
+#include "macros/DAQState.h"
+#include "macros/UIFramework/UIException.h"
+#include "macros/UIFramework/UILock.h"
+#include "macros/UIWindows/AlertBox/AlertOperations.h"
 
-#include "macros/DAQState.cpp"
-#include "macros/UIFramework/UIException.cpp"
-#include "macros/UIFramework/UILock.cpp"
-#include "macros/UIWindows/AlertBox/AlertOperations.cpp"
+#include "MainMenu/Views/EntryView.h"
 
-#include "MainMenu/Views/EntryView.cpp"
-
-#include "src/ProgramControl/Terminator.cpp"
-#include "src/ProgramControl/SigHandlers.cpp"
-#include "src/ProgramControl/Threads.cpp"
+#include "src/ProgramControl/SigHandlers.h"
+#include "src/ProgramControl/Threads.h"
+#include "src/ProgramControl/Terminator.h"
 
 using namespace std;
 using namespace Muon;
@@ -61,17 +62,27 @@ using namespace Muon;
 
 const string STATE_STORAGE = "settings.txt";
 
+/**
+ * The approximate rate at which the GUI is refreshed.
+ */
+const double GUI_REFRESH_RATE  = 60.; //Hz
+
+/**
+ * Update UI elements every [UI_UPDATE_FRAMES] frames, i.e.
+ * GUI_REFRESH_RATE / UI_UPDATE_FRAMES times per second.
+ */
+const int    UI_UPDATE_FRAMES  = 15  ; // Frames
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void startDAQ();
+int main() {
+    // NOTE: This appears to populate the global gApplication variable.
+    TApplication app("DAQManager", nullptr, nullptr);
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-void StartDAQ() {
+    // And this appears to populate gSystem.
+    TUnixSystem system;
 
     // TODO: It might be nice to have a more general 'logger' that stores
     //       everything, not just errors.
@@ -89,6 +100,9 @@ void StartDAQ() {
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////// SET UP UI ////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
+
+    // TODO: Explore using app.Run() instead of manually calling 
+    //       ProcessEvents()
 
     // TODO: Move this to EntryOperations
     ProgramFlow::threadLock.lock();
@@ -140,12 +154,6 @@ void StartDAQ() {
 
                     gSystem->ProcessEvents();
 
-                    /*
-                    // TODO: Try not to have to do this every frame
-                    mainFrame->Resize(mainFrame->GetDefaultSize());
-                    cout << mainFrame->GetDefaultWidth() << " " << mainFrame->GetDefaultHeight() << endl;
-                    */
-
                 } catch (UIException &e) {
 
                     Error::popupAlert(
@@ -162,7 +170,7 @@ void StartDAQ() {
                 chrono::duration<double> loopTime = UIUpdateEndTime - UIUpdateStartTime;
                 chrono::milliseconds updateTime = chrono::duration_cast<chrono::milliseconds>(loopTime);
 
-                DAQState state = DAQState::getState();
+                State::DAQState state = State::DAQState::getState();
 
                 bool warnSlowFrames = state.persistentState.warnSlowFrames;
 
@@ -227,5 +235,7 @@ void StartDAQ() {
 
     // This makes sure the GUI closes when the main thread terminates
     gApplication->Terminate(0);
+
+    return 0;
 
 }

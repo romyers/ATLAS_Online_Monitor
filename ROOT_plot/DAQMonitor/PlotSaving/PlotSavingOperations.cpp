@@ -1,47 +1,27 @@
-/**
- * @file PlotSavingOperations.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
+#include "PlotSavingOperations.h"
 
 #include <thread>
+
+#include <sys/stat.h>
 
 #include "TRootEmbeddedCanvas.h"
 #include "TCanvas.h"
 
-#include "macros/DAQState.cpp"
+#include "macros/DAQState.h"
 
-#include "src/Geometry.cpp"
+#include "src/Geometry.h"
 
-#include "src/DataModel/DAQData.cpp"
+#include "src/DataModel/DAQData.h"
 
-#include "DAQMonitor/PlotSaving/Views/ProgressBar.cpp"
+#include "DAQMonitor/PlotSaving/Views/ProgressBar.h"
 
 using namespace std;
 
 // TODO: Remove dependency on the progress bar
 
-namespace Muon {
-namespace PlotSaving {
-
-	void savePlots();
-
-}
-namespace PlotSavingIMPL {
-
-    void makeDirectory(const string &path);
-
-}
-}
+void makeDirectory(const string &path);
 
 void Muon::PlotSaving::savePlots() {
-
-    using namespace Muon::PlotSavingIMPL;
 
     cout << "Saving snapshot..." << endl;
 
@@ -210,7 +190,7 @@ void Muon::PlotSaving::savePlots() {
 
 }
 
-void Muon::PlotSavingIMPL::makeDirectory(const string &path) {
+void makeDirectory(const string &path) {
 
   if(mkdir(path.data(), 0777) == -1) {
     cerr << strerror(errno) << endl;

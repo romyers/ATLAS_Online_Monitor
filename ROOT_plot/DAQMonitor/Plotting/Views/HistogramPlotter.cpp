@@ -1,51 +1,8 @@
-/**
- * @file HistogramPlotter.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "HistogramPlotter.h"
 
-#pragma once
-
-#include <vector>
-#include <string>
-
-#include "TH1.h"
-
-#include "macros/UIFramework/UISignals.cpp"
-
-#include "DAQMonitor/Plotting/Views/PlotWindow.cpp"
-
-#include "src/DataModel/DAQData.cpp"
+#include "src/DataModel/DAQData.h"
 
 using namespace std;
-
-class HistogramPlotter : public PlotWindow {
-
-public:
-
-	HistogramPlotter(
-		const TGWindow *p, 
-		vector<TH1*> histograms, 
-		const string &title, 
-		int w, 
-		int h,
-		int rows
-	);
-
-	~HistogramPlotter();
-
-	virtual void update() override;
-
-private:
-
-	// DATA
-
-	vector<TH1*> histograms;
-
-};
 
 HistogramPlotter::HistogramPlotter(
 	const TGWindow *p, 

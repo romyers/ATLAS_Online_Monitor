@@ -1,46 +1,6 @@
-/**
- * @file FileSelectorPanel.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
-
-#include "TGWindow.h"
-#include "TGLabel.h"
-#include "TGTextEntry.h"
+#include "FileSelectorPanel.h"
 
 using namespace std;
-
-class FileSelector : public TGVerticalFrame {
-
-public:
-
-    FileSelector(const TGWindow *p);
-    virtual ~FileSelector() override;
-
-    // METHODS
-
-    void enable();
-    void disable();
-
-    string getFilename();
-
-    void setFilename(const string &name);
-
-private:
-
-    // VIEW
-
-    ///////////////////////////////////////////////////////////////////////////
-    TGLabel      *label        ;
-    TGTextEntry  *entryField   ;
-    ///////////////////////////////////////////////////////////////////////////
-
-};
 
 string FileSelector::getFilename() {
 

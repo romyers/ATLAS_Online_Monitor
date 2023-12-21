@@ -7,56 +7,12 @@
  * Contact: romyers@umich.edu
  */
 
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////// DEPENDENCIES /////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+#include "Decoder.h"
 
-#pragma once
+#include "DAQMonitor/PacketDecoding/src/EventDecoding.h"
 
-#include <vector>
-#include <istream>
-
-#include "DAQMonitor/PacketDecoding/src/SignalDecoding.cpp"
-#include "DAQMonitor/PacketDecoding/src/EventDecoding.cpp"
-#include "DAQMonitor/LockableStream.cpp"
-
-#include "src/Signal.cpp"
-#include "src/Event.cpp"
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////// INTERFACE ////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-// TODO: Rename Decoder methods to something semantically more appropriate
-
-struct DecodeData {
-
-	int eventCount     = 0;
-
-	int droppedSignals = 0;
-	int droppedEvents  = 0;
-
-	vector<Event> nonemptyEvents;
-
-};
-
-class Decoder {
-
-public:
-
-	Decoder(LockableStream &in);
-
-	bool isStale();
-	DecodeData refresh();
-
-private:
-
-	SignalReader reader;
-
-	vector<Signal> signalBuffer;
-	vector<Event > eventBuffer ;
-
-};
+using namespace std;
+using namespace Muon;
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////// HELPER FUNCTIONS /////////////////////////////////////

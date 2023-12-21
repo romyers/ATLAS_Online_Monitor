@@ -1,45 +1,6 @@
-/**
- * @file Terminator.cpp
- *
- * @brief Threadsafe singleton class. Conditioning thread loops on 
- * Terminator::isTerminated() allows detached threads to be terminated cleanly 
- * with a call to Terminator::Terminate().
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-#pragma once
-
-#include <mutex>
-#include <set>
+#include "Terminator.h"
 
 using namespace std;
-
-const string TERMINATE_ALL_FLAG = "";
-
-class Terminator {
-
-public:
-
-    Terminator     (      Terminator &other) = delete;
-    void operator= (const Terminator &other) = delete;
-
-    bool isTerminated(const string &flag = TERMINATE_ALL_FLAG) const;
-
-    void terminate(const string &flag = TERMINATE_ALL_FLAG);
-    void clearFlag(const string &flag);
-
-    static Terminator &getInstance();
-
-private:
-
-    Terminator();
-
-    set<string> terminateFlags;
-
-    mutable mutex termLock; // We're C++11-compliant -- no shared_mutex
-
-};
 
 Terminator::Terminator() {}
 

@@ -1,44 +1,10 @@
-/**
- * @file DeviceManager.cpp
- *
- * @brief Manages network devices.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "DeviceManager.h"
 
-#pragma once
+#include <stdexcept>
 
-#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
-#include "DAQMonitor/EthernetCapture/src/PCapDevice.cpp"
+#include "NetworkDeviceException.h"
 
 using namespace std;
-
-
-
-class DeviceManager {
-
-public:
-
-    DeviceManager();
-    ~DeviceManager();
-
-    DeviceManager (      DeviceManager &other) = delete;
-    bool operator=(const DeviceManager &other) = delete;
-
-    void initialize();
-    PCapDevice getDevice(int deviceNumber);
-    vector<PCapDevice> getAllDevices();
-
-    void printDevices(ostream &out) const;
-
-private:
-
-    pcap_if_t *devices;
-
-};
-
-
 
 DeviceManager::DeviceManager() : devices(nullptr) {}
 
@@ -111,7 +77,7 @@ vector<PCapDevice> DeviceManager::getAllDevices() {
 
     if(!devices) {
 
-        throw logic_error(
+        throw std::logic_error(
             "DeviceManager::getDevice -- DeviceManager must be initialized before use."
         );
 
@@ -137,7 +103,7 @@ void DeviceManager::printDevices(ostream &out) const {
 
     if(!devices) {
 
-        throw logic_error(
+        throw std::logic_error(
             "DeviceManager::printDevices -- DeviceManager must be initialized before use."
         );
 

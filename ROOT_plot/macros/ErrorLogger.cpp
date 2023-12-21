@@ -8,69 +8,12 @@
  * Contact: romyers@umich.edu
  */
 
-#pragma once
+#include "ErrorLogger.h"
 
-#include <string>
-#include <vector>
-#include <iostream>
 #include <stdio.h>
 #include <algorithm>
-#include <mutex>
 
 using namespace std;
-
-const string EMPTY_TYPE = "";
-
-enum ErrorLevel {
-	DEBUG,
-	WARNING,
-	ERROR,
-	FATAL,
-	UNDEFINED
-};
-
-struct ErrorData {
-
-	ErrorData(
-		const string &msg, 
-		const string &type, 
-		ErrorLevel level
-	) : msg(msg), type(type), level(level) {}
-
-	const string msg;
-	const string type;
-	const ErrorLevel level;
-
-};
-
-class ErrorLogger {
-
-public:
-
-	ErrorLogger   (      ErrorLogger &other) = delete;
-	void operator=(const ErrorLogger &other) = delete;
-
-	void clear            (                                                        );
-	void disconnectStreams(                                                        );
-	void logError         (const string  &msg, const string &type, ErrorLevel level);
-	void addOutputStream  (      ostream &out                                      );
-
-	vector<ErrorData> getErrors() const;
-
-	size_t countErrors(const string &type = EMPTY_TYPE, ErrorLevel level = UNDEFINED) const;
-
-	static ErrorLogger &getInstance();
-
-private:
-
-	ErrorLogger();
-
-	vector<ErrorData> errors;
-	vector<ostream*> errorStreams;
-
-	mutable mutex errorLock;
-
-};
 
 ErrorLogger::ErrorLogger() {
 

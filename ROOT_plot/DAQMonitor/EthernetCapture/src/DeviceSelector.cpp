@@ -1,20 +1,6 @@
-/**
- * @file DeviceSelector.cpp
- *
- * @brief Provides a user interface for selecting a network device.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-// NOTE: Currently this is a console interface. We may eventually want to move
-//       to a GUI interface here.
-
-#pragma once
+#include "DeviceSelector.h"
 
 #include <iostream>
-
-#include "DAQMonitor/EthernetCapture/src/DeviceManager.cpp"
 
 using namespace std;
 

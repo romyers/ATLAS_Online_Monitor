@@ -7,18 +7,15 @@
  * Contact: romyers@umich.edu
  */
 
-#pragma once
+#include "SignalDecoding.h"
 
 #include <stdio.h>
 #include <string>
 #include <istream>
 
-#include "macros/ErrorLogger.cpp"
+#include "macros/ErrorLogger.h"
 
-#include "DAQMonitor/LockableStream.cpp"
-
-#include "src/Signal.cpp"
-#include "src/Geometry.cpp"
+#include "src/Geometry.h"
 
 using namespace Muon;
 using namespace std;
@@ -29,43 +26,6 @@ const string SIGNAL_ERROR = "signal" ;
 
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(uint64_t data, uint8_t dataSize);
-
-/**
- * Reads signals on command from a filestream.
- */
-class SignalReader {
-
-public:
-
-	SignalReader(LockableStream &in);
-
-	bool   isReady      ();
-	Signal extractSignal();
-
-private:
-
-	LockableStream &dataStream;
-
-};
-
-/**
- * Provides validation of 'sig', logging an error to the error logger
- * and returning false should sig produce an error.
- * 
- * Signals that fail error validation should be dropped.
- * 
- * @param sig The signal to validate.
- */
-bool validateSignalErrors(const Signal &sig);
-
-/**
- * Provides validation of 'sig', logging any warnings to the error logger.
- * 
- * Signals that fail warning validation should not be dropped.
- * 
- * @param sig The signal to validate.
- */
-void validateSignalWarnings(const Signal &sig);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

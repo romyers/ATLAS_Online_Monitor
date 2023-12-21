@@ -1,97 +1,15 @@
-/**
- * @file EntryView.cpp
- *
- * @brief Top-level menu view for the DAQ manager program.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "EntryView.h"
 
-#pragma once
+#include "macros/UIFramework/UISignals.h"
 
-#include "TG3DLine.h"
-#include "TGWindow.h"
-#include "TGTab.h"
+#include "MainMenu/EntryOperations.h"
 
-#include "macros/UIFramework/UISignals.cpp"
-
-#include "MainMenu/Views/Components/DataSourcePanel.cpp"
-#include "MainMenu/EntryOperations.cpp"
-
-#include "DAQMonitor/Views/RunView.cpp"
-
-#include "DAQMonitor/Views/Components/RunMenuBar.cpp"
-
-#include "src/ProgramControl/Terminator.cpp"
+#include "src/ProgramControl/Terminator.h"
 
 using namespace std;
 using namespace Muon;
 
 // NOTE: We MUST addFrame every GUI element to ensure proper cleanup
-
-class EntryView : public TGCompositeFrame {
-
-public:
-
-    EntryView(
-        const TGWindow *p = nullptr, 
-        int w = 1, 
-        int h = 1, 
-        int options = 0, 
-        Pixel_t back = GetDefaultFrameBackground()
-    );
-
-    virtual ~EntryView() override;
-
-    // METHODS
-
-    void disableStartButton();
-    void enableStartButton ();
-
-    void disableStopButton ();
-    void enableStopButton  ();
-
-    void update();
-
-private:
-
-    // VIEW
-
-    RunMenuBar *menuBar;
-
-    TGHorizontal3DLine *menuLine;
-
-    TGHorizontalFrame *mainPanel;
-
-        TGVerticalFrame *leftPanel;
-
-            RunView *viewer;
-
-            TGGroupFrame *settings;
-
-                DataSourcePanel *dataSourcePanel;
-
-        // TGVSplitter *splitter;
-
-        TGTab *viewport;
-
-            TGCompositeFrame *baseTab;
-
-                TGLabel *baseLabel;
-
-    TGHorizontalFrame *bottomPanel;
-
-        TGButtonGroup *buttonGroup;
-
-            TGTextButton *startButton  ;
-            TGTextButton *stopButton   ;
-            TGTextButton *exitButton   ;
-
-    // CONNECTIONS
-
-    void makeConnections();
-
-};
 
 void EntryView::makeConnections() {
 
@@ -121,7 +39,7 @@ EntryView::EntryView(
         int h, 
         int options, 
         Pixel_t back
-) : TGCompositeFrame(p, w, h, options, back), viewer(nullptr) {
+) : TGCompositeFrame(p, w, h, options, back)/*, viewer(nullptr) */{
 
     menuBar = new RunMenuBar(this);
     AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));

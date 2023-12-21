@@ -1,47 +1,27 @@
-/**
- * @file DataCaptureOperations.cpp
- *
- * @brief Top-level logic flow for the data capture module.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "DataCaptureOperations.h"
 
-#pragma once
+// TODO: Test that this can be here instead of in PCapDevice.cpp
+R__LOAD_LIBRARY(libpcap); // Loads pcap library into Root
 
-#include <string>
 #include <fstream>
 
-#include "macros/ErrorLogger.cpp"
+#include "macros/ErrorLogger.h"
+#include "macros/UIFramework/UIException.h"
+#include "macros/DAQState.h"
 
-#include "DAQMonitor/EthernetCapture/src/PCapSessionHandler.cpp"
-#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
+#include "DAQMonitor/EthernetCapture/src/PCapSessionHandler.h"
+#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.h"
 
-#include "src/ProgramControl/Terminator.cpp"
-#include "src/DataModel/DAQData.cpp"
+#include "src/ProgramControl/Terminator.h"
 
 using namespace std;
+using namespace Muon;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace Muon {
-namespace DataCapture {
-
-    void runDataCapture(
-        LockableStream &dataStream, 
-        DAQData &data, 
-        string runLabel
-    );
-
-}
-namespace DataCaptureIMPL {
-
-    void   initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
-
-}
-}
+void   initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,8 +32,6 @@ void Muon::DataCapture::runDataCapture(
     DAQData &data, 
     string runLabel
 ) {
-
-    using namespace DataCaptureIMPL;
 
     // Resets all the static data stored in session handlers
     PCapSessionHandler::reset();
@@ -94,24 +72,20 @@ void Muon::DataCapture::runDataCapture(
     //       each loop, or else it will act like a memory leak
     // TODO: Place the termination condition with the thread
     int packets   = 0;
-    int thousands = 0;
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
+ 
+        // TODO: Remove the sessionHandler writePackets stuff and just write directly
+        //       from packetData's packet buffer
+        PacketData packetData = sessionHandler.bufferPackets(); // Retrieves and buffers packets from device 
+        sessionHandler.writePackets               (dataStream); // Writes buffered packets to dataStream
+        sessionHandler.writePackets               (fileWriter); // Writes buffered packets to the .dat file
+        sessionHandler.clearBuffer                (          ); // Clears the packet buffer
 
-        packets += sessionHandler.bufferPackets(          ); // Retrieves and buffers packets from device
-        sessionHandler.writePackets            (dataStream); // Writes buffered packets to dataStream
-        sessionHandler.writePackets            (fileWriter); // Writes buffered packets to the .dat file
-        sessionHandler.clearBuffer             (          ); // Clears the packet buffer
-
-        // The while loop ensures that if we e.g. buffer 2000 packets at once,
-        // we'll enumerate both thousands in cout.
-        while(packets / 1000 > thousands) {
-
-            ++thousands;
-
-        }
+        packets += packetData.bufferedPackets;
 
         data.lock();
         data.packetCount = packets;
+        data.lostPackets += packetData.lostPackets;
         data.unlock();
 
     }
@@ -127,7 +101,7 @@ void Muon::DataCapture::runDataCapture(
 
 }
 
-void Muon::DataCaptureIMPL::initializePCapSessionHandler(
+void initializePCapSessionHandler(
     PCapSessionHandler &sessionHandler
 ) {
 

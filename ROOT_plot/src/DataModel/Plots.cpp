@@ -7,20 +7,14 @@
  * Contact: romyers@umich.edu
  */
 
-#pragma once
+#include "Plots.h"
 
-#include <vector>
 #include <string>
 #include <numeric>
 
-#include "TH1.h"
-#include "TH2.h"
-#include "TGraph.h"
-
 #include "macros/GlobalIncludes.h"
 
-#include "src/Geometry.cpp"
-#include "src/Event.cpp"
+#include "src/Geometry.h"
 
 using namespace Muon;
 using namespace std;
@@ -28,50 +22,7 @@ using namespace std;
 // TODO: Is there a better place to put this? E.g. Geometry.cpp?
 const double MATCH_WINDOW = 1.5; // us
 
-// NOTE: There should really only be one of those. DAQData holds it.
-struct Plots {
 
-	Plots();
-
-	Plots         (const Plots &other);
-	void operator=(const Plots &other) = delete; // TODO: It's a little bit
-	                                             //       weird to have a
-	                                             //       copy constructor but
-	                                             //       not copy assignment
-
-	TH1F *                 p_leading_time          ;
-	TH1F *                 p_trailing_time         ;
-
-	vector<TH1F*>          p_hits_distribution     ;
-
-	vector<vector<TH1F*>>  p_tdc_time              ;
-	vector<vector<TH1F*>>  p_tdc_time_original     ;
-	vector<vector<TH1F*>>  p_tdc_time_corrected    ;
-	vector<vector<TH1F*>>  p_tdc_time_selected     ;
-	vector<vector<TH1F*>>  p_adc_time              ;
-
-
-	vector<TH1F*>          p_tdc_tdc_time_original ;
-	vector<TH1F*>          p_tdc_tdc_time_corrected;
-	vector<TH1F*>          p_tdc_tdc_time_selected ;
-	vector<TH1F*>          p_tdc_adc_time          ;
-	vector<TH1F*>          p_tdc_channel           ;
-
-	vector<TH2F*>          p_adc_vs_tdc            ;
-
-	vector<vector<double>> p_tdc_hit_rate          ;
-	vector<TGraph*>        p_tdc_hit_rate_graph    ;
-
-	TH2D *                 hitByLC                 ;
-	TH2D *                 badHitByLC              ;
-	TH2D *                 goodHitByLC             ; 
-
-	void binEvent(const Event &e);
-	void updateHitRate(int total_events);
-
-	void clear();
-
-};
 
 Plots::Plots(const Plots &other) {
 

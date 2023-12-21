@@ -7,25 +7,20 @@
  * Contact: romyers@umich.edu
  */
 
-#pragma once
+#include "EventDecoding.h"
 
-#include <vector>
 #include <string>
 #include <algorithm>
 
-#include "macros/ErrorLogger.cpp"
+#include "macros/ErrorLogger.h"
 
-#include "src/Signal.cpp"
-#include "src/Event.cpp"
 #include "src/HitFinder.cpp"
 #include "src/TimeCorrection.cpp"
 
-const string EVENT_ERROR = "event" ;
+using namespace std;
+using namespace Muon;
 
-Event assembleEvent        (      vector<Signal>  signals);
-bool  validateEventErrors  (const Event          &e      );
-void  validateEventWarnings(const Event          &e      );
-void  processEvent         (      Event          &e      );
+const string EVENT_ERROR = "event" ;
 
 // TODO: This does three different things. Break it up.
 

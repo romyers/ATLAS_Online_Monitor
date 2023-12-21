@@ -1,37 +1,8 @@
-/**
- * @file PairTable.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "PairTable.h"
 
-#pragma once
-
-#include <vector>
-#include <utility>
-#include <string>
 #include <algorithm>
 
 using namespace std;
-
-// TODO: Options for table formatting, e.g. background and font color
-class PairTable {
-
-public:
-
-	PairTable();
-
-	void setEntry(const string &key, const string &value);
-
-	string stringify() const;
-
-private:
-
-	vector<pair<string, string>> tableRows;
-
-};
 
 PairTable::PairTable() {}
 

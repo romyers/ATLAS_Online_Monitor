@@ -1,33 +1,11 @@
-/**
- * @file NetworkDeviceException.cpp
- *
- * @brief Provides an exception class for network device errors.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
-
-#include <exception>
-#include <string>
+#include "NetworkDeviceException.h"
 
 using namespace std;
 
-class NetworkDeviceException : public exception {
+NetworkDeviceException::NetworkDeviceException(const string &msg) : message(msg) {}
 
-public:
+const char *NetworkDeviceException::what() {
 
-    NetworkDeviceException(const string &msg) : message(msg) {}
+    return message.data();
 
-    const char *what() {
-
-        return message.data();
-
-    }
-
-private:
-
-    string message;
-
-};
+}

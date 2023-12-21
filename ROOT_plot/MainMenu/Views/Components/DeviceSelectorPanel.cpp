@@ -1,60 +1,15 @@
-/**
- * @file DeviceSelectorPanel.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
+#include "DeviceSelectorPanel.h"
 
 #include <string>
 
-#include "TGComboBox.h"
-#include "TGLabel.h"
-
 // TODO: Find a way to eliminate this include
 //         -- Collocate this component with the data capture module?
-#include "DAQMonitor/EthernetCapture/src/DeviceManager.cpp"
-#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp"
+#include "DAQMonitor/EthernetCapture/src/DeviceManager.h"
+#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.h"
 
 using namespace std;
 
 // TODO: Return a whole PCapDevice rather than just its name
-
-class DeviceSelector : public TGVerticalFrame {
-
-public:
-
-    DeviceSelector(const TGWindow *p);
-
-    virtual ~DeviceSelector() override;
-
-    // METHODS
-
-    void initialize();
-
-    bool ready();
-
-    void enable();
-    void disable();
-
-    string getDeviceName();
-    void setDeviceName(char *name);
-
-private:
-
-    // VIEW
-
-    ///////////////////////////////////////////////////////////////////////////
-    TGLabel    *label   ;
-    TGComboBox *dropdown;
-    ///////////////////////////////////////////////////////////////////////////
-
-    bool initialized;
-
-};
 
 string DeviceSelector::getDeviceName() {
 

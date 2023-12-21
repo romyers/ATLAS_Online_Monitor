@@ -1,21 +1,9 @@
-/**
- * @file ErrorView.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
+#include "ErrorView.h"
 
 #include <string>
 
-#include "TGHtml.h"
-
-#include "DAQMonitor/Views/Components/PairTable.cpp"
-
-#include "macros/UIFramework/UISignals.cpp"
+#include "macros/UIFramework/UISignals.h"
+#include "macros/ErrorLogger.h"
 
 using namespace std;
 
@@ -30,33 +18,6 @@ const string DEBUG_COLOR   = "black"  ;
 const string WARNING_COLOR = "orange" ;
 const string ERROR_COLOR   = "red"    ;
 const string FATAL_COLOR   = "#880808";
-
-class ErrorView : public TGCompositeFrame {
-
-public:
-
-	ErrorView(const TGWindow *p);
-
-	~ErrorView();
-
-	void update();
-
-private:
-
-	// DATA
-
-	PairTable stringTable;
-
-	// VIEW
-
-	TGHtml *errorPanel;
-
-	// CONNECTIONS
-
-	void makeConnections ();
-	void breakConnections();
-
-};
 
 string getColor(const ErrorData &error);
 

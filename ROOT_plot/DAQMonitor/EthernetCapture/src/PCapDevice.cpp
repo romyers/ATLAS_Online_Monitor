@@ -1,34 +1,6 @@
-/**
- * @file PCapDevice.cpp
- *
- * @brief Wrapper for a PCap device.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
+#include "PCapDevice.h"
 
-#pragma once
-
-R__LOAD_LIBRARY(libpcap); // Loads pcap library into Root
-
-#include <pcap.h> 
-
-class PCapDevice {
-
-public:
-
-    PCapDevice(pcap_if_t *d);
-
-    char *name       ();
-    char *description();
-
-private:
-
-    pcap_if_t *dev;
-
-};
-
-
+using namespace std;
 
 PCapDevice::PCapDevice(pcap_if_t *d) : dev(d) {}
 

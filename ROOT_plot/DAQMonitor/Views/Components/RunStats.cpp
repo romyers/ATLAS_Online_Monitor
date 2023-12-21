@@ -1,27 +1,15 @@
-/**
- * @file RunStats.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
-#pragma once
+#include "RunStats.h"
 
 #include <string>
 
-#include "TGHtml.h"
+#include "macros/ErrorLogger.h"
+#include "macros/UIFramework/UISignals.h"
+#include "macros/DAQState.h"
 
-#include "DAQMonitor/Views/Components/PairTable.cpp"
-
-#include "macros/ErrorLogger.cpp"
-#include "macros/UIFramework/UISignals.cpp"
-#include "macros/DAQState.cpp"
-
-#include "src/DataModel/DAQData.cpp"
+#include "src/DataModel/DAQData.h"
 
 using namespace std;
+using namespace Muon;
 
 // TODO: Examine this example:
 //       https://root.cern/doc/master/calendar_8C.html
@@ -29,34 +17,7 @@ using namespace std;
 // TODO: See about reorganizing logic and dependencies, keeping with the
 //       view vs operations pattern I've been following
 
-class RunStats : public TGVerticalFrame {
 
-public:
-
-	RunStats(
-		const TGWindow *parent
-	);
-
-	void update();
-
-	void teardown();
-
-private:
-
-	// DATA
-
-	PairTable statsTable;
-
-	// VIEW
-
-	TGHtml *table;
-
-	// CONNECTIONS
-
-	void makeConnections ();
-	void breakConnections();
-
-};
 
 void RunStats::makeConnections() {
 
