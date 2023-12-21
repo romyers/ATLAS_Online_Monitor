@@ -2,9 +2,6 @@
 
 #include "GUI/Core/UISignals.h"
 
-#include "DAQMonitor/DataRunOperations.h"
-#include "DAQMonitor/ProgramControl/Terminator.h"
-
 using namespace std;
 using namespace Muon;
 
@@ -115,6 +112,11 @@ void DAQManager::enableStartButton () { startButton->SetEnabled(true ); }
 void DAQManager::disableStopButton () { stopButton->SetEnabled (false); }
 void DAQManager::enableStopButton  () { stopButton->SetEnabled (true ); }
 
+// TODO: Use these
+void DAQManager::pressedStart() { Emit("pressedStart()"); }
+void DAQManager::pressedStop () { Emit("pressedStop()" ); }
+void DAQManager::pressedExit () { Emit("pressedExit()" ); }
+
 void DAQManager::handlePressStart() {
 
     disableStartButton();
@@ -122,7 +124,7 @@ void DAQManager::handlePressStart() {
 
     dataSourcePanel->disable();
 
-    DataRun::startRun();
+    pressedStart();
 
 }
 
@@ -133,12 +135,12 @@ void DAQManager::handlePressStop() {
 
     dataSourcePanel->enable();
 
-    DataRun::stopRun();
+    pressedStop();
 
 }
 
 void DAQManager::handlePressExit() {
 
-    Terminator::getInstance().terminate();
+    pressedExit();
 
 }

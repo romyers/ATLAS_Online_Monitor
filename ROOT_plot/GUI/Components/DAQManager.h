@@ -21,8 +21,6 @@
 #include "RunView.h"
 #include "RunMenuBar.h"
 
-
-
 class DAQManager : public TGCompositeFrame {
 
 ClassDef(DAQManager, 0);
@@ -37,7 +35,13 @@ public:
         Pixel_t back = GetDefaultFrameBackground()
     );
 
-    virtual ~DAQManager() override;
+    virtual ~DAQManager();
+
+    // SIGNALS
+
+    void pressedStart(); // *SIGNAL*
+    void pressedStop (); // *SIGNAL*
+    void pressedExit (); // *SIGNAL*
 
     // METHODS
 

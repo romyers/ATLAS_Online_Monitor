@@ -9,4 +9,7 @@
 #include "GUI/Components/DAQManager.h"
 #pragma link C++ class DAQManager+;
 
+#include "GUI/BuildGUI.h"
+#pragma link C++ namespace SigHandlers+;
+
 #endif

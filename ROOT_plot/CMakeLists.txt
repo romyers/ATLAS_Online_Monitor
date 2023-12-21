@@ -28,7 +28,30 @@ link_directories(${ROOT_LIBRARY_DIR})
 
 ###############################################################################
 
-set(recoObjs_HEADERS 
+set(recoObjs_HEADERS
+	MuonReco/RecoObject.h
+	MuonReco/Cluster.h
+	MuonReco/Event.h
+	MuonReco/EventID.h
+	MuonReco/Geometry.h
+	MuonReco/Hit.h
+	MuonReco/Observable.h
+	MuonReco/Signal.h
+	MuonReco/Track.h
+)
+
+set(recoObjs_SOURCES
+	src/reco/Cluster.cxx
+	src/reco/Event.cxx
+	src/reco/EventID.cxx
+	src/reco/Geometry.cxx
+	src/reco/Hit.cxx
+	src/reco/Observable.cxx
+	src/reco/Signal.cxx
+	src/reco/Track.cxx
+)
+
+set(p2Objs_HEADERS 
 	src/EventID.h
 	src/Signal.h
 	src/Cluster.h
@@ -40,7 +63,7 @@ set(recoObjs_HEADERS
 	src/ConfigParser.h
 )
 
-set(recoObjs_SOURCES
+set(p2Objs_SOURCES
 	src/EventID.cpp
 	src/Signal.cpp
 	src/Cluster.cpp
@@ -161,13 +184,16 @@ ROOT_GENERATE_DICTIONARY(G__UISignals ${monitor_HEADERS} LINKDEF LinkDef.h)
 add_library(MuonReco ${recoObjs_SOURCES} ${recoObjs_HEADERS})
 target_link_libraries(MuonReco ${ROOT_LIBRARIES})
 
+add_library(p2MuonReco ${p2Objs_SOURCES} ${p2Objs_HEADERS})
+target_link_libraries(p2MuonReco ${ROOT_LIBRARIES})
+
 add_library(libP2Core ${p2Core_SOURCES} ${p2Core_HEADERS})
 
 add_library(libP2ecap ${p2ecap_SOURCES} ${p2ecap_HEADERS})
 target_link_libraries(libP2ecap libP2Core ${PCAP_LIBRARY})
 
 add_library(libP2Decode ${p2Decode_SOURCES} ${p2Decode_HEADERS})
-target_link_libraries(libP2Decode libP2Core MuonReco)
+target_link_libraries(libP2Decode libP2Core p2MuonReco)
 
 add_library(libMonitor ${monitor_SOURCES} G__UISignals.cxx)
 target_link_libraries(libMonitor libP2Decode libP2ecap)

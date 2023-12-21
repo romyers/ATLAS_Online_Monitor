@@ -60,6 +60,8 @@
 - Separate Output and data directories from module directories.
 - Decouple modules from each other as much as possible.
 - Make DAQData not be a singleton anymore.
+- Pull signal/slot interface between GUI and program logic out of the GUI 
+  module.
 
 -------------------------------------------------------------------------------
 
@@ -68,6 +70,7 @@
 ## Added
 
 - Incorporated src/reco and MuonReco folders from the sMDT reco repo.
+- Added a MuonReco static library to cmake.
 - Added doxygen documentation for the decoder module.
 - Added GUI folder and started moving GUI functionality into it.
 

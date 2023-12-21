@@ -20,3 +20,12 @@ TGMainFrame *buildGUI();
  * Starts the UI loop.
  */
 void startUILoop(double refreshRate);
+
+// TODO: Putting these here is a temporary solution. Fix.
+namespace SigHandlers {
+
+	void handlePressedStart();
+	void handlePressedStop ();
+	void handleExit        ();
+
+}
