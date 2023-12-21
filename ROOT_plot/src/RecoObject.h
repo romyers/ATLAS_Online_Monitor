@@ -1,7 +1,6 @@
 
 
-#ifndef MUON_RECO_OBJECT
-#define MUON_RECO_OBJECT
+#pragma once
 
 namespace Muon {
   class RecoObject {
@@ -9,5 +8,3 @@ namespace Muon {
     virtual void Draw() = 0;
   };
 }
-
-#endif

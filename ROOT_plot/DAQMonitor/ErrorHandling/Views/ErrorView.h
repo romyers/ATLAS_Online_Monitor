@@ -1,5 +1,5 @@
 /**
- * @file ErrorView.cpp
+ * @file ErrorView.h
  *
  * @brief TODO: Write
  *

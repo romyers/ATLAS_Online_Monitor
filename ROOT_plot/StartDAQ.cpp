@@ -19,7 +19,7 @@
 #include <cmath>
 
 #include "TApplication.h"
-#include "TUnixSystem.h"
+#include "TUnixSystem.h" // Needed for calls to gSystem
 
 #include "TGMenu.h"
 
@@ -81,9 +81,6 @@ int main() {
     // NOTE: This appears to populate the global gApplication variable.
     TApplication app("DAQManager", nullptr, nullptr);
 
-    // And this appears to populate gSystem.
-    TUnixSystem system;
-
     // TODO: It might be nice to have a more general 'logger' that stores
     //       everything, not just errors.
     //         -- Can just add a new error 'type'
@@ -126,9 +123,9 @@ int main() {
             // Wire up the main window's close button to the terminator
             mainFrame->Connect(
                 "CloseWindow()", 
-                "EntryOperations", 
-                nullptr, 
-                "exitAll()"
+                "EntryView", 
+                menu, 
+                "handlePressExit()"
             );
 
             // Run the UI update loop

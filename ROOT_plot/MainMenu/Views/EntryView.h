@@ -25,6 +25,8 @@
 
 class EntryView : public TGCompositeFrame {
 
+ClassDef(EntryView, 0);
+
 public:
 
     EntryView(
@@ -44,6 +46,10 @@ public:
 
     void disableStopButton ();
     void enableStopButton  ();
+
+    void handlePressStart();
+    void handlePressStop();
+    void handlePressExit();
 
     void update();
 

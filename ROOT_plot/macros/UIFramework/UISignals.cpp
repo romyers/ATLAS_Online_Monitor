@@ -2,6 +2,8 @@
 
 using namespace std;
 
+ClassImp(UISignalBus);
+
 UISignalBus::UISignalBus() : TQObject() {}
 
 UISignalBus &UISignalBus::getInstance() {

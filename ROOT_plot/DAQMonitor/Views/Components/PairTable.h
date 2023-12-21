@@ -1,5 +1,5 @@
 /**
- * @file PairTable.cpp
+ * @file PairTable.h
  *
  * @brief TODO: Write
  *

@@ -1,5 +1,5 @@
 /**
- * @file PlotWindow.cpp
+ * @file PlotWindow.h
  *
  * @brief TODO: Write
  *

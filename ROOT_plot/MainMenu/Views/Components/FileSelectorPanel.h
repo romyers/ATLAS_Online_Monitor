@@ -1,5 +1,5 @@
 /**
- * @file FileSelectorPanel.cpp
+ * @file FileSelectorPanel.h
  *
  * @brief TODO: Write
  *

@@ -2,34 +2,25 @@
 
 #include "macros/UIFramework/UISignals.h"
 
-#include "MainMenu/EntryOperations.h"
+#include "DAQMonitor/DataRunOperations.h"
 
 #include "src/ProgramControl/Terminator.h"
 
 using namespace std;
 using namespace Muon;
 
+ClassImp(EntryView);
+
 // NOTE: We MUST addFrame every GUI element to ensure proper cleanup
 
 void EntryView::makeConnections() {
 
     UISignalBus &bus = UISignalBus::getInstance();
-    
-    bus.Connect("onRunStop()", "EntryView"      , this           , "disableStopButton()");
-    bus.Connect("onRunStop()", "EntryView"      , this           , "enableStartButton()");
-    bus.Connect("onRunStop()", "DataSourcePanel", dataSourcePanel, "enable()"           );
-
-    bus.Connect("onRunStart()", "EntryView"      , this           , "enableStopButton()"  );
-    bus.Connect("onRunStart()", "EntryView"      , this           , "disableStartButton()");
-    bus.Connect("onRunStart()", "DataSourcePanel", dataSourcePanel, "disable()"           );
-
     bus.Connect("onUpdate()", "EntryView", this, "update()");
 
-    exitButton->Connect("Clicked()", "EntryOperations", nullptr, "exitAll()");
-
-    startButton->Connect("Clicked()", "EntryOperations", nullptr, "startRun()");
-
-    stopButton->Connect("Clicked()", "EntryOperations" , nullptr, "stopRun()");
+    exitButton ->Connect("Clicked()", "EntryView", this, "handlePressExit()");
+    startButton->Connect("Clicked()", "EntryView", this, "handlePressStart()");
+    stopButton ->Connect("Clicked()", "EntryView", this, "handlePressStop()");
 
 }
 
@@ -124,3 +115,31 @@ void EntryView::enableStartButton () { startButton->SetEnabled(true ); }
 
 void EntryView::disableStopButton () { stopButton->SetEnabled (false); }
 void EntryView::enableStopButton  () { stopButton->SetEnabled (true ); }
+
+void EntryView::handlePressStart() {
+
+    disableStartButton();
+    enableStopButton();
+
+    dataSourcePanel->disable();
+
+    DataRun::startRun();
+
+}
+
+void EntryView::handlePressStop() {
+
+    disableStopButton();
+    enableStartButton();
+
+    dataSourcePanel->enable();
+
+    DataRun::stopRun();
+
+}
+
+void EntryView::handlePressExit() {
+
+    Terminator::getInstance().terminate();
+
+}

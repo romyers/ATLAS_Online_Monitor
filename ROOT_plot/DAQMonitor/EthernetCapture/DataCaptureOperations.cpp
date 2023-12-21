@@ -1,8 +1,5 @@
 #include "DataCaptureOperations.h"
 
-// TODO: Test that this can be here instead of in PCapDevice.cpp
-R__LOAD_LIBRARY(libpcap); // Loads pcap library into Root
-
 #include <fstream>
 
 #include "macros/ErrorLogger.h"

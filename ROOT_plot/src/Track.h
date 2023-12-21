@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/RecoObject.cpp"
+#include "src/RecoObject.h"
 
 #include "TMath.h"
 

@@ -10,13 +10,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 #include <sys/stat.h>
 
-#include "src/PCapSessionHandler.cpp"
+#include "src/PCapSessionHandler.h"
 #include "src/DeviceManager.h"
 #include "src/DeviceSelector.h"
 #include "src/PCapDevice.h"
+#include "src/NetworkDeviceException.h"
 
 using namespace std;
 

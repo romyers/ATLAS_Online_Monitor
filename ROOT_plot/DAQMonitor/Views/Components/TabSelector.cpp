@@ -2,6 +2,9 @@
 
 using namespace std;
 
+ClassImp(TabSignalBus);
+ClassImp(TabSelector);
+
 TabSelector::TabSelector(const TGWindow *p) : TGPopupMenu(p) {
 
 	submenus.push_back(this);

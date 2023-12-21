@@ -12,13 +12,14 @@
 #include <iostream>
 #include <fstream>
 
-#include "DAQMonitor/PacketDecoding/src/Decoder.cpp"
+#include "DAQMonitor/PacketDecoding/src/Decoder.h"
 
-#include "DAQMonitor/LockableStream.cpp"
+#include "DAQMonitor/LockableStream.h"
 
 #include "src/Geometry.h"
 
 using namespace std;
+using namespace Muon;
 
 void printUsage();
 

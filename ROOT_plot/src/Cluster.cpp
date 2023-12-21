@@ -1,7 +1,5 @@
 #include "Cluster.h"
 
-#include "src/RecoObject.cpp"
-
 using namespace std;
 using namespace Muon;
   

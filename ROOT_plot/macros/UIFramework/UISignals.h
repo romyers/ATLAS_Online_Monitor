@@ -17,6 +17,8 @@
 
 class UISignalBus : public TQObject {
 
+ClassDef(UISignalBus, 0);
+
 public:
 
     UISignalBus   (      UISignalBus &other) = delete;

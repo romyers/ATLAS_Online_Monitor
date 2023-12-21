@@ -1,5 +1,5 @@
 /**
- * @file TabSelector.cpp
+ * @file TabSelector.h
  *
  * @brief Popup menu providing UI for selecting DAQ monitor tabs.
  *
@@ -17,6 +17,8 @@
 
 class TabSignalBus : public TQObject {
 
+ClassDef(TabSignalBus, 0);
+
 public:
 
 	TabSignalBus();
@@ -29,6 +31,8 @@ public:
 };
 
 class TabSelector : public TGPopupMenu {
+
+ClassDef(TabSelector, 0);
 
 public:
 

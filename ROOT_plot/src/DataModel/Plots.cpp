@@ -1,12 +1,3 @@
-/**
- * @file Plots.cpp
- *
- * @brief Data structure containing histograms for ATLAS cosmic ray testing.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
 #include "Plots.h"
 
 #include <string>

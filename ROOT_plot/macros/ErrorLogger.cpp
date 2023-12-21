@@ -1,13 +1,3 @@
-/**
- * @file ErrorLogger.cpp
- *
- * @brief A simple threadsafe singleton error logger that stores and counts 
- * errors.
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
 #include "ErrorLogger.h"
 
 #include <stdio.h>

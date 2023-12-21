@@ -1,5 +1,5 @@
 /**
- * @file DataSourcePanel.cpp
+ * @file DataSourcePanel.h
  *
  * @brief TODO: Write
  *

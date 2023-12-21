@@ -13,6 +13,8 @@ using namespace std;
 #include "src/Geometry.h"
 #include "src/ProgramControl/Terminator.h"
 
+using namespace Muon;
+
 /**
  * The approximate rate at which monitor data is refreshed. Note that the
  * monitor will fall short of this rate if it must process too much data

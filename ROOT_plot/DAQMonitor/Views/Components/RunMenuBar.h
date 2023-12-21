@@ -1,5 +1,5 @@
 /**
- * @file RunMenuBar.cpp
+ * @file RunMenuBar.h
  *
  * @brief TODO: Write
  *

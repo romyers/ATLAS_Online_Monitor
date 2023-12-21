@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "src/RecoObject.cpp"
+#include "src/RecoObject.h"
 #include "src/Hit.h"
 
 namespace Muon {

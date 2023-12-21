@@ -1,5 +1,5 @@
 /**
- * @file Terminator.cpp
+ * @file Terminator.h
  *
  * @brief Threadsafe singleton class. Conditioning thread loops on 
  * Terminator::isTerminated() allows detached threads to be terminated cleanly 

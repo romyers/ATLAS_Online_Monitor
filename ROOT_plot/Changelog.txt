@@ -34,6 +34,7 @@
   valid behavior.
 - When processing a file source, the monitor tries and fails to open a log 
   file.
+- When starting a run results in an alert box, the run still starts.
 
 ## TODO:
 
@@ -43,10 +44,38 @@
 - Separate data aggregation from PacketDecodingOperations.
 - .dat and .log files should only be created if we are not processing a file
   source.
+- Fix issue where an alert box popping up when starting a run does not
+  reset the UI to the 'no-run' state.
+- Now that TQObjects are inherited, eliminate need for signal buses
+  and pass information out of UI elements. E.g. pressing 'startRun' should
+  emit an event that tells us the start run button was pressed, and startDAQ
+  should use that event to actually start the run. In general, we want to
+  decouple the UI from the machinery.
+- Add a console version of the online monitor, like the old StartMonitor.cpp,
+  that does not use the UI.
+- Consolidate top-level logic.
+- Documentation.
+- Reorganize directory structure and cmake libraries.
+- Separate headers from source files in directory structure to match pattern in
+  the sMDT reco repo.
 
 ## NOTE:
 
 - Good place to look for segfaults -- char array overflows
+
+-------------------------------------------------------------------------------
+
+## 2023-12-21
+
+## Changed
+
+- Applied ClassDef/ClassImpl macros to classes using signal/slot communication.
+- Restored full functionality in the compilable version.
+
+## Removed
+
+- Moved EntryOperations functionality to EntryView and removed
+  EntryOperations.h/.cpp
 
 -------------------------------------------------------------------------------
 

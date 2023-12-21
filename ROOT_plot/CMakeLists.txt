@@ -93,7 +93,6 @@ set(monitor_HEADERS
 	macros/UIFramework/UILock.h
 	macros/UIFramework/UISignals.h
 	macros/UIWindows/AlertBox/AlertOperations.h
-	MainMenu/EntryOperations.h
 	MainMenu/Views/EntryView.h
 	MainMenu/Views/Components/DataSourcePanel.h
 	MainMenu/Views/Components/DeviceSelectorPanel.h
@@ -125,7 +124,6 @@ set(monitor_SOURCES
 	macros/UIFramework/UILock.cpp
 	macros/UIFramework/UISignals.cpp
 	macros/UIWindows/AlertBox/AlertOperations.cpp
-	MainMenu/EntryOperations.cpp
 	MainMenu/Views/EntryView.cpp
 	MainMenu/Views/Components/DataSourcePanel.cpp
 	MainMenu/Views/Components/DeviceSelectorPanel.cpp
@@ -146,6 +144,8 @@ set(monitor_SOURCES
 	DAQMonitor/EthernetCapture/DataCaptureOperations.cpp
 )
 
+ROOT_GENERATE_DICTIONARY(G__UISignals ${monitor_HEADERS} LINKDEF LinkDef.h)
+
 
 add_library(MuonReco ${recoObjs_SOURCES} ${recoObjs_HEADERS})
 target_link_libraries(MuonReco ${ROOT_LIBRARIES})
@@ -158,7 +158,7 @@ target_link_libraries(libP2ecap libP2Core ${PCAP_LIBRARY})
 add_library(libP2Decode ${p2Decode_SOURCES} ${p2Decode_HEADERS})
 target_link_libraries(libP2Decode libP2Core MuonReco)
 
-add_library(libMonitor ${monitor_SOURCES} ${monitor_HEADERS})
+add_library(libMonitor ${monitor_SOURCES} G__UISignals.cxx)
 target_link_libraries(libMonitor libP2Decode libP2ecap)
 
 

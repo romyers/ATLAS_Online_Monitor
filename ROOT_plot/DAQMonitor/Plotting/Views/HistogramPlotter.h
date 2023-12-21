@@ -1,5 +1,5 @@
 /**
- * @file HistogramPlotter.cpp
+ * @file HistogramPlotter.h
  *
  * @brief TODO: Write
  *

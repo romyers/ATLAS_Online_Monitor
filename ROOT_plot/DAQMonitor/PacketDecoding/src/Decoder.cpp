@@ -1,12 +1,3 @@
-/**
- * @file Decoder.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
 #include "Decoder.h"
 
 #include "DAQMonitor/PacketDecoding/src/EventDecoding.h"

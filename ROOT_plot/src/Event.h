@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/RecoObject.cpp"
+#include "src/RecoObject.h"
 #include "src/Signal.h"
 #include "src/Hit.h"
 #include "src/Cluster.h"
