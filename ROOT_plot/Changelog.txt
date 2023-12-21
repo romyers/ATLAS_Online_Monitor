@@ -1,10 +1,6 @@
 ## Known issues
 
-- Occasional segfaults occur when opening and closing windows.
-    -- Could this be related to signals not getting disconnected when the
-       windows are closed?
 - It is not obvious to user whether settings panel has been applied.
-- Error log window segfaults inconsistently when closed with the close button.
 - Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
   the GUI.
 - Plot saving does not interact well with TDC and ADC plot windows opened 
@@ -21,12 +17,10 @@
   in) and sometimes occur in the UI thread (e.g. when the plot is first 
   opened). This is a bit messy. See about making all plot updates happen in the
   same thread.
-- Occasional segfaults when opening/closing plot windows.
 - UI blocks during plot updates when plots are open.
 - RunStats display broken while reading a DAT file.
     -- This is probably because RunStats isn't updated until the entire DAT
        file is read.
-- Hit rate display data is not saved with the rest of the plots.
 - The hit rate display x axis bounds are not quite right.
 - There is no GUI feedback distinguishing the period between when the stop
   run button is pressed and the run is actually stopped.
@@ -34,7 +28,7 @@
   valid behavior.
 - When processing a file source, the monitor tries and fails to open a log 
   file.
-- When starting a run results in an alert box, the run still starts.
+- When starting a run produces an alert box, the run still starts.
 
 ## TODO:
 
@@ -58,24 +52,42 @@
 - Reorganize directory structure and cmake libraries.
 - Separate headers from source files in directory structure to match pattern in
   the sMDT reco repo.
-
-## NOTE:
-
-- Good place to look for segfaults -- char array overflows
+- Make it so that closing a tab opens the next or previous tab.
+- Create a top-level logic flow for ecap and decode modules that can be used
+  both in the standalone and in the monitor.
+- Eliminate the need to have distinct names for menu options from different
+  submenus.
 
 -------------------------------------------------------------------------------
 
 ## 2023-12-21
 
+## Added
+
+- Started adding in files from the sMDT reco repo.
+- Added doxygen documentation for the decoder module.
+
 ## Changed
 
 - Applied ClassDef/ClassImpl macros to classes using signal/slot communication.
 - Restored full functionality in the compilable version.
+- Began reworking the directory structure.
+- Removed lockable stream dependence from decode/ecap modules.
+- Cleaned out some unnecessary methods in PCapSessionHandler.
+- Separated DataCaptureOperations and PacketDecodingOperations from ecap/decode
+  modules. 
+- Removed SignalReader from signal decoding in favor of simpler functions.
+- Renamed Decoder::refresh() to Decoder::decodeStream().
+- The endianness of the system architecture is now checked before byteswapping
+  is performed.
 
 ## Removed
 
 - Moved EntryOperations functionality to EntryView and removed
   EntryOperations.h/.cpp
+- Removed TabSignalBus and folded signal emission directly into the tab 
+  selector.
+- Removed onRunStart() and onRunStop() signals from the UISignalBus.
 
 -------------------------------------------------------------------------------
 

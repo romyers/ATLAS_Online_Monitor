@@ -1,12 +1,3 @@
-/**
- * @file SignalDecoding.cpp
- *
- * @brief TODO: Write
- *
- * @author Robert Myers
- * Contact: romyers@umich.edu
- */
-
 #include "SignalDecoding.h"
 
 #include <stdio.h>
@@ -20,34 +11,30 @@
 using namespace Muon;
 using namespace std;
 
-// TODO: This does three different things. Break it up.
-
 const string SIGNAL_ERROR = "signal" ;
 
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(uint64_t data, uint8_t dataSize);
 
+// Check if this system is little-endian
+bool systemIsLittleEndian();
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-SignalReader::SignalReader(LockableStream &in) :
-	dataStream(in) {}
+bool hasSignals(istream &in) {
 
-bool SignalReader::isReady() {
-
-	// TODO: What if no dataStream.end?
+	// TODO: What if no in.end?
 
 	// Get initial and end positions for the stream
-	dataStream.lock();
-	streampos initialPos = dataStream.stream->tellg();
-	dataStream.stream->seekg(0, dataStream.stream->end);
-	streampos endPos = dataStream.stream->tellg();
+	streampos initialPos = in.tellg();
+	in.seekg(0, in.end);
+	streampos endPos = in.tellg();
 
 	// Reset the stream
-	dataStream.stream->clear();
-	dataStream.stream->seekg(initialPos, dataStream.stream->beg);
-	dataStream.unlock();
+	in.clear();
+	in.seekg(initialPos, in.beg);
 
 	// Return true if there are at least WORD_SIZE characters left on the
 	// stream
@@ -59,20 +46,26 @@ bool SignalReader::isReady() {
 //       into signals later
 // TODO: Remember the power of memcpy and static casting for parsing things
 //         -- build the right struct and you can memcpy right into it very fast
-Signal SignalReader::extractSignal() {
+Signal extractSignal(istream &in) {
 
+	// Set aside some space to store the data word
 	char readBuffer[Signal::WORD_SIZE];
 
-	dataStream.lock();
-	dataStream.stream->read(readBuffer, Signal::WORD_SIZE);
-	dataStream.unlock();
+	// Read the data word
+	in.read(readBuffer, Signal::WORD_SIZE);
 
+	// Copy the data word into an int
 	uint64_t word = 0;
 	memcpy(&word, readBuffer, Signal::WORD_SIZE);
 
-	// TODO: Consider moving the byteswap to PCapSessionhandler?
-	word = byteSwap(word, Signal::WORD_SIZE);
+	// Convert the data word to the correct endianness
+	if(systemIsLittleEndian()) {
 
+		word = byteSwap(word, Signal::WORD_SIZE);
+
+	}
+
+	// Return a new signal constructed from the data word.
 	return Signal(word);
 
 }
@@ -189,5 +182,19 @@ uint64_t byteSwap(uint64_t data, uint8_t dataSize) {
 	}
 
 	return result;
+
+}
+
+// SOURCE: https://stackoverflow.com/a/1001373
+bool systemIsLittleEndian() {
+
+	static union {
+
+		uint16_t i;
+		char c[2];
+
+	} bint = { 0x0201 };
+
+	return bint.c[0] == 1;
 
 }

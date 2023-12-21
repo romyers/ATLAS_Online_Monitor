@@ -15,21 +15,6 @@
 
 #include "TGMenu.h"
 
-class TabSignalBus : public TQObject {
-
-ClassDef(TabSignalBus, 0);
-
-public:
-
-	TabSignalBus();
-
-    TabSignalBus  (      TabSignalBus &other) = delete;
-    void operator=(const TabSignalBus &other) = delete;
-
-    void onSelected  (const char *selection); // *SIGNAL*
-
-};
-
 class TabSelector : public TGPopupMenu {
 
 ClassDef(TabSelector, 0);
@@ -40,20 +25,14 @@ public:
 
 	void handleActivate(int id);
 
-	TabSignalBus &getSignalBus();
-
 	virtual void AddPopup(
 		const char *s, 
 		TGPopupMenu *popup, 
 		TGMenuEntry *before = nullptr, 
 		const TGPicture *p = nullptr
-	) override {
+	) override;
 
-		TGPopupMenu::AddPopup(s, popup, before, p);
-
-		submenus.push_back(popup);
-
-	}
+    void onSelected(const char *selection); // *SIGNAL*
 
 private:
 
@@ -66,10 +45,6 @@ private:
 	TGPopupMenu *adcPlotSelector;
 
 	TGPopupMenu *tdcPlotSelector;
-
-	// SIGNALS
-
-	TabSignalBus signals;
 
 	// CONNECTIONS 
 

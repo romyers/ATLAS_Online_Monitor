@@ -19,15 +19,3 @@ void UISignalBus::onUpdate() {
     Emit("onUpdate()");
 
 }
-
-void UISignalBus::onRunStart() {
-
-    Emit("onRunStart()");
-
-}
-
-void UISignalBus::onRunStop() {
-
-    Emit("onRunStop()");
-
-}

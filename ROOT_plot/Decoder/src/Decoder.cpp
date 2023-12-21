@@ -1,6 +1,7 @@
 #include "Decoder.h"
 
-#include "DAQMonitor/PacketDecoding/src/EventDecoding.h"
+#include "EventDecoding.h"
+#include "SignalDecoding.h"
 
 using namespace std;
 using namespace Muon;
@@ -19,23 +20,23 @@ bool isEvent(const vector<Signal> &signals);
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Decoder::Decoder(LockableStream &in) 
-	: reader(in) {}
+bool hasNewData(istream &in) {
 
-bool Decoder::isStale() {
-
-	return reader.isReady();
+	return hasSignals(in);
 
 }
 
-DecodeData Decoder::refresh() {
+DecodeData Decoder::decodeStream(istream &in) {
 
 	DecodeData result;
 
-	while(isStale()) {
+	// As long as unread signals exist in the input stream,
+	while(hasSignals(in)) {
 
-		Signal sig = reader.extractSignal();
+		// extract a signal,
+		Signal sig = extractSignal(in);
 
+		// validate it
 		if(validateSignalErrors(sig)) {
 
 			// TODO: We should keep some metadata if it's a TDC header or
@@ -53,10 +54,13 @@ DecodeData Decoder::refresh() {
 
 		validateSignalWarnings(sig);
 
+		// and, if it completes an event,
 		if(isEvent(signalBuffer)) {
 
+			// make the event
 			Event e = assembleEvent(signalBuffer);
 
+			// and validate the event.
 			if(validateEventErrors(e)) {
 
 				eventBuffer.push_back(e);
@@ -77,16 +81,23 @@ DecodeData Decoder::refresh() {
 
 	}
 
+	// Once all signals have been extracted,
+
+	// count the events,
 	result.eventCount = eventBuffer.size();
 
+	// and for each event
 	while(!eventBuffer.empty()) {
 
 		Event &e = eventBuffer.back();
 
+		// if it's nonempty
 		if(e.Trailer().HitCount() != 0) {
 
+			// process it
 			processEvent(e);
 
+			// and store it in the return vector.
 			result.nonemptyEvents.push_back(e);
 
 		}
@@ -95,6 +106,7 @@ DecodeData Decoder::refresh() {
 
 	}
 
+	// Finally, return all processed events.
 	return result;
 
 }
@@ -103,6 +115,8 @@ bool isEvent(const vector<Signal> &signals) {
 
 	if(signals.empty()) return false;
 
+	// As long as the data is well-formed, any signal vector that ends in an
+	// event trailer represents an event.
 	return signals.back().isEventTrailer();
 
 }

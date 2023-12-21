@@ -10,12 +10,13 @@
 #include "TObjArray.h"
 #include "TObjString.h"
 
+#include "DataCaptureOperations.h"
+#include "PacketDecodingOperations.h"
+
 #include "macros/DAQState.h"
 #include "macros/ErrorLogger.h"
 
 #include "DAQMonitor/LockableStream.h"
-#include "DAQMonitor/EthernetCapture/DataCaptureOperations.h"
-#include "DAQMonitor/PacketDecoding/PacketDecodingOperations.h"
 
 #include "macros/UIFramework/UIException.h"
 #include "macros/UIFramework/UISignals.h"
@@ -101,9 +102,6 @@ void DataRun::stopRun() {
     }
 
     Terminator::getInstance().terminate("RUN_FLAG");
-
-    // Emit a signal that the run stopped
-    UISignalBus::getInstance().onRunStop();
 
 }
 
@@ -283,8 +281,6 @@ void DataRun::startRun() {
     }));
 
     ProgramFlow::threadLock.unlock();
-
-    UISignalBus::getInstance().onRunStart();
 
 }
 

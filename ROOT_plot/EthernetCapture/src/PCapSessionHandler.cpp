@@ -36,9 +36,6 @@ PCapSessionHandler::PCapSessionHandler() : handler(nullptr) {}
 void PCapSessionHandler::reset() {
 
 	lastPacket = -1;
-	data.packetBuffer.clear();
-	data.lostPackets = 0;
-	data.bufferedPackets = 0;
 
 }
 
@@ -178,6 +175,11 @@ PacketData PCapSessionHandler::bufferPackets() {
 
 	}
 
+	// Clear the static data
+	data.packetBuffer.clear();
+	data.lostPackets = 0;
+	data.bufferedPackets = 0;
+
 	// Get a file descriptor for the packet capture device
 	int fd = pcap_fileno(handler); 
 
@@ -229,56 +231,6 @@ PacketData PCapSessionHandler::bufferPackets() {
 	}
 
 	return data;
-
-}
-
-// For streams that belong to just one thread
-void PCapSessionHandler::writePackets(ostream &out) {
-
-	if(!isReady()) {
-
-		throw logic_error(
-			"PCapSessionHandler::writePackets -- PCapSessionHandler must be initialized with initializeSession() before use."
-		);
-
-	}
-
-	out.write((char*)data.packetBuffer.data(), data.packetBuffer.size());
-	out.flush(); // Since we're not calling endl, it might not flush
-
-
-}
-
-// For streams that need to be shared among threads
-void PCapSessionHandler::writePackets(LockableStream &out) {
-
-	if(!isReady()) {
-
-		throw logic_error(
-			"PCapSessionHandler::writePackets -- PCapSessionHandler must be initialized with initializeSession() before use."
-		);
-
-	}
-
-	out.lock();
-	writePackets(*out.stream);
-	out.unlock();
-
-}
-
-void PCapSessionHandler::clearBuffer() {
-
-	if(!isReady()) {
-
-		throw logic_error(
-			"PCapSessionHandler::writePackets -- PCapSessionHandler must be initialized with initializeSession() before use."
-		);
-
-	}
-
-	data.packetBuffer.clear();
-	data.lostPackets = 0;
-	data.bufferedPackets = 0;
 
 }
 

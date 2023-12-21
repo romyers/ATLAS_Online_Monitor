@@ -8,14 +8,16 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/")
 # Include the ROOT library
 #
 
-message(${CMAKE_CXX_COMPILER_VERSION})
+# If compilation fails with undefined references to variables from the STL,
+# check that this matches the version ROOT was built with.
+message(Using\ g++\ version\ ${CMAKE_CXX_COMPILER_VERSION})
 
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
 find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Tree Net Gui GuiHtml)
 find_package(PCAP REQUIRED)
 
-message(${ROOT_INCLUDE_DIRS})
+message(ROOT\ include\ directory:\ ${ROOT_INCLUDE_DIRS})
 include_directories(${ROOT_INCLUDE_DIRS})
 
 
@@ -23,6 +25,8 @@ include_directories(${ROOT_INCLUDE_DIRS})
 include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${ROOT_LIBRARY_DIR})
+
+###############################################################################
 
 set(recoObjs_HEADERS 
 	src/EventID.h
@@ -32,6 +36,8 @@ set(recoObjs_HEADERS
 	src/Event.h
 	src/Track.h
 	src/Geometry.h
+	src/ParameterSet.h
+	src/ConfigParser.h
 )
 
 set(recoObjs_SOURCES
@@ -42,44 +48,44 @@ set(recoObjs_SOURCES
 	src/Event.cpp
 	src/Track.cpp
 	src/Geometry.cpp
+	src/ParameterSet.cxx
+	src/ConfigParser.cxx
 )
 
 set(p2Core_HEADERS
 	macros/ErrorLogger.h
-	DAQMonitor/LockableStream.h
 )
 
 set(p2Core_SOURCES
 	macros/ErrorLogger.cpp
-	DAQMonitor/LockableStream.cpp
 )
 
 set(p2ecap_HEADERS
-	DAQMonitor/EthernetCapture/src/DeviceManager.h
-	DAQMonitor/EthernetCapture/src/DeviceSelector.h
-	DAQMonitor/EthernetCapture/src/NetworkDeviceException.h
-	DAQMonitor/EthernetCapture/src/PCapDevice.h
-	DAQMonitor/EthernetCapture/src/PCapSessionHandler.h
+	EthernetCapture/src/DeviceManager.h
+	EthernetCapture/src/DeviceSelector.h
+	EthernetCapture/src/NetworkDeviceException.h
+	EthernetCapture/src/PCapDevice.h
+	EthernetCapture/src/PCapSessionHandler.h
 )
 
 set(p2ecap_SOURCES
-	DAQMonitor/EthernetCapture/src/DeviceManager.cpp
-	DAQMonitor/EthernetCapture/src/DeviceSelector.cpp
-	DAQMonitor/EthernetCapture/src/NetworkDeviceException.cpp
-	DAQMonitor/EthernetCapture/src/PCapDevice.cpp
-	DAQMonitor/EthernetCapture/src/PCapSessionHandler.cpp
+	EthernetCapture/src/DeviceManager.cpp
+	EthernetCapture/src/DeviceSelector.cpp
+	EthernetCapture/src/NetworkDeviceException.cpp
+	EthernetCapture/src/PCapDevice.cpp
+	EthernetCapture/src/PCapSessionHandler.cpp
 )
 
 set(p2Decode_HEADERS 
-	DAQMonitor/PacketDecoding/src/Decoder.h
-	DAQMonitor/PacketDecoding/src/EventDecoding.h
-	DAQMonitor/PacketDecoding/src/SignalDecoding.h
+	Decoder/src/Decoder.h
+	Decoder/src/EventDecoding.h
+	Decoder/src/SignalDecoding.h
 )
 
 set(p2Decode_SOURCES
-	DAQMonitor/PacketDecoding/src/Decoder.cpp
-	DAQMonitor/PacketDecoding/src/EventDecoding.cpp
-	DAQMonitor/PacketDecoding/src/SignalDecoding.cpp
+	Decoder/src/Decoder.cpp
+	Decoder/src/EventDecoding.cpp
+	Decoder/src/SignalDecoding.cpp
 )
 
 set(monitor_HEADERS
@@ -98,6 +104,7 @@ set(monitor_HEADERS
 	MainMenu/Views/Components/DeviceSelectorPanel.h
 	MainMenu/Views/Components/FileSelectorPanel.h
 	DAQMonitor/DataRunOperations.h
+	DAQMonitor/LockableStream.h
 	DAQMonitor/Views/RunView.h
 	DAQMonitor/Views/Components/RunStats.h
 	DAQMonitor/Views/Components/RunMenuBar.h
@@ -109,8 +116,8 @@ set(monitor_HEADERS
 	DAQMonitor/PlotSaving/PlotSavingOperations.h
 	DAQMonitor/PlotSaving/Views/ProgressBar.h
 	DAQMonitor/ErrorHandling/Views/ErrorView.h
-	DAQMonitor/PacketDecoding/PacketDecodingOperations.h
-	DAQMonitor/EthernetCapture/DataCaptureOperations.h
+	DAQMonitor/PacketDecodingOperations.h
+	DAQMonitor/DataCaptureOperations.h
 )
 
 set(monitor_SOURCES
@@ -129,6 +136,7 @@ set(monitor_SOURCES
 	MainMenu/Views/Components/DeviceSelectorPanel.cpp
 	MainMenu/Views/Components/FileSelectorPanel.cpp
 	DAQMonitor/DataRunOperations.cpp
+	DAQMonitor/LockableStream.cpp
 	DAQMonitor/Views/RunView.cpp
 	DAQMonitor/Views/Components/RunStats.cpp
 	DAQMonitor/Views/Components/RunMenuBar.cpp
@@ -140,12 +148,13 @@ set(monitor_SOURCES
 	DAQMonitor/PlotSaving/PlotSavingOperations.cpp
 	DAQMonitor/PlotSaving/Views/ProgressBar.cpp
 	DAQMonitor/ErrorHandling/Views/ErrorView.cpp
-	DAQMonitor/PacketDecoding/PacketDecodingOperations.cpp
-	DAQMonitor/EthernetCapture/DataCaptureOperations.cpp
+	DAQMonitor/PacketDecodingOperations.cpp
+	DAQMonitor/DataCaptureOperations.cpp
 )
 
 ROOT_GENERATE_DICTIONARY(G__UISignals ${monitor_HEADERS} LINKDEF LinkDef.h)
 
+###############################################################################
 
 add_library(MuonReco ${recoObjs_SOURCES} ${recoObjs_HEADERS})
 target_link_libraries(MuonReco ${ROOT_LIBRARIES})
@@ -161,15 +170,17 @@ target_link_libraries(libP2Decode libP2Core MuonReco)
 add_library(libMonitor ${monitor_SOURCES} G__UISignals.cxx)
 target_link_libraries(libMonitor libP2Decode libP2ecap)
 
+###############################################################################
 
-
-add_executable(p2ecap DAQMonitor/EthernetCapture/Phase2EthernetCapture_Standalone.cpp)
+add_executable(p2ecap EthernetCapture/Phase2EthernetCapture_Standalone.cpp)
 target_link_libraries(p2ecap PUBLIC libP2ecap)
 
-add_executable(p2decode DAQMonitor/PacketDecoding/Phase2Decode_Standalone.cpp)
+add_executable(p2decode Decoder/Phase2Decode_Standalone.cpp)
 target_link_libraries(p2decode PUBLIC libP2Decode)
 
 add_executable(DAQManager StartDAQ.cpp)
 target_link_libraries(DAQManager PUBLIC libMonitor)
+
+###############################################################################
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow")

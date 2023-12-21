@@ -26,8 +26,6 @@
 #include <string>
 #include <iostream>
 
-#include "DAQMonitor/LockableStream.h"
-
 #include "PCapDevice.h"
 
 struct PacketData {
@@ -52,9 +50,6 @@ public:
 	void initializeSession       (const std::string &deviceName);
 
 	PacketData  bufferPackets    (                             );
-	void        writePackets     (LockableStream    &out       );
-	void        writePackets     (std::ostream      &out       );
-	void        clearBuffer      (                             );
 
 	bool isReady                 (                             );
 

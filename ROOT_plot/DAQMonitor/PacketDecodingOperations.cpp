@@ -5,7 +5,7 @@ using namespace std;
 #include <sstream>
 #include <thread>
 
-#include "DAQMonitor/PacketDecoding/src/Decoder.h"
+#include "Decoder/src/Decoder.h"
 
 #include "macros/UIFramework/UISignals.h"
 #include "macros/UIFramework/UILock.h"
@@ -44,7 +44,7 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
     UISignalBus::getInstance().onUpdate();
     Muon::UI::UILock.unlock();
 
-    Decoder decoder(dataStream);
+    Decoder decoder;
 
     // TODO: Move termination condition up to where the thread is defined
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
@@ -56,9 +56,24 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
         // FIXME: In file reading mode, this will read the whole file before
         //        terminating on ctrl+c
 
-        if(decoder.isStale()) {
+        // NOTE: Checking any independent member of loopData to determine if
+        //       new data has been processed is unreliable. E.g. if there
+        //       are new signals but each one was dropped, loopData's
+        //       event vector will be empty, but the dropped signals
+        //       still need to be recorded.
+        DecodeData loopData;
+        bool hasData = false;
 
-            DecodeData loopData = decoder.refresh();
+        dataStream.lock();
+        if(hasNewData(*dataStream.stream)) {
+
+            loopData = decoder.decodeStream(*dataStream.stream);
+            hasData = true;
+
+        }
+        dataStream.unlock();
+
+        if(hasData) {
 
             data.lock();
             aggregateEventData(loopData, data);
@@ -112,7 +127,6 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
          << " events."
          << endl;
 
-    // TODO: Should this include empty events?
     cout << "Processed " 
          << data.processedEvents.size() 
          << " nonempty events." 

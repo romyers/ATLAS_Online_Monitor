@@ -22,8 +22,6 @@ using namespace Muon;
 
 const string EVENT_ERROR = "event" ;
 
-// TODO: This does three different things. Break it up.
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,10 +40,6 @@ Event assembleEvent(vector<Signal> signals) {
 
 }
 
-// TODO: Separate errors that we drop the event for and errors that we 
-//       report without dropping the event
-//         -- validateEventErrors and validateEventWarnings
-// TODO: Use exceptions?
 // Validation that, when failed, drops the event
 bool validateEventErrors(const Event &e) {
 

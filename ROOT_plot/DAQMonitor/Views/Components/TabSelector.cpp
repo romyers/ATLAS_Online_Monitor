@@ -2,7 +2,6 @@
 
 using namespace std;
 
-ClassImp(TabSignalBus);
 ClassImp(TabSelector);
 
 TabSelector::TabSelector(const TGWindow *p) : TGPopupMenu(p) {
@@ -31,7 +30,7 @@ void TabSelector::handleActivate(int id) {
 
 		if(entry) {
 
-			signals.onSelected(entry->GetName());
+			onSelected(entry->GetName());
 
 			return;
 
@@ -43,11 +42,20 @@ void TabSelector::handleActivate(int id) {
 
 }
 
-TabSignalBus &TabSelector::getSignalBus() { return signals; }
+void TabSelector::AddPopup(
+	const char *s, 
+	TGPopupMenu *popup, 
+	TGMenuEntry *before, 
+	const TGPicture *p
+) {
 
-TabSignalBus::TabSignalBus() : TQObject() {}
+	TGPopupMenu::AddPopup(s, popup, before, p);
 
-void TabSignalBus::onSelected(const char *selection) {
+	submenus.push_back(popup);
+
+}
+
+void TabSelector::onSelected(const char *selection) {
 
 	Emit("onSelected(const char*)", selection);
 

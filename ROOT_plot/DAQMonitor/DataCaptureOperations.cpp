@@ -6,8 +6,8 @@
 #include "macros/UIFramework/UIException.h"
 #include "macros/DAQState.h"
 
-#include "DAQMonitor/EthernetCapture/src/PCapSessionHandler.h"
-#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.h"
+#include "EthernetCapture/src/PCapSessionHandler.h"
+#include "EthernetCapture/src/NetworkDeviceException.h"
 
 #include "src/ProgramControl/Terminator.h"
 
@@ -71,12 +71,24 @@ void Muon::DataCapture::runDataCapture(
     int packets   = 0;
     while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
  
-        // TODO: Remove the sessionHandler writePackets stuff and just write directly
-        //       from packetData's packet buffer
+        // Retrieve buffered packets and metadata
         PacketData packetData = sessionHandler.bufferPackets(); // Retrieves and buffers packets from device 
-        sessionHandler.writePackets               (dataStream); // Writes buffered packets to dataStream
-        sessionHandler.writePackets               (fileWriter); // Writes buffered packets to the .dat file
-        sessionHandler.clearBuffer                (          ); // Clears the packet buffer
+
+        // Write buffered packets to dataStream
+        dataStream.lock();
+        dataStream.stream->write(
+            (char*)packetData.packetBuffer.data(), 
+            packetData.packetBuffer.size()
+        );
+        dataStream.stream->flush();
+        dataStream.unlock();
+
+        // Write buffered packets to the .dat file
+        fileWriter.write(
+            (char*)packetData.packetBuffer.data(), 
+            packetData.packetBuffer.size()
+        );
+        fileWriter.flush();
 
         packets += packetData.bufferedPackets;
 

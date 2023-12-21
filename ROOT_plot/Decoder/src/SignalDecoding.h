@@ -1,7 +1,8 @@
 /**
  * @file SignalDecoding.h
  *
- * @brief TODO: Write
+ * @brief Provides functionality for decoding raw data from an istream into
+ * signal objects and for validating signal objects.
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu
@@ -9,27 +10,23 @@
 
 #pragma once
 
-#include "DAQMonitor/LockableStream.h"
+#include <iostream>
 
 #include "src/Signal.h"
 
 /**
- * Reads signals on command from a filestream.
+ * Checks whether the input stream has unread signals.
+ * 
+ * @param in The stream to be checked.
  */
-class SignalReader {
+bool hasSignals(std::istream &in);
 
-public:
-
-	SignalReader(LockableStream &in);
-
-	bool   isReady      ();
-	Muon::Signal extractSignal();
-
-private:
-
-	LockableStream &dataStream;
-
-};
+/**
+ * Extracts one signal from the input stream.
+ * 
+ * @param in The stream from which a signal should be extracted.
+ */
+Muon::Signal extractSignal(std::istream &in);
 
 /**
  * Provides validation of 'sig', logging an error to the error logger

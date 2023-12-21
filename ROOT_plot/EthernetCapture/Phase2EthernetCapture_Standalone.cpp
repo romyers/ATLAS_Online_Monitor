@@ -84,7 +84,6 @@ int main(int argc, char **argv) {
 		PacketData data = handler.bufferPackets();
 		fileWriter.write((char*)data.packetBuffer.data(), data.packetBuffer.size());
 		fileWriter.flush();
-		handler.clearBuffer();
 
 		packets += data.bufferedPackets;
 

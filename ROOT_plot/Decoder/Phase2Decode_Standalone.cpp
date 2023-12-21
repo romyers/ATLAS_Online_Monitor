@@ -1,7 +1,7 @@
 /**
  * @file Phase2Decode_Standalone.cpp
  *
- * @brief Entry point for the standalone decoder application.
+ * @brief Provides a standalone application for decoding raw data into events.
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu
@@ -12,9 +12,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "DAQMonitor/PacketDecoding/src/Decoder.h"
-
-#include "DAQMonitor/LockableStream.h"
+#include "src/Decoder.h"
 
 #include "src/Geometry.h"
 
@@ -46,18 +44,15 @@ int main(int argc, char **argv) {
 	// This must happen to properly initialize Geometry
 	Geometry::getInstance().SetRunN(0);
 
-	LockableStream dataStream;
-	dataStream.stream = &in;
-
-	Decoder decoder(dataStream);
+	Decoder decoder;
 
 	DecodeData aggregateData;
 
 	cout << "Decoding data from input file: " << argv[1] << endl;
 
-	while(decoder.isStale()) {
+	while(hasNewData(in)) {
 
-		DecodeData loopData = decoder.refresh();
+		DecodeData loopData = decoder.decodeStream(in);
 
 		aggregateData.eventCount     += loopData.eventCount;
 		aggregateData.droppedSignals += loopData.droppedSignals;

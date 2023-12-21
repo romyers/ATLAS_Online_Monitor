@@ -27,11 +27,6 @@ public:
     // Called when the decoder finishes processing data
     void onUpdate(); // *SIGNAL*
 
-    // TODO: This is too tightly coupled to data runs to belong in a general
-    //       UI element. Fix this.
-    void onRunStart(); // *SIGNAL*
-    void onRunStop (); // *SIGNAL*
-
     static UISignalBus &getInstance();
 
 private:

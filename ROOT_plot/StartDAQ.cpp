@@ -71,19 +71,17 @@ const double GUI_REFRESH_RATE  = 60.; //Hz
  * Update UI elements every [UI_UPDATE_FRAMES] frames, i.e.
  * GUI_REFRESH_RATE / UI_UPDATE_FRAMES times per second.
  */
-const int    UI_UPDATE_FRAMES  = 15  ; // Frames
+const int UI_UPDATE_FRAMES  = 15  ; // Frames
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 int main() {
-    // NOTE: This appears to populate the global gApplication variable.
-    TApplication app("DAQManager", nullptr, nullptr);
 
-    // TODO: It might be nice to have a more general 'logger' that stores
-    //       everything, not just errors.
-    //         -- Can just add a new error 'type'
+    // NOTE: This appears to populate the global gApplication and gSystem 
+    //       variables.
+    TApplication app("DAQManager", nullptr, nullptr);
 
     // Read in DAQState from file
     State::DAQState state = State::DAQState::getState();
@@ -224,7 +222,8 @@ int main() {
     ProgramFlow::joinAllThreads();
     
     // Save DAQState to file
-    //   -- TODO: Consider saving DAQState on startRun too
+    //   -- TODO: Consider saving DAQState on startRun or when user applies
+    //            changes to DAQState.
     state.update();
     state.save(STATE_STORAGE);
 

@@ -4,8 +4,8 @@
 
 // TODO: Find a way to eliminate this include
 //         -- Collocate this component with the data capture module?
-#include "DAQMonitor/EthernetCapture/src/DeviceManager.h"
-#include "DAQMonitor/EthernetCapture/src/NetworkDeviceException.h"
+#include "EthernetCapture/src/DeviceManager.h"
+#include "EthernetCapture/src/NetworkDeviceException.h"
 
 using namespace std;
 

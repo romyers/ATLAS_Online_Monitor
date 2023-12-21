@@ -258,7 +258,7 @@ void RunMenuBar::makeConnections() {
 
 	fileMenu->Connect("Activated(Int_t)", "RunMenuBar", this, "handleFileMenuActivate(int)");
 
-	tabSelector->getSignalBus().Connect(
+	tabSelector->Connect(
 		"onSelected(const char*)", 
 		"RunMenuBar", 
 		this, 
