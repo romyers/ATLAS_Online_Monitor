@@ -9,23 +9,21 @@
 
 #pragma once
 
-#include "TGFrame.h"
+#include "Components/DAQManager.h"
 
 /**
  * Creates the graphical user interface component for the online monitor.
  */
-TGMainFrame *buildGUI();
+DAQManager *buildGUI();
 
 /**
- * Starts the UI loop.
+ * Starts the UI event loop.
+ * 
+ * @param refreshRate The loop rate for the UI event loop, in Hz.
  */
 void startUILoop(double refreshRate);
 
-// TODO: Putting these here is a temporary solution. Fix.
-namespace SigHandlers {
-
-	void handlePressedStart();
-	void handlePressedStop ();
-	void handleExit        ();
-
-}
+/**
+ * Stops the UI event loop.
+ */
+void stopUILoop();

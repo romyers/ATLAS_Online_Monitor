@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <vector>
 #include <string>
 
 #include "TGComboBox.h"
@@ -16,25 +17,41 @@
 
 class DeviceSelector : public TGVerticalFrame {
 
+ClassDef(DeviceSelector, 0);
+
 public:
 
     DeviceSelector(const TGWindow *p);
 
     virtual ~DeviceSelector() override;
 
+    // SIGNALS
+
+    void Selected(const char *entry); // *SIGNAL*
+    void Selected(Int_t id);          // *SIGNAL*
+
+    // SLOTS
+
+    void handleSelected(Int_t id);
+
     // METHODS
 
     void initialize();
+
+    void setOptions(const std::vector<std::string> &entries);
 
     bool ready();
 
     void enable();
     void disable();
-
-    std::string getDeviceName();
-    void setDeviceName(char *name);
+    
+    void setDeviceName(const char *name);
 
 private:
+
+    // DATA
+
+    bool initialized;
 
     // VIEW
 
@@ -43,6 +60,8 @@ private:
     TGComboBox *dropdown;
     ///////////////////////////////////////////////////////////////////////////
 
-    bool initialized;
+    // CONNECTIONS
+
+    void makeConnections();
 
 };

@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "TGWindow.h"
 #include "TGLabel.h"
 #include "TGButtonGroup.h"
@@ -19,21 +22,34 @@
 
 class DataSourcePanel : public TGVerticalFrame {
 
+ClassDef(DataSourcePanel, 0);
+
 public:
 
     DataSourcePanel(const TGWindow *p);
     virtual ~DataSourcePanel() override;
 
+    // SIGNALS
+
+    void selectedFileSource  (); // *SIGNAL*
+    void selectedDeviceSource(); // *SIGNAL*
+
+    void selectedDevice(const char *selection); // *SIGNAL*
+    void selectedFile  (const char *selection); // *SIGNAL*
+
     // OPERATIONS
 
-    void showFileSelector       ();
-    void showDeviceSelector     ();
+    void setFileSource  ();
+    void setDeviceSource();
 
-    void revertSettings         ();
-    void commitSettings         ();
+    void enable         ();
+    void disable        ();
 
-    void enable                 ();
-    void disable                ();
+    void setDeviceSelectorOptions(
+        const std::vector<std::string> &entries
+    );
+    void setDeviceSelectorEntry(const std::string &entry);
+    void setFileSelectorEntry(const std::string &entry);
 
 private:
 
@@ -51,12 +67,7 @@ private:
 
             TGRadioButton  *deviceButton  ;
             DeviceSelector *deviceSelector;
-
-
-    TGButtonGroup *commitPanel;
-
-        TGTextButton *applyButton;
-        TGTextButton *revertButton;
+            
     ///////////////////////////////////////////////////////////////////////////
 
     // TODO: Add a flag determining whether this has unsaved changes

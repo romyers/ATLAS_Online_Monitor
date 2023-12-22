@@ -11,7 +11,6 @@ using namespace std;
 #include "GUI/Core/UILock.h"
 
 #include "src/Geometry.h"
-#include "ProgramControl/Terminator.h"
 
 using namespace Muon;
 
@@ -26,17 +25,23 @@ const double DATA_REFRESH_RATE = 10.; // Hz
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+bool isDecodeRunning = false;
+
 void aggregateEventData(const DecodeData &loopData, DAQData &data);
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+void Decode::stopDecoding() {
 
-// TODO: I'd like the termination condition to be defined with the thread,
-//       rather than in the run function.
-void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
+    isDecodeRunning = false;
+
+}
+
+void Decode::startDecoding(LockableStream &dataStream, DAQData &data) {
+
+    if(isDecodeRunning) return;
 
     // Update data with everything zeroed out
     // TODO: Put this with the code that clears DAQData.
@@ -46,8 +51,9 @@ void Decode::runDecoding(LockableStream &dataStream, DAQData &data) {
 
     Decoder decoder;
 
-    // TODO: Move termination condition up to where the thread is defined
-    while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
+    isDecodeRunning = true;
+
+    while(isDecodeRunning) {
 
         // TODO: Performance analysis. I'd like this loop to run faster
         //         -- I think binning and drawing is our weak point. Let's

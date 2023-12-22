@@ -15,13 +15,20 @@
 
 #include <thread>
 #include <mutex>
+#include <vector>
+#include <string>
 
 #include "TApplication.h"
 #include "TUnixSystem.h" // Needed for calls to gSystem
+#include "TGFrame.h"
+
+#include "SignalHandlers.h"
 
 #include "GUI/BuildGUI.h"
+#include "GUI/Components/DAQManager.h"
 
 #include "DAQMonitor/DAQState.h"
+#include "DAQMonitor/DataCaptureOperations.h"
 #include "DAQMonitor/ProgramControl/SigHandlers.h"
 #include "DAQMonitor/ProgramControl/Threads.h"
 
@@ -61,6 +68,22 @@ const string STATE_STORAGE = "settings.txt";
  */
 const double GUI_REFRESH_RATE  = 60.; //Hz
 
+void forceExit(int signal) {
+
+    gApplication->Terminate(0);
+
+    exit(0); // In case gApplication->Terminate(0) doesn't do the job.
+
+}
+
+void termHandler(int signal) {
+
+    Muon::SigHandlers::handleExit();
+
+    setTerminationHandlers(forceExit);
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,14 +101,11 @@ int main() {
 
     // THIS MUST BE CALLED BEFORE STARTING ANY THREADS.
     // It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly terminate threads.
-    setTerminationHandlers(flagForTermination);
+    setTerminationHandlers(termHandler);
 
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////// SET UP UI ////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-
-    // Create the GUI for the online monitor
-    buildGUI();
 
     // Start the UI event loop thread
     ProgramFlow::threadLock.lock();
@@ -93,6 +113,49 @@ int main() {
 
         thread([]() {
 
+            // Create the GUI for the online monitor
+            DAQManager *mainFrame = buildGUI();
+
+            // Wire up the main GUI element
+            /* NOTE: Unfortunately, we need to define this function alongside
+             *       the signal handlers in order to make ROOT be able to find
+             *       the definitions for the slots. It's not ideal -- I'd
+             *       rather set up the connections in this file. But oh well.
+             */
+            connectDAQto(mainFrame);
+
+            // Populate the device selector with connected devices.
+            vector<string> devices;
+            for(const PCapDevice &device : Muon::DataCapture::getNetworkDevices()) {
+
+                devices.push_back(device.name);
+
+            }
+            mainFrame->setDeviceSelectorOptions(devices);
+
+            // Load in persistent settings
+            State::DAQState state = State::DAQState::getState();
+
+            if(state.persistentState.dataSource == State::DAT_FILE_SOURCE) {
+
+                mainFrame->setFileDataSource();
+
+            } else if(state.persistentState.dataSource == State::NETWORK_DEVICE_SOURCE) {
+
+                mainFrame->setDeviceDataSource();
+
+            } else {
+
+                // (DEFAULT)
+                mainFrame->setDeviceDataSource();
+
+            }
+
+            mainFrame->setDeviceSelectorEntry(state.persistentState.inputDevicename);
+            mainFrame->setFileSelectorEntry(state.persistentState.inputFilename);
+
+            // Start the UI event loop in order to process user interactions
+            // with the GUI
             startUILoop(GUI_REFRESH_RATE);
 
         })

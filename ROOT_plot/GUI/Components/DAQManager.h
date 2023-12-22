@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include "TG3DLine.h"
 #include "TGWindow.h"
 #include "TGTab.h"
@@ -21,7 +24,7 @@
 #include "RunView.h"
 #include "RunMenuBar.h"
 
-class DAQManager : public TGCompositeFrame {
+class DAQManager : public TGMainFrame {
 
 ClassDef(DAQManager, 0);
 
@@ -31,8 +34,7 @@ public:
         const TGWindow *p = nullptr, 
         int w = 1, 
         int h = 1, 
-        int options = 0, 
-        Pixel_t back = GetDefaultFrameBackground()
+        int options = 0
     );
 
     virtual ~DAQManager();
@@ -42,6 +44,12 @@ public:
     void pressedStart(); // *SIGNAL*
     void pressedStop (); // *SIGNAL*
     void pressedExit (); // *SIGNAL*
+
+    void selectedFileSource  (); // *SIGNAL*
+    void selectedDeviceSource(); // *SIGNAL*
+
+    void selectedDevice(const char *selection); // *SIGNAL*
+    void selectedFile  (const char *selection); // *SIGNAL*
 
     // METHODS
 
@@ -54,6 +62,13 @@ public:
     void handlePressStart();
     void handlePressStop();
     void handlePressExit();
+
+    void setDeviceSelectorOptions(const std::vector<std::string> &entries);
+    void setDeviceSelectorEntry(const std::string &entry);
+    void setFileSelectorEntry(const std::string &entry);
+
+    void setFileDataSource();
+    void setDeviceDataSource();
 
     void update();
 

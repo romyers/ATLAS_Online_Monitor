@@ -2,18 +2,13 @@
 
 #include <string>
 
-#include "DAQMonitor/DAQState.h"
-
 using namespace std;
 using namespace Muon;
 
-// TODO: I haven't been very rigorous with this. Get more rigorous.
+ClassImp(DataSourcePanel);
 
 DataSourcePanel::DataSourcePanel(const TGWindow *p) 
     : TGVerticalFrame(p) {
-
-    // TODO: These long GUI layout definitions are hard to read. Break them up.
-    //       Stretch goal -- make an xml parser for this
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -40,138 +35,98 @@ DataSourcePanel::DataSourcePanel(const TGWindow *p)
 
     ///////////////////////////////////////////////////////////////////////////
 
-
-    commitPanel = new TGButtonGroup(this, "", kHorizontalFrame);
-    AddFrame(commitPanel, new TGLayoutHints(kLHintsRight));
-
-        applyButton  = new TGTextButton(commitPanel, "Apply Changes" );
-        commitPanel->AddFrame(applyButton, new TGLayoutHints(kLHintsRight));
-
-        revertButton = new TGTextButton(commitPanel, "Undo Changes");
-        commitPanel->AddFrame(revertButton, new TGLayoutHints(kLHintsRight));
-
-    ///////////////////////////////////////////////////////////////////////////
-
     makeConnections();
 
     fileButton  ->Resize(50, 20);
     deviceButton->Resize(50, 20);
 
-    revertButton->Resize(50, 20);
-    applyButton ->Resize(50, 20);
-
-    // DEFAULTS
-    deviceButton->SetState(kButtonDown);
-    deviceSelector->initialize();
-    showDeviceSelector();
-
-    revertSettings();
-
 }
 
 void DataSourcePanel::makeConnections() {
 
-    fileButton  ->Connect("Clicked()", "DataSourcePanel", this, "showFileSelector()"        );
-    deviceButton->Connect("Clicked()", "DataSourcePanel", this, "showDeviceSelector()"      );
+    fileButton  ->Connect("Clicked()", "DataSourcePanel", this, "setFileSource()"  );
+    deviceButton->Connect("Clicked()", "DataSourcePanel", this, "setDeviceSource()");
 
-    revertButton->Connect("Clicked()", "DataSourcePanel", this, "revertSettings()"          );
-    applyButton ->Connect("Clicked()", "DataSourcePanel", this, "commitSettings()"          );
+    deviceSelector->Connect(
+        "Selected(const char*)", 
+        "DataSourcePanel", 
+        this, 
+        "selectedDevice(const char*)"
+    );
+
+    fileSelector->Connect(
+        "TextChanged(const char*)",
+        "DataSourcePanel",
+        this,
+        "selectedFile(const char*)"
+    );
 
 }
 
 DataSourcePanel::~DataSourcePanel() {
 
 }
+
+void DataSourcePanel::setDeviceSelectorEntry(const string &entry) {
+
+    deviceSelector->setDeviceName(entry.data());
+
+}
+
+void DataSourcePanel::setFileSelectorEntry(const string &entry) {
+
+    fileSelector->setFilename(entry);
+
+}
+
+void DataSourcePanel::setDeviceSelectorOptions(const vector<string> &entries) {
+
+    deviceSelector->setOptions(entries);
+
+}
+
+void DataSourcePanel::selectedFileSource  () { Emit("selectedFileSource()"  ); }
+void DataSourcePanel::selectedDeviceSource() { Emit("selectedDeviceSource()"); }
+
+void DataSourcePanel::selectedDevice(const char* selection) {
+
+    Emit("selectedDevice(const char*)", selection);
+
+}
+
+void DataSourcePanel::selectedFile(const char *selection) {
+
+    Emit("selectedFile(const char*)", selection);
+
+}
     
-void DataSourcePanel::showFileSelector() {
+void DataSourcePanel::setFileSource() {
+
+    if(fileButton->GetState() != kButtonDown) {
+
+        fileButton->SetState(kButtonDown);
+
+    }
+
+    selectedFileSource();
 
     fileSelector->enable();
     deviceSelector->disable();
 
 }
 
-void DataSourcePanel::showDeviceSelector() {
+void DataSourcePanel::setDeviceSource() {
+
+    if(deviceButton->GetState() != kButtonDown) {
+
+        deviceButton->SetState(kButtonDown);
+
+    }
+
+    selectedDeviceSource();
 
     fileSelector->disable();
     deviceSelector->enable();
-
-}
-
-void DataSourcePanel::revertSettings() {
-
-
-    State::DAQState state = State::DAQState::getState();
-
-    char buffer[256];
-    strcpy(buffer, state.persistentState.inputDevicename.data());
-    deviceSelector->setDeviceName(buffer);
-
-    fileSelector->setFilename(state.persistentState.inputFilename);
-
-    if(state.persistentState.dataSource == State::DAT_FILE_SOURCE) {
-
-        fileButton->Clicked();
-        fileButton->SetState(kButtonDown);
-
-    } else if(state.persistentState.dataSource == State::NETWORK_DEVICE_SOURCE) {
-
-        deviceButton->Clicked();
-        deviceButton->SetState(kButtonDown);
-
-    } else {
-
-        throw std::logic_error(
-            "DataSourcePanel::revertSettings cannot "
-            "find a valid data source in DAQState."
-        );
-
-    }
-
-}
-
-void DataSourcePanel::commitSettings() {
-
-    // NOTE: We can ensure the DAQState won't go out of date if we lock
-    //       it. But there shouldn't be anything messing with DAQState 
-    //       concurrently with commitSettings, so let's just guarantee
-    //       with validation and come back later if we need to.
-
-    State::DAQState state = State::DAQState::getState();
-
-    // TODO: Validation -- e.g. network device must exist
-
-    state.persistentState.inputFilename = fileSelector->getFilename();
-    state.persistentState.inputDevicename = deviceSelector->getDeviceName();
-
-    if(fileButton->GetState() == kButtonDown) {
-
-        state.persistentState.dataSource = State::DAT_FILE_SOURCE;
-
-    } else if(deviceButton->GetState() == kButtonDown) {
-
-        state.persistentState.dataSource = State::NETWORK_DEVICE_SOURCE;
-
-    } else {
-
-        throw std::logic_error(
-            "DataSourcePanel::commitSettings cannot "
-            "find a data input source type selection."
-        );
-
-    }
-
-    bool success = state.commit();
-    
-    if(!success) {
-
-        throw std::logic_error(
-            "DataSourcePanel::commitSettings could not commit settings. "
-            "Make sure nothing is committing DAQState concurrently with "
-            "commitSettings, or reimplement commitSettings to handle "
-            "concurrent state commits."
-        );
-
-    }
 
 }
 
@@ -194,9 +149,6 @@ void DataSourcePanel::enable() {
 
     }
 
-    applyButton ->SetEnabled(true);
-    revertButton->SetEnabled(true);
-
 }
 
 void DataSourcePanel::disable() {
@@ -208,8 +160,5 @@ void DataSourcePanel::disable() {
 
     fileSelector  ->disable();
     deviceSelector->disable();
-
-    applyButton ->SetEnabled(false);
-    revertButton->SetEnabled(false);
 
 }

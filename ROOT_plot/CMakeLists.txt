@@ -112,6 +112,7 @@ set(p2Decode_SOURCES
 )
 
 set(monitor_HEADERS
+	SignalHandlers.h
 	GUI/BuildGUI.h
 	GUI/Core/UIException.h
 	GUI/Core/UILock.h
@@ -141,10 +142,10 @@ set(monitor_HEADERS
 	DAQMonitor/DataModel/Plots.h
 	DAQMonitor/ProgramControl/SigHandlers.h
 	DAQMonitor/ProgramControl/Threads.h
-	DAQMonitor/ProgramControl/Terminator.h
 )
 
 set(monitor_SOURCES
+	SignalHandlers.cpp
 	GUI/BuildGUI.cpp
 	GUI/Core/UIException.cpp
 	GUI/Core/UILock.cpp
@@ -174,7 +175,6 @@ set(monitor_SOURCES
 	DAQMonitor/DataModel/Plots.cpp
 	DAQMonitor/ProgramControl/SigHandlers.cpp
 	DAQMonitor/ProgramControl/Threads.cpp
-	DAQMonitor/ProgramControl/Terminator.cpp
 )
 
 ROOT_GENERATE_DICTIONARY(G__UISignals ${monitor_HEADERS} LINKDEF LinkDef.h)

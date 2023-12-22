@@ -1,3 +1,0 @@
-Data Source: 2
-Input Device Name: enp0s20f0u7
-Input File Name: 

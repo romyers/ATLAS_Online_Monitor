@@ -17,7 +17,7 @@ PCapDevice runDeviceSelector(DeviceManager &devices) {
 
     PCapDevice d = devices.getDevice(device_number);
 
-    cout << "Selected device " << device_number << ": " << d.name() << endl;
+    cout << "Selected device " << device_number << ": " << d.name << endl;
 
     return d;
 

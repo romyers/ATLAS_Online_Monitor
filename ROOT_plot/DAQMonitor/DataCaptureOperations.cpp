@@ -1,6 +1,7 @@
 #include "DataCaptureOperations.h"
 
 #include <fstream>
+#include <iostream>
 
 #include "Logging/ErrorLogger.h"
 
@@ -10,8 +11,7 @@
 
 #include "EthernetCapture/src/PCapSessionHandler.h"
 #include "EthernetCapture/src/NetworkDeviceException.h"
-
-#include "ProgramControl/Terminator.h"
+#include "EthernetCapture/src/DeviceManager.h"
 
 using namespace std;
 using namespace Muon;
@@ -20,17 +20,45 @@ using namespace Muon;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void   initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
+bool isEcapRunning = false;
+
+void initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+    
+vector<PCapDevice> Muon::DataCapture::getNetworkDevices() {
 
-void Muon::DataCapture::runDataCapture(
+    DeviceManager devices;
+
+    try {
+        
+        devices.initialize();
+
+    } catch (NetworkDeviceException &e) {
+
+        cout << e.what() << endl;
+
+    }
+
+    return devices.getAllDevices();
+
+}
+
+void Muon::DataCapture::stopDataCapture() {
+
+    isEcapRunning = false;
+
+}
+
+void Muon::DataCapture::startDataCapture(
     LockableStream &dataStream, 
     DAQData &data, 
     string runLabel
 ) {
+
+    if(isEcapRunning) return;
 
     // Resets all the static data stored in session handlers
     PCapSessionHandler::reset();
@@ -66,12 +94,13 @@ void Muon::DataCapture::runDataCapture(
 
     cout << "Saving packet data to: " << outputFile << endl;
 
+    isEcapRunning = true;
+
     // TODO: Main shouldn't need to care about packet counting
     // TODO: If the data stream is a stringstream, it needs to be reset
     //       each loop, or else it will act like a memory leak
-    // TODO: Place the termination condition with the thread
     int packets   = 0;
-    while(!Terminator::getInstance().isTerminated("RUN_FLAG")) {
+    while(isEcapRunning) {
  
         // Retrieve buffered packets and metadata
         PacketData packetData = sessionHandler.bufferPackets(); // Retrieves and buffers packets from device 

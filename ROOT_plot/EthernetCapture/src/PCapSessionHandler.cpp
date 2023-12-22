@@ -102,7 +102,7 @@ void PCapSessionHandler::initializeSession(const string &deviceName) {
 
 void PCapSessionHandler::initializeSession(PCapDevice &device) {
 
-	initializeSession(device.name());
+	initializeSession(device.name.data());
 
 }
 

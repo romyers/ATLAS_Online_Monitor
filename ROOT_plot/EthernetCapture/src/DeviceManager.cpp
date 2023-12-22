@@ -77,9 +77,7 @@ vector<PCapDevice> DeviceManager::getAllDevices() {
 
     if(!devices) {
 
-        throw std::logic_error(
-            "DeviceManager::getDevice -- DeviceManager must be initialized before use."
-        );
+        return vector<PCapDevice>();
 
     }
 
@@ -95,7 +93,6 @@ vector<PCapDevice> DeviceManager::getAllDevices() {
     }
 
     return deviceList;
-
 
 }
 

@@ -13,3 +13,8 @@
  * Starts the UI loop.
  */
 void startLoop(double refreshRate);
+
+/**
+ * Stops the UI loop.
+ */
+void stopLoop();

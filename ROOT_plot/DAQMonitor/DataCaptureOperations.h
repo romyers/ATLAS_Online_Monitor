@@ -10,19 +10,26 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "LockableStream.h"
 
 #include "DataModel/DAQData.h"
 
+#include "EthernetCapture/src/PCapDevice.h"
+
 namespace Muon {
 namespace DataCapture {
 
-    void runDataCapture(
+    void startDataCapture(
         LockableStream &dataStream, 
         DAQData &data, 
         std::string runLabel
     );
+
+    void stopDataCapture();
+
+    std::vector<PCapDevice> getNetworkDevices();
 
 }
 }

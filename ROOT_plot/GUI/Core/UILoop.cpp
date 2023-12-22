@@ -11,10 +11,10 @@
 
 #include "AlertBox/AlertOperations.h"
 
-#include "DAQMonitor/ProgramControl/Terminator.h"
-
 using namespace std;
 using namespace Muon;
+
+bool isRunning = false;
 
 /**
  * Runs a UI event loop step.
@@ -25,11 +25,19 @@ chrono::milliseconds runLoopStep();
 
 void startLoop(double refreshRate) {
 
+    if(isRunning) return;
+
+    isRunning = true;
+
     // TODO: Explore using app.Run() instead of manually calling 
     //       ProcessEvents()
 
+    // TODO: Remove condition on terminator, and have something call stopRun()
+    //       at a higher level when the terminator terminates. Can do this by
+    //       having the terminator be a TQObject and signaling when it 
+    //       terminates.
     // Run the UI update loop
-    while(!Terminator::getInstance().isTerminated()) {
+    while(isRunning) {
 
         chrono::milliseconds updateTime = runLoopStep();
 
@@ -50,6 +58,12 @@ void startLoop(double refreshRate) {
         );
 
     }
+
+}
+
+void stopLoop() {
+
+    isRunning = false;
 
 }
 

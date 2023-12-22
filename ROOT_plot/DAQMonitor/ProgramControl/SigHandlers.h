@@ -9,6 +9,9 @@
 
 #pragma once
 
-void forceExit             (int    signal       );
-void flagForTermination    (int    signal       );
+/**
+ * Sets a handler for SIGTERM, SIGINT, and SIGQUIT signals.
+ * 
+ * @param handler A callback to be used to handle termination signals.
+ */
 void setTerminationHandlers(void (*handler)(int));

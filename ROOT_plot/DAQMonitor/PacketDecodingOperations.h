@@ -16,7 +16,9 @@
 namespace Muon {
 namespace Decode {
 
-    void runDecoding(LockableStream &dataStream, DAQData &data);
+    void startDecoding(LockableStream &dataStream, DAQData &data);
+
+    void stopDecoding();
 
 }
 }

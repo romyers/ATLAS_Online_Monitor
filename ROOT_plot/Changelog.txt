@@ -1,6 +1,5 @@
 ## Known issues
 
-- It is not obvious to user whether settings panel has been applied.
 - Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
   the GUI.
 - Plot saving does not interact well with TDC and ADC plot windows opened 
@@ -62,6 +61,43 @@
 - Make DAQData not be a singleton anymore.
 - Pull signal/slot interface between GUI and program logic out of the GUI 
   module.
+- Remember which tabs were open in DAQState and reopen them on startup.
+- Restore RunView's run started/stopped display, or replace it with another GUI
+  element.
+- Fix hard crashes when loading a nonexistent file source.
+- Consider flattening some of the GUI. E.g. device selector and file selector 
+  can be folded into data source panel.
+- Find a good way to push data down to the GUI.
+
+-------------------------------------------------------------------------------
+
+## 2023-12-22
+
+## Added
+
+- Added SignalHandlers.h/.cpp to wire together interfaces for the GUI and data
+  acquisition systems.
+
+## Changed
+
+- DAQManager is now a TGMainFrame, and is no longer wrapped by another main 
+  frame.
+- PCapDevices are now just structs with const strings storing name and
+  description.
+- Data source panel defaults are now set in StartDAQ.cpp.
+- Data source panel no longer depends on DAQState.
+
+## Removed
+
+- Eliminated Terminator.h/.cpp in favor of stop functions in the decode, ecap,
+  and GUI modules.
+- Removed runStarted from DAQState in favor of a public flag in 
+  DataRunOperations.cpp.
+- Removed "(None)" entry from device selector panel. Device selector panel will
+  now default to the first device.
+- Removed apply and revert buttons from the data source panel. Changes are now
+  applied automatically.
+- Temporarily removed the run status tag from the run viewer.
 
 -------------------------------------------------------------------------------
 

@@ -15,7 +15,6 @@
 #include "DAQState.h"
 #include "LockableStream.h"
 
-#include "ProgramControl/Terminator.h"
 #include "ProgramControl/Threads.h"
 #include "DataModel/DAQData.h"
 
@@ -34,6 +33,8 @@ using namespace State;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+bool runStarted = false;
 
 
 void   initializeDataStream(LockableStream &dataStream   );
@@ -93,7 +94,7 @@ void initializeDataStream(LockableStream &dataStream) {
 
 void DataRun::stopRun() {
 
-    if(!State::DAQState::getState().tempState.runStarted) {
+    if(!runStarted) {
 
         throw UIException(
             "Please start a run."
@@ -101,16 +102,11 @@ void DataRun::stopRun() {
 
     }
 
-    Terminator::getInstance().terminate("RUN_FLAG");
+    DataCapture::stopDataCapture();
+    Decode::stopDecoding();
 
 }
 
-// TODO: startRun should be coupled with monitor functionality, not the
-//       entry view. Move the logic.
-// TODO: Add controls for stopping a run without terminating GUI. We'll
-//       want another kind of termination signal. Perhaps we can expand
-//       the Terminator to have multiple kinds of signals our threads
-//       can condition on.
 void DataRun::startRun() {
 
     // Reset the error logger
@@ -126,7 +122,7 @@ void DataRun::startRun() {
     string runLabel = "";
 
     // Abort if a run is already in progress
-    if(state.tempState.runStarted) {
+    if(runStarted) {
 
         throw UIException(
             "Please finish the current run before starting a new run."
@@ -175,7 +171,7 @@ void DataRun::startRun() {
 
     }
 
-    state.tempState.runStarted = true;
+    runStarted = true;
     state.tempState.runLabel = runLabel;
     state.commit(); // TODO: This shouldn't fail, but better if it's robust
 
@@ -235,7 +231,7 @@ void DataRun::startRun() {
 
             if(DAQState::getState().persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
-                DataCapture::runDataCapture(dataStream, data, runLabel);
+                DataCapture::startDataCapture(dataStream, data, runLabel);
 
             }
 
@@ -243,7 +239,7 @@ void DataRun::startRun() {
 
         thread decodeThread([&dataStream, &data](){
 
-            Decode::runDecoding(dataStream, data);
+            Decode::startDecoding(dataStream, data);
 
         });
 
@@ -262,14 +258,10 @@ void DataRun::startRun() {
         dataStream.stream = nullptr;
 
         DAQState state = DAQState::getState();
-        state.tempState.runStarted = false;
+        runStarted = false;
         state.commit();
 
         logWriter.close();
-
-        // Once the run is shut down, we can clear the
-        // run flag if it exists
-        Terminator::getInstance().clearFlag("RUN_FLAG");
 
         cout << "Run finished!" << endl;
 

@@ -17,10 +17,16 @@
 
 class FileSelector : public TGVerticalFrame {
 
+ClassDef(FileSelector, 0);
+
 public:
 
     FileSelector(const TGWindow *p);
     virtual ~FileSelector() override;
+
+    // SIGNALS
+
+    void TextChanged(const char *text);
 
     // METHODS
 
@@ -39,5 +45,9 @@ private:
     TGLabel      *label        ;
     TGTextEntry  *entryField   ;
     ///////////////////////////////////////////////////////////////////////////
+
+    // CONNECTIONS
+
+    void makeConnections();
 
 };

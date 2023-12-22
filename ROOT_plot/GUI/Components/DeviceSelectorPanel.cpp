@@ -2,33 +2,33 @@
 
 #include <string>
 
-// TODO: Find a way to eliminate this include
-//         -- Collocate this component with the data capture module?
-#include "EthernetCapture/src/DeviceManager.h"
-#include "EthernetCapture/src/NetworkDeviceException.h"
-
 using namespace std;
 
-// TODO: Return a whole PCapDevice rather than just its name
+ClassImp(DeviceSelector);
 
-string DeviceSelector::getDeviceName() {
+DeviceSelector::DeviceSelector(const TGWindow *p) 
+    : TGVerticalFrame(p), initialized(false) {
 
-    if(!dropdown->GetSelectedEntry()) return "";
-    if(dropdown->GetSelected() == 0) return "";
+    label = new TGLabel(this, "Select Device:");
+    AddFrame(label, new TGLayoutHints(kLHintsLeft));
 
-    return string(dropdown->GetSelectedEntry()->GetTitle());
+
+    dropdown = new TGComboBox(this);
+    AddFrame(dropdown, new TGLayoutHints(kLHintsLeft));
+
+    dropdown->Resize(150, 20);
+
+    makeConnections();
 
 }
 
-void DeviceSelector::setDeviceName(char *name) {
+void DeviceSelector::makeConnections() {
 
-    // FIXME: The current entry must be cleared if name is blank
-    if(!strcmp(name, "")) {
+    dropdown->Connect("Selected(Int_t)", "DeviceSelector", this, "handleSelected(Int_t)");
 
-        dropdown->Select(0);
-        return;
+}
 
-    }
+void DeviceSelector::setDeviceName(const char *name) {
 
     TGLBEntry *entry = dropdown->FindEntry(name);
 
@@ -48,47 +48,34 @@ void DeviceSelector::setDeviceName(char *name) {
 
 }
 
-DeviceSelector::DeviceSelector(const TGWindow *p) 
-    : TGVerticalFrame(p), initialized(false) {
-
-    label = new TGLabel(this, "Select Device:");
-    AddFrame(label, new TGLayoutHints(kLHintsLeft));
-
-
-    dropdown = new TGComboBox(this);
-    AddFrame(dropdown, new TGLayoutHints(kLHintsLeft));
-
-    dropdown->Resize(150, 20);
-
-}
-
 DeviceSelector::~DeviceSelector() {
 
 }
 
-void DeviceSelector::initialize() {
+void DeviceSelector::Selected(const char *entry) {
 
-    DeviceManager devices;
+    Emit("Selected(const char *)", entry);
 
-    vector<PCapDevice> deviceList;
+}
 
-    try {
+void DeviceSelector::Selected(Int_t id) {
 
-        devices.initialize();
+    Emit("Selected(Int_t)", id);
 
-        deviceList = devices.getAllDevices();
+}
 
-    } catch (NetworkDeviceException &e) {
+void DeviceSelector::handleSelected(Int_t id) {
 
-        cout << e.what() << endl;
+    Selected(id);
+    Selected(dropdown->GetSelectedEntry()->GetTitle());
 
-    }
+}
 
-    dropdown->AddEntry("(None)", 0);
+void DeviceSelector::setOptions(const vector<string> &entries) {
 
-    for(int i = 0; i < deviceList.size(); ++i) {
+    for(int i = 0; i < entries.size(); ++i) {
 
-        dropdown->AddEntry(deviceList[i].name(), i + 1);
+        dropdown->AddEntry(entries[i].data(), i);
 
     }
 

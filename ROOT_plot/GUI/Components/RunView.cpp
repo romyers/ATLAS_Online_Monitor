@@ -4,7 +4,6 @@
 
 #include "Logging/ErrorLogger.h"
 
-#include "DAQMonitor/DAQState.h"
 #include "DAQMonitor/DataModel/DAQData.h"
 
 #include "GUI/Core/UISignals.h"
@@ -32,25 +31,26 @@ RunView::RunView(const TGWindow *p)
 
 void RunView::update() {
 
-	DAQData &data = DAQData::getInstance();
+	DAQData     &data   = DAQData    ::getInstance();
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
 	// Update the table
 	data.lock();
-	statsTable.setEntry("Packets Recorded", to_string(data.packetCount));
-	statsTable.setEntry("Events Processed", to_string(data.totalEventCount));
-	statsTable.setEntry("Empty Events", to_string(data.totalEventCount - data.processedEvents.size()));
-	statsTable.setEntry("Error Count", to_string(logger.countErrors(EMPTY_TYPE, ERROR)));
-	statsTable.setEntry("Warning Count", to_string(logger.countErrors(EMPTY_TYPE, WARNING)));
-	statsTable.setEntry("Packets Lost", to_string(data.lostPackets));
-	statsTable.setEntry("Dropped Signals", to_string(data.droppedSignals));
-	statsTable.setEntry("Dropped Events", to_string(data.droppedEvents));
+	statsTable.setEntry("Packets Recorded", to_string(data.packetCount                                  ));
+	statsTable.setEntry("Events Processed", to_string(data.totalEventCount                              ));
+	statsTable.setEntry("Empty Events"    , to_string(data.totalEventCount - data.processedEvents.size()));
+	statsTable.setEntry("Error Count"     , to_string(logger.countErrors(EMPTY_TYPE, ERROR)             ));
+	statsTable.setEntry("Warning Count"   , to_string(logger.countErrors(EMPTY_TYPE, WARNING)           ));
+	statsTable.setEntry("Packets Lost"    , to_string(data.lostPackets                                  ));
+	statsTable.setEntry("Dropped Signals" , to_string(data.droppedSignals                               ));
+	statsTable.setEntry("Dropped Events"  , to_string(data.droppedEvents                                ));
 	data.unlock();
 
 	string htmlString = statsTable.stringify();
 
 	// Append the run status
 	// TODO: This could go somewhere else
+	/*
 	State::DAQState state = State::DAQState::getState();
 	if(state.tempState.runLabel != "") {
 
@@ -69,6 +69,7 @@ void RunView::update() {
 		htmlString += "</h2>";
 
 	}
+	*/
 
 	// Package the html into the html GUI element
 	char *htmlText = new char[htmlString.size() + 1];

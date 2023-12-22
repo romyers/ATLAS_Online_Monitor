@@ -9,19 +9,15 @@
 
 #pragma once
 
+#include <string>
+
 #include <pcap.h> 
 
-class PCapDevice {
-
-public:
+struct PCapDevice {
 
     PCapDevice(pcap_if_t *d);
 
-    char *name       ();
-    char *description();
-
-private:
-
-    pcap_if_t *dev;
+    const std::string name;
+    const std::string description;
 
 };

@@ -18,15 +18,57 @@ void DAQManager::makeConnections() {
     startButton->Connect("Clicked()", "DAQManager", this, "handlePressStart()");
     stopButton ->Connect("Clicked()", "DAQManager", this, "handlePressStop()");
 
+    dataSourcePanel->Connect(
+        "selectedFileSource()",
+        "DAQManager",
+        this,
+        "selectedFileSource()"
+    );
+
+    dataSourcePanel->Connect(
+        "selectedDeviceSource()",
+        "DAQManager",
+        this,
+        "selectedDeviceSource()"
+    );
+
+    dataSourcePanel->Connect(
+        "selectedDevice(const char*)", 
+        "DAQManager", 
+        this, 
+        "selectedDevice(const char*)"
+    );
+
+    dataSourcePanel->Connect(
+        "selectedFile(const char*)",
+        "DAQManager",
+        this,
+        "selectedFile(const char*)"
+    );
+
+}
+
+void DAQManager::selectedFileSource  () { Emit("selectedFileSource()"  ); }
+void DAQManager::selectedDeviceSource() { Emit("selectedDeviceSource()"); }
+
+void DAQManager::selectedDevice(const char *selection) {
+
+    Emit("selectedDevice(const char*)", selection);
+
+}
+
+void DAQManager::selectedFile(const char *selection) {
+
+    Emit("selectedFile(const char*)", selection);
+
 }
 
 DAQManager::DAQManager(
         const TGWindow *p, 
         int w, 
         int h, 
-        int options, 
-        Pixel_t back
-) : TGCompositeFrame(p, w, h, options, back)/*, viewer(nullptr) */{
+        int options
+) : TGMainFrame(p, w, h, options), viewer(nullptr) {
 
     menuBar = new RunMenuBar(this);
     AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
@@ -97,6 +139,36 @@ DAQManager::DAQManager(
 }
 
 DAQManager::~DAQManager() {
+
+}
+
+void DAQManager::setDeviceSelectorEntry(const string &entry) {
+
+    dataSourcePanel->setDeviceSelectorEntry(entry);
+
+}
+
+void DAQManager::setFileSelectorEntry(const string &entry) {
+
+    dataSourcePanel->setFileSelectorEntry(entry);
+
+}
+
+void DAQManager::setDeviceSelectorOptions(const vector<string> &entries) {
+
+    dataSourcePanel->setDeviceSelectorOptions(entries);
+
+}
+
+void DAQManager::setFileDataSource() {
+
+    dataSourcePanel->setFileSource();
+
+}
+
+void DAQManager::setDeviceDataSource() {
+
+    dataSourcePanel->setDeviceSource();
 
 }
 
