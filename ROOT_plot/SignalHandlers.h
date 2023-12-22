@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "TGFrame.h"
+#include "GUI/Components/DAQManager.h"
 
-void connectDAQto(TGMainFrame *GUI);
+void connectDAQto(DAQManager *GUI);
 
 namespace Muon{
 namespace SigHandlers {
@@ -26,6 +26,8 @@ namespace SigHandlers {
 
 	void handleSelectedDevice(const char* selection);
 	void handleSelectedFile  (const char* selection);
+
+	void handleDataUpdate();
 
 }
 }

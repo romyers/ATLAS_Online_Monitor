@@ -1,7 +1,5 @@
 #include "DAQManager.h"
 
-#include "GUI/Core/UISignals.h"
-
 using namespace std;
 using namespace Muon;
 
@@ -10,9 +8,6 @@ ClassImp(DAQManager);
 // NOTE: We MUST addFrame every GUI element to ensure proper cleanup
 
 void DAQManager::makeConnections() {
-
-    UISignalBus &bus = UISignalBus::getInstance();
-    bus.Connect("onUpdate()", "DAQManager", this, "update()");
 
     exitButton ->Connect("Clicked()", "DAQManager", this, "handlePressExit()");
     startButton->Connect("Clicked()", "DAQManager", this, "handlePressStart()");
@@ -120,6 +115,9 @@ DAQManager::DAQManager(
     bottomPanel = new TGHorizontalFrame(this);
     AddFrame(bottomPanel, new TGLayoutHints(kLHintsExpandX));
 
+        statusTag = new TGLabel(bottomPanel, "");
+        bottomPanel->AddFrame(statusTag, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 30, 5, 5, 5));
+
         buttonGroup = new TGButtonGroup(bottomPanel, "", kHorizontalFrame);
         bottomPanel->AddFrame(buttonGroup, new TGLayoutHints(kLHintsRight, 5, 50, 5, 5));
 
@@ -172,9 +170,13 @@ void DAQManager::setDeviceDataSource() {
 
 }
 
-void DAQManager::update() {
+void DAQManager::update(const UpdatePacket &packet) {
 
-    viewer->update();
+    viewer->update(packet);
+
+    statusTag->SetText(packet.statusTag.data());
+
+    statusTag->Resize(statusTag->GetDefaultSize());
     
 }
 

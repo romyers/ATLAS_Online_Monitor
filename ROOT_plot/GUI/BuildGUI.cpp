@@ -12,6 +12,8 @@ DAQManager *buildGUI() {
     // Create the main window
     DAQManager *menu = new DAQManager(gClient->GetRoot(), 1, 1, kVerticalFrame);
 
+    menu->update(UpdatePacket());
+
     // Set up the main window now that it has all its components
     menu->SetWindowName("DAQ Manager");
     menu->MapSubwindows();

@@ -20,6 +20,7 @@
 #include "TGLabel.h"
 
 #include "DataSourcePanel.h"
+#include "UpdatePacket.h"
 
 #include "RunView.h"
 #include "RunMenuBar.h"
@@ -64,13 +65,13 @@ public:
     void handlePressExit();
 
     void setDeviceSelectorOptions(const std::vector<std::string> &entries);
-    void setDeviceSelectorEntry(const std::string &entry);
-    void setFileSelectorEntry(const std::string &entry);
+    void setDeviceSelectorEntry  (const std::string &entry);
+    void setFileSelectorEntry    (const std::string &entry);
 
     void setFileDataSource();
     void setDeviceDataSource();
 
-    void update();
+    void update(const UpdatePacket &packet);
 
 private:
 
@@ -98,6 +99,8 @@ private:
                 TGLabel *baseLabel;
 
     TGHorizontalFrame *bottomPanel;
+
+        TGLabel *statusTag;
 
         TGButtonGroup *buttonGroup;
 

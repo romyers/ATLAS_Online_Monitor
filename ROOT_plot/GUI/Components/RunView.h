@@ -11,6 +11,7 @@
 
 #include "TGHtml.h"
 
+#include "UpdatePacket.h"
 #include "PairTable.h"
 
 class RunView : public TGGroupFrame {
@@ -19,7 +20,7 @@ public:
 
 	RunView(const TGWindow *p);
 
-	void update();
+	void update(const UpdatePacket &packet);
 
 	void teardown();
 

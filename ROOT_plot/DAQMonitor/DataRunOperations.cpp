@@ -92,9 +92,11 @@ void initializeDataStream(LockableStream &dataStream) {
 
 }
 
+bool DataRun::isRunning() { return runStarted; }
+
 void DataRun::stopRun() {
 
-    if(!runStarted) {
+    if(!isRunning()) {
 
         throw UIException(
             "Please start a run."
@@ -122,7 +124,7 @@ void DataRun::startRun() {
     string runLabel = "";
 
     // Abort if a run is already in progress
-    if(runStarted) {
+    if(isRunning()) {
 
         throw UIException(
             "Please finish the current run before starting a new run."

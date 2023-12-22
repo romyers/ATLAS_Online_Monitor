@@ -62,12 +62,11 @@
 - Pull signal/slot interface between GUI and program logic out of the GUI 
   module.
 - Remember which tabs were open in DAQState and reopen them on startup.
-- Restore RunView's run started/stopped display, or replace it with another GUI
-  element.
 - Fix hard crashes when loading a nonexistent file source.
 - Consider flattening some of the GUI. E.g. device selector and file selector 
   can be folded into data source panel.
 - Find a good way to push data down to the GUI.
+- Integrate progress bar into DAQManager window.
 
 -------------------------------------------------------------------------------
 
@@ -86,6 +85,8 @@
   description.
 - Data source panel defaults are now set in StartDAQ.cpp.
 - Data source panel no longer depends on DAQState.
+- The run status tag from the run viewer now appears as a TGLabel on the 
+  DAQManager.
 
 ## Removed
 
@@ -97,7 +98,6 @@
   now default to the first device.
 - Removed apply and revert buttons from the data source panel. Changes are now
   applied automatically.
-- Temporarily removed the run status tag from the run viewer.
 
 -------------------------------------------------------------------------------
 

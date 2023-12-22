@@ -12,8 +12,10 @@
 namespace Muon {
 namespace DataRun {
 
-    void startRun      ();
-    void stopRun       ();
+    void startRun ();
+    void stopRun  ();
+
+    bool isRunning();
 
 }
 }

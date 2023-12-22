@@ -1,12 +1,94 @@
 #include "SignalHandlers.h"
 
+#include <string>
+
 #include "DAQMonitor/DataRunOperations.h"
 #include "DAQMonitor/DAQState.h"
+#include "DAQMonitor/DataModel/DAQData.h"
+
+#include "Logging/ErrorLogger.h"
 
 #include "GUI/BuildGUI.h"
+#include "GUI/Core/UISignals.h"
+#include "GUI/Components/UpdatePacket.h"
 
 using namespace std;
 using namespace Muon;
+
+// FIXME: This global is NOT what I want to be doing. Come up with a better
+//        way to push data updates.
+DAQManager *GUIptr = nullptr;
+
+void connectDAQto(DAQManager *GUI) {
+
+	GUIptr = GUI;
+
+	GUI->Connect(
+		"pressedStart()",
+		"Muon::SigHandlers",
+		nullptr,
+		"handleStartRun()"
+	);
+
+	GUI->Connect(
+		"pressedStop()",
+		"Muon::SigHandlers",
+		nullptr,
+		"handleStopRun()"
+	);
+
+    GUI->Connect(
+        "pressedExit()",
+        "Muon::SigHandlers",
+        nullptr,
+        "handleExit()"
+    );
+
+    GUI->Connect(
+        "CloseWindow()",
+        "Muon::SigHandlers",
+        nullptr,
+        "handleExit()"
+    );
+
+    GUI->Connect(
+    	"selectedDeviceSource()",
+    	"Muon::SigHandlers",
+    	nullptr,
+    	"handleSelectedDeviceSource()"
+    );
+
+    GUI->Connect(
+    	"selectedFileSource()",
+    	"Muon::SigHandlers",
+    	nullptr,
+    	"handleSelectedFileSource()"
+    );
+
+    GUI->Connect(
+    	"selectedDevice(const char*)",
+    	"Muon::SigHandlers",
+    	nullptr,
+    	"handleSelectedDevice(const char*)"
+    );
+
+    GUI->Connect(
+    	"selectedFile(const char*)",
+    	"Muon::SigHandlers",
+    	nullptr,
+    	"handleSelectedFile(const char*)"
+    );
+
+    // TODO: This is an odd one out. We should only be connecting
+    //       GUI signals in this function.
+    UISignalBus::getInstance().Connect(
+    	"onUpdate()", 
+    	"Muon::SigHandlers", 
+    	nullptr, 
+    	"handleDataUpdate()"
+    );
+
+}
 
 void SigHandlers::handleStartRun() {
 
@@ -72,62 +154,42 @@ void SigHandlers::handleSelectedFile(const char* selection) {
 
 }
 
-void connectDAQto(TGMainFrame *GUI) {
+void SigHandlers::handleDataUpdate() {
 
-	GUI->Connect(
-		"pressedStart()",
-		"Muon::SigHandlers",
-		nullptr,
-		"handleStartRun()"
-	);
+	if(!GUIptr) return;
 
-	GUI->Connect(
-		"pressedStop()",
-		"Muon::SigHandlers",
-		nullptr,
-		"handleStopRun()"
-	);
+	UpdatePacket packet;
 
-    GUI->Connect(
-        "pressedExit()",
-        "Muon::SigHandlers",
-        nullptr,
-        "handleExit()"
-    );
+	DAQData     &data   = DAQData    ::getInstance();
+	ErrorLogger &logger = ErrorLogger::getInstance();
 
-    GUI->Connect(
-        "CloseWindow()",
-        "Muon::SigHandlers",
-        nullptr,
-        "handleExit()"
-    );
+	data.lock();
+	packet.packetCount     = data.packetCount                                  ;
+	packet.totalEventCount = data.totalEventCount                              ;
+	packet.emptyEventCount = data.totalEventCount - data.processedEvents.size();
+	packet.lostPackets     = data.lostPackets                                  ;
+	packet.droppedSignals  = data.droppedSignals                               ;
+	packet.droppedEvents   = data.droppedEvents                                ;
+	data.unlock();
 
-    GUI->Connect(
-    	"selectedDeviceSource()",
-    	"Muon::SigHandlers",
-    	nullptr,
-    	"handleSelectedDeviceSource()"
-    );
+	packet.errorCount      = logger.countErrors(EMPTY_TYPE, ERROR)             ;
+	packet.warningCount    = logger.countErrors(EMPTY_TYPE, WARNING)           ;
 
-    GUI->Connect(
-    	"selectedFileSource()",
-    	"Muon::SigHandlers",
-    	nullptr,
-    	"handleSelectedFileSource()"
-    );
+	State::DAQState state = State::DAQState::getState();
+	if(state.tempState.runLabel != "") {
 
-    GUI->Connect(
-    	"selectedDevice(const char*)",
-    	"Muon::SigHandlers",
-    	nullptr,
-    	"handleSelectedDevice(const char*)"
-    );
+		if(DataRun::isRunning()) {
 
-    GUI->Connect(
-    	"selectedFile(const char*)",
-    	"Muon::SigHandlers",
-    	nullptr,
-    	"handleSelectedFile(const char*)"
-    );
+			packet.statusTag = string("Started Run: ") + state.tempState.runLabel;
+
+		} else {
+
+			packet.statusTag = string("Stopped Run: ") + state.tempState.runLabel;
+
+		}
+
+	}
+
+	GUIptr->update(packet);
 
 }
