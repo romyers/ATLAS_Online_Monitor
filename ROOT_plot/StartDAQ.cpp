@@ -120,7 +120,7 @@ int main() {
             /* NOTE: Unfortunately, we need to define this function alongside
              *       the signal handlers in order to make ROOT be able to find
              *       the definitions for the slots. It's not ideal -- I'd
-             *       rather set up the connections in this file. But oh well.
+             *       rather set up the connections in this file.
              */
             connectDAQto(mainFrame);
 

@@ -46,7 +46,9 @@
   decouple the UI from the machinery.
 - Add a console version of the online monitor, like the old StartMonitor.cpp,
   that does not use the UI.
-- Consolidate top-level logic.
+- Consolidate DataCaptureOperations, PacketDecodingOperations, and 
+  DataRunOperations. Eliminate LockableStream and just maintain a mutex in the
+  new top level logic flow.
 - Documentation.
 - Reorganize directory structure and cmake libraries.
 - Separate headers from source files in directory structure to match pattern in
@@ -67,6 +69,22 @@
   can be folded into data source panel.
 - Find a good way to push data down to the GUI.
 - Integrate progress bar into DAQManager window.
+- Error log should autoscroll to bottom.
+- Consider switching to a pattern where program elements are coupled to and
+  collocated with associated GUI elements. E.g. the data source panel can
+  belong to the ecap module, the error view to the logger, and the plot tabs
+  to the decoder module. This would probably make more sense than decoupling
+  the GUI entirely and pushing data down to it from above. Instead, we want a
+  pattern not unlike VUE SFCs.
+    - We might want to eliminate the GUI core library then to simplify the
+      dependency structure.
+    - This is not a priority right now though.
+- Stretch goal -- make tabs dockable/undockable. There is a ROOT object for 
+  this, but it's not quite what we want.
+
+## FIXME
+
+- Last DAT file did not get written.
 
 -------------------------------------------------------------------------------
 
