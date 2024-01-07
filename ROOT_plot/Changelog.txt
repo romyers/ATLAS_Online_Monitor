@@ -7,9 +7,6 @@
 - Plot saving blocks the decoder.
 - Closing a progress bar window causes a segfault.
 - PlotSavingOperations still depends on progress bar view.
-- Undefined behavior when pressing 'Save Plot' twice. We need to disable the
-  button while plots are being saved. Use a flag in DAQState like we do for
-  startRun?
 - Plot updates block the decode thread. This doesn't matter much, but it would
   be nice if it didn't happen.
 - Plot updates sometimes occur in the decode thread (e.g. when new data comes
@@ -28,11 +25,12 @@
 - When processing a file source, the monitor tries and fails to open a log 
   file.
 - When starting a run produces an alert box, the run still starts.
+- Saving two snapshots from the same run may overwrite the old snapshot.
+    -- Consider saving to [TIMESTAMP](2) if [TIMESTAMP] already exists.
 
 ## TODO:
 
 - Display the .dat save file to the user when starting a run.
-- Add the save progress bar to the main DAQ Manager window.
 - Eliminate need for UISignals.cpp
 - Separate data aggregation from PacketDecodingOperations.
 - .dat and .log files should only be created if we are not processing a file
@@ -64,12 +62,9 @@
 - Pull signal/slot interface between GUI and program logic out of the GUI 
   module.
 - Remember which tabs were open in DAQState and reopen them on startup.
-- Fix hard crashes when loading a nonexistent file source.
 - Consider flattening some of the GUI. E.g. device selector and file selector 
   can be folded into data source panel.
-- Find a good way to push data down to the GUI.
 - Integrate progress bar into DAQManager window.
-- Error log should autoscroll to bottom.
 - Consider switching to a pattern where program elements are coupled to and
   collocated with associated GUI elements. E.g. the data source panel can
   belong to the ecap module, the error view to the logger, and the plot tabs
@@ -81,10 +76,40 @@
     - This is not a priority right now though.
 - Stretch goal -- make tabs dockable/undockable. There is a ROOT object for 
   this, but it's not quite what we want.
+- Eliminate need for a 'lockable' data stream by pulling together the
+  different *Operations.h/cpp files.
+- Turn the field that says, e.g. "Started Run: [RUN LABEL]" into a general
+  user feedback field. E.g. it should become 'saved snapshot to folder: ...'
+  when plots are saved.
+- Make error log autoscroll get overridden when user scrolls.
+- Test error log autoscroll with realtime data.
+- Make sure all validation from DecodeOffline.cpp is reproduced in DAQManager.
+- Better resize behavior
 
 ## FIXME
 
 - Last DAT file did not get written.
+- Quick segfault occurs when running with enable_hit and enable_trigger on from
+  xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
+  keep up with the decoder when packets are coming in that quickly?
+- Error log will autoscroll to bottom after each update, even if user is trying
+  to scroll up.
+
+-------------------------------------------------------------------------------
+
+## 2024-01-07
+
+## Changed
+
+- Error log now autoscrolls to the bottom when updated.
+
+## Fixed
+
+- Input filenames are now validated properly, and incorrect input filenames 
+  will no longer produce a segfault.
+- Fixed undefined behavior when double-saving plots. Plot saving now checks
+  to make sure a save operation is not already happening before beginning the
+  save.
 
 -------------------------------------------------------------------------------
 

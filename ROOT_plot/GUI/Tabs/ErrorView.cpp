@@ -88,6 +88,11 @@ void ErrorView::update() {
 
 		errorPanel->Layout();
 
+		// TODO: Override this if user manually scrolls, and put it back if
+		//       user scrolls back to bottom
+		// NOTE: 20 pixels per line, with a flat 110 pixel adjustment.
+		errorPanel->ScrollUp(20 * errors.size() - 110);
+
 	} catch(exception &e) {
 
 		delete[] htmlText;
@@ -99,6 +104,11 @@ void ErrorView::update() {
 
 	delete[] htmlText;
 	htmlText = nullptr;
+
+	/*
+	cout << errorPanel->GetScrollPosition().fX << endl;
+	cout << errorPanel->GetScrollPosition().fY << endl;
+	*/
 
 }
 

@@ -156,6 +156,10 @@ int main() {
 
             // Start the UI event loop in order to process user interactions
             // with the GUI
+            // NOTE: This will block its calling thread until the loop is
+            //       explicitly stopped.
+            // TODO: It's not semantically clear that startUILoop blocks its
+            //       calling thread until the loop is stopped.
             startUILoop(GUI_REFRESH_RATE);
 
         })

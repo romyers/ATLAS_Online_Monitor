@@ -123,6 +123,7 @@ void Muon::DataCapture::startDataCapture(
 
         packets += packetData.bufferedPackets;
 
+        // Store metadata
         data.lock();
         data.packetCount = packets;
         data.lostPackets += packetData.lostPackets;

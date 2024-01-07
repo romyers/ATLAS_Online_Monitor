@@ -64,21 +64,7 @@ void initializeDataStream(LockableStream &dataStream) {
             delete fileStream;
             fileStream = nullptr;
 
-            ErrorLogger::getInstance().logError(
-                string("Couldn't open file ") + state.persistentState.inputFilename,
-                "runOperations",
-                FATAL
-            );
-
-            cout << "Aborted run!" << endl;
-
-            // TODO: We need to link this exception up to an alert. But we want
-            //       that alert to be created in the UI thread.
-            throw UIException(
-                string("File \"") 
-                + state.persistentState.inputFilename 
-                + "\" could not be opened."
-            );
+            throw logic_error("Could not open input file stream.");
 
         }
 
@@ -135,9 +121,21 @@ void DataRun::startRun() {
     // Set up the input source
     if(state.persistentState.dataSource == DAT_FILE_SOURCE) {
 
+        // Check that the file name is nonempty
         if(state.persistentState.inputFilename == "") {
 
             throw UIException("Please select a DAT file.");
+
+        }
+
+        // Check that the file exists
+        if(!fstream(state.persistentState.inputFilename).is_open()) {
+
+            throw UIException(
+                string("File \"") 
+                + state.persistentState.inputFilename 
+                + "\" could not be opened."
+            );
 
         }
 
@@ -220,6 +218,7 @@ void DataRun::startRun() {
             );
             cout << "Aborted run!" << endl;
 
+            // TODO: This won't handle stopping the run properly.
             throw logic_error("Data capture could not open logging .log file");
 
         }

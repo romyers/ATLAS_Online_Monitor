@@ -23,6 +23,20 @@ void makeDirectory(const string &path);
 
 void Muon::PlotSaving::savePlots() {
 
+    // TODO: We might need to protect this from data race conditions
+    static bool isSaving = false;
+
+    if(isSaving) {
+
+        cout << "Please wait for the current snapshot to be saved before "
+             << "saving again." << endl;
+
+        return;
+
+    }
+
+    isSaving = true;
+
     cout << "Saving snapshot..." << endl;
 
     makeDirectory("output");
@@ -187,6 +201,8 @@ void Muon::PlotSaving::savePlots() {
     delete progressBar;
 
     cout << "Plots saved!" << endl;
+
+    isSaving = false;
 
 }
 
