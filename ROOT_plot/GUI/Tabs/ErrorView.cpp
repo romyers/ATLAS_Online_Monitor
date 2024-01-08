@@ -91,7 +91,8 @@ void ErrorView::update() {
 		// TODO: Override this if user manually scrolls, and put it back if
 		//       user scrolls back to bottom
 		// NOTE: 20 pixels per line, with a flat 110 pixel adjustment.
-		errorPanel->ScrollUp(20 * errors.size() - 110);
+		// TODO: Where does the -110 come from? It's not the window height.
+		// errorPanel->ScrollUp(20 * errors.size() - 110);
 
 	} catch(exception &e) {
 

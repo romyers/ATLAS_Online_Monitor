@@ -70,7 +70,7 @@ void Muon::DataCapture::startDataCapture(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
-    string outputFile("data/");
+    string outputFile("../data/");
     outputFile += runLabel;
     outputFile += ".dat";
 

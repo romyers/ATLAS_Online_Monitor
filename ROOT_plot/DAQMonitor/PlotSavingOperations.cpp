@@ -39,11 +39,11 @@ void Muon::PlotSaving::savePlots() {
 
     cout << "Saving snapshot..." << endl;
 
-    makeDirectory("output");
+    makeDirectory("../output");
     cout << "Created output directory." << endl;
 
     State::DAQState state = State::DAQState::getState();
-    string outputDirName = string("output/") + state.tempState.runLabel;
+    string outputDirName = string("../output/") + state.tempState.runLabel;
     makeDirectory(outputDirName);
     cout << "Created directory " << outputDirName << endl;
 

@@ -73,7 +73,8 @@ public:
 
 private:
 
+	int latestEventID = -1;
+
 	std::vector<Muon::Signal> signalBuffer;
-	std::vector<Muon::Event > eventBuffer ;
 
 };

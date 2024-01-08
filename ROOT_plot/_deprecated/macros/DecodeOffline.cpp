@@ -383,27 +383,33 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
           event_print*=10;
       }
       trailer_sig = Signal(word);
+
+      // !!!
       if(trailer_sig.TrailerEID()!=header_sig.HeaderEID()){
         printf("Warning! Event ID mismatch! HEADER ID= %d, TRAILER ID = %d\n",header_sig.HeaderEID(),trailer_sig.TrailerEID());
         sigVec.clear();
         continue;
       }
+
       bit4 = word >> 32; // get the TDC header count in Event trailer 
       header_count_Event_trailer = static_cast<unsigned int>((bit4.to_ulong()));
       if(header_count_Event_trailer!=header_count_TDC_data){
         printf("Warning! %d header(s) found in data, event trailer indicates %d!\n",header_count_TDC_data,header_count_Event_trailer);
       }
+
       bit4 = word >> 28; // get the TDC trailer count in Event trailer 
       trailer_count_Event_trailer = static_cast<unsigned int>((bit4.to_ulong()));
       if(trailer_count_Event_trailer!=trailer_count_TDC_data){
         printf("Warning! %d trailer(s) found in data, event trailer indicates %d!\n",header_count_TDC_data,header_count_Event_trailer);
       }
+
       bit1 = word >> 15; // get the TDC header count error flag in Event trailer
       unsigned int error_flag_tmp;
       error_flag_tmp = static_cast<unsigned int>((bit1.to_ulong()));
       if(error_flag_tmp){
         printf("Warning! %d header count error flag. Got %d header(s)!\n",header_count_Event_trailer);
       }
+
       bit1 = word >> 14; // get the TDC trailer count error flag in Event trailer
       error_flag_tmp = static_cast<unsigned int>((bit1.to_ulong()));
       if(error_flag_tmp){
@@ -501,12 +507,16 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
 
     //got event header
     else if (header_type == Signal::HEADER){
+
       header_sig = Signal(word);
       current_event_ID = header_sig.HeaderEID();
+
       if((current_event_ID!=(previous_event_ID+1)%4096)&&(previous_event_ID!=-1))
         printf("Warning! Event lost! Curr=%d, Pre=%d\n", current_event_ID,previous_event_ID);
+      
       if(current_event_ID==previous_event_ID)
         printf("Warning! Repeating event! Curr=%d, Pre=%d\n", current_event_ID,previous_event_ID);
+
       previous_event_ID = current_event_ID;
       sigVec.clear();
       event_signals = 0;
@@ -515,6 +525,7 @@ int DecodeOffline(const string &filename = "run_20210906_100742.dat") {
       tdc_header_eventID_previous = -1; //reset tdc header eventID for each event
       header_count_TDC_data = 0;
       trailer_count_TDC_data = 0;
+
     }
 
     //got hit data

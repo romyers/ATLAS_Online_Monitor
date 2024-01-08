@@ -81,19 +81,36 @@
 - Turn the field that says, e.g. "Started Run: [RUN LABEL]" into a general
   user feedback field. E.g. it should become 'saved snapshot to folder: ...'
   when plots are saved.
-- Make error log autoscroll get overridden when user scrolls.
-- Test error log autoscroll with realtime data.
 - Make sure all validation from DecodeOffline.cpp is reproduced in DAQManager.
 - Better resize behavior
+- SignalHandlers is an ambiguous name -- SigHandlers.h handles OS signals,
+  SignalHandlers.h handles GUI signals.
+- Make sure that TDC header, trailer, and error signals are correctly handled.
+  DecodeOffline.cpp does not package them into an event.
+- Clean up my hacky fix for error word counting in Decoder.cpp
 
 ## FIXME
 
-- Last DAT file did not get written.
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
-- Error log will autoscroll to bottom after each update, even if user is trying
-  to scroll up.
+
+-------------------------------------------------------------------------------
+
+## 2024-01-08
+
+## Added
+
+- Added event validation checking that the hit count reported by the event
+  trailer signal matches the total number of signals plus error words.
+- Added validation of event IDs, and implemented error logging in cases
+  where events are repeated or lost.
+
+## Changed
+
+- Removed error log autoscrolling pending a more rigorous implementation.
+- EventBuffer is now a local variable inside the decode step, eliminating
+  need to store it as a class member or clear it on each step.
 
 -------------------------------------------------------------------------------
 

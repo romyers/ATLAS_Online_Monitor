@@ -116,6 +116,38 @@ void validateEventWarnings(const Event &e) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
+	// TODO: This is really hacky, and breaks if multiple runs are conducted
+	//       from a single run of the monitor.
+	/*
+	static int previous_event_ID = 0;
+	if(previous_event_ID != -1) {
+
+		if(e.ID() == previous_event_ID) {
+
+			logger.logError(
+				string("WARNING -- Repeated event! Event ID=")
+				+ to_string(e.ID()),
+				EVENT_ERROR,
+				WARNING
+			);
+
+		} else if(e.ID() != (previous_event_ID + 1) % 4096) {
+
+			logger.logError(
+				string("WARNING -- Event lost! Current=")
+				+ to_string(e.ID())
+				+ ", Previous="
+				+ to_string(previous_event_ID),
+				EVENT_ERROR,
+				WARNING
+			);
+
+		}
+
+	}
+	previous_event_ID = e.ID();
+	*/
+
 	if(e.Trailer().HeaderCountErr()) {
 
 		logger.logError(
@@ -148,8 +180,10 @@ void validateEventWarnings(const Event &e) {
 			+ to_string(e.Trailer().HitCount())
 			+ ", real hit count = "
 			+ to_string(e.Signals().size())
-			+ ", error word count = TODO: IMPLEMENT",
-			EVENT_ERROR
+			+ ", error word count = "
+			+ [error_word_count],
+			EVENT_ERROR,
+			WARNING
 		);
 
 	}
