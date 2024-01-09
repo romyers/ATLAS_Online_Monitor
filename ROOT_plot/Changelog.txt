@@ -14,17 +14,9 @@
   opened). This is a bit messy. See about making all plot updates happen in the
   same thread.
 - UI blocks during plot updates when plots are open.
-- RunStats display broken while reading a DAT file.
-    -- This is probably because RunStats isn't updated until the entire DAT
-       file is read.
-- The hit rate display x axis bounds are not quite right.
-- There is no GUI feedback distinguishing the period between when the stop
-  run button is pressed and the run is actually stopped.
+- The noise rate display graphics have some odd artifacts.
 - Sometimes we end up with more events than packets. I'm not sure if this is
   valid behavior.
-- When processing a file source, the monitor tries and fails to open a log 
-  file.
-- When starting a run produces an alert box, the run still starts.
 - Saving two snapshots from the same run may overwrite the old snapshot.
     -- Consider saving to [TIMESTAMP](2) if [TIMESTAMP] already exists.
 
@@ -33,10 +25,6 @@
 - Display the .dat save file to the user when starting a run.
 - Eliminate need for UISignals.cpp
 - Separate data aggregation from PacketDecodingOperations.
-- .dat and .log files should only be created if we are not processing a file
-  source.
-- Fix issue where an alert box popping up when starting a run does not
-  reset the UI to the 'no-run' state.
 - Now that TQObjects are inherited, eliminate need for signal buses
   and pass information out of UI elements. E.g. pressing 'startRun' should
   emit an event that tells us the start run button was pressed, and startDAQ
@@ -48,7 +36,6 @@
   DataRunOperations. Eliminate LockableStream and just maintain a mutex in the
   new top level logic flow.
 - Documentation.
-- Reorganize directory structure and cmake libraries.
 - Separate headers from source files in directory structure to match pattern in
   the sMDT reco repo.
 - Make it so that closing a tab opens the next or previous tab.
@@ -56,7 +43,6 @@
   both in the standalone and in the monitor.
 - Eliminate the need to have distinct names for menu options from different
   submenus.
-- Separate Output and data directories from module directories.
 - Decouple modules from each other as much as possible.
 - Make DAQData not be a singleton anymore.
 - Pull signal/slot interface between GUI and program logic out of the GUI 
@@ -81,20 +67,17 @@
 - Turn the field that says, e.g. "Started Run: [RUN LABEL]" into a general
   user feedback field. E.g. it should become 'saved snapshot to folder: ...'
   when plots are saved.
-- Make sure all validation from DecodeOffline.cpp is reproduced in DAQManager.
 - Better resize behavior
 - SignalHandlers is an ambiguous name -- SigHandlers.h handles OS signals,
   SignalHandlers.h handles GUI signals.
-- Make sure that TDC header, trailer, and error signals are correctly handled.
-  DecodeOffline.cpp does not package them into an event.
-- Clean up my hacky fix for error word counting in Decoder.cpp
 - Address any part of the code that might not be portable. We already handled
   endianness. But let's look at e.g. signal handling and directory 
   construction.
-- Make sure the program creates a data folder if none exists.
 - Try to move log file setup to somewhere that makes more sense.
 - Add a settings option for the directory in which to save dat and log files.
 - Test cases
+- Labels on Noise Rate Display
+- Gray out interface while an alert box is open
 
 ## FIXME
 
@@ -123,10 +106,18 @@
   with the event, including TDC header, trailer, and error signals.
 - Moved log file setup into DataCaptureOperations.cpp. Log files will no longer
   be saved for DAT file sources.
+- The "Start Run" button is now kept disabled at the conclusion of a run until 
+  the run has fully stopped.
+- Cleaned up plot labels.
+- Pressing 'exit' now visually disables interface elements.
+- Persistent settings are now saved on start run as well as on exit.
 
 ## Fixed
 
 - Log files were erroneously saved in a folder other than the main data folder.
+- Noise rate display graphs now have correct x-axis bounds.
+- If pressing start run produces an exception, the start button is now 
+  reenabled and the stop button kept disabled.
 
 -------------------------------------------------------------------------------
 

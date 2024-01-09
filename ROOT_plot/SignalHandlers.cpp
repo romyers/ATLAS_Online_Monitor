@@ -10,6 +10,7 @@
 
 #include "GUI/BuildGUI.h"
 #include "GUI/Core/UISignals.h"
+#include "GUI/Core/UIException.h"
 #include "GUI/Components/UpdatePacket.h"
 
 using namespace std;
@@ -27,14 +28,14 @@ void connectDAQto(DAQManager *GUI) {
 		"pressedStart()",
 		"Muon::SigHandlers",
 		nullptr,
-		"handleStartRun()"
+		"handlePressedStartRun()"
 	);
 
 	GUI->Connect(
 		"pressedStop()",
 		"Muon::SigHandlers",
 		nullptr,
-		"handleStopRun()"
+		"handlePressedStopRun()"
 	);
 
     GUI->Connect(
@@ -88,27 +89,73 @@ void connectDAQto(DAQManager *GUI) {
     	"handleDataUpdate()"
     );
 
+    UISignalBus::getInstance().Connect(
+    	"onRunStart()",
+    	"Muon::SigHandlers",
+    	nullptr,
+    	"handleRunStartEvent()"
+    );
+
+    UISignalBus::getInstance().Connect(
+    	"onRunStop()",
+    	"Muon::SigHandlers",
+    	nullptr,
+    	"handleRunStopEvent()"
+    );
+
 }
 
-void SigHandlers::handleStartRun() {
+void SigHandlers::handlePressedStartRun() {
 
-	DataRun::startRun();
+	State::DAQState::getState().save();
+
+	GUIptr->disableStartButton();
+
+	try{
+
+		DataRun::startRun();
+
+	} catch(UIException &e) {
+
+		GUIptr->enableStartButton();
+
+		throw e;
+
+	}
 
 }
 
-void SigHandlers::handleStopRun() {
+void SigHandlers::handleRunStartEvent() {
+
+	if(!GUIptr) return;
+
+	GUIptr->enableStopButton();
+	GUIptr->disableDataSourcePanel();
+
+}
+
+void SigHandlers::handlePressedStopRun() {
+
+	GUIptr->disableStopButton();
 
 	DataRun::stopRun();
 
 }
 
+void SigHandlers::handleRunStopEvent() {
+
+	if(!GUIptr) return;
+
+	GUIptr->enableStartButton();
+	GUIptr->enableDataSourcePanel();
+
+}
+
 void SigHandlers::handleExit() {
 
-	// TODO: Cleaner way would be to check if the run is in progress
-	//       directly
-	try{
-		DataRun::stopRun();
-	} catch(const exception &e) {}
+	if(DataRun::isRunning()) DataRun::stopRun();
+
+	GUIptr->disable();
 
 	stopUILoop();
 

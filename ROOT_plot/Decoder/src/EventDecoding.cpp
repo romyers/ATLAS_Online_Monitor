@@ -205,15 +205,13 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that the real hit count matches the count reported in the 
 	// event trailer
-	if(e.Trailer().HitCount() != e.Signals().size() + TDCErrorCount) {
+	if(e.Trailer().HitCount() != e.Signals().size()) {
 
 		logger.logError(
 			string("WARNING -- Hit count in trailer = ")
 			+ to_string(e.Trailer().HitCount())
 			+ ", real hit count = "
-			+ to_string(e.Signals().size())
-			+ ", error word count = "
-			+ to_string(TDCErrorCount),
+			+ to_string(e.Signals().size()),
 			EVENT_ERROR,
 			WARNING
 		);

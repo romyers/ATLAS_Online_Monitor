@@ -10,9 +10,6 @@
  *       entering CTRL+C twice.
  */
 
-// TODO: Consider an operator pattern where the operations file maintains a
-//       global pointer to the associated view and implements an initializer
-
 #include <thread>
 #include <mutex>
 #include <vector>
@@ -37,23 +34,14 @@ using namespace Muon;
 
 
 // COPIED TODOS FROM START_MONITOR:
-// TODO: Rethink the semantics of Monitor. We've made our labels as if it's a
-//       display element when really it does data decoding. It should be the
-//       UI element that does the 'refreshing', for example.
 
 // TODO: Examine this for ROOT tips:
-//       https://mightynotes.wordpress.com/2020/02/15/cern-root-tips-and-tricks/
-
-// TODO: Call getpid() for the run? Do we need to give it a pid?
-
-// TODO: Config GUI for options like whether to show lost packets
+//       https://mightynotes.wordpress.com/2020/02/15/cern-root-tips
 
 // TODO: Split out all cout calls to a console logger object. Easy to make it
 //       threadsafe or switch the stream we're logging to
 
 // TODO: Make the error logger threadsafe
-
-// TODO: Set Geometry::runN as in DecodeOffline.cpp
 
 // TODO: Look at this for using QT in root:
 //       https://root.cern/doc/v606/QtFileDialog_8C.html
@@ -97,6 +85,7 @@ int main() {
     // Read in DAQState from file
     State::DAQState state = State::DAQState::getState();
     state.load(STATE_STORAGE);
+    state.setSaveFile(STATE_STORAGE);
     state.commit();
 
     // THIS MUST BE CALLED BEFORE STARTING ANY THREADS.
@@ -175,10 +164,8 @@ int main() {
     ProgramFlow::joinAllThreads();
     
     // Save DAQState to file
-    //   -- TODO: Consider saving DAQState on startRun or when user applies
-    //            changes to DAQState.
     state.update();
-    state.save(STATE_STORAGE);
+    state.save  ();
 
     cout << "Shutdown" << endl;
 

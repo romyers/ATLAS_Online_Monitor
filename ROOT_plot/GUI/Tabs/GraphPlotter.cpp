@@ -26,9 +26,6 @@ void GraphPlotter::update() {
 
 	for(int i = 0; i < graphs.size(); ++i) {
 
-		double tmp_yrange = graphs[i]->GetHistogram()->GetMaximum();
-		graphs[i]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
-
 		canvas->GetCanvas()->cd(i + 1);
 
 		// TODO: Try to break this dependence on DAQData. It's messy as heck,

@@ -51,7 +51,9 @@ namespace State {
 		bool commit(bool force = false);
 
 		bool load(const std::string &filename);
-		bool save(const std::string &filename);
+		bool save();
+
+		void setSaveFile(const std::string &filename);
 
 		bool readPersistentState (std::istream &in );
 		void writePersistentState(std::ostream &out);
@@ -69,6 +71,8 @@ namespace State {
 		DAQState();
 
 		bool isOutdated();
+
+		std::string saveFile;
 
 	};
 

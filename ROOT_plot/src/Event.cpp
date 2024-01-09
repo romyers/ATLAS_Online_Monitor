@@ -134,7 +134,7 @@ std::vector<Signal> Event::Signals() const {
 
 }
 
-std::vector<Signal> Event::Signals_All      () const { return sigs                ; }
+std::vector<Signal>  Event::Signals_All     () const { return sigs                ; }
 std::vector<Hit>     Event::Hits            () const { return hits                ; }
 std::vector<Cluster> Event::Clusters        () const { return clusters            ; }
 std::vector<Track>   Event::Tracks          () const { return tracks              ; }

@@ -125,7 +125,7 @@ Plots::Plots() {
 
 		// if(!Geometry::getInstance()->IsActiveTDC(tdc)) continue;
 
-		plot_name_buffer.Form("tdc_%d_adc_time_spectrum", tdc);
+		plot_name_buffer.Form("TDC %d ADC Time Spectrum", tdc);
 		p_tdc_adc_time.push_back(new TH1F(
 			plot_name_buffer,
 			plot_name_buffer,
@@ -136,11 +136,7 @@ Plots::Plots() {
 		p_tdc_adc_time.back()->GetXaxis()->SetTitle("time/ns");
 		p_tdc_adc_time.back()->GetYaxis()->SetTitle("entries");
 
-		string p_tdc_adc_time_corrected_title = "tdc_";
-		p_tdc_adc_time_corrected_title += tdc;
-		p_tdc_adc_time_corrected_title += "_tdc_time_spectrum_corrected";
-
-		plot_name_buffer.Form("tdc_%d_tdc_time_spectrum_corrected", tdc);
+		plot_name_buffer.Form("TDC %d TDC Time Spectrum (Corrected)", tdc);
 		p_tdc_tdc_time_corrected.push_back(new TH1F(
 			plot_name_buffer, 
 			plot_name_buffer,
@@ -171,7 +167,7 @@ Plots::Plots() {
 
 		for(int channel = 0; channel < Geometry::MAX_TDC_CHANNEL; ++channel) {
 
-			plot_name_buffer.Form("tdc_%d_channel_%d_tdc_time_spectrum_corrected", tdc, channel);
+			plot_name_buffer.Form("TDC %d Channel %d TDC Time Spectrum (Corrected)", tdc, channel);
 			p_tdc_time_corrected[tdc].push_back(new TH1F(
 				plot_name_buffer,
 				plot_name_buffer,
@@ -182,7 +178,7 @@ Plots::Plots() {
 	        p_tdc_time_corrected[tdc].back()->GetXaxis()->SetTitle("time/ns");
 	        p_tdc_time_corrected[tdc].back()->GetYaxis()->SetTitle("entries");
 
-	        plot_name_buffer.Form("tdc_%d_channel_%d_tdc_time_spectrum", tdc, channel);
+	        plot_name_buffer.Form("TDC %d Channel %d TDC Time Spectrum", tdc, channel);
 	        p_tdc_time[tdc].push_back(new TH1F(
 	        	plot_name_buffer,
 	        	plot_name_buffer, 
@@ -193,7 +189,7 @@ Plots::Plots() {
 	        p_tdc_time[tdc].back()->GetXaxis()->SetTitle("time/ns");
 	        p_tdc_time[tdc].back()->GetYaxis()->SetTitle("entries");
 
-	        plot_name_buffer.Form("tdc_%d_channel_%d_adc_time_spectrum", tdc, channel);
+	        plot_name_buffer.Form("TDC %d Channel %d ADC Time Spectrum", tdc, channel);
 	        p_adc_time[tdc].push_back(new TH1F(
 	        	plot_name_buffer, 
 	        	plot_name_buffer,
@@ -264,6 +260,11 @@ void Plots::updateHitRate(int total_events) {
 				p_tdc_hit_rate[tdc][chnl]
 			);
 
+			double tmp_yrange = p_tdc_hit_rate_graph[tdc]->GetHistogram()->GetMaximum();
+			p_tdc_hit_rate_graph[tdc]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
+			p_tdc_hit_rate_graph[tdc]->GetHistogram()->SetMinimum(0);
+			p_tdc_hit_rate_graph[tdc]->GetXaxis()->SetLimits(-0.5, static_cast<double>(Geometry::MAX_TDC_CHANNEL) - 0.5);
+
 		}
 
 	}
@@ -275,8 +276,6 @@ void Plots::binEvent(const Event &e) {
 	// TODO: Event display
 	// TODO: Go through DAQ.cpp and find everything we need to include
 	// TODO: Make sure all plots print
-	// TODO: Clean up and redesign UI
-	// TODO: Noise rate display
 
 	for(const Hit &hit : e.Hits()) {
 
@@ -371,7 +370,8 @@ void Plots::clear() {
 			graph->SetPoint(i, i, 0.);
 			double tmp_yrange = graph->GetHistogram()->GetMaximum();
 			graph->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
-
+			graph->GetHistogram()->SetMinimum(0);
+			graph->GetXaxis()->SetLimits(-0.5, static_cast<double>(Geometry::MAX_TDC_CHANNEL) - 0.5);
 
 		}
 

@@ -185,6 +185,10 @@ void DataRun::startRun() {
 
         cout << endl << "Starting run: " << runLabel << endl; 
 
+        Muon::UI::UILock.lock();
+        UISignalBus::getInstance().onRunStart();
+        Muon::UI::UILock.unlock();
+
         // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
         //       not include hours/minutes/seconds
         // NOTE: This assumes the DAT filenames are formatted as "run_YYYYMMDD_HHMMSS.dat"
@@ -232,6 +236,10 @@ void DataRun::startRun() {
         DAQState state = DAQState::getState();
         runStarted = false;
         state.commit();
+
+        Muon::UI::UILock.lock();
+        UISignalBus::getInstance().onRunStop();
+        Muon::UI::UILock.unlock();
 
         cout << "Run finished!" << endl;
 

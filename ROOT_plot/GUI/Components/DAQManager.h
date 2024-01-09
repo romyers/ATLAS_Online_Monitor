@@ -54,15 +54,23 @@ public:
 
     // METHODS
 
-    void disableStartButton();
-    void enableStartButton ();
+    void disable();
 
-    void disableStopButton ();
-    void enableStopButton  ();
+    void disableStartButton    ();
+    void enableStartButton     ();
 
-    void handlePressStart();
-    void handlePressStop();
-    void handlePressExit();
+    void disableStopButton     ();
+    void enableStopButton      ();
+
+    void disableExitButton     ();
+    void enableExitButton      ();
+
+    void disableDataSourcePanel();
+    void enableDataSourcePanel ();
+
+    void handlePressStart      ();
+    void handlePressStop       ();
+    void handlePressExit       ();
 
     void setDeviceSelectorOptions(const std::vector<std::string> &entries);
     void setDeviceSelectorEntry  (const std::string &entry);

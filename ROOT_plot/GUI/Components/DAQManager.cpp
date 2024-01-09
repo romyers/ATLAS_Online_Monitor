@@ -180,11 +180,26 @@ void DAQManager::update(const UpdatePacket &packet) {
     
 }
 
+void DAQManager::disable() {
+
+    disableStartButton    ();
+    disableStopButton     ();
+    disableExitButton     ();
+    disableDataSourcePanel();
+
+}
+
 void DAQManager::disableStartButton() { startButton->SetEnabled(false); }
 void DAQManager::enableStartButton () { startButton->SetEnabled(true ); }
 
 void DAQManager::disableStopButton () { stopButton->SetEnabled (false); }
 void DAQManager::enableStopButton  () { stopButton->SetEnabled (true ); }
+
+void DAQManager::disableExitButton () { exitButton->SetEnabled (false); }
+void DAQManager::enableExitButton  () { exitButton->SetEnabled (true ); }
+
+void DAQManager::disableDataSourcePanel() { dataSourcePanel->disable(); }
+void DAQManager::enableDataSourcePanel () { dataSourcePanel->enable (); }
 
 // TODO: Use these
 void DAQManager::pressedStart() { Emit("pressedStart()"); }
@@ -193,21 +208,11 @@ void DAQManager::pressedExit () { Emit("pressedExit()" ); }
 
 void DAQManager::handlePressStart() {
 
-    disableStartButton();
-    enableStopButton();
-
-    dataSourcePanel->disable();
-
     pressedStart();
 
 }
 
 void DAQManager::handlePressStop() {
-
-    disableStopButton();
-    enableStartButton();
-
-    dataSourcePanel->enable();
 
     pressedStop();
 

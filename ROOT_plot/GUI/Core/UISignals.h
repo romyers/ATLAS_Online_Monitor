@@ -25,7 +25,9 @@ public:
     void operator=(const UISignalBus &other) = delete;
 
     // Called when the decoder finishes processing data
-    void onUpdate(); // *SIGNAL*
+    void onUpdate  (); // *SIGNAL*
+    void onRunStart(); // *SIGNAL*
+    void onRunStop (); // *SIGNAL*
 
     static UISignalBus &getInstance();
 

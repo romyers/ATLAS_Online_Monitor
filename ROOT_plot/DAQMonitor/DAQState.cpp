@@ -37,9 +37,15 @@ bool DAQState::load(const string &filename) {
 
 }
 
-bool DAQState::save(const string &filename) {
+void DAQState::setSaveFile(const string &filename) {
 
-	ofstream stateDest(filename);
+	saveFile = filename;
+
+}
+
+bool DAQState::save() {
+
+	ofstream stateDest(saveFile);
 	if(!stateDest.is_open()) {
 
 		return false;

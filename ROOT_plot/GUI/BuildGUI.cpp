@@ -2,8 +2,6 @@
 
 #include "Core/UILoop.h"
 
-#include <iostream>
-
 using namespace std;
 using namespace Muon;
 
