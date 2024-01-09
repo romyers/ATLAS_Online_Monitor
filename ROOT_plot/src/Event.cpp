@@ -1,5 +1,7 @@
 #include "Event.h"
 
+#include <algorithm>
+
 #include "src/EventID.h"
 
 using namespace std;
@@ -107,7 +109,32 @@ int             Event::ID              () const { return Header().HeaderEID(); }
 Signal          Event::Header          () const { return hd                  ; }
 Signal          Event::Trailer         () const { return trl                 ; }
 
-std::vector<Signal>  Event::Signals         () const { return sigs                ; }
+std::vector<Signal> Event::Signals() const { 
+
+  vector<Signal> result = sigs;
+
+  // Filter out TDC headers/errors/trailers
+  result.erase(
+
+    remove_if(result.begin(), result.end(), [](const Signal &sig) {
+
+      if(sig.isTDCHeader ()) return true;
+      if(sig.isTDCTrailer()) return true;
+      if(sig.isTDCError  ()) return true;
+
+      return false;
+
+    }), 
+
+    result.end()
+
+  );
+
+  return result; 
+
+}
+
+std::vector<Signal> Event::Signals_All      () const { return sigs                ; }
 std::vector<Hit>     Event::Hits            () const { return hits                ; }
 std::vector<Cluster> Event::Clusters        () const { return clusters            ; }
 std::vector<Track>   Event::Tracks          () const { return tracks              ; }

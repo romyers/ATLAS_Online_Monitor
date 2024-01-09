@@ -103,12 +103,14 @@ set(p2Decode_HEADERS
 	Decoder/src/Decoder.h
 	Decoder/src/EventDecoding.h
 	Decoder/src/SignalDecoding.h
+	Decoder/src/EventBufferValidator.h
 )
 
 set(p2Decode_SOURCES
 	Decoder/src/Decoder.cpp
 	Decoder/src/EventDecoding.cpp
 	Decoder/src/SignalDecoding.cpp
+	Decoder/src/EventBufferValidator.cpp
 )
 
 set(monitor_HEADERS

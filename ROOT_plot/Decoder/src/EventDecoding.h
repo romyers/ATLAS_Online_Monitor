@@ -19,11 +19,19 @@
  * Creates an event from the given signals.
  * 
  * @param signals A vector of Signals representing exactly one well-formed
- * event.
+ * event. A vector of Signals representing a well-formed event must respect
+ * the following invariants:
+ *   -- The first signal in the vector must be an event header
+ *   -- The last signal in the vector must be an event trailer
+ *   -- There must be no other event headers or trailers
+ * Any vector that does not adhere to these invariants will fail validation,
+ * so as long as any event produced with assembleEvent is validated using
+ * validateEventErrors() and validateEventWarnings(), results should be
+ * well-defined.
  * 
  * @return The assembled event.
  */
-Muon::Event assembleEvent(std::vector<Muon::Signal>  signals);
+Muon::Event assembleEvent(std::vector<Muon::Signal> signals);
 
 /**
  * Checks if an event has no errors that require the event to be discarded.

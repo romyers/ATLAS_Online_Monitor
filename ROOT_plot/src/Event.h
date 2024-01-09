@@ -36,7 +36,20 @@ namespace Muon {
     int                  ID              () const;
     Signal               Header          () const;
     Signal               Trailer         () const;
+
+    /**
+     * Accesses all event signals that are not TDC headers, trailers, or 
+     * errors.
+     */
     std::vector<Signal>  Signals         () const;
+
+    /**
+     * Accesses all event signals, including TDC headers, trailers, and errors.
+     * 
+     * NOTE: New for phase 2.
+     */
+    std::vector<Signal>  Signals_All     () const;
+
     std::vector<Hit>     Hits            () const;
     std::vector<Cluster> Clusters        () const;
     std::vector<Track>   Tracks          () const;

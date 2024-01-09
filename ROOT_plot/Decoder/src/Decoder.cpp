@@ -31,12 +31,6 @@ bool hasNewData(istream &in) {
 
 DecodeData Decoder::decodeStream(istream &in) {
 
-	// TODO: I'd like to find a way to handle this inside the signal validation
-	//       logic
-	// Tracks the count of TDC error signals in each event.
-	int errorWords = 0;
-	ErrorLogger &logger = ErrorLogger::getInstance();
-
 	vector<Event> eventBuffer;
 
 	DecodeData result;
@@ -65,9 +59,6 @@ DecodeData Decoder::decodeStream(istream &in) {
 
 		validateSignalWarnings(sig);
 
-		// If it's a TDC error, increment errorWords
-		if(sig.isTDCError()) ++errorWords;
-
 		// and, if it completes an event,
 		if(isEvent(signalBuffer)) {
 
@@ -91,26 +82,6 @@ DecodeData Decoder::decodeStream(istream &in) {
 
 			validateEventWarnings(e);
 
-			// Validate the event hit count.
-			// TODO: I'd really like to put this in validateEventWarnings
-			if(e.Trailer().HitCount() != e.Signals().size() + errorWords) {
-
-				logger.logError(
-					string("WARNING -- Hit count in trailer = ")
-					+ to_string(e.Trailer().HitCount())
-					+ ", real hit count = "
-					+ to_string(e.Signals().size())
-					+ ", error word count = "
-					+ to_string(errorWords),
-					"event",
-					WARNING
-				);
-
-			}
-
-			// Reset the error word count
-			errorWords = 0;
-
 		}
 
 	}
@@ -119,6 +90,9 @@ DecodeData Decoder::decodeStream(istream &in) {
 
 	// count the events,
 	result.eventCount = eventBuffer.size();
+
+	// validate the buffer,
+	eventBufferValidator.validate(eventBuffer);
 
 	// and for each event
 	for(Event &e : eventBuffer) {
@@ -133,38 +107,6 @@ DecodeData Decoder::decodeStream(istream &in) {
 			result.nonemptyEvents.push_back(e);
 
 		}
-
-		// TODO: Try to move this validation elsewhere -- e.g. validate the 
-		//       event buffer in a function. Perhaps make an 'eventBufferValidator'
-		//       class that stores the latest event ID in place of the class member.
-		// Validate the event ID to check for lost or repeated events.
-		if(latestEventID != -1) {
-
-			if(e.ID() == latestEventID) {
-
-				logger.logError(
-					string("WARNING -- Repeated event! Event ID=")
-					+ to_string(e.ID()),
-					"event",
-					WARNING
-				);
-
-			} else if(e.ID() != (latestEventID + 1) % 4096) {
-
-				logger.logError(
-					string("WARNING -- Event lost! Current=")
-					+ to_string(e.ID())
-					+ ", Previous="
-					+ to_string(latestEventID),
-					"event",
-					WARNING
-				);
-
-			}
-
-		}
-
-		latestEventID = e.ID();
 
 	}
 

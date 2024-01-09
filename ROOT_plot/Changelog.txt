@@ -88,12 +88,45 @@
 - Make sure that TDC header, trailer, and error signals are correctly handled.
   DecodeOffline.cpp does not package them into an event.
 - Clean up my hacky fix for error word counting in Decoder.cpp
+- Address any part of the code that might not be portable. We already handled
+  endianness. But let's look at e.g. signal handling and directory 
+  construction.
+- Make sure the program creates a data folder if none exists.
+- Try to move log file setup to somewhere that makes more sense.
+- Add a settings option for the directory in which to save dat and log files.
+- Test cases
 
 ## FIXME
 
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
+
+-------------------------------------------------------------------------------
+
+## 2024-01-09
+
+## Added
+
+- Added EventBufferValidator.h/.cpp to provide validation for event IDs.
+- Added validation to ensure that TDC headers within an event have
+  matching event IDs.
+
+## Changed
+
+- TDC Error signals are no longer excluded from their events. Events now 
+  contain all associated TDC headers, trailers, and errors.
+- TDC headers and trailers are no longer filtered out in the hit finding step.
+  Events now provide two signal accessors. The first, Event::Signals(), now has
+  the legacy behavior, where TDC header, trailer, and error signals are not 
+  included. The second, Event::Signals_All(), includes all signals associated 
+  with the event, including TDC header, trailer, and error signals.
+- Moved log file setup into DataCaptureOperations.cpp. Log files will no longer
+  be saved for DAT file sources.
+
+## Fixed
+
+- Log files were erroneously saved in a folder other than the main data folder.
 
 -------------------------------------------------------------------------------
 

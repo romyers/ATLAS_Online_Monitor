@@ -1,11 +1,9 @@
 #include "DataRunOperations.h"
 
 #include <string>
-#include <fstream>
 #include <thread>
+#include <fstream>
 #include <sstream>
-
-#include <sys/stat.h>
 
 #include "TObjArray.h"
 #include "TObjString.h"
@@ -39,10 +37,6 @@ bool runStarted = false;
 
 void   initializeDataStream(LockableStream &dataStream   );
 string getCurrentTimestamp (const string   &format       );
-
-bool   directoryExists     (const string   &path         );
-bool   createDirectory     (const string   &path         );
-void   createIfMissing     (const string   &directoryName);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -103,7 +97,6 @@ void DataRun::startRun() {
     //         -- Also, semantically, this sorta makes us want to 
     //            let the error logger not be a singleton anymore.
     ErrorLogger::getInstance().clear();
-    ErrorLogger::getInstance().disconnectStreams();
 
     DAQState state = DAQState::getState();
 
@@ -202,28 +195,6 @@ void DataRun::startRun() {
         )->String().Atoi();
         Geometry::getInstance().SetRunN(runN);
 
-        createIfMissing("./data");
-
-        string logFile("data/");
-        logFile += runLabel;
-        logFile += ".log";
-
-        ofstream logWriter(logFile);
-        if(!logWriter.is_open()) {
-
-            ErrorLogger::getInstance().logError(
-                string("Failed to open log file: ") + logFile,
-                "errorLogging",
-                FATAL
-            );
-            cout << "Aborted run!" << endl;
-
-            // TODO: This won't handle stopping the run properly.
-            throw logic_error("Data capture could not open logging .log file");
-
-        }
-        ErrorLogger::getInstance().addOutputStream(logWriter);
-
         LockableStream dataStream;
         initializeDataStream(dataStream);
 
@@ -262,8 +233,6 @@ void DataRun::startRun() {
         runStarted = false;
         state.commit();
 
-        logWriter.close();
-
         cout << "Run finished!" << endl;
 
         // TODO: Yet another hard-to-find place we do this.
@@ -288,39 +257,5 @@ string getCurrentTimestamp(const string &format) {
     strftime(formatBuffer, 40, format.data(), timeinfo);
 
     return string(formatBuffer);
-
-}
-
-bool directoryExists(const string &path) {
-
-    struct stat sb;
-
-    if(stat(path.data(), &sb) == 0) {
-
-        return true;
-
-    }
-
-    return false;
-
-}
-
-bool createDirectory(const string &path) {
-
-    if(mkdir(path.data(), 0777) == 0) return true;
-
-    return false;
-
-}
-
-void createIfMissing(const string &directoryName) {
-
-    if(!directoryExists(directoryName)) {
-
-        createDirectory(directoryName);
-
-        cout << "Created output directory: " << directoryName << endl;
-
-    }
 
 }

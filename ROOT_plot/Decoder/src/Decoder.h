@@ -12,6 +12,8 @@
 #include <vector>
 #include <iostream>
 
+#include "EventBufferValidator.h"
+
 #include "src/Signal.h"
 #include "src/Event.h"
 
@@ -73,7 +75,7 @@ public:
 
 private:
 
-	int latestEventID = -1;
+	EventBufferValidator eventBufferValidator;
 
 	std::vector<Muon::Signal> signalBuffer;
 

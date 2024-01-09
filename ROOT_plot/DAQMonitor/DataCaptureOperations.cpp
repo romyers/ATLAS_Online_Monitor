@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include <sys/stat.h>
+
 #include "Logging/ErrorLogger.h"
 
 #include "DAQState.h"
@@ -23,6 +25,10 @@ using namespace Muon;
 bool isEcapRunning = false;
 
 void initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
+
+bool   directoryExists(const string   &path         );
+bool   createDirectory(const string   &path         );
+void   createIfMissing(const string   &directoryName);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -70,8 +76,13 @@ void Muon::DataCapture::startDataCapture(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
+    createIfMissing("../data");
+
     string outputFile("../data/");
     outputFile += runLabel;
+
+    string logFile(outputFile + ".log");
+
     outputFile += ".dat";
 
     ofstream fileWriter(outputFile);
@@ -87,6 +98,22 @@ void Muon::DataCapture::startDataCapture(
         throw logic_error("Data capture could not open output .dat file");
 
     }
+
+    ofstream logWriter(logFile);
+    if(!logWriter.is_open()) {
+
+        ErrorLogger::getInstance().logError(
+            string("Failed to open log file: ") + logFile,
+            "errorLogging",
+            FATAL
+        );
+        cout << "Aborted run!" << endl;
+
+        // TODO: This won't handle stopping the run properly.
+        throw logic_error("Data capture could not open logging .log file");
+
+    }
+    ErrorLogger::getInstance().addOutputStream(logWriter);
 
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
@@ -135,7 +162,10 @@ void Muon::DataCapture::startDataCapture(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
+    ErrorLogger::getInstance().disconnectStreams();
+
     fileWriter.close();
+    logWriter.close ();
 
     cout << "Suspended data capture." << endl;
     cout << data.packetCount << " packets recorded." << endl;
@@ -166,6 +196,40 @@ void initializePCapSessionHandler(
                 + state.persistentState.inputDevicename 
                 + "\". Does the device exist?")
         );
+
+    }
+
+}
+
+bool directoryExists(const string &path) {
+
+    struct stat sb;
+
+    if(stat(path.data(), &sb) == 0) {
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+bool createDirectory(const string &path) {
+
+    if(mkdir(path.data(), 0777) == 0) return true;
+
+    return false;
+
+}
+
+void createIfMissing(const string &directoryName) {
+
+    if(!directoryExists(directoryName)) {
+
+        createDirectory(directoryName);
+
+        cout << "Created output directory: " << directoryName << endl;
 
     }
 
