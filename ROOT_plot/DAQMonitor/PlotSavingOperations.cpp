@@ -13,7 +13,10 @@
 
 #include "DataModel/DAQData.h"
 
+#include "ProgramControl/Threads.h"
+
 #include "GUI/Components/ProgressBar.h"
+#include "GUI/Core/UILock.h"
 
 using namespace std;
 
@@ -25,156 +28,70 @@ bool pathDirectoryExists(const string &path);
 
 void Muon::PlotSaving::savePlots() {
 
-    // TODO: We might need to protect this from data race conditions
-    static bool isSaving = false;
+    ProgramFlow::threadLock.lock();
 
-    if(isSaving) {
+    ProgramFlow::threads.emplace_back(thread([]() {
 
-        cout << "Please wait for the current snapshot to be saved before "
-             << "saving again." << endl;
+        // TODO: We might need to protect this from data race conditions
+        static bool isSaving = false;
 
-        return;
+        if(isSaving) {
 
-    }
+            cout << "Please wait for the current snapshot to be saved before "
+                 << "saving again." << endl;
 
-    isSaving = true;
-
-    cout << "Saving snapshot..." << endl;
-
-    makeDirectory("../output");
-    cout << "Created output directory." << endl;
-
-    State::DAQState state = State::DAQState::getState();
-    string outputDirName = string("../output/") + state.tempState.runLabel;
-
-    // If the directory already exists, save a second directory.
-    int i = 1;
-    string temp = outputDirName;
-    while(pathDirectoryExists(temp)) {
-
-        temp = outputDirName + " (" + to_string(i) + ")";
-        ++i;
-
-    }
-    outputDirName = temp;
-
-    makeDirectory(outputDirName);
-    cout << "Created directory " << outputDirName << endl;
-
-    // TODO: We need to save the root output too -- see DecodeOffline.cpp:253
-
-    // TODO: Figure out behavior for saving the same run twice
-    //         -- I think it should overwrite the previous save
-
-    // Plot saving should happen in a separate thread, while still updating the
-    // progress bar. Otherwise we block the decode thread.
-
-    DAQData &data = DAQData::getInstance();
-
-    data.lock();
-    Plots snapshot(data.plots);
-    data.unlock();
-
-    // NOTE: We can speed things up a lot by setting gROOT->SetBatch(), but
-    //       this also breaks all the graphics. Useful if saves only happen
-    //       on exit, but not otherwise. Setting outputCanvas->SetBatch()
-    //       has no effect on performance.
-
-    TRootEmbeddedCanvas *outputCanvas = new TRootEmbeddedCanvas("Output Canvas", gClient->GetRoot());
-
-    // NOTE: We avoid displaying the window by omitting the calls to 
-    //       MapSubwindows() and MapWindow()
-
-    outputCanvas->SetWindowName("Output Preview");
-    outputCanvas->Resize(700, 700);
-    outputCanvas->GetCanvas()->cd();
-
-    ProgressBar *progressBar = new ProgressBar(gClient->GetRoot());
-
-    progressBar->SetWindowName("Save Progress");
-    progressBar->MapSubwindows();
-    progressBar->Resize(progressBar->GetDefaultSize());
-    progressBar->MapWindow();
-
-    int activeTDCs = 0;
-    int activeChannels = 0;
-
-    for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
-
-        if(Geometry::getInstance().IsActiveTDC(tdc)) {
-
-            ++activeTDCs;
+            return;
 
         }
 
-        for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+        isSaving = true;
 
-            if(
-                Geometry::getInstance().IsActiveTDCChannel(tdc, chnl) || 
-                (tdc == Geometry::getInstance().TRIGGER_MEZZ)
-            ) {
+        cout << "Saving snapshot..." << endl;
 
-                ++activeChannels;
+        makeDirectory("../output");
+        cout << "Created output directory." << endl;
+
+        State::DAQState state = State::DAQState::getState();
+        string outputDirName = string("../output/") + state.tempState.runLabel;
+
+        // If the directory already exists, save a second directory.
+        int i = 1;
+        string temp = outputDirName;
+        while(pathDirectoryExists(temp)) {
+
+            temp = outputDirName + " (" + to_string(i) + ")";
+            ++i;
+
+        }
+        outputDirName = temp;
+
+        makeDirectory(outputDirName);
+        cout << "Created directory " << outputDirName << endl;
+
+        // TODO: We need to save the root output too -- see DecodeOffline.cpp:253
+
+        // TODO: Figure out behavior for saving the same run twice
+        //         -- I think it should overwrite the previous save
+
+        // Plot saving should happen in a separate thread, while still updating the
+        // progress bar. Otherwise we block the decode thread.
+
+        DAQData &data = DAQData::getInstance();
+
+        data.lock();
+        Plots snapshot(data.plots);
+        data.unlock();
+
+        int activeTDCs = 0;
+        int activeChannels = 0;
+
+        for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
+
+            if(Geometry::getInstance().IsActiveTDC(tdc)) {
+
+                ++activeTDCs;
 
             }
-
-        }
-
-    }
-
-    // Each TDC makes a noise plot, a tdc overview plot, and an adc overview plot.
-    // Each channel makes an adc_time plot, a tdc_time plot, and a tdc_time_corrected
-    // plot.
-    float incr = 100. / (3 * activeTDCs + 3 * activeChannels);
-
-    for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
-
-        if(Geometry::getInstance().IsActiveTDC(tdc)) {
-
-            string dirName = outputDirName + "/NoiseRate";
-
-            makeDirectory(dirName);
-
-            cout << "Created directory " << dirName << endl;
-
-            string filename = string("tdc_") + to_string(tdc) + string("_hit_rate.png");
-
-            snapshot.p_tdc_hit_rate_graph[tdc]->Draw("AB");
-            outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
-
-            cout << "Saved TDC " << tdc << " NoiseRate plot." << endl;
-
-            progressBar->increment(incr);
-
-            dirName = outputDirName
-                + "/TDC_" 
-                + to_string(tdc) 
-                + "_of_" 
-                + to_string(Geometry::MAX_TDC) 
-                + "_Time_Spectrum";
-
-            makeDirectory(dirName);
-
-            cout << "Created directory " << dirName << endl;
-
-            // TODO: Consider this implementation:
-            //       https://root.cern/doc/v608/pad2png_8C.html
-
-            snapshot.p_tdc_tdc_time_corrected[tdc]->Draw("colz");
-            filename = string("tdc_") + tdc + "_tdc_time_spectrum_corrected.png";
-            outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
-
-            cout << "Saved TDC " << tdc << "TDC overview plot." << endl;
-
-            progressBar->increment(incr);
-
-            snapshot.p_tdc_adc_time[tdc]->Draw("colz");
-            filename = string("tdc_") + tdc + "_adc_time_spectrum.png";
-            outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
-
-            cout << "Saved TDC " << tdc << "ADC overview plot." << endl;
-
-            progressBar->increment(incr);
 
             for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
 
@@ -183,40 +100,174 @@ void Muon::PlotSaving::savePlots() {
                     (tdc == Geometry::getInstance().TRIGGER_MEZZ)
                 ) {
 
-                    snapshot.p_tdc_time_corrected[tdc][chnl]->Draw("colz");
-                    filename = string("tdc_") + tdc + "__channel_" + chnl + "__tdc_time_spectrum_corrected.png";
-                    outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
-
-                    progressBar->increment(incr);
-
-                    snapshot.p_tdc_time[tdc][chnl]->Draw("colz");
-                    filename = string("tdc_") + tdc + "__channel_" + chnl + "__tdc_time_spectrum.png";
-                    outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
-
-                    progressBar->increment(incr);
-
-                    snapshot.p_adc_time[tdc][chnl]->Draw("colz");
-                    filename = string("tdc_") + tdc + "__channel_" + chnl + "__adc_time_spectrum.png";
-                    outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
-
-                    progressBar->increment(incr);
+                    ++activeChannels;
 
                 }
 
             }
 
-            cout << "Saved TDC " << tdc << " channel plots." << endl;
+        }
+
+        // Each TDC makes a noise plot, a tdc overview plot, and an adc overview plot.
+        // Each channel makes an adc_time plot, a tdc_time plot, and a tdc_time_corrected
+        // plot.
+        float incr = 100. / (3 * activeTDCs + 3 * activeChannels);
+
+        // NOTE: We can speed things up a lot by setting gROOT->SetBatch(), but
+        //       this also breaks all the graphics. Useful if saves only happen
+        //       on exit, but not otherwise. Setting outputCanvas->SetBatch()
+        //       has no effect on performance.
+
+        TRootEmbeddedCanvas *outputCanvas = new TRootEmbeddedCanvas("Output Canvas", gClient->GetRoot());
+
+        // NOTE: We avoid displaying the window by omitting the calls to 
+        //       MapSubwindows() and MapWindow()
+
+        outputCanvas->SetWindowName("Output Preview");
+        outputCanvas->MapSubwindows();
+        outputCanvas->Resize(700, 700);
+        outputCanvas->MapWindow();
+        // outputCanvas->GetCanvas()->cd();
+
+        ProgressBar *progressBar = new ProgressBar(gClient->GetRoot());
+
+        progressBar->SetWindowName("Save Progress");
+        progressBar->MapSubwindows();
+        progressBar->Resize(progressBar->GetDefaultSize());
+        progressBar->MapWindow();
+
+        TVirtualPad *prevPad;
+
+        for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
+
+            if(Geometry::getInstance().IsActiveTDC(tdc)) {
+
+                string dirName = outputDirName + "/NoiseRate";
+
+                makeDirectory(dirName);
+
+                cout << "Created directory " << dirName << endl;
+
+                string filename = string("tdc_") + to_string(tdc) + string("_hit_rate.png");
+
+                UI::UILock.lock();
+                prevPad = gPad;
+                outputCanvas->GetCanvas()->cd();
+                snapshot.p_tdc_hit_rate_graph[tdc]->Draw("AB");
+                prevPad->cd();
+                UI::UILock.unlock();
+
+                outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                cout << "Saved TDC " << tdc << " NoiseRate plot." << endl;
+
+                progressBar->increment(incr);
+
+                dirName = outputDirName
+                    + "/TDC_" 
+                    + to_string(tdc) 
+                    + "_of_" 
+                    + to_string(Geometry::MAX_TDC) 
+                    + "_Time_Spectrum";
+
+                makeDirectory(dirName);
+
+                cout << "Created directory " << dirName << endl;
+
+                // TODO: Consider this implementation:
+                //       https://root.cern/doc/v608/pad2png_8C.html
+
+                UI::UILock.lock();
+                prevPad = gPad;
+                outputCanvas->GetCanvas()->cd();
+                snapshot.p_tdc_tdc_time_corrected[tdc]->Draw("colz");
+                prevPad->cd();
+                UI::UILock.unlock();
+
+                filename = string("tdc_") + tdc + "_tdc_time_spectrum_corrected.png";
+                outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                cout << "Saved TDC " << tdc << "TDC overview plot." << endl;
+
+                progressBar->increment(incr);
+
+                UI::UILock.lock();
+                prevPad = gPad;
+                outputCanvas->GetCanvas()->cd();
+                snapshot.p_tdc_adc_time[tdc]->Draw("colz");
+                prevPad->cd();
+                UI::UILock.unlock();
+
+                filename = string("tdc_") + tdc + "_adc_time_spectrum.png";
+                outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                cout << "Saved TDC " << tdc << "ADC overview plot." << endl;
+
+                progressBar->increment(incr);
+
+                for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+
+                    if(
+                        Geometry::getInstance().IsActiveTDCChannel(tdc, chnl) || 
+                        (tdc == Geometry::getInstance().TRIGGER_MEZZ)
+                    ) {
+
+                        UI::UILock.lock();
+                        prevPad = gPad;
+                        outputCanvas->GetCanvas()->cd();
+                        snapshot.p_tdc_time_corrected[tdc][chnl]->Draw("colz");
+                        prevPad->cd();
+                        UI::UILock.unlock();
+
+                        filename = string("tdc_") + tdc + "__channel_" + chnl + "__tdc_time_spectrum_corrected.png";
+                        outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                        progressBar->increment(incr);
+
+                        UI::UILock.lock();
+                        prevPad = gPad;
+                        outputCanvas->GetCanvas()->cd();
+                        snapshot.p_tdc_time[tdc][chnl]->Draw("colz");
+                        prevPad->cd();
+                        UI::UILock.unlock();
+
+                        filename = string("tdc_") + tdc + "__channel_" + chnl + "__tdc_time_spectrum.png";
+                        outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                        progressBar->increment(incr);
+
+                        UI::UILock.lock();
+                        prevPad = gPad;
+                        outputCanvas->GetCanvas()->cd();
+                        snapshot.p_adc_time[tdc][chnl]->Draw("colz");
+                        prevPad->cd();
+                        UI::UILock.unlock();
+
+                        filename = string("tdc_") + tdc + "__channel_" + chnl + "__adc_time_spectrum.png";
+                        outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                        progressBar->increment(incr);
+
+                    }
+
+                }
+
+                cout << "Saved TDC " << tdc << " channel plots." << endl;
+
+            }
 
         }
 
-    }
+        delete outputCanvas;
+        delete progressBar;
 
-    delete outputCanvas;
-    delete progressBar;
+        cout << "Plots saved!" << endl;
 
-    cout << "Plots saved!" << endl;
+        isSaving = false;
 
-    isSaving = false;
+    }));
+
+    ProgramFlow::threadLock.unlock();
 
 }
 
