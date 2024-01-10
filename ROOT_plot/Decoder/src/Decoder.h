@@ -60,6 +60,14 @@ class Decoder {
 
 public:
 
+	/**
+	 * Constructs a Decoder.
+	 * 
+	 * @param maxSignalCount The maximum number of signals that may be
+	 * processed during one call to Decoder::decodeStream. If 
+	 * maxSignalCount is 0 or negative, no limit will be imposed, and
+	 * Decoder::decodeStream will process all available signals.
+	 */
 	Decoder(int maxSignalCount);
 
 	/**

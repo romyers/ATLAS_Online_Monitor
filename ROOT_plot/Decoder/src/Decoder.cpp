@@ -39,10 +39,10 @@ DecodeData Decoder::decodeStream(istream &in) {
 		// Abort the loop if we have at least one finished event, but have too
 		// many signals. Limits memory footprint for applications where all 
 		// processed events do not need to be preserved.
-		if(!eventBuffer.empty() && signalCount > maxSignalCount) {
-
-			break;
-
+		if(maxSignalCount > 0) {
+			if(!eventBuffer.empty() && signalCount > maxSignalCount) {
+				break;
+			}
 		}
 
 		// extract a signal,
