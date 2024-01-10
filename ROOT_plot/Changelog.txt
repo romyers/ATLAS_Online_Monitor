@@ -97,6 +97,10 @@
 
 -------------------------------------------------------------------------------
 
+[CURRENTLY NOT FUNCTIONAL]
+
+-------------------------------------------------------------------------------
+
 ## 2024-01-10
 
 ## Changed
@@ -106,6 +110,7 @@
 - Saving a snapshot for a run that already has a saved snapshot is now
   handled correctly. A distinct directory will be made for the second
   snapshot.
+- Began work on saving plots in a separate thread.
 
 -------------------------------------------------------------------------------
 
