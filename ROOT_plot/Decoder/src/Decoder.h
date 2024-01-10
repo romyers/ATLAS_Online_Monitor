@@ -68,7 +68,7 @@ public:
 	 * maxSignalCount is 0 or negative, no limit will be imposed, and
 	 * Decoder::decodeStream will process all available signals.
 	 */
-	Decoder(int maxSignalCount);
+	Decoder(int maxSignalCount = 0);
 
 	/**
 	 * Reads all integral unread data from the input stream and packs it into a
