@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 	// This must happen to properly initialize Geometry
 	Geometry::getInstance().SetRunN(0);
 
-	Decoder decoder;
+	Decoder decoder(1000);
 
 	DecodeData aggregateData;
 

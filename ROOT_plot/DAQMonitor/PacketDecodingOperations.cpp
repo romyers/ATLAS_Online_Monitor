@@ -49,7 +49,7 @@ void Decode::startDecoding(LockableStream &dataStream, DAQData &data) {
     UISignalBus::getInstance().onUpdate();
     Muon::UI::UILock.unlock();
 
-    Decoder decoder;
+    Decoder decoder(300000);
 
     isDecodeRunning = true;
 

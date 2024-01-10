@@ -60,7 +60,7 @@ class Decoder {
 
 public:
 
-	Decoder() = default;
+	Decoder(int maxSignalCount);
 
 	/**
 	 * Reads all integral unread data from the input stream and packs it into a
@@ -74,6 +74,8 @@ public:
 	DecodeData decodeStream(std::istream &in);
 
 private:
+
+	int maxSignalCount;
 
 	EventBufferValidator eventBufferValidator;
 

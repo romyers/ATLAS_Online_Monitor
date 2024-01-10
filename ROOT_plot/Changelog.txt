@@ -1,25 +1,4 @@
-## Known issues
-
-- Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
-  the GUI.
-- Plot saving does not interact well with TDC and ADC plot windows opened 
-  after the save is started.
-- Plot saving blocks the decoder.
-- Closing a progress bar window causes a segfault.
-- PlotSavingOperations still depends on progress bar view.
-- Plot updates block the decode thread. This doesn't matter much, but it would
-  be nice if it didn't happen.
-- Plot updates sometimes occur in the decode thread (e.g. when new data comes
-  in) and sometimes occur in the UI thread (e.g. when the plot is first 
-  opened). This is a bit messy. See about making all plot updates happen in the
-  same thread.
-- UI blocks during plot updates when plots are open.
-- The noise rate display graphics have some odd artifacts.
-- Sometimes we end up with more events than packets. I'm not sure if this is
-  valid behavior.
-- Saving two snapshots from the same run may overwrite the old snapshot.
-    -- Consider saving to [TIMESTAMP](2) if [TIMESTAMP] already exists.
-
+ 
 ## TODO:
 
 - Display the .dat save file to the user when starting a run.
@@ -84,6 +63,15 @@
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
+
+-------------------------------------------------------------------------------
+
+## 2024-01-10
+
+## Changed
+
+- Limited the maximum number of signals that can be processed in one iteration
+  of the decoder.
 
 -------------------------------------------------------------------------------
 

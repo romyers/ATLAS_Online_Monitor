@@ -23,11 +23,7 @@ bool isEvent(const vector<Signal> &signals);
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-bool hasNewData(istream &in) {
-
-	return hasSignals(in);
-
-}
+Decoder::Decoder(int maxSignalCount) : maxSignalCount(maxSignalCount) {}
 
 DecodeData Decoder::decodeStream(istream &in) {
 
@@ -35,11 +31,23 @@ DecodeData Decoder::decodeStream(istream &in) {
 
 	DecodeData result;
 
+	int signalCount = 0;
+
 	// As long as unread signals exist in the input stream,
 	while(hasSignals(in)) {
 
+		// Abort the loop if we have at least one finished event, but have too
+		// many signals. Limits memory footprint for applications where all 
+		// processed events do not need to be preserved.
+		if(!eventBuffer.empty() && signalCount > maxSignalCount) {
+
+			break;
+
+		}
+
 		// extract a signal,
 		Signal sig = extractSignal(in);
+		++signalCount;
 
 		// validate it
 		if(validateSignalErrors(sig)) {
@@ -122,5 +130,11 @@ bool isEvent(const vector<Signal> &signals) {
 	// As long as the data is well-formed, any signal vector that ends in an
 	// event trailer represents an event.
 	return signals.back().isEventTrailer();
+
+}
+
+bool hasNewData(istream &in) {
+
+	return hasSignals(in);
 
 }
