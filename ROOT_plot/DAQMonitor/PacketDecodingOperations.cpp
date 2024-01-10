@@ -1,167 +1,294 @@
-#include "PacketDecodingOperations.h"
+#include "PlotSavingOperations.h"
 
-using namespace std;
-
-#include <sstream>
 #include <thread>
 
-#include "Decoder/src/Decoder.h"
+#include <sys/stat.h>
 
-#include "GUI/Core/UISignals.h"
-#include "GUI/Core/UILock.h"
+#include "TRootEmbeddedCanvas.h"
+#include "TCanvas.h"
+
+#include "DAQState.h"
 
 #include "src/Geometry.h"
 
-using namespace Muon;
+#include "DataModel/DAQData.h"
 
-/**
- * The approximate rate at which monitor data is refreshed. Note that the
- * monitor will fall short of this rate if it must process too much data
- * at a time.
- */
-const double DATA_REFRESH_RATE = 10.; // Hz
+#include "ProgramControl/Threads.h"
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+#include "GUI/Components/ProgressBar.h"
+#include "GUI/Core/UILock.h"
 
-bool isDecodeRunning = false;
+using namespace std;
 
-void aggregateEventData(const DecodeData &loopData, DAQData &data);
+// TODO: Remove dependency on the progress bar
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+void makeDirectory(const string &path);
 
-void Decode::stopDecoding() {
+bool pathDirectoryExists(const string &path);
 
-    isDecodeRunning = false;
+void Muon::PlotSaving::savePlots() {
+
+    ProgramFlow::threadLock.lock();
+
+    ProgramFlow::threads.emplace_back(thread([]() {
+
+        // TODO: We might need to protect this from data race conditions
+        static bool isSaving = false;
+
+        if(isSaving) {
+
+            cout << "Please wait for the current snapshot to be saved before "
+                 << "saving again." << endl;
+
+            return;
+
+        }
+
+        isSaving = true;
+
+        cout << "Saving snapshot..." << endl;
+
+        makeDirectory("../output");
+        cout << "Created output directory." << endl;
+
+        State::DAQState state = State::DAQState::getState();
+        string outputDirName = string("../output/") + state.tempState.runLabel;
+
+        // If the directory already exists, save a second directory.
+        int i = 1;
+        string temp = outputDirName;
+        while(pathDirectoryExists(temp)) {
+
+            temp = outputDirName + " (" + to_string(i) + ")";
+            ++i;
+
+        }
+        outputDirName = temp;
+
+        makeDirectory(outputDirName);
+        cout << "Created directory " << outputDirName << endl;
+
+        // TODO: We need to save the root output too -- see DecodeOffline.cpp:253
+
+        // TODO: Figure out behavior for saving the same run twice
+        //         -- I think it should overwrite the previous save
+
+        // Plot saving should happen in a separate thread, while still updating the
+        // progress bar. Otherwise we block the decode thread.
+
+        DAQData &data = DAQData::getInstance();
+
+        data.lock();
+        Plots snapshot(data.plots);
+        data.unlock();
+
+        int activeTDCs = 0;
+        int activeChannels = 0;
+
+        for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
+
+            if(Geometry::getInstance().IsActiveTDC(tdc)) {
+
+                ++activeTDCs;
+
+            }
+
+            for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+
+                if(
+                    Geometry::getInstance().IsActiveTDCChannel(tdc, chnl) || 
+                    (tdc == Geometry::getInstance().TRIGGER_MEZZ)
+                ) {
+
+                    ++activeChannels;
+
+                }
+
+            }
+
+        }
+
+        // Each TDC makes a noise plot, a tdc overview plot, and an adc overview plot.
+        // Each channel makes an adc_time plot, a tdc_time plot, and a tdc_time_corrected
+        // plot.
+        float incr = 100. / (3 * activeTDCs + 3 * activeChannels);
+
+        // NOTE: We can speed things up a lot by setting gROOT->SetBatch(), but
+        //       this also breaks all the graphics. Useful if saves only happen
+        //       on exit, but not otherwise. Setting outputCanvas->SetBatch()
+        //       has no effect on performance.
+
+        TRootEmbeddedCanvas *outputCanvas = new TRootEmbeddedCanvas("Output Canvas", gClient->GetRoot());
+
+        // NOTE: We avoid displaying the window by omitting the calls to 
+        //       MapSubwindows() and MapWindow()
+
+        outputCanvas->SetWindowName("Output Preview");
+        outputCanvas->MapSubwindows();
+        outputCanvas->Resize(700, 700);
+        outputCanvas->MapWindow();
+        // outputCanvas->GetCanvas()->cd();
+
+        ProgressBar *progressBar = new ProgressBar(gClient->GetRoot());
+
+        progressBar->SetWindowName("Save Progress");
+        progressBar->MapSubwindows();
+        progressBar->Resize(progressBar->GetDefaultSize());
+        progressBar->MapWindow();
+
+        TVirtualPad *prevPad;
+
+        for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
+
+            if(Geometry::getInstance().IsActiveTDC(tdc)) {
+
+                string dirName = outputDirName + "/NoiseRate";
+
+                makeDirectory(dirName);
+
+                cout << "Created directory " << dirName << endl;
+
+                string filename = string("tdc_") + to_string(tdc) + string("_hit_rate.png");
+
+                UI::UILock.lock();
+                prevPad = gPad;
+                outputCanvas->GetCanvas()->cd();
+                snapshot.p_tdc_hit_rate_graph[tdc]->Draw("AB");
+                prevPad->cd();
+                UI::UILock.unlock();
+
+                outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                cout << "Saved TDC " << tdc << " NoiseRate plot." << endl;
+
+                progressBar->increment(incr);
+
+                dirName = outputDirName
+                    + "/TDC_" 
+                    + to_string(tdc) 
+                    + "_of_" 
+                    + to_string(Geometry::MAX_TDC) 
+                    + "_Time_Spectrum";
+
+                makeDirectory(dirName);
+
+                cout << "Created directory " << dirName << endl;
+
+                // TODO: Consider this implementation:
+                //       https://root.cern/doc/v608/pad2png_8C.html
+
+                UI::UILock.lock();
+                prevPad = gPad;
+                outputCanvas->GetCanvas()->cd();
+                snapshot.p_tdc_tdc_time_corrected[tdc]->Draw("colz");
+                prevPad->cd();
+                UI::UILock.unlock();
+
+                filename = string("tdc_") + tdc + "_tdc_time_spectrum_corrected.png";
+                outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                cout << "Saved TDC " << tdc << "TDC overview plot." << endl;
+
+                progressBar->increment(incr);
+
+                UI::UILock.lock();
+                prevPad = gPad;
+                outputCanvas->GetCanvas()->cd();
+                snapshot.p_tdc_adc_time[tdc]->Draw("colz");
+                prevPad->cd();
+                UI::UILock.unlock();
+
+                filename = string("tdc_") + tdc + "_adc_time_spectrum.png";
+                outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                cout << "Saved TDC " << tdc << "ADC overview plot." << endl;
+
+                progressBar->increment(incr);
+
+                for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+
+                    if(
+                        Geometry::getInstance().IsActiveTDCChannel(tdc, chnl) || 
+                        (tdc == Geometry::getInstance().TRIGGER_MEZZ)
+                    ) {
+
+                        UI::UILock.lock();
+                        prevPad = gPad;
+                        outputCanvas->GetCanvas()->cd();
+                        snapshot.p_tdc_time_corrected[tdc][chnl]->Draw("colz");
+                        prevPad->cd();
+                        UI::UILock.unlock();
+
+                        filename = string("tdc_") + tdc + "__channel_" + chnl + "__tdc_time_spectrum_corrected.png";
+                        outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                        progressBar->increment(incr);
+
+                        UI::UILock.lock();
+                        prevPad = gPad;
+                        outputCanvas->GetCanvas()->cd();
+                        snapshot.p_tdc_time[tdc][chnl]->Draw("colz");
+                        prevPad->cd();
+                        UI::UILock.unlock();
+
+                        filename = string("tdc_") + tdc + "__channel_" + chnl + "__tdc_time_spectrum.png";
+                        outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                        progressBar->increment(incr);
+
+                        UI::UILock.lock();
+                        prevPad = gPad;
+                        outputCanvas->GetCanvas()->cd();
+                        snapshot.p_adc_time[tdc][chnl]->Draw("colz");
+                        prevPad->cd();
+                        UI::UILock.unlock();
+
+                        filename = string("tdc_") + tdc + "__channel_" + chnl + "__adc_time_spectrum.png";
+                        outputCanvas->GetCanvas()->SaveAs((dirName + "/" + filename).data());
+
+                        progressBar->increment(incr);
+
+                    }
+
+                }
+
+                cout << "Saved TDC " << tdc << " channel plots." << endl;
+
+            }
+
+        }
+
+        delete outputCanvas;
+        delete progressBar;
+
+        cout << "Plots saved!" << endl;
+
+        isSaving = false;
+
+    }));
+
+    ProgramFlow::threadLock.unlock();
 
 }
 
-void Decode::startDecoding(LockableStream &dataStream, DAQData &data) {
+void makeDirectory(const string &path) {
 
-    if(isDecodeRunning) return;
-
-    // Update data with everything zeroed out
-    // TODO: Put this with the code that clears DAQData.
-    Muon::UI::UILock.lock();
-    UISignalBus::getInstance().onUpdate();
-    Muon::UI::UILock.unlock();
-
-    Decoder decoder(300000);
-
-    isDecodeRunning = true;
-
-    while(isDecodeRunning) {
-
-        // TODO: Performance analysis. I'd like this loop to run faster
-        //         -- I think binning and drawing is our weak point. Let's
-        //            bin every event before drawing
-
-        // FIXME: In file reading mode, this will read the whole file before
-        //        terminating on ctrl+c
-
-        // NOTE: Checking any independent member of loopData to determine if
-        //       new data has been processed is unreliable. E.g. if there
-        //       are new signals but each one was dropped, loopData's
-        //       event vector will be empty, but the dropped signals
-        //       still need to be recorded.
-        DecodeData loopData;
-        bool hasData = false;
-
-        dataStream.lock();
-        if(hasNewData(*dataStream.stream)) {
-
-            loopData = decoder.decodeStream(*dataStream.stream);
-            hasData = true;
-
-        }
-        dataStream.unlock();
-
-        if(hasData) {
-
-            data.lock();
-            aggregateEventData(loopData, data);
-            data.unlock();
-
-            // TODO: This blocks the decode thread while the plots are 
-            //       updating. Not a big deal, but it would be nice if
-            //       that didn't happen.
-            // TODO: For DAT file sources, this won't run until the entire
-            //       file has been read. Not exactly ideal.
-            Muon::UI::UILock.lock();
-            UISignalBus::getInstance().onUpdate();
-            Muon::UI::UILock.unlock();
-
-        }
-
-        // TODO: This is hacky; fix it. The idea here is to clear processed
-        //       data from the dataStream so we don't produce a de facto
-        //       memory leak. But we'd rather the code not have to care what
-        //       kind of stream dataStream is. Perhaps we make our own kind
-        //       of iostream that clears after read?
-        //       https://stackoverflow.com/questions/63034484/how-to-create-stream-which-handles-both-input-and-output-in-c
-        //       https://stackoverflow.com/questions/12410961/c-connect-output-stream-to-input-stream
-        //       https://stackoverflow.com/questions/26346320/how-to-redirect-input-stream-to-output-stream-in-one-line
-        // TODO: We might be able to hook our file and data output streams
-        //       together so we only have to write to one of them:
-        //       https://stackoverflow.com/questions/1760726/how-can-i-compose-output-streams-so-output-goes-multiple-places-at-once
-        // TODO: Might it make sense to make the data stream unbuffered? See:
-        //       https://stackoverflow.com/questions/52581080/usage-of-output-stream-buffer-in-context-to-stdcout-and-stdendl
-        // TODO: Anyway, we can revisit how we want to handle the data streams
-        //       later. For now, this will suffice.
-        dataStream.lock();
-        stringstream *temp = dynamic_cast<stringstream*>(dataStream.stream);
-        if(temp) {
-            string unread = temp->eof() ?
-                "" : temp->str().substr(temp->tellg());
-            temp->str(unread);
-        }
-        dataStream.unlock();
-
-        // TODO: This thread logic should be at a higher level....
-        this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
-
-    }
-
-    cout << "Suspended data decoding." << endl; // TODO: mutex
-
-    data.lock();
-    cout << "Processed "
-         << data.totalEventCount
-         << " events."
-         << endl;
-
-    cout << "Processed " 
-         << data.processedEvents.size() 
-         << " nonempty events." 
-         << endl;
-    data.unlock();
+  if(mkdir(path.data(), 0777) == -1) {
+    cerr << strerror(errno) << endl;
+  }
 
 }
 
-void aggregateEventData(const DecodeData &loopData, DAQData &data) {
+bool pathDirectoryExists(const string &path) {
 
-    data.totalEventCount += loopData.eventCount    ;
+    struct stat sb;
 
-    data.droppedSignals  += loopData.droppedSignals;
-    data.droppedEvents   += loopData.droppedEvents ;
+    if(stat(path.data(), &sb) == 0) {
 
-    data.newEvents = loopData.nonemptyEvents;
+        return true;
 
-    data.processedEvents.insert(
-        data.processedEvents.end(), 
-        data.newEvents.cbegin  (), 
-        data.newEvents.cend    ()
-    );
-
-    for(Event &e : data.newEvents) {
-
-        data.plots.binEvent(e);
-        
     }
 
-    data.plots.updateHitRate(data.totalEventCount);
+    return false;
 
 }
