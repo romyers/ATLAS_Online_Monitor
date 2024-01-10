@@ -102,7 +102,7 @@
 ## Changed
 
 - Limited the maximum number of signals that can be processed in one iteration
-  of the decoder.
+  of the decoder. 
 - Saving a snapshot for a run that already has a saved snapshot is now
   handled correctly. A distinct directory will be made for the second
   snapshot.
