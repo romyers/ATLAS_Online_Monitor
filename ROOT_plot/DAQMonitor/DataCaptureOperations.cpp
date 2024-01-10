@@ -26,9 +26,9 @@ bool isEcapRunning = false;
 
 void initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
 
-bool   directoryExists(const string   &path         );
-bool   createDirectory(const string   &path         );
-void   createIfMissing(const string   &directoryName);
+bool directoryExists(const string   &path         );
+bool createDirectory(const string   &path         );
+void createIfMissing(const string   &directoryName);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,10 @@
 
 #include "DAQMonitor/DataModel/DAQData.h"
 
+#include "GUI/Core/UILock.h"
+
 using namespace std;
+using namespace Muon;
 
 HistogramPlotter::HistogramPlotter(
 	const TGWindow *p, 
@@ -37,7 +40,6 @@ void HistogramPlotter::update() {
 		data.lock();
 		histograms[i]->Draw();
 		data.unlock();
-
 	}
 
 	canvas->GetCanvas()->Update();

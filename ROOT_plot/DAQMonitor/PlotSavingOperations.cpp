@@ -21,6 +21,8 @@ using namespace std;
 
 void makeDirectory(const string &path);
 
+bool pathDirectoryExists(const string &path);
+
 void Muon::PlotSaving::savePlots() {
 
     // TODO: We might need to protect this from data race conditions
@@ -44,6 +46,18 @@ void Muon::PlotSaving::savePlots() {
 
     State::DAQState state = State::DAQState::getState();
     string outputDirName = string("../output/") + state.tempState.runLabel;
+
+    // If the directory already exists, save a second directory.
+    int i = 1;
+    string temp = outputDirName;
+    while(pathDirectoryExists(temp)) {
+
+        temp = outputDirName + " (" + to_string(i) + ")";
+        ++i;
+
+    }
+    outputDirName = temp;
+
     makeDirectory(outputDirName);
     cout << "Created directory " << outputDirName << endl;
 
@@ -63,7 +77,7 @@ void Muon::PlotSaving::savePlots() {
 
     // NOTE: We can speed things up a lot by setting gROOT->SetBatch(), but
     //       this also breaks all the graphics. Useful if saves only happen
-    //       on stopRun, but not otherwise. Setting outputCanvas->SetBatch()
+    //       on exit, but not otherwise. Setting outputCanvas->SetBatch()
     //       has no effect on performance.
 
     TRootEmbeddedCanvas *outputCanvas = new TRootEmbeddedCanvas("Output Canvas", gClient->GetRoot());
@@ -211,5 +225,19 @@ void makeDirectory(const string &path) {
   if(mkdir(path.data(), 0777) == -1) {
     cerr << strerror(errno) << endl;
   }
+
+}
+
+bool pathDirectoryExists(const string &path) {
+
+    struct stat sb;
+
+    if(stat(path.data(), &sb) == 0) {
+
+        return true;
+
+    }
+
+    return false;
 
 }

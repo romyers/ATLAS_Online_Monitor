@@ -3,7 +3,7 @@
 - Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
   the GUI.
 - Plot saving does not interact well with TDC and ADC plot windows opened 
-  after the save is started.
+  after the save is started. (cd() issues)
 - Plot saving blocks the decoder.
 - Closing a progress bar window causes a segfault.
 - PlotSavingOperations still depends on progress bar view.
@@ -17,10 +17,16 @@
 - The noise rate display graphics have some odd artifacts.
 - Sometimes we end up with more events than packets. I'm not sure if this is
   valid behavior.
-- Saving two snapshots from the same run may overwrite the old snapshot.
-    -- Consider saving to [TIMESTAMP](2) if [TIMESTAMP] already exists.
 
 ## TODO:
+
+- Most of the plot saving issues should be cleaned up if we can run plot saving
+  in a separate thread. But we have to figure out how to cd back to whatever
+  canvas had been cd'd to before we unlock the ui lock in order to put the
+  plot saving on its own thread without breaking everything.
+    -- Actually, worse, another pad could be cd'd while we're working with
+       one pad. We have to guard every cd statement everywhere with the UI
+       lock.
 
 - Display the .dat save file to the user when starting a run.
 - Eliminate need for UISignals.cpp
@@ -78,6 +84,10 @@
 - Test cases
 - Labels on Noise Rate Display
 - Gray out interface while an alert box is open
+- Allow user to click on a plot to blow it up, then click again to shrink it 
+  back. I.e. if I'm on TDC Overview and click on the TDC 2 plot, this should
+  fullscreen the TDC 2 plot. Alternatively, this could also automatically
+  open the TDC 2 channel plot tab.
 
 ## FIXME
 
@@ -93,6 +103,9 @@
 
 - Limited the maximum number of signals that can be processed in one iteration
   of the decoder.
+- Saving a snapshot for a run that already has a saved snapshot is now
+  handled correctly. A distinct directory will be made for the second
+  snapshot.
 
 -------------------------------------------------------------------------------
 
