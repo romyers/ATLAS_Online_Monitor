@@ -36,7 +36,7 @@ namespace State {
 
 	struct TemporaryState {
 
-		std::string runLabel   = ""   ;
+		std::string runLabel = "";
 
 	};
 
