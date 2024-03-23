@@ -120,7 +120,7 @@ std::vector<Signal> Event::Signals() const {
 
       if(sig.isTDCHeader ()) return true;
       if(sig.isTDCTrailer()) return true;
-      if(sig.isTDCError  ()) return true;
+      if(sig.isTDCOverflow()) return true;
 
       return false;
 

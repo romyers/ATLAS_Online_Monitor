@@ -163,5 +163,5 @@ void aggregateEventData(const DecodeData &loopData, DAQData &data) {
     }
 
     data.plots.updateHitRate(data.totalEventCount);
-
+    data.plots.saveNoiseRate();
 }

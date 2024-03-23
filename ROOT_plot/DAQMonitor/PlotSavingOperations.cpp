@@ -48,17 +48,21 @@ void Muon::PlotSaving::savePlots() {
     string outputDirName = string("../output/") + state.tempState.runLabel;
 
     // If the directory already exists, save a second directory.
-    int i = 1;
-    string temp = outputDirName;
-    while(pathDirectoryExists(temp)) {
+    //int i = 1;
+    //string temp = outputDirName;
+    //while(pathDirectoryExists(temp)) {
 
-        temp = outputDirName + " (" + to_string(i) + ")";
-        ++i;
+    //    temp = outputDirName + " (" + to_string(i) + ")";
+    //    ++i;
 
+    //}
+    //outputDirName = temp;
+    //
+
+    if (pathDirectoryExists(outputDirName)==false)
+    {
+        makeDirectory(outputDirName);
     }
-    outputDirName = temp;
-
-    makeDirectory(outputDirName);
     cout << "Created directory " << outputDirName << endl;
 
     // TODO: We need to save the root output too -- see DecodeOffline.cpp:253
@@ -221,7 +225,6 @@ void Muon::PlotSaving::savePlots() {
 }
 
 void makeDirectory(const string &path) {
-
   if(mkdir(path.data(), 0777) == -1) {
     cerr << strerror(errno) << endl;
   }

@@ -85,7 +85,7 @@ Signal::Signal(uint64_t word) {
   hdrCountErr    = static_cast<uint8_t >((_hdrCountErr  .to_ulong()));
   tlrCountErr    = static_cast<uint8_t >((_tlrCountErr  .to_ulong()));
 
-  if(isTDCError()) {
+  if(isTDCOverflow()) {
 
     bitset<8> K28_6_flag  = word >> 16;
     bitset<3> LSBFlag2    = word >> 13;
@@ -127,6 +127,7 @@ bool     Signal:: isEventHeader  () const { return Type         () == HEADER    
 bool     Signal:: isEventTrailer () const { return Type         () == TRAILER          ; }
 bool     Signal:: isTDCHeader    () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT ; }
 bool     Signal:: isTDCTrailer   () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT; }
-bool     Signal:: isTDCError     () const { return TDCHdrTrlrID () == TDC_ERROR_IDENT  ; }
+bool     Signal:: isTDCOverflow  () const { return TDCHdrTrlrID () == TDC_OVERFLOW_IDENT  ; }
+bool     Signal:: isTDCDecodeErr () const { return TDCHdrTrlrID () == TDC_DECODE_ERR_IDENT; }
 
 TDCErrorData Signal::getTDCError () const { return errorData                           ; }

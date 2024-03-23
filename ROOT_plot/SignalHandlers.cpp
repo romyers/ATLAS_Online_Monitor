@@ -220,6 +220,7 @@ void SigHandlers::handleDataUpdate() {
 	data.unlock();
 
 	packet.errorCount      = logger.countErrors(EMPTY_TYPE, ERROR)             ;
+	packet.decodeError     = logger.countErrors(EMPTY_TYPE, FATAL)             ;
 	packet.warningCount    = logger.countErrors(EMPTY_TYPE, WARNING)           ;
 
 	State::DAQState state = State::DAQState::getState();

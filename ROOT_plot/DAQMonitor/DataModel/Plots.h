@@ -57,7 +57,7 @@ struct Plots {
 
 	void binEvent(const Muon::Event &e);
 	void updateHitRate(int total_events);
-
+	void saveNoiseRate();
 	void clear();
 
 };

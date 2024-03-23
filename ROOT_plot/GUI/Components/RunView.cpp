@@ -23,6 +23,7 @@ void RunView::update(const UpdatePacket &packet) {
 	statsTable.setEntry("Events Processed", to_string(packet.totalEventCount));
 	statsTable.setEntry("Empty Events"    , to_string(packet.emptyEventCount));
 	statsTable.setEntry("Error Count"     , to_string(packet.errorCount     ));
+	statsTable.setEntry("Decoding Error"  , to_string(packet.decodeError    ));
 	statsTable.setEntry("Warning Count"   , to_string(packet.warningCount   ));
 	statsTable.setEntry("Packets Lost"    , to_string(packet.lostPackets    ));
 	statsTable.setEntry("Dropped Signals" , to_string(packet.droppedSignals ));

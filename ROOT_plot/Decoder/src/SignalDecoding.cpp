@@ -4,6 +4,10 @@
 #include <string>
 #include <istream>
 
+#include <iostream>
+#include <chrono>
+#include <ctime>  
+
 #include "Logging/ErrorLogger.h"
 
 #include "src/Geometry.h"
@@ -85,14 +89,24 @@ bool validateSignalErrors(const Signal &sig) {
 	ErrorLogger &logger = ErrorLogger::getInstance();
 	Geometry    &geo    = Geometry::getInstance   ();
 
-	if(!geo.IsActiveTDC(sig.TDC())) {
+	if(sig.isTDCDecodeErr()) {  //should be handled first
+		string msg = "ERROR -- Decoding error occured!";
+		logger.logError(msg, SIGNAL_ERROR, FATAL);
 
-		string msg = "ERROR -- Unexpected data TDCID = ";
+		return false;
+	}
+
+	if(!geo.IsActiveTDC(sig.TDC())) {
+		auto end = std::chrono::system_clock::now();
+		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+		string msg;
+		msg += std::ctime(&end_time);
+		msg += "ERROR -- Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR, ERROR);
+		logger.logError(msg, SIGNAL_ERROR, FATAL);
 
 		return false;
 
@@ -102,20 +116,28 @@ bool validateSignalErrors(const Signal &sig) {
 	// ID that is not considered active.
 	if(sig.isTDCHeader ()) { return true; }
 	if(sig.isTDCTrailer()) { return true; }
-	if(sig.isTDCError  ()) { return true; }
+	if(sig.isTDCOverflow()) { return true; }
+
+
 
 	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
 
-		string msg = "ERROR -- Unexpected data TDCID = ";
+		auto end = std::chrono::system_clock::now();
+		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+		string msg;
+		msg += std::ctime(&end_time);
+		msg += "ERROR -- Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR, ERROR);
+		logger.logError(msg, SIGNAL_ERROR, FATAL);
 
 		return false;
 
 	}
+
+	
 
 	return true;
 
@@ -131,13 +153,13 @@ void validateSignalWarnings(const Signal &sig) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
-	if(sig.isTDCError()) {
+	if(sig.isTDCOverflow()) {
 
 		string msg = "";
 
 		TDCErrorData errorData = sig.getTDCError();
 
-		msg = "ERROR -- Received TDC Error Signal:";
+		msg = "WARNING -- Received TDC Error Signal:";
 
 		if(errorData.LSBFlag1 > 0) {
 
@@ -157,7 +179,7 @@ void validateSignalWarnings(const Signal &sig) {
 
 		} 
 
-		logger.logError(msg, SIGNAL_ERROR, ERROR);
+		logger.logError(msg, SIGNAL_ERROR, WARNING);
 
 	}
 

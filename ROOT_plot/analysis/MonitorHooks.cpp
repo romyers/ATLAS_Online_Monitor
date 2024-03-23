@@ -104,7 +104,7 @@
 #include <iostream>
 #include <chrono>
 
-#include "src/DataModel/DAQData.cpp"
+#include "DAQMonitor/DataModel/DAQData.h"
 #include "src/ProgramControl/Terminator.cpp"
 
 using namespace std;

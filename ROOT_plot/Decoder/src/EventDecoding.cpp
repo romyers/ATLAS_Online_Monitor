@@ -199,7 +199,7 @@ void validateEventWarnings(const Event &e) {
 
 		if(sig.isTDCHeader ()) ++TDCHeaderCount ;
 		if(sig.isTDCTrailer()) ++TDCTrailerCount;
-		if(sig.isTDCError  ()) ++TDCErrorCount  ;
+		if(sig.isTDCOverflow()) ++TDCErrorCount  ;
 
 	}
 

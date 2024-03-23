@@ -52,9 +52,13 @@ namespace Muon {
    39-37     36-32    31-27       26-25   24-8      7-0
    3'CSMID   5'TDCID  5'CHNLID    2'mode  17'LEdge  8'Width
 
-   TDC Error:
+   TDC overflow:
    39-37     36-32    31-24         23-16       15-13       12-8    7-5         4-0
    3'CSMID   5'TDCID  8'b1110_1000  K28.6_flag  is_overflow channel is_overflow channel
+
+   TDC decoding error:
+   39-37     36-32    31-0         
+   3'CSMID   5'TDCID  32'bb1111_0111_0100_0001_0001_0001_0001_0001 
 
    TDC Header:
    39-37     36-32    31-24         23-12         11-0
@@ -129,16 +133,18 @@ namespace Muon {
     bool         isEventTrailer () const;
     bool         isTDCHeader    () const;
     bool         isTDCTrailer   () const;
-    bool         isTDCError     () const;
+    bool         isTDCOverflow  () const;
+    bool         isTDCDecodeErr () const;
 
     TDCErrorData getTDCError    () const;
 
     static const uint8_t HEADER            = 0b1010    ; // bits 37-39
     static const uint8_t TRAILER           = 0b1100    ; // bits 37-39
 
-    static const uint8_t TDC_HEADER_IDENT  = 0b11111000; // bits 24-31
-    static const uint8_t TDC_TRAILER_IDENT = 0b11110000; // bits 24-31
-    static const uint8_t TDC_ERROR_IDENT   = 0b11101000; // bits 24-31
+    static const uint8_t TDC_HEADER_IDENT  = 0b11111000; // bits 31-24
+    static const uint8_t TDC_TRAILER_IDENT = 0b11110000; // bits 31-24
+    static const uint8_t TDC_OVERFLOW_IDENT   = 0b11101000; // bits 31-24
+    static const uint8_t TDC_DECODE_ERR_IDENT   = 0b11101000; // bits 31-24
 
     static const uint8_t WORD_SIZE         = 5         ; // bytes
 

@@ -8,6 +8,7 @@ struct UpdatePacket {
 	int totalEventCount   = 0 ;
 	int emptyEventCount   = 0 ;
 	int errorCount        = 0 ;
+	int decodeError       = 0 ;
 	int warningCount      = 0 ;
 	int lostPackets       = 0 ;
 	int droppedSignals    = 0 ;
