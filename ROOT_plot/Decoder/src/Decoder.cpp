@@ -68,7 +68,8 @@ DecodeData Decoder::decodeStream(istream &in) {
 		validateSignalWarnings(sig);
 
 		// and, if it completes an event,
-		if(isEvent(signalBuffer)) {
+		if(isEvent(signalBuffer)&&signalBuffer.size()>1) {
+			cout<<signalBuffer.size()<<endl;
 
 			// make the event
 			Event e = assembleEvent(signalBuffer);

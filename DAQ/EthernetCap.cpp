@@ -196,7 +196,7 @@ void EthernetCap::binary_write(const struct pcap_pkthdr* pkthdr,
     const u_char* packet_data){
     int length;
     length=(pkthdr->len-18);  //bytes  preload=14 postload=4
-    for(int i=EthernetCap::DATA_START;i<EthernetCap::DATA_START+length;i+=5){
+    for(long i=EthernetCap::DATA_START;i<EthernetCap::DATA_START+length;i+=5){
         if(*(packet_data+i)!=EthernetCap::IDLE_WORD){
 
             fwrite(packet_data+i,1,5,fp_binary_);
@@ -209,7 +209,7 @@ void EthernetCap::binary_write(const struct pcap_pkthdr* pkthdr,
         // packetNum_ = *p;
         // if(packetNum_>65520||packetNum_<20)
         
-        packetNum_=(int)(*(packet_data+length+18-2))*256+(int)(*(packet_data+length+18-1));
+        packetNum_=(long)(*(packet_data+length+18-2))*256+(long)(*(packet_data+length+18-1));
         // cout<<"packetNum_="<<packetNum_<<"packetNumLast_="<<packetNumLast_<<endl;
         if((packetNum_!=(packetNumLast_+1)%65536)&&(packetNumLast_!=-1)){ 
             printf("warning: %d packets lost! Packet = %d, Last = %d\n", 
