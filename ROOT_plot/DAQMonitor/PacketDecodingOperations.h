@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "LockableStream.h"
 
 #include "DataModel/DAQData.h"
@@ -16,7 +18,11 @@
 namespace Muon {
 namespace Decode {
 
-    void startDecoding(LockableStream &dataStream, DAQData &data);
+    void startDecoding(
+        LockableStream &dataStream, 
+        DAQData &data, 
+        const std::string &runLabel
+    );
 
     void stopDecoding();
 

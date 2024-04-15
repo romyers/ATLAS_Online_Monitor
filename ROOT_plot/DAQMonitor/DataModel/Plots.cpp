@@ -311,45 +311,6 @@ void Plots::binEvent(const Event &e) {
 
 }
 
-// TODO: This whole thing should happen in PlotSavingOperations.cpp
-void Plots::saveNoiseRate(){
-
-	State::DAQState state = State::DAQState::getState();
-    string outputDirName = string("../output/") + state.tempState.runLabel;
-
-    if(mkdir(outputDirName.data(), 0777) == -1) {
-    	cerr << strerror(errno) << endl;
-  	}	
-
-    outputDirName = string("../output/") + state.tempState.runLabel + string("/NoiseRate");
-    
-    if(mkdir(outputDirName.data(), 0777) == -1) {
-    	cerr << strerror(errno) << endl;
-  	}	
-
-    string filename = outputDirName + string("/") + state.tempState.runLabel + string("_rate.csv");
-
-    cout<<"saving as:"<<filename<<endl;
-
-    ofstream noise_rate_file(filename,ofstream::trunc);
-    noise_rate_file<<"tdc_id,";
-    for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
-    		noise_rate_file<<chnl<<",";
-    	}
-    noise_rate_file<<"\n";
-	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
-		noise_rate_file<<tdc<<",";
-		for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
-			noise_rate_file<<p_tdc_hit_rate[tdc][chnl];
-			noise_rate_file<<",";
-		}
-		noise_rate_file<<"\n";
-	}
-	noise_rate_file.close();
-
-}
-
-
 void Plots::clear() {
 
 	// TODO: We can also delete and remake everything to reset.

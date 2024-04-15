@@ -55,9 +55,8 @@ struct Plots {
 	TH2D *                           badHitByLC              ;
 	TH2D *                           goodHitByLC             ; 
 
-	void binEvent(const Muon::Event &e);
-	void updateHitRate(int total_events);
-	void saveNoiseRate();
-	void clear();
+	void binEvent     (const Muon::Event &e);
+	void updateHitRate(int total_events    );
+	void clear        (                    );
 
 };

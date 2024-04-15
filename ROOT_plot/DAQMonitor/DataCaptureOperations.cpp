@@ -3,11 +3,11 @@
 #include <fstream>
 #include <iostream>
 
-#include <sys/stat.h>
-
 #include "Logging/ErrorLogger.h"
 
 #include "DAQState.h"
+
+#include "FileManagement/FileManager.h"
 
 #include "GUI/Core/UIException.h"
 
@@ -25,10 +25,6 @@ using namespace Muon;
 bool isEcapRunning = false;
 
 void initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
-
-bool directoryExists(const string   &path         );
-bool createDirectory(const string   &path         );
-void createIfMissing(const string   &directoryName);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,7 +57,7 @@ void Muon::DataCapture::stopDataCapture() {
 void Muon::DataCapture::startDataCapture(
     LockableStream &dataStream, 
     DAQData &data, 
-    string runLabel
+    const string &runLabel
 ) {
 
     if(isEcapRunning) return;
@@ -89,7 +85,7 @@ void Muon::DataCapture::startDataCapture(
     if(!fileWriter.is_open()) {
 
         ErrorLogger::getInstance().logError(
-            string("Failed to open output file: ") + outputFile,
+            string("Failed to open output .dat file: ") + outputFile,
             "dataCapture",
             FATAL
         );
@@ -115,11 +111,11 @@ void Muon::DataCapture::startDataCapture(
     }
     ErrorLogger::getInstance().addOutputStream(logWriter);
 
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-
     cout << "Saving packet data to: " << outputFile << endl;
+
+    /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     isEcapRunning = true;
 
@@ -196,40 +192,6 @@ void initializePCapSessionHandler(
                 + state.persistentState.inputDevicename 
                 + "\". Does the device exist?")
         );
-
-    }
-
-}
-
-bool directoryExists(const string &path) {
-
-    struct stat sb;
-
-    if(stat(path.data(), &sb) == 0) {
-
-        return true;
-
-    }
-
-    return false;
-
-}
-
-bool createDirectory(const string &path) {
-
-    if(mkdir(path.data(), 0777) == 0) return true;
-
-    return false;
-
-}
-
-void createIfMissing(const string &directoryName) {
-
-    if(!directoryExists(directoryName)) {
-
-        createDirectory(directoryName);
-
-        cout << "Created output directory: " << directoryName << endl;
 
     }
 

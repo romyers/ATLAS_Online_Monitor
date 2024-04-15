@@ -24,7 +24,7 @@ namespace DataCapture {
     void startDataCapture(
         LockableStream &dataStream, 
         DAQData &data, 
-        std::string runLabel
+        const std::string &runLabel
     );
 
     void stopDataCapture();

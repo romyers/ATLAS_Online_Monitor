@@ -4,6 +4,12 @@ using namespace std;
 
 #include <sstream>
 #include <thread>
+#include <fstream>
+#include <iostream>
+
+#include "Logging/ErrorLogger.h"
+
+#include "FileManagement/FileManager.h"
 
 #include "Decoder/src/Decoder.h"
 
@@ -29,6 +35,8 @@ bool isDecodeRunning = false;
 
 void aggregateEventData(const DecodeData &loopData, DAQData &data);
 
+void saveNoiseRate(const string &path, const DAQData &data);
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,7 +47,11 @@ void Decode::stopDecoding() {
 
 }
 
-void Decode::startDecoding(LockableStream &dataStream, DAQData &data) {
+void Decode::startDecoding(
+    LockableStream &dataStream, 
+    DAQData &data, 
+    const string &runLabel
+) {
 
     if(isDecodeRunning) return;
 
@@ -51,7 +63,36 @@ void Decode::startDecoding(LockableStream &dataStream, DAQData &data) {
 
     Decoder decoder(300000);
 
+    /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+
+    // Set up noise rate CSV saving.
+
+    // TODO: Validation and error reporting if the directory structure doesn't
+    //       get set up right.
+    // TODO: Make sure we don't overwrite an existing file if for some reason
+    //       it exists already.
+
+    createIfMissing("../output");
+
+    string outputPath("../output/");
+    outputPath += runLabel;
+
+    createDirectory(outputPath);
+
+    outputPath += string("/") + runLabel + string("_rate.csv");
+
+    cout << "Saving noise rate data to: " << outputPath << endl;
+
+    /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
+
     isDecodeRunning = true;
+
+    // When the next noise rate CSV save operation should occur
+    int noiseSavepoint = 0; // Events
 
     while(isDecodeRunning) {
 
@@ -82,7 +123,22 @@ void Decode::startDecoding(LockableStream &dataStream, DAQData &data) {
         if(hasData) {
 
             data.lock();
+
             aggregateEventData(loopData, data);
+
+            // Save the noise CSV file every 1000 events.
+            if(data.totalEventCount >= noiseSavepoint) {
+
+                saveNoiseRate(outputPath, data);
+
+                do {
+
+                    noiseSavepoint += 1000;
+
+                } while(data.totalEventCount >= noiseSavepoint);
+
+            }
+
             data.unlock();
 
             // TODO: This blocks the decode thread while the plots are 
@@ -163,5 +219,75 @@ void aggregateEventData(const DecodeData &loopData, DAQData &data) {
     }
 
     data.plots.updateHitRate(data.totalEventCount);
-    data.plots.saveNoiseRate();
+
+}
+
+void saveNoiseRate(const string &path, const DAQData &data) {
+
+    // TODO: Maybe use '/n' instead of 'endl' to reduce file write ops?
+
+    // TODO: Try to find a way to be able to overwrite the file without
+    //       having to reopen it.
+
+    // TODO: Try not to have data locked while we're doing slow file ops.
+    //       E.g. open the file outside of the lock.
+
+    static bool lastSaveFailed = false;
+
+    // We have to reopen the file every time in order to clear it :'(
+    ofstream out(path, ofstream::trunc);
+    if(!out.is_open()) {
+
+        ErrorLogger::getInstance().logError(
+            string("Couldn't open noiserate CSV output file.")
+                + string(" Latest noiserate data not saved.") + path,
+            "packetDecoding",
+            WARNING
+        );
+
+        lastSaveFailed = true;
+
+        return;
+
+    }
+
+    // If the last save failed, let the user know things worked
+    // out this time.
+    if(lastSaveFailed) {
+
+        ErrorLogger::getInstance().logError(
+            string("Noiserate CSV output file reopened"),
+            "packetDecoding",
+            INFORMATIVE
+        );
+
+        lastSaveFailed = false;
+
+    }
+
+    out << "tdc_id,";
+
+    for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+
+        out << chnl << ",";
+
+    }
+    out << endl;
+
+    for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
+
+        out << tdc << ",";
+
+        for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
+
+            out << data.plots.p_tdc_hit_rate[tdc][chnl];
+            out << ",";
+
+        }
+        out << endl;
+
+    }
+
+    out.close();
+
 }

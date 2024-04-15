@@ -213,9 +213,9 @@ void DataRun::startRun() {
 
         });
 
-        thread decodeThread([&dataStream, &data](){
+        thread decodeThread([&dataStream, &data, runLabel](){
 
-            Decode::startDecoding(dataStream, data);
+            Decode::startDecoding(dataStream, data, runLabel);
 
         });
 

@@ -23,6 +23,8 @@ void makeDirectory(const string &path);
 
 bool pathDirectoryExists(const string &path);
 
+void saveNoiseRate();
+
 void Muon::PlotSaving::savePlots() {
 
     // TODO: We might need to protect this from data race conditions
@@ -59,7 +61,7 @@ void Muon::PlotSaving::savePlots() {
     //outputDirName = temp;
     //
 
-    if (pathDirectoryExists(outputDirName) == false) {
+    if (!pathDirectoryExists(outputDirName)) {
 
         makeDirectory(outputDirName);
 

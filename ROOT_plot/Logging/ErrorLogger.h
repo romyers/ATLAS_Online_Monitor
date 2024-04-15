@@ -19,6 +19,7 @@ const std::string EMPTY_TYPE = "";
 
 enum ErrorLevel {
 	DEBUG,
+	INFORMATIVE,
 	WARNING,
 	ERROR,
 	FATAL,

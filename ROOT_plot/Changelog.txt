@@ -88,15 +88,30 @@
   back. I.e. if I'm on TDC Overview and click on the TDC 2 plot, this should
   fullscreen the TDC 2 plot. Alternatively, this could also automatically
   open the TDC 2 channel plot tab.
-- Remove DAQState logic from Plots::saveNoiseRate. We don't like the data model
-  caring about program state.
-    - In fact, all that logic is better placed in PlotSavingOperations.cpp.
+- Extract directory management from DataCaptureOperations and 
+  PacketDecodingOperations to a 'DirectoryManager' file or something like that.
 
 ## FIXME
 
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
+
+-------------------------------------------------------------------------------
+
+## 2024-04-15
+
+## Added
+
+- FileManager.h/.cpp now provides functionality for managing directories to
+  PacketDecodingOperations and DataCaptureOperations.
+
+## Changed
+
+- Noiserate CSV save logic moved to PacketDecodingOperations.cpp.
+- Noiserate CSVs are now saved automatically every 1000 events.
+- Noiserate CSV save logic no longer spams output to the console.
+- Failed noiserate save operations are reported to user.
 
 -------------------------------------------------------------------------------
 
@@ -114,6 +129,8 @@ While I was away:
             error code were. It would be nice if you could do everything in
             one place.
 - A timestamp was added to the error message for "Unexpected data".
+- Some changes made to accommodate testing of an MDT chamber instead of an sMDT
+  chamber.
 
 -------------------------------------------------------------------------------
 
