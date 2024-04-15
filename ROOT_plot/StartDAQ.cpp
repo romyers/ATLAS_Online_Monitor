@@ -15,6 +15,8 @@
 #include <vector>
 #include <string>
 
+#include <iostream>
+
 #include "TApplication.h"
 #include "TUnixSystem.h" // Needed for calls to gSystem
 #include "TGFrame.h"

@@ -59,9 +59,10 @@ void Muon::PlotSaving::savePlots() {
     //outputDirName = temp;
     //
 
-    if (pathDirectoryExists(outputDirName)==false)
-    {
+    if (pathDirectoryExists(outputDirName) == false) {
+
         makeDirectory(outputDirName);
+
     }
     cout << "Created directory " << outputDirName << endl;
 
@@ -225,9 +226,12 @@ void Muon::PlotSaving::savePlots() {
 }
 
 void makeDirectory(const string &path) {
-  if(mkdir(path.data(), 0777) == -1) {
-    cerr << strerror(errno) << endl;
-  }
+
+    if(mkdir(path.data(), 0777) == -1) {
+
+        cerr << strerror(errno) << endl;
+
+    }
 
 }
 

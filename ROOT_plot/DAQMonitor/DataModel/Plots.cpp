@@ -311,7 +311,7 @@ void Plots::binEvent(const Event &e) {
 
 }
 
-
+// TODO: This whole thing should happen in PlotSavingOperations.cpp
 void Plots::saveNoiseRate(){
 
 	State::DAQState state = State::DAQState::getState();
@@ -346,6 +346,7 @@ void Plots::saveNoiseRate(){
 		noise_rate_file<<"\n";
 	}
 	noise_rate_file.close();
+
 }
 
 

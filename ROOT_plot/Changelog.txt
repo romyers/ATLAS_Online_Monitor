@@ -88,12 +88,32 @@
   back. I.e. if I'm on TDC Overview and click on the TDC 2 plot, this should
   fullscreen the TDC 2 plot. Alternatively, this could also automatically
   open the TDC 2 channel plot tab.
+- Remove DAQState logic from Plots::saveNoiseRate. We don't like the data model
+  caring about program state.
+    - In fact, all that logic is better placed in PlotSavingOperations.cpp.
 
 ## FIXME
 
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
+
+-------------------------------------------------------------------------------
+
+While I was away:
+
+## Changed
+
+- Plot saving now saves a CSV for noise rate
+    - This is done entirely via a Plots method, which I don't like -- move it
+      to PlotSavingOperations.cpp
+- The decode loop now checks that the SignalBuffer is nonempty before making an
+  event out of it.
+- A "TDCDecodeError" code was added to Signal.h, along with relevant logic.
+    - TODO: I don't like how spread out all the changes for adding the new
+            error code were. It would be nice if you could do everything in
+            one place.
+- A timestamp was added to the error message for "Unexpected data".
 
 -------------------------------------------------------------------------------
 

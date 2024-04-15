@@ -60,7 +60,6 @@ DecodeData Decoder::decodeStream(istream &in) {
 		} else {
 
 			cerr << "Dropped signal" << endl;
-
 			++result.droppedSignals;
 
 		}
@@ -68,10 +67,9 @@ DecodeData Decoder::decodeStream(istream &in) {
 		validateSignalWarnings(sig);
 
 		// and, if it completes an event,
-		if(isEvent(signalBuffer)&&signalBuffer.size()>1) {
-			cout<<signalBuffer.size()<<endl;
+		if(isEvent(signalBuffer)) {
 
-			// make the event
+			// create the event,
 			Event e = assembleEvent(signalBuffer);
 
 			// and validate the event.
@@ -125,12 +123,16 @@ DecodeData Decoder::decodeStream(istream &in) {
 }
 
 bool isEvent(const vector<Signal> &signals) {
+	
+	if(signals.size() > 1) {
 
-	if(signals.empty()) return false;
+		// As long as the data is well-formed, any signal vector that ends in an
+		// event trailer represents an event.
+		return signals.back().isEventTrailer();
 
-	// As long as the data is well-formed, any signal vector that ends in an
-	// event trailer represents an event.
-	return signals.back().isEventTrailer();
+	}
+
+	return false;
 
 }
 

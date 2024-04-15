@@ -138,15 +138,15 @@ namespace Muon {
 
     TDCErrorData getTDCError    () const;
 
-    static const uint8_t HEADER            = 0b1010    ; // bits 37-39
-    static const uint8_t TRAILER           = 0b1100    ; // bits 37-39
+    static const uint8_t HEADER               = 0b1010    ; // bits 37-39
+    static const uint8_t TRAILER              = 0b1100    ; // bits 37-39
 
-    static const uint8_t TDC_HEADER_IDENT  = 0b11111000; // bits 31-24
-    static const uint8_t TDC_TRAILER_IDENT = 0b11110000; // bits 31-24
+    static const uint8_t TDC_HEADER_IDENT     = 0b11111000; // bits 31-24
+    static const uint8_t TDC_TRAILER_IDENT    = 0b11110000; // bits 31-24
     static const uint8_t TDC_OVERFLOW_IDENT   = 0b11101000; // bits 31-24
-    static const uint8_t TDC_DECODE_ERR_IDENT   = 0b11101000; // bits 31-24
+    static const uint8_t TDC_DECODE_ERR_IDENT = 0b11110111; // bits 31-24
 
-    static const uint8_t WORD_SIZE         = 5         ; // bytes
+    static const uint8_t WORD_SIZE            = 5         ; // bytes
 
   private:
     uint8_t  type         ;

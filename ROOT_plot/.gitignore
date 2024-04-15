@@ -3,4 +3,4 @@ output_fig
 data
 build
 CMakeFiles
-noise
+noise/module0_miniDAQ
