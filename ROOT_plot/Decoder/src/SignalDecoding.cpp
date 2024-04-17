@@ -74,13 +74,6 @@ Signal extractSignal(istream &in) {
 
 }
 
-// TODO: Pull out validators
-// TODO: Test validators
-// TODO: We don't have event numbers, which we need to have for error reporting
-// TODO: Combine this with signal buffer validation. Either this can be done
-//       with access to the buffer or buffer validation can be done here.
-//       If it happens in buffer validation, we can still keep track of signal
-//       count.
 bool validateSignalErrors(const Signal &sig) {
 
 	if(sig.isEventHeader ()) return true;

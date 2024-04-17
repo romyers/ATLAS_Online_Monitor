@@ -103,7 +103,7 @@
 
 ## 2024-04-17
 
-Started work on integrating with Ronquian's muon track display.d
+Started work on integrating with Ronquian's muon track display.
 
 ## Added
 
