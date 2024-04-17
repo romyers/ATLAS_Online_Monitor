@@ -26,7 +26,9 @@ namespace MuonReco {
   void RTAggregator::Initialize(TString t0path, TString decodedDataPath) {
     for (RTParam* rt : rts) rt->Initialize(t0path, decodedDataPath);
   }
-  
+
+
+//2 multilayers hardcoded here, must change  
   void RTAggregator::InitMultiLayer() {
     if (rts.size() != 2) {
       std::cout << "Cannot configure RTAggregator object in "         << std::endl;

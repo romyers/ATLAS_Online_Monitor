@@ -21,6 +21,11 @@ namespace MuonReco {
 
   void RecoUtility::Configure(ParameterSet ps) {
     CHECK_TRIGGERS      = ps.getBool  ("CHECK_TRIGGERS",      1,        0);
+    IS_PHASE2_DATA      = ps.getBool  ("IS_PHASE2_DATA",      0,        0);
+    WIDTHSEL            = ps.getInt   ("WIDTHSEL      ",      2,        0);
+    IS_RELATIVE_DATA    = ps.getBool  ("IS_RELATIVE_DATA",    0,        0);  
+    ADC_NOISE_CUT       = ps.getDouble("ADC_NOISE_CUT ",      0,        0);
+    
 
     MIN_HITS_NUMBER     = ps.getInt   ("MIN_HITS_NUMBER",     6,        0);
     MAX_HITS_NUMBER     = ps.getInt   ("MAX_HITS_NUMBER",     12,       0);
@@ -38,10 +43,12 @@ namespace MuonReco {
     TRG_VOLTAGE_INVERT  = ps.getInt   ("TRG_VOLTAGE_INVERT",  0,        0);
   }
 
+  bool RecoUtility::IsPhase2Data(){return IS_PHASE2_DATA;}
+
   bool RecoUtility::CheckEvent(Event e, int* status) {
     
     // need precisely one trigger for data
-    if (CHECK_TRIGGERS && e.TriggerHits().size() != 1) {
+    if (CHECK_TRIGGERS && (IS_PHASE2_DATA==0) && e.TriggerHits().size() != 1) {
       //std::cout << "Rejecting event for not having precisely one trigger (has " << e.TriggerHits().size() << ")" << std::endl;
       *status = 1;
       return NOTPASTEVENTCHECK;
@@ -64,21 +71,21 @@ namespace MuonReco {
     int nML1 = 0;
     for (Cluster c : e.Clusters()) {
       if (Geometry::MultiLayer(c.Hits().at(0).Layer()) == 0)
-	nML0++;
+        nML0++;
       if (Geometry::MultiLayer(c.Hits().at(0).Layer()) == 1) 
-	nML1++;
+        nML1++;
 
       // check that no cluster is too large or small
       if (c.Size() < MIN_CLUSTER_SIZE || c.Size() > MAX_CLUSTER_SIZE) {
-	//std::cout << "Rejecting event for clusters of wrong size present" << std::endl;
-	*status = 4;
-	return NOTPASTEVENTCHECK;      
+        //std::cout << "Rejecting event for clusters of wrong size present" << std::endl;
+        *status = 4;
+        return NOTPASTEVENTCHECK;      
       }
     }
 
     // check that there is the right number of clusters in each multilayer
     if (nML0 < MIN_CLUSTERS_PER_ML || nML0 > MAX_CLUSTERS_PER_ML ||
-	nML1 < MIN_CLUSTERS_PER_ML || nML1 > MAX_CLUSTERS_PER_ML) {
+      nML1 < MIN_CLUSTERS_PER_ML || nML1 > MAX_CLUSTERS_PER_ML) {
       //std::cout << "Rejecting event for wrong number of clusers in each multilayer" << std::endl;
       //std::cout << "nML0 = " << nML0 << " nML1 = " << nML1 << std::endl;
       //std::cout << "N hits = " << e.WireHits().size() << std::endl;
@@ -87,17 +94,18 @@ namespace MuonReco {
     }
 
     // need the maximum time difference to be less than max time difference
-    double max_time = 0;
+    double max_time = -1e100;
     double min_time = 1e100;
+    double time_diff = 0;
 
-    for (int i = 0; i < e.WireHits().size(); i++) {
-      if (e.WireHits().at(i).TDCTime() > max_time) {
-	max_time = e.WireHits().at(i).TDCTime();
-      }
-      if (e.WireHits().at(i).TDCTime() < min_time) {
-	min_time = e.WireHits().at(i).TDCTime();
+    if (e.WireHits().size()>2){
+      for (int i = 0; i < e.WireHits().size(); i++) {
+        time_diff = e.WireHits().at(i).DriftTime();
+        max_time = max_time < time_diff ? time_diff : max_time;
+        min_time = min_time > time_diff ? time_diff : min_time;       
       }
     }
+
     if ((max_time - min_time <= MAX_TIME_DIFFERENCE) && (max_time - min_time >= 0)) {      
       *status = 0;
       return PASTEVENTCHECK;
@@ -139,72 +147,120 @@ namespace MuonReco {
         e->AddCluster(c);
       }
     }
+  } //DoHitClustering
+
+  int RecoUtility::DoHitFinding(Event *e, TimeCorrection* tc, Geometry& geo) {
+    if (IS_PHASE2_DATA){
+      return DoHitFindingPhase2(e,   tc, geo, ADC_NOISE_CUT, IS_RELATIVE_DATA);
+    }
+    else{
+      return DoHitFindingPhase1(e,   tc, geo);
+    }
+  }
+    
+
+  int RecoUtility::DoHitFindingPhase1(Event *e, TimeCorrection* tc, Geometry& geo) {
+    // Hit h;
+    // double adc_time = 0.0;
+    // int layer, column;
+    // double hx, hy;
+    // int nhits = 0;
+    // // do trigger hit finding
+    // for (auto trig : e->TrigSignals()) {
+    //   if (trig.Type() == Signal::RISING) {
+    
+    // for (auto trig2 : e->TrigSignals()) {
+    //   if (trig2.Type() == Signal::FALLING && trig.SameTDCChan(trig2)) {
+    //     adc_time = trig2.Time() - trig.Time();
+    //     break;
+    //   }
+    // }
+    // if (TRG_VOLTAGE_INVERT) adc_time *= -1.0;
+    // // have found adc time for this trigger
+    // // construct a hit and push back onto some hit vector
+    // if (trig.IsFirstSignal() && adc_time != 0.0 && trig.Time() > (290+TRIGGER_OFFSET) && trig.Time() < (350+TRIGGER_OFFSET)) {
+    //   h = Hit(trig.Time(), adc_time, trig.Time(), trig.Time(), trig.TDC(), trig.Channel(), -1, -1, -1, -1);
+    //   e->AddTriggerHit(h);
+    // }
+    //   }
+    // } // end for: t_iter
+    
+    // // do signal hit finding, can only do if triggers exist
+    // if (e->TrigSignals().size() != 0) {
+    //   Signal selectTrigger = e->TrigSignals().at(0);
+    //   double drift_time, corr_time;
+    //   Bool_t isFirst = 0;
+    //   for (auto sig : e->WireSignals()) {
+    //     if (sig.Type() == Signal::RISING) {
+    //       drift_time = sig.Time() - selectTrigger.Time();
+          
+    //       adc_time = 0.0;
+    //       for (auto sig2 : e->WireSignals()) {
+    //         if ((sig2.Type() == Signal::FALLING) && sig.SameTDCChan(sig2)) {
+    //           adc_time = sig2.Time() - sig.Time();
+    //           isFirst = (SIG_VOLTAGE_INVERT) ? sig2.IsFirstSignal() : sig.IsFirstSignal();
+    //           break;
+    //         }
+    //       } // end for: s_iter2
+    //       if (SIG_VOLTAGE_INVERT) {
+    //         adc_time *= -1;
+    //         drift_time = drift_time - adc_time;
+    //       }
+    //       if (isFirst && adc_time > 40) {
+    //         corr_time = drift_time - tc->SlewCorrection(adc_time);
+            
+    //         geo.GetHitLayerColumn(sig.TDC(), sig.Channel(), &layer, &column);
+    //         geo.GetHitXY(layer, column, &hx, &hy);
+    //         h = Hit(sig.Time(), adc_time, drift_time, corr_time, sig.TDC(), sig.Channel(), layer, column, hx, hy);
+    //         e->AddSignalHit(h);
+    //         nhits++;
+    //       }
+    //     }  //if(sig.Type() == Signal::RISING)
+    //   } // end for: s_iter
+    // } // end if: nonzero number of triggers
+
+    // return nhits;
+    return 0;
+  } // end method: do hit finding
+
+
+  int RecoUtility::rollover_bindiff_cal(int a, int b, int rollover){
+    int bindiff;
+    bindiff = a-b;
+    if (bindiff > rollover/2)   bindiff -= rollover;
+    else if (bindiff < - (rollover/2)) bindiff += rollover;
+    return bindiff;
   }
 
 
-
-  int RecoUtility::DoHitFinding(Event *e, TimeCorrection* tc, Geometry& geo) {
+  int RecoUtility::DoHitFindingPhase2(Event *e, TimeCorrection* tc, Geometry& geo, double adc_cut, int relative) {
     Hit h;
-    double adc_time = 0.0;
+    double adc_time   = 0;
+    double tdc_time   = 0;
+    double drift_time = 0;
+    double corr_time  = 0;
     int layer, column;
     double hx, hy;
     int nhits = 0;
-    // do trigger hit finding
-    for (auto trig : e->TrigSignals()) {
-      if (trig.Type() == Signal::RISING) {
-	
-	for (auto trig2 : e->TrigSignals()) {
-	  if (trig2.Type() == Signal::FALLING && trig.SameTDCChan(trig2)) {
-	    adc_time = trig2.Time() - trig.Time();
-	    break;
-	  }
-	}
-	if (TRG_VOLTAGE_INVERT) adc_time *= -1.0;
-	// have found adc time for this trigger
-	// construct a hit and push back onto some hit vector
-	if (trig.IsFirstSignal() && adc_time != 0.0 && trig.Time() > (290+TRIGGER_OFFSET) && trig.Time() < (350+TRIGGER_OFFSET)) {
-	  h = Hit(trig.Time(), adc_time, trig.Time(), trig.Time(), trig.TDC(), trig.Channel(), -1, -1, -1, -1);
-	  e->AddTriggerHit(h);
-	}
-      }
-    } // end for: t_iter
-    
-    // do signal hit finding, can only do if triggers exist
-    if (e->TrigSignals().size() != 0) {
-      Signal selectTrigger = e->TrigSignals().at(0);
-      double drift_time, corr_time;
-      Bool_t isFirst = 0;
-      for (auto sig : e->WireSignals()) {
-	if (sig.Type() == Signal::RISING) {
-	  drift_time = sig.Time() - selectTrigger.Time();
-	  
-	  adc_time = 0.0;
-	  for (auto sig2 : e->WireSignals()) {
-	    if ((sig2.Type() == Signal::FALLING) && sig.SameTDCChan(sig2)) {
-	      adc_time = sig2.Time() - sig.Time();
-	      isFirst = (SIG_VOLTAGE_INVERT) ? sig2.IsFirstSignal() : sig.IsFirstSignal();
-	      break;
-	    }
-	  } // end for: s_iter2
-	  if (SIG_VOLTAGE_INVERT) {
-	    adc_time *= -1;
-	    drift_time = drift_time - adc_time;
-	  }
-	  if (isFirst && adc_time > 40) {
-	    corr_time = drift_time - tc->SlewCorrection(adc_time);
-	    
-	    geo.GetHitLayerColumn(sig.TDC(), sig.Channel(), &layer, &column);
-	    geo.GetHitXY(layer, column, &hx, &hy);
-	    h = Hit(sig.Time(), adc_time, drift_time, corr_time, sig.TDC(), sig.Channel(), layer, column, hx, hy);
-	    e->AddSignalHit(h);
-	    nhits++;
 
-	  }
-	}
-      } // end for: s_iter
-    } // end if: nonzero number of triggers
-
+    for (auto sig : e->WireSignals()) {
+      adc_time = sig.Width()*BINSIZE*WIDTHSEL;
+      if(adc_time>=adc_cut){
+        tdc_time = sig.LEdge()*BINSIZE;
+        if (relative){
+          drift_time = sig.LEdge()*BINSIZE;
+        }
+        else {
+          drift_time = rollover_bindiff_cal(sig.LEdge(),e->TrigSignals().at(0).TriggerLEdge(),ROLLOVER)*BINSIZE;
+        }
+        corr_time = drift_time - tc->SlewCorrection(adc_time);
+        geo.GetHitLayerColumn(sig.TDC(), sig.Channel(), &layer, &column);
+        geo.GetHitXY(layer, column, &hx, &hy);
+        h = Hit(sig.Time(), adc_time, drift_time, corr_time, sig.TDC(), sig.Channel(), layer, column, hx, hy);
+        e->AddSignalHit(h);
+        nhits++;
+      } //if(adc_time>=adc_cut)
+    } //for (auto sig : e->Signals())
     return nhits;
-  } // end method: do hit finding
-
+  }
 } 

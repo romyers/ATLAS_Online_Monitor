@@ -145,6 +145,7 @@ set(monitor_HEADERS
 	DAQMonitor/ProgramControl/SigHandlers.h
 	DAQMonitor/ProgramControl/Threads.h
 	DAQMonitor/FileManagement/FileManager.h
+	analysis/MonitorHooks.h
 )
 
 set(monitor_SOURCES
@@ -179,6 +180,7 @@ set(monitor_SOURCES
 	DAQMonitor/ProgramControl/SigHandlers.cpp
 	DAQMonitor/ProgramControl/Threads.cpp
 	DAQMonitor/FileManagement/FileManager.cpp
+	analysis/MonitorHooks.cpp
 )
 
 ROOT_GENERATE_DICTIONARY(G__UISignals ${monitor_HEADERS} LINKDEF LinkDef.h)

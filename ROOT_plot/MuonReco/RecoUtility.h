@@ -37,13 +37,24 @@ namespace MuonReco {
     RecoUtility();
     RecoUtility(ParameterSet ps);
 
+    static const     int    ROLLOVER  = 131072;
+    static constexpr double BINSIZE   = 0.78125;
+
     void Configure(ParameterSet ps);
     bool CheckEvent(Event e, int* status);
     void DoHitClustering(Event *e);
     int  DoHitFinding(Event *e, TimeCorrection* tc, Geometry& geo);
+    int  DoHitFindingPhase1(Event *e, TimeCorrection* tc, Geometry& geo);
+    int  DoHitFindingPhase2(Event *e, TimeCorrection* tc, Geometry& geo, double adc_cut, int relative);
+    int  rollover_bindiff_cal(int a, int b, int rollover);
+    bool IsPhase2Data();
 
   private:
     bool    CHECK_TRIGGERS;
+    bool    IS_PHASE2_DATA;
+    int     WIDTHSEL;
+    double  ADC_NOISE_CUT; // in ns
+    bool    IS_RELATIVE_DATA;
     int     MIN_HITS_NUMBER;     // min total number of event hits
     int     MAX_HITS_NUMBER;     // max total number of event hits
     double  MAX_TIME_DIFFERENCE; // in ns

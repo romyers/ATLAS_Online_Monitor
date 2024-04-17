@@ -99,7 +99,9 @@ namespace Muon {
 
 
   class Signal {
+
   public:
+
     Signal(             );
     Signal(uint64_t word);
 
@@ -149,6 +151,7 @@ namespace Muon {
     static const uint8_t WORD_SIZE            = 5         ; // bytes
 
   private:
+    
     uint8_t  type         ;
     uint16_t eventid      ;
     uint16_t eventid_t    ;

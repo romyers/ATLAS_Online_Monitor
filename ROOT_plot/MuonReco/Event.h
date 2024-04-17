@@ -27,6 +27,7 @@ namespace MuonReco {
   public:
     Event();
     Event(std::vector<Signal> triggers, std::vector<Signal> signals, EventID eID);
+    Event(Signal header, Signal trailer, std::vector<Signal> signals, uint16_t eID);
     Event(std::vector<Signal> triggers, std::vector<Signal> signals, std::vector<Hit> wHits,
           std::vector<Hit>    tHits,    std::vector<Cluster> clusts, std::vector<Track> trks,
           unsigned long ID);
@@ -42,7 +43,8 @@ namespace MuonReco {
     bool               Pass       () const;
 
     std::vector<Cluster> mClusters();
-
+    
+    void   setID        (unsigned long newID);
     void   AddSignalHit (Hit h);
     void   AddTriggerHit(Hit h);
     void   update       ();
@@ -68,7 +70,7 @@ namespace MuonReco {
     int                  nSigs         = 0;
     bool               pass          = kFALSE;
     bool               hasBadHitTime = kFALSE;
-  };
-}
+  }; //class Event
+} //MuonReco
 
 #endif

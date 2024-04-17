@@ -38,7 +38,7 @@ namespace MuonReco {
   void EventDisplay::DrawTDCBorders() {
     for (int tdc = 0; tdc != Geometry::MAX_TDC; tdc++) {
       for (int ch = 0; ch != Geometry::MAX_TDC_CHANNEL; ch++) {
-	
+        
       }
     }
   }
@@ -51,11 +51,13 @@ namespace MuonReco {
     _dir = dir;
   }
 
-  void EventDisplay::DrawEvent(Event &e, Geometry &geo, TDirectory* outdir/*=NULL*/) {
+  void EventDisplay::DrawEvent(Event &e, Geometry &geo, TDirectory* outdir/*=NULL*/, bool isphase2data) {
     char canvas_name[256];
     char canvas_output_name[256];
     double hit_x, hit_y;
     int hit_l, hit_c;
+    std::vector<bool> hit_model_orientation;
+    std::vector<bool> track_model_orientation;
 
     // initialize the canvas and draw the background geometry
     
@@ -63,64 +65,122 @@ namespace MuonReco {
     strcpy(canvas_output_name, canvas_name);
     strcat(canvas_output_name, ".png");
     
-    eCanv->cd(1);
-    
-    geo.Draw(e.ID());
+    bool has_perp = false;
+    for (int counter = 0; counter < geo.orientation().size(); counter++) {
+      if (geo.orientation().at(counter) == 1) {
+        has_perp = true;
+      }
+    }
 
+    if (has_perp) {
+      eCanv->cd(2);
+      geo.Draw(e.ID(), true);
+      eCanv->Modified();
+      eCanv->Update();
+      eCanv->cd(1);
+      geo.Draw(e.ID(), false);
+      eCanv->Modified();
+      eCanv->Update();
+    }
+    else {
+      eCanv->cd(1);
+      geo.Draw(e.ID());
+      eCanv->Modified();
+      eCanv->Update();
+    }
     TubeMap<bool> wireIsDrawn = TubeMap<bool>(Geometry::MAX_TUBE_LAYER, 
-					      Geometry::MAX_TUBE_COLUMN);   
-
-    
+                                              Geometry::MAX_TUBE_COLUMN);       
     // draw this event using the highest level avaliable reconstructed objects
-
     if (e.Tracks().size() != 0) {
       for (Track t : e.Tracks()) {
-	track_model.push_back(new TLine(t.YInt()/t.Slope(), 0, (t.YInt()-350)/t.Slope(),350));
-	track_model.at(track_model.size()-1)->SetLineWidth(1);
-	track_model.at(track_model.size()-1)->SetLineColor(kBlack);
+        track_model.push_back(new TLine(t.YInt()/t.Slope(), 0, (t.YInt()-350)/t.Slope(),350));
+        track_model.at(track_model.size()-1)->SetLineWidth(1);
+        track_model.at(track_model.size()-1)->SetLineColor(kBlack);
+        if (t.Orientation()) {
+          track_model_orientation.push_back(true);
+        }
+        else {
+          track_model_orientation.push_back(false);
+        }
+/*
+        for (int i = 0; i < geo.orientation().size(); i++) {
+          if ((t.Orientation() && geo.orientation().at(i) == 1) || (!t.Orientation() && geo.orientation().at(i) == 0)) {
+             track_model.push_back(new TLine((t.YInt() - i * Geometry::ML_distance) / t.Slope(), i * Geometry::ML_distance, (t.YInt() - (i + 1) * Geometry::ML_distance) / t.Slope(), (i + 1) * Geometry::ML_distance));
+             track_model.at(track_model.size()-1)->SetLineWidth(1);
+             track_model.at(track_model.size()-1)->SetLineColor(kBlack);
+          }
+        }
+*/
       }
     }
     if (e.Clusters().size() != 0) {
       // draw using clusters 
       for (Cluster c : e.Clusters()) {
-	for (Hit h : c.Hits()) {
-	  hit_x = h.X();
-	  hit_y = h.Y();
-	  if (rtfunction != 0) {
-	    hit_model.push_back(new TEllipse(hit_x, hit_y, rtfunction->Eval(h), rtfunction->Eval(h)));
-	    hit_model.back()->SetFillColor(kBlue);
-	  }
-	  else {
-	    hit_model.push_back(new TEllipse(hit_x, hit_y, Geometry::radius, Geometry::radius));
-	    hit_model.back()->SetFillColor(kGreen);
-	  }
-	  wireIsDrawn.set(h.Layer(), h.Column(), 1);
-	}
+        for (Hit h : c.Hits()) {
+          hit_x = h.X();
+          hit_y = h.Y();
+          hit_model_orientation.push_back(geo.IsPerpendicular(h.Layer()));
+      
+          if (rtfunction != 0) {
+            hit_model.push_back(new TEllipse(hit_x, hit_y, rtfunction->Eval(h), rtfunction->Eval(h)));
+            hit_model.back()->SetFillColor(kBlue);
+          }
+          else {
+            hit_model.push_back(new TEllipse(hit_x, hit_y, Geometry::radius, Geometry::radius));
+            hit_model.back()->SetFillColor(kGreen);
+          }
+          wireIsDrawn.set(h.Layer(), h.Column(), 1);
+        }
       }
     }
     if (e.WireSignals().size() != 0) {
       // draw using signals
       for (size_t i = 0; i < e.WireSignals().size(); i++) {
-	geo.GetHitLayerColumn(e.WireSignals().at(i).TDC(), e.WireSignals().at(i).Channel(), &hit_l, &hit_c);
-	if (!wireIsDrawn.get(hit_l, hit_c)) {
-	  if (e.WireSignals().at(i).Type() == Signal::RISING) {
-	    geo.GetHitXY(hit_l, hit_c, &hit_x, &hit_y);
-	    hit_model.push_back(new TEllipse(hit_x, hit_y, Geometry::radius, Geometry::radius));
-	    hit_model.back()->SetFillColor(kRed);
-	    wireIsDrawn.set(hit_l, hit_c, 1);
-	  }
-	}
+        geo.GetHitLayerColumn(e.WireSignals().at(i).TDC(), e.WireSignals().at(i).Channel(), &hit_l, &hit_c);
+        if (!wireIsDrawn.get(hit_l, hit_c)) {
+          if (isphase2data||(e.WireSignals().at(i).Type() == Signal::RISING)) {
+            geo.GetHitXY(hit_l, hit_c, &hit_x, &hit_y);
+            hit_model.push_back(new TEllipse(hit_x, hit_y, Geometry::radius, Geometry::radius));
+            hit_model.back()->SetFillColor(kRed);
+            wireIsDrawn.set(hit_l, hit_c, 1);
+            hit_model_orientation.push_back(geo.IsPerpendicular(hit_l));
+          }
+        }
       }
     }
-    
+
+    for (int i = 0; i < hit_model.size(); i++) {
+      if (hit_model_orientation.at(i)) {
+        eCanv->cd(2);
+      }
+      else {
+        eCanv->cd(1);
+      }
+      hit_model.at(i)->Draw();
+      eCanv->Modified();
+      eCanv->Update();
+    }
+    for (int i = 0; i < track_model.size(); i++) {
+      if (track_model_orientation.at(i)) {
+        eCanv->cd(2);
+      }
+      else {
+        eCanv->cd(1);
+      }
+      track_model.at(i)->Draw();
+      eCanv->Modified();
+      eCanv->Update();
+    }
+/*
     for (auto hit : hit_model) {
+      
       hit->Draw();
     }
     for (auto track: track_model) {
       track->Draw();
     }
-    
-    eCanv->Update();
+*/    
+    eCanv->cd(0);
     if (outdir != NULL) {
       outdir->WriteTObject(eCanv);
     }
@@ -148,12 +208,7 @@ namespace MuonReco {
 
     double xmin, xmax, ymin, ymax, ymid;
     Track tr = e.Tracks().back();
-    if (ML == 0) {
-      ymin = 0;
-    }
-    else if (ML == 1) {
-      ymin = Geometry::ML_distance;
-    }
+    ymin = Geometry::ML_distance*(ML);
 
     ymax = ymin + 3*Geometry::layer_distance + 2*Geometry::radius;
     ymid = (ymax+ymin)/2;
@@ -232,10 +287,11 @@ namespace MuonReco {
     // iterate over active non trigger tdc and draw with color set by th2d
     for (int hitL = 0;   hitL != Geometry::MAX_TUBE_LAYER;  hitL++) {
       for (int hitC = 0; hitC != Geometry::MAX_TUBE_COLUMN; hitC++) {
-	geo.GetHitXY(hitL, hitC, &hit_x, &hit_y);
-	hit_model.push_back(new TEllipse(hit_x, hit_y, Geometry::radius, Geometry::radius));
-	col = (int)((hist->GetBinContent(hitC+1, hitL+1)-min)/diff * nCol);
-	hit_model.back()->SetFillColor(gStyle->GetColorPalette(col) );	
+        geo.GetHitXY(hitL, hitC, &hit_x, &hit_y);
+        hit_model.push_back(new TEllipse(hit_x, hit_y, Geometry::radius, Geometry::radius));
+        col = (int)((hist->GetBinContent(hitC+1, hitL+1)-min)/diff * nCol);
+        hit_model.back()->SetFillColor(gStyle->GetColorPalette(col) );  
+        if (hist->GetBinContent(hitC+1, hitL+1)==0) hit_model.back()->SetFillColor(kWhite);
       }
     }
     

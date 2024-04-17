@@ -85,9 +85,9 @@ namespace MuonReco {
 
     void      Draw         ();
     void      Clear        ();
-    void      FillResiduals(TrackParam & tp);
+    void      FillResiduals(AbstractTrackParam * tp);
     void      FillResidualByValue(double residual, double radius);
-    void      FillChiSq    (TrackParam & tp);
+    void      FillChiSq    (AbstractTrackParam * tp, int NPARS);
     void      DrawADCPlots (TString t0path);
 
     TF1*      FitResVsTime (int npar);
@@ -164,9 +164,11 @@ namespace MuonReco {
 
     // tree variables
     double angle_pattern_recog = 0;
-    double angle_optimized     = 0;
+    double angle_optimized1    = 0;
+    double angle_optimized2    = 0;
     int    number_iterations   = 0;
-    double impact_par_opt      = 0;
+    double impact_par_opt1     = 0;
+    double impact_par_opt2     = 0;
     int    hitN                = 0;
     int    missedHitN          = 0;
     int    trackHitN           = 0;

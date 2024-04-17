@@ -10,6 +10,7 @@
 #pragma once
 
 #include <string>
+#include <fstream>
 
 /**
  * Checks if a directory with the given path exists.

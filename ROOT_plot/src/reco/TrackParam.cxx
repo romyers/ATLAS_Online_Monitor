@@ -2,10 +2,11 @@
 
 namespace MuonReco {
 
-  TrackParam::TrackParam() : Optimizer(), Parameterization(3) {
+  TrackParam::TrackParam() : AbstractTrackParam(), Parameterization(3) {
     param[THETA]      = 0;
     param[INTERCEPT]  = 1;
     param[DELTAT0]    = 0;
+    initialAngle.push_back(0);
   }
 
   TrackParam::~TrackParam() {
@@ -15,24 +16,20 @@ namespace MuonReco {
     rtfunction = rtp;
   }
 
-  double TrackParam::slope() {
-    return -1.0*TMath::Tan(TMath::Pi()/2 + param[THETA]);
-  }
-
-  double TrackParam::y_int() {
-    return slope()*param[INTERCEPT];
-  }
-
   double TrackParam::deltaT0() {
     return param[TrackParam::DELTAT0];
   }
 
-  double TrackParam::getVerticalAngle() {
-    return param[THETA];
+  std::vector<double> TrackParam::getVerticalAngle() {
+    std::vector<double> angle;
+    angle.push_back(param[THETA]);
+    return angle;
   }
 
-  double TrackParam::getImpactParameter() {
-    return param[INTERCEPT];
+  std::vector<double> TrackParam::getImpactParameter() {
+    std::vector<double> impact;    
+    impact.push_back(param[INTERCEPT]);
+    return impact;
   }
 
   void TrackParam::RemoveSFs() {
@@ -141,7 +138,7 @@ namespace MuonReco {
       }
     }
     param[DELTAT0] = 0;
-    initialAngle = getVerticalAngle();    
+    initialAngle[0] = getVerticalAngle()[0];    
     Print();
   }
 
@@ -189,5 +186,42 @@ namespace MuonReco {
     std::cout << "Delta T0:    " << param[DELTAT0]   << std::endl;
     std::cout << std::endl;
   }
-    
+
+  std::vector<Track> TrackParam::makeTracks() {
+    double slope = -1.0*TMath::Tan(TMath::Pi()/2 + param[THETA]);
+    double y_int = slope*param[INTERCEPT];
+    std::vector<Track> tracks;
+    tracks.push_back(Track(slope, y_int));
+    return tracks;
+  }
+ 
+  void TrackParam::tracksystematics(TString systname, int * systindex, double * systerror, double * maxshift, TString & rrsystname, double * systsf, Bool_t floatup) {
+    if (!systname.CompareTo("t0")) {
+      *systindex = TrackParam::DELTAT0;
+      *systerror = 10.0;
+      *maxshift = (floatup) ? 4 : -4;
+      rrsystname = "#Delta t_{0} [ns]";
+    }
+    if (!systname.CompareTo("slope")) {
+      *systindex = TrackParam::THETA;
+      *systerror = 0.005;
+      *maxshift = (floatup) ? 1.5 : -1.5;
+      rrsystname = "#theta [mrad]";
+      *systsf   = 1000;
+    }
+    if (!systname.CompareTo("intercept")) {
+      *systindex = TrackParam::INTERCEPT;
+      *systerror = 0.1;
+      *maxshift = (floatup) ? 0.1 : -0.1;
+      rrsystname = "impact parameter [mm]";
+    }
+    if (!systname.CompareTo("slew")) {
+      *systindex = TrackParam::SLEWFACTOR;
+      *systerror = 0.25;
+    }
+    if (!systname.CompareTo("sigProp")) {
+      *systindex = TrackParam::SIGPROPFACTOR;
+      *systerror = 1.0;
+    }
+  }
 }

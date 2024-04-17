@@ -2,15 +2,21 @@
 
 namespace MuonReco {
   
-  Int_t Geometry::MAX_TDC         = 18;
-  Int_t Geometry::MAX_TDC_CHANNEL = 24;
-  Int_t Geometry::MAX_TUBE_LAYER  =  8;
-  Int_t Geometry::MAX_TUBE_COLUMN = 54;
-  Int_t Geometry::MAX_TDC_LAYER   =  4;
-  Int_t Geometry::MAX_TDC_COLUMN  =  6;
+  Int_t Geometry::MAX_TDC          = 18;
+  Int_t Geometry::MAX_TDC_CHANNEL  = 24;
+  Int_t Geometry::MAX_TUBE_LAYER   =  8;
+  Int_t Geometry::MAX_TUBE_COLUMN  = 54;
+  Int_t Geometry::MAX_TDC_LAYER    =  4;
+  Int_t Geometry::MAX_TDC_COLUMN   =  6;
 
-  double Geometry::ML_distance    = 224.231;
-  double Geometry::tube_length    = 1.1;
+  double Geometry::ML_distance     = 224.231;
+  double Geometry::tube_length     = 1.1;
+
+  double Geometry::layer_distance  = 13.0769836;
+  double Geometry::column_distance = 15.1;
+  double Geometry::radius          = 7.5;
+  double Geometry::min_drift_dist  = 0.0;
+  double Geometry::max_drift_dist  = 7.1;
 
   Geometry::Geometry() {
     runN         = 0;
@@ -38,6 +44,30 @@ namespace MuonReco {
     axes.at(0)->Draw("AP");
     for (auto tube : drawable) tube->Draw();
   } // end method: Geometry :: Draw 
+
+  void Geometry::Draw(int eventN, bool view) {
+    axes.push_back((TGraph *)(axes.at(0)->DrawClone("AL")));
+    if (view) {
+      axes.at(0)->SetTitle(";y [mm];z [mm]");
+      axes.at(0)->Draw("AP");
+      for (auto tube : drawable) {
+        int ML = (int)(tube->GetY1() / ML_distance);
+        if (Geometry::orientation().at(ML) == 1) {
+          tube->Draw();
+        }
+      }
+    }
+    else {
+      axes.at(1)->SetTitle(";x [mm];z [mm]");
+      axes.at(1)->Draw("AP");
+      for (auto tube : drawable) {
+        int ML = (int)(tube->GetY1() / ML_distance);
+        if (Geometry::orientation().at(ML) == 0) {
+          tube->Draw();
+        }
+      }
+    }
+  }
 
   void Geometry::Draw(int eventN, double xmin, double ymin, double xmax, double ymax, TString additionalText/*=""*/) {
 
@@ -96,8 +126,16 @@ namespace MuonReco {
 	GetHitLayerColumn(tdc, testChan, &hitL, &hitC);
 	GetHitXY(hitL, hitC, &hitX, &hitY);
 	str.Form("TDC %d", tdc);
-	text.push_back(new TPaveText(hitX-9*radius, hitY+4*layer_distance, hitX-3*radius, hitY+5*layer_distance));
+	text.push_back(new TPaveText(hitX-9*radius, (hitY+3.5*layer_distance) + (Geometry::radius*0.03), hitX-3*radius, (hitY-0.5*layer_distance+ML_distance) - (Geometry::radius*0.03)));
 	text.back()->AddText(str.Data());
+      }
+    }
+    for (int i = 0; i < ML_orientation.size(); i++) {
+      if (ML_orientation.at(i) == 1) {
+        text.push_back(new TPaveText(column_distance * (MAX_TUBE_COLUMN+0.5), i * ML_distance, column_distance * (MAX_TUBE_COLUMN + 1), (i * ML_distance) + (layer_distance * 4)));
+        text.back()->AddText("Perp");
+        text.back()->SetTextAngle(-90);
+        text.back()->SetTextAlign(32);
       }
     }
   }
@@ -120,17 +158,15 @@ namespace MuonReco {
     }
     if (!chamberType.CompareTo("C")) {
       *hitX = Geometry::radius + hitC * column_distance + ((hitL + 1) % 2) * column_distance / 2.0;
-      *hitY = Geometry::radius + hitL * layer_distance  + (ML_distance-4*layer_distance)*(hitL >= 4);
     }
     else if (!chamberType.CompareTo("A")) {
       *hitX = Geometry::radius + hitC * column_distance + (hitL % 2) * column_distance / 2.0;
-      *hitY = Geometry::radius + hitL * layer_distance  + (ML_distance-4*layer_distance)*(hitL >= 4);
     }
-
     if (MAX_TUBE_LAYER == layerOffset.size() && layerOffset.size() == layerSlope.size()) {
       *hitY = layerOffset.at(hitL) + layerSlope.at(hitL)*hitC;
     }
 
+    *hitY = Geometry::radius + hitL * layer_distance  + (ML_distance-4*layer_distance) * MultiLayer(hitL);
   }    
 
   int Geometry::MultiLayer(Cluster c) const {
@@ -143,7 +179,7 @@ namespace MuonReco {
   
 
   Bool_t Geometry::AreAdjacent(double x1, double y1, double x2, double y2) {
-    return TMath::Sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)) < 1.5 * Geometry::layer_distance;
+    return TMath::Sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)) < 1.01*column_distance;
   }
   
   Bool_t Geometry::AreAdjacent(Cluster c1, Cluster c2) {
@@ -209,6 +245,12 @@ namespace MuonReco {
     Geometry::ML_distance     = ps.getDouble("ML_distance", 224.231, 0);
     Geometry::tube_length     = ps.getDouble("TubeLength",  1.5,     0);
 
+    Geometry::layer_distance  = ps.getDouble("layer_distance", 13.0769836, 0);
+    Geometry::column_distance = ps.getDouble("column_distance", 15.1, 0);
+    Geometry::radius          = ps.getDouble("radius", 7.5, 0);
+    Geometry::min_drift_dist  = ps.getDouble("min_drift_distance", 0.0, 0);
+    Geometry::max_drift_dist  = ps.getDouble("max_drift_distance", 7.1, 0);
+
 
     // get run number and trigger information
     TRIGGER_MEZZ   = ps.getInt("TriggerMezz");
@@ -245,10 +287,18 @@ namespace MuonReco {
     hit_layer_map.resize(Geometry::MAX_TDC_CHANNEL);
     hit_column_map.resize(Geometry::MAX_TDC_CHANNEL);
 
-    std::vector<int> activeTDCs    = ps.getIntVector("ActiveTDCs");
-    std::vector<int> TDCMultiLayer = ps.getIntVector("TDCMultilayer");
-    std::vector<int> TDCColumn     = ps.getIntVector("TDCColumn");
-
+    std::vector<int> activeTDCs     = ps.getIntVector("ActiveTDCs");
+    std::vector<int> TDCMultiLayer  = ps.getIntVector("TDCMultilayer");
+    std::vector<int> TDCColumn      = ps.getIntVector("TDCColumn");
+    int MAX_ML = MAX_TUBE_LAYER / MAX_TDC_LAYER;
+    if (ps.hasKey("ML_orientation")) {
+      ML_orientation = ps.getIntVector("ML_orientation");
+    }
+    else {
+      for (int i = 0; i < MAX_ML; i++) {
+        ML_orientation.push_back(0);
+      }
+    }
     int nTDC = activeTDCs.size();
     nTDC = (nTDC < TDCMultiLayer.size()) ? nTDC : TDCMultiLayer.size();
     nTDC = (nTDC < TDCColumn.size())     ? nTDC : TDCColumn.size();
@@ -272,6 +322,17 @@ namespace MuonReco {
 
 
     ResetTubeLayout();
+    // std::cout<<"MAX TDC = "<<MAX_TDC<<std::endl;
+  }
+
+  bool Geometry::IsPerpendicular(int layer) {
+    int ml = MultiLayer(layer);
+    bool is_perp = (bool)Geometry::ML_orientation.at(ml);
+    return is_perp;
+  }
+
+  std::vector<int> Geometry::orientation() {
+    return ML_orientation;
   }
 
   void Geometry::ResetTubeLayout() {
@@ -326,7 +387,8 @@ namespace MuonReco {
   }
 
   double Geometry::getMeanYPosition() {
-    return (ML_distance + 2.0*radius + layer_distance*(MAX_TDC_LAYER-1))/2.0;
+    int ML = MultiLayer(MAX_TUBE_LAYER);
+    return ((ML - 1) * ML_distance + (MAX_TDC_LAYER - 1) * layer_distance + 2.0 * radius)/2.0;
   }
 
 }

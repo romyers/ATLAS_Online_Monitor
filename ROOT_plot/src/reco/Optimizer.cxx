@@ -277,7 +277,10 @@ namespace MuonReco {
    * included based on its error and residual, then uses the derivative of the chi squared with 
    * respect to each parameter to increment the relevant matrices
    */
-  void Optimizer::increment(double dist, double res, double err, Hit h) {
+  void Optimizer::increment(double dist, double res, double err, Hit h) { 
+//    std::cout << "Distance is " << dist << ", residual is " << res << ", error is " << err << std::endl;
+//    std::cout << "Hit layer is " << h.Layer() << std::endl;
+//    std::cout << "Hit column is " << h.Column() << std::endl;
     if (dist>0 && dist < Geometry::radius && TMath::Abs(res) < maxResidual*err) {
       DOF++;
 

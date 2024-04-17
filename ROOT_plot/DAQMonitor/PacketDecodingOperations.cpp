@@ -16,6 +16,8 @@ using namespace std;
 #include "GUI/Core/UISignals.h"
 #include "GUI/Core/UILock.h"
 
+#include "analysis/MonitorHooks.h"
+
 #include "src/Geometry.h"
 
 using namespace Muon;
@@ -122,6 +124,8 @@ void Decode::startDecoding(
 
         if(hasData) {
 
+            MonitorHooks::beforeUpdateData(data);
+
             data.lock();
 
             aggregateEventData(loopData, data);
@@ -140,6 +144,8 @@ void Decode::startDecoding(
             }
 
             data.unlock();
+
+            MonitorHooks::updatedData(data);
 
             // TODO: This blocks the decode thread while the plots are 
             //       updating. Not a big deal, but it would be nice if
@@ -223,14 +229,6 @@ void aggregateEventData(const DecodeData &loopData, DAQData &data) {
 }
 
 void saveNoiseRate(const string &path, const DAQData &data) {
-
-    // TODO: Maybe use '/n' instead of 'endl' to reduce file write ops?
-
-    // TODO: Try to find a way to be able to overwrite the file without
-    //       having to reopen it.
-
-    // TODO: Try not to have data locked while we're doing slow file ops.
-    //       E.g. open the file outside of the lock.
 
     static bool lastSaveFailed = false;
 

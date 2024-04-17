@@ -134,15 +134,15 @@ namespace MuonReco {
     radialBinProjections = std::vector<TH1*>();    
     init = kFALSE;
 
-    angle_pattern_recog = 0;
-    angle_optimized     = 0;
-    number_iterations   = 0;
+    angle_pattern_recog  = 0;
+    angle_optimized1     = 0;
+    number_iterations    = 0;
 
     trackFitTree = new TTree("trackFitTree", "Tree holding diagnostics from track fitting");
     trackFitTree->Branch("angle_pattern_recog", &angle_pattern_recog);
-    trackFitTree->Branch("angle_optimized",     &angle_optimized);
+    trackFitTree->Branch("angle_optimized",     &angle_optimized1);
     trackFitTree->Branch("number_iterations",   &number_iterations);
-    trackFitTree->Branch("impact_par_opt",      &impact_par_opt);
+    trackFitTree->Branch("impact_par_opt",      &impact_par_opt1);
     trackFitTree->Branch("hitN",                &hitN);
     trackFitTree->Branch("hitX",                &hitX);
     trackFitTree->Branch("hitY",                &hitY);
@@ -355,17 +355,17 @@ namespace MuonReco {
   }
 
 
-  void ResolutionResult::FillChiSq(TrackParam & tp) {
+  void ResolutionResult::FillChiSq(AbstractTrackParam * tp, int NPARS) {
     // fill Chi Square and DOF distibutions
-    chiSq->Fill(tp.chiSq);
-    hitsPerEvent->Fill(tp.DOF + TrackParam::NPARS);
+    chiSq->Fill(tp->chiSq);
+    hitsPerEvent->Fill(tp->DOF + NPARS);
     
   }
 
-  void ResolutionResult::FillResiduals(TrackParam & tp) {
-    
-    angle_optimized     = tp.getVerticalAngle();
-    impact_par_opt      = tp.getImpactParameter();
+  void ResolutionResult::FillResiduals(AbstractTrackParam * tp) {
+
+    angle_optimized1    = tp->getVerticalAngle()[0];
+    impact_par_opt1     = tp->getImpactParameter()[0];
     hitX.clear();
     hitY.clear();
     hitL.clear();
@@ -379,24 +379,41 @@ namespace MuonReco {
     trackHitL.clear();
     trackHitC.clear();
 
-    if (angle_optimized < angular_cut) {
+    int dimension = tp->makeTracks().size();
+    double max_angle = angle_optimized1;
+    if (dimension == 2) {
+      angle_optimized2 = tp->getVerticalAngle()[1];
+      impact_par_opt2  = tp->getImpactParameter()[1];
+      max_angle = std::max(angle_optimized1, angle_optimized2);
+    }
+ 
+    if (max_angle < angular_cut) {
       // fill residual distributions
-      tp.hitIndex = -1;
+      tp->hitIndex = -1;
       double res, dist, err, rad, ntime;
-      double xmean = (-1.0*tp.y_int() + (Geometry::ML_distance + 
-					 (Geometry::MAX_TDC_LAYER-1)*Geometry::layer_distance + 
-					 Geometry::radius)/2.0)/tp.slope();
-      for (Cluster c : tp.e->Clusters()) {
+      double xmean;
+      for (Cluster c : tp->e->Clusters()) {
 	for (Hit h : c.Hits()) {
-	  tp.hitIndex++;
-	  rad   = tp.rtfunction->Eval(h, tp.deltaT0());
-	  res   = tp.Residual(h);
-	  if (tp.IsRight(h)) res *= -1.0;
-	  dist  = tp.Distance(h);
+	  tp->hitIndex++;
+	  rad   = tp->rtfunction->Eval(h, tp->deltaT0());
+	  res   = tp->Residual(h);
+	  if (tp->IsRight(h)) res *= -1.0;
+	  dist  = tp->Distance(h);
 	  err   = Hit::RadiusError(dist);
-	  ntime = tp.rtfunction->NormalizedTime(h.CorrTime() - tp.deltaT0(), h.Layer(), h.Column());
-	  if (dist>0 && dist < Geometry::radius && TMath::Abs(res) < tp.maxResidual*err) {
-	    if ((tp.anySkip() && tp.skip()) || !tp.anySkip()) {
+	  ntime = tp->rtfunction->NormalizedTime(h.CorrTime() - tp->deltaT0(), h.Layer(), h.Column());
+          int hit_orientation = geo->IsPerpendicular(h.Layer());
+          Track container_track;
+          if (!hit_orientation) {
+            container_track = tp->makeTracks()[0];
+          }
+          else {
+            container_track = tp->makeTracks()[1];
+          }
+           xmean = (-1.0*container_track.YInt() + (Geometry::ML_distance + 
+				 (Geometry::MAX_TDC_LAYER-1)*Geometry::layer_distance + 
+				 Geometry::radius)/2.0)/container_track.Slope(); 
+	  if (dist>0 && dist < Geometry::radius && TMath::Abs(res) < tp->maxResidual*err) {
+	    if ((tp->anySkip() && tp->skip()) || !tp->anySkip()) {
 	      residuals       ->Fill(1000*res);
 	      radius          ->Fill(rad);
 	      resVsHitRadius  ->Fill(rad,res*1000.0);
@@ -423,7 +440,7 @@ namespace MuonReco {
 	  if (geo->IsActiveLayerColumn(iL, iC)) {
 	    geo->GetHitXY(iL, iC, &_hitX, &_hitY);
 	    // get track x position and figure out what tube(s) it may go through
-	    double trackDist = tp.Distance(Hit(0, 0, 0, 0, 0, 0, iL, iC, _hitX, _hitY));
+	    double trackDist = tp->Distance(Hit(0, 0, 0, 0, 0, 0, iL, iC, _hitX, _hitY));
 	    if (doMCMCS) {
 	      double sign = (gRandom->Uniform() < 0.5) ? -1.0 : 1.0;
 	      if (gRandom->Uniform() < 0.51) {
@@ -436,7 +453,7 @@ namespace MuonReco {
 	    
 	    if (trackDist <= Geometry::column_distance/2) {
 	      Bool_t tubeIsHit = kFALSE;
-	      for (Hit h : tp.e->WireHits()) {
+	      for (Hit h : tp->e->WireHits()) {
 		if (h.Layer() == iL && h.Column() == iC) tubeIsHit = kTRUE;
 	      }
 	      if (!tubeIsHit)	{
@@ -455,21 +472,21 @@ namespace MuonReco {
       } // end for: layer
 
       // fill delta t 0 distribution and other global distributions
-      deltaT0->Fill(tp.deltaT0());  
-      t0Systematic->Fill(tp.getSystShift()*SYSTSF);
-      systVsAngle->Fill(tp.getSystShift()*SYSTSF, tp.getVerticalAngle()*TMath::RadToDeg());
+      deltaT0->Fill(tp->deltaT0());  
+      t0Systematic->Fill(tp->getSystShift()*SYSTSF);
+      systVsAngle->Fill(tp->getSystShift()*SYSTSF, tp->getVerticalAngle()[0]*TMath::RadToDeg());
 
-      // fill diagnostics tree
-      angle_pattern_recog = tp.initialAngle;
-      angle_optimized     = tp.getVerticalAngle();
-      number_iterations   = tp.getNIterations();
+      // fill diagnostics tree (only front view)
+      angle_pattern_recog  = tp->initialAngle[0];
+      angle_optimized1     = tp->getVerticalAngle()[0];
+      number_iterations    = tp->getNIterations();
       
       hitN       = hitX.size();
       missedHitN = missedHitR.size();
       trackHitN  = trackHitR.size();
       trackFitTree->Fill();
     }
-    else std::cout << "Failed cut: " << angle_optimized << std::endl;
+    else std::cout << "Failed cut: " << max_angle << std::endl;
   }
 
   void ResolutionResult::FillResidualByValue(double residual, double radius) {

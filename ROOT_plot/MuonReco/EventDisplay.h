@@ -42,7 +42,7 @@ namespace MuonReco {
     ~EventDisplay();
 
     void Divide       (int nX, int nY);
-    void DrawEvent    (Event &e, Geometry &geo, TDirectory* outdir=NULL);
+    void DrawEvent    (Event &e, Geometry &geo, TDirectory* outdir=NULL, bool isphase2data=kFALSE);
     void DrawTubeHist (Geometry &geo, TH2D* hist, TDirectory* outdir=NULL, bool noROOT=kFALSE);
     void DrawTrackZoom(Event &e, Geometry &geo, int ML, TDirectory* outdir=NULL);
     void SaveCanvas   (TString name, TDirectory* outdir);

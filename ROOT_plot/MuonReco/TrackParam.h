@@ -12,6 +12,9 @@
 #include "MuonReco/Event.h"
 #include "MuonReco/RTParam.h"
 #include "MuonReco/Callable.h"
+#include "MuonReco/AbstractTrackParam.h"
+#include "MuonReco/Track.h"
+#include "MuonReco/ResolutionResult.h"
 
 namespace MuonReco {
   
@@ -28,33 +31,30 @@ namespace MuonReco {
    *                                       *
    *****************************************
    */
-  class TrackParam : public Optimizer, virtual public Parameterization {
+  class TrackParam :virtual public AbstractTrackParam, virtual public Parameterization {
   public:
     TrackParam();
     ~TrackParam();
 
-    void     SetRT     (Callable* rtp);
-    void     Initialize(Event *e)         override;
-    void     Print     ()                 override;
+    void                SetRT             (Callable* rtp)    override;
+    void                Initialize        (Event *e)         override;
+    void                Print             ()                 override;
+    std::vector<Track>  makeTracks        ()                 override;
+    double              D                 (int index, Hit h) override;
+    double              Residual          (Hit h)            override;
+    double              Distance          (Hit h)            override;
+    bool                IsRight           (Hit h)            override;
+    double              deltaT0           ()                 override;
+    void                RemoveSFs         ()                 override;
+    std::vector<double> getVerticalAngle  ()                 override;
+    std::vector<double> getImpactParameter()                 override;
 
-    double   D         (int index, Hit h) override;
-    double   Residual  (Hit h)            override;
-    double   Distance  (Hit h)            override;   
+    void tracksystematics(TString systname, int * systindex, double * systerror, double * maxshift, TString & rrsystname, double * systsf, Bool_t floatup) override;
 
     double LegendreLowerCurve(double theta, double x_0, double y_0, double r_0);
     double LegendreUpperCurve(double theta, double x_0, double y_0, double r_0);
 
     double   LeastSquares(std::vector<double> x, std::vector<double> y,  std::vector<double> r, double* slopeOut, double* intOut);
-
-    double slope();
-    double y_int();
-    double deltaT0();
-    bool   IsRight(Hit h);
-
-    double getVerticalAngle();
-    double getImpactParameter();
-
-    void   RemoveSFs();
 
     static const int THETA         = 0;
     static const int INTERCEPT     = 1;
@@ -63,10 +63,6 @@ namespace MuonReco {
     static const int SIGPROPFACTOR = 4;
     static const int NPARS         = 3;
 
-  private:
-    Callable* rtfunction;
-    friend class ResolutionResult;
-    double initialAngle;
   };
 
 }

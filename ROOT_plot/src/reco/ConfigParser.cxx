@@ -5,6 +5,9 @@ namespace MuonReco {
 
   ConfigParser::ConfigParser(TString confPath) {
     std::ifstream infile(confPath);
+    if(infile.fail()){
+        std::cout<<"File not exists or permission denied"<<std::endl;
+    }
     std::string raw_line;
     TString line, key, value;
     TObjArray* toks;

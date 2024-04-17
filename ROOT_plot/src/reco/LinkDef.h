@@ -34,4 +34,19 @@
 #include "MuonReco/Track.h"
 #pragma link C++ class MuonReco::Track+;
 
+#include "MuonReco/DAQData.h"
+#pragma link C++ class MuonReco::DAQData+;
+
+#include "MuonReco/Decoder.h"
+#pragma link C++ class MuonReco::Decoder+;
+
+#include "MuonReco/EventDecoding.h"
+#pragma link C++ class MuonReco::EventDecoding+;
+
+#include "MuonReco/LockableStream.h"
+#pragma link C++ class MuonReco::LockableStream+;
+
+#include "MuonReco/SignalDecoding.h"
+#pragma link C++ class MuonReco::SignalDecoding+;
+
 #endif

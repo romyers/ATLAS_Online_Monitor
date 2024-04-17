@@ -29,6 +29,10 @@
 #pragma link C++ namespace Muon::DataRun+;
 #pragma link C++ defined_in Muon::DataRun+;
 
+#include "analysis/MonitorHooks.h"
+#pragma link C++ namespace Muon::MonitorHooks+;
+#pragma link c++ defined_in Muon::MonitorHooks+;
+
 #include "SignalHandlers.h"
 #pragma link C++ namespace Muon::SigHandlers+;
 #pragma link C++ defined_in Muon::SigHandlers+;

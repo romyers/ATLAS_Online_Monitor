@@ -22,11 +22,14 @@
 #include "GUI/Core/UISignals.h"
 #include "GUI/Core/UILock.h"
 
+#include "analysis/MonitorHooks.h"
+
 #include "src/Geometry.h"
 
 using namespace std;
 using namespace Muon;
 using namespace State;
+using namespace MonitorHooks;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -183,6 +186,8 @@ void DataRun::startRun() {
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(thread([&data, runLabel]() {
 
+        MonitorHooks::beforeStartRun(data);
+
         cout << endl << "Starting run: " << runLabel << endl; 
 
         Muon::UI::UILock.lock();
@@ -219,6 +224,8 @@ void DataRun::startRun() {
 
         });
 
+        MonitorHooks::startedRun(data);
+
         dataCaptureThread.join();
         decodeThread     .join();
 
@@ -240,6 +247,8 @@ void DataRun::startRun() {
         Muon::UI::UILock.lock();
         UISignalBus::getInstance().onRunStop();
         Muon::UI::UILock.unlock();
+
+        MonitorHooks::finishedRun(data);
 
         cout << "Run finished!" << endl;
 

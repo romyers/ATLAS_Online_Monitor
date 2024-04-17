@@ -3,6 +3,7 @@
 
 #include <bitset>
 #include <vector>
+#include <stdbool.h>
 
 #include "TGraph.h"
 #include "TPaveText.h"
@@ -37,6 +38,7 @@ namespace MuonReco {
     void   Draw              (int eventN);
     void   Draw              (int eventN, double xmin, double ymin, double xmax, double ymax, TString additionalText="");
     void   Draw              (const char * title);
+    void   Draw              (int eventN, bool view);
     void   DrawTDCLabel      ();
     void   ResetText         ();
     void   GetHitLayerColumn (unsigned int tdc_id, unsigned int channel_id, int *hit_layer, int *hit_column) const;
@@ -48,6 +50,8 @@ namespace MuonReco {
 
     int    GetRunN           () const;
     void   Configure         (ParameterSet ps);
+    bool   IsPerpendicular   (int layer);
+    std::vector<int> orientation();
 
     void   GetHitXY   (int hitL, int hitC, double *hitX, double *hitY);
     static bool   AreAdjacent(double x1, double x2, double y1, double y2);
@@ -62,12 +66,12 @@ namespace MuonReco {
     static Int_t MAX_TDC_COLUMN;
     static Int_t MAX_TDC_LAYER;
 
-    static constexpr double layer_distance  = 13.0769836;
-    static constexpr double column_distance = 15.1;
-    static constexpr double radius          = 7.5;
+    static double layer_distance;
+    static double column_distance;
+    static double radius;
     static double ML_distance;
-    static constexpr double min_drift_dist  = 0.0;
-    static constexpr double max_drift_dist  = 7.1;
+    static double min_drift_dist;
+    static double max_drift_dist;
     static double tube_length;
 
     std::vector<int> hit_column_map = std::vector<int>();
@@ -83,7 +87,8 @@ namespace MuonReco {
     TString chamberType = "C";
     std::vector<double> layerOffset = std::vector<double>();
     std::vector<double> layerSlope  = std::vector<double>();
-    
+    std::vector<int>  ML_orientation = std::vector<int>();
+
   private:
 
     void ResetTubeLayout();

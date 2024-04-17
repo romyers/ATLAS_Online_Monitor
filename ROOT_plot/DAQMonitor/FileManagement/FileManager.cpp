@@ -11,6 +11,10 @@
 
 #include "FileManager.h"
 
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
 #include <sys/stat.h>
 
 using namespace std;

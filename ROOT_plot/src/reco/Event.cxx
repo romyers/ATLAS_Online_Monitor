@@ -14,6 +14,21 @@ namespace MuonReco {
     id       = 0;
   }
 
+  Event::Event(Signal header, Signal trailer, std::vector<Signal> signals, uint16_t eID) {
+    trigs = std::vector<Signal>();
+    trigs.push_back(header);
+    trigs.push_back(trailer);
+    sigs     = signals;
+    trigHits = std::vector<Hit>();
+    sigHits  = std::vector<Hit>();
+    clusters = std::vector<Cluster>();
+    tracks   = std::vector<Track>();
+    nTrigs   = 0;
+    nSigs    = 0;
+    id       = eID;
+  }
+
+
   Event::Event(std::vector<Signal> triggers, std::vector<Signal> signals, EventID eID) {
     trigs    = triggers;
     sigs     = signals;
@@ -111,13 +126,17 @@ namespace MuonReco {
     nSigs  = sigHits.size();
   }
 
+  void Event::setID(unsigned long newID) {
+    id = newID;
+  }
+
   void Event::CheckClusterTime() {
     for (Cluster c : clusters) {
       for (Hit h : c.Hits()) {
-	if (h.CorrTime()>200 || h.CorrTime()<-200) {
-	  hasBadHitTime = kTRUE;
-	  return;
-	}
+      if (h.CorrTime()>200 || h.CorrTime()<-200) {
+        hasBadHitTime = kTRUE;
+        return;
+      }
       }
     }
   }
@@ -125,12 +144,12 @@ namespace MuonReco {
   Bool_t Event::AnyWireHit(unsigned int TDC, unsigned int Channel) {
     for (Hit h : sigHits) {
       if (h.TDC() == TDC && h.Channel() == Channel)
-	return kTRUE;
+      return kTRUE;
     }
     return kFALSE;
   }
 
   void Event::Draw() {}
-}
+} //MuonReco
 
 
