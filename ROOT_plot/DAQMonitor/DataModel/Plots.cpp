@@ -13,9 +13,7 @@ using namespace std;
 // TODO: Is there a better place to put this? E.g. Geometry.cpp?
 const double MATCH_WINDOW = 1.5; // us
 
-Plots::Plots(const Plots &other) {
-
-	geo = other.geo;
+Plots::Plots(const Plots &other) : geo(other.geo) {
 
 	p_leading_time  = dynamic_cast<TH1F*>(other.p_leading_time ->Clone());
 	p_trailing_time = dynamic_cast<TH1F*>(other.p_trailing_time->Clone());
@@ -65,9 +63,7 @@ Plots::Plots(const Plots &other) {
 
 }
 
-Plots::Plots() {
-
-	// FIXME: Geometry needs to be well-constructed
+Plots::Plots(Geometry &geo) : geo(geo) {
 
 	TString plot_name_buffer;
 

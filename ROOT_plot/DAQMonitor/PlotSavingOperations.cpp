@@ -109,7 +109,7 @@ void PlotSaving::savePlots() {
 
     for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
-        if(snapshot.geo.IsActiveTDC(tdc)) {
+        if(data.geo.IsActiveTDC(tdc)) {
 
             ++activeTDCs;
 
@@ -118,8 +118,8 @@ void PlotSaving::savePlots() {
         for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
 
             if(
-                snapshot.geo.IsActiveTDCChannel(tdc, chnl) || 
-                (tdc == snapshot.geo.TRIGGER_MEZZ)
+                data.geo.IsActiveTDCChannel(tdc, chnl) || 
+                (tdc == data.geo.TRIGGER_MEZZ)
             ) {
 
                 ++activeChannels;
@@ -137,7 +137,7 @@ void PlotSaving::savePlots() {
 
     for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
-        if(snapshot.geo.IsActiveTDC(tdc)) {
+        if(data.geo.IsActiveTDC(tdc)) {
 
             string dirName = outputDirName + "/NoiseRate";
 
@@ -187,8 +187,8 @@ void PlotSaving::savePlots() {
             for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
 
                 if(
-                    snapshot.geo.IsActiveTDCChannel(tdc, chnl) || 
-                    (tdc == snapshot.geo.TRIGGER_MEZZ)
+                    data.geo.IsActiveTDCChannel(tdc, chnl) || 
+                    (tdc == data.geo.TRIGGER_MEZZ)
                 ) {
 
                     snapshot.p_tdc_time_corrected[tdc][chnl]->Draw("colz");

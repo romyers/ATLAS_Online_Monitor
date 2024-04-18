@@ -107,6 +107,7 @@
 ## Added
 
 - Added documentation to the ErrorLogger's ErrorLevel enum.
+- Added geometry config parsing to DataRunOperations.
 
 ## Changed
 
@@ -147,12 +148,14 @@
             - FIXME: Need to use a well-constructed Geometry object.
 
     - PLOTS
-        - Added a data member storing the Geometry.
+        - Added a reference member storing the Geometry.
         - Switched to MuonReco objects.
         - Switched Event::Hits() call to Event::WireHits().
 
     - DAQ_DATA
         - Switched to MuonReco objects.
+        - Added a geometry object.
+        - Constructor now stores the geometry object in plots.
 
     - DATA_RUN_OPERATIONS
         - Now uses the Geometry stored in DAQData::Plots.

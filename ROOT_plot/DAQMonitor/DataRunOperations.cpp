@@ -25,10 +25,12 @@
 #include "analysis/MonitorHooks.h"
 
 #include "MuonReco/Geometry.h"
+#include "MuonReco/ConfigParser.h"
 
 using namespace std;
 using namespace State;
 using namespace MonitorHooks;
+using namespace MuonReco;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -166,9 +168,9 @@ void DataRun::startRun() {
 
     }
 
-    runStarted = true;
-    state.tempState.runLabel = runLabel;
-    state.commit(); // TODO: This shouldn't fail, but better if it's robust
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 
     // Clear the DAQData of any data from a previous run
     DAQData &data = DAQData::getInstance();
@@ -176,6 +178,38 @@ void DataRun::startRun() {
     data.lock  ();
     data.clear ();
     data.unlock();
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    // Configure the geometry
+
+    // TODO: Allow setting this path at runtime.
+    // TODO: 
+    ConfigParser cp("../conf/run_20240412.conf");
+
+    data.lock();
+    data.geo.Configure(cp.items("Geometry"));
+    data.unlock();
+
+    // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
+    //       not include hours/minutes/seconds
+    // NOTE: This assumes the DAT filenames are formatted as "run_YYYYMMDD_HHMMSS.dat"
+    int runN = (
+        (TObjString*)(TString(
+            runLabel.substr(3, runLabel.size()).data()
+        ).Tokenize("_")->At(0))
+    )->String().Atoi();
+    data.geo.SetRunN(runN);
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    runStarted = true;
+    state.tempState.runLabel = runLabel;
+    state.commit(); // TODO: This shouldn't fail, but better if it's robust
 
     // TODO: Hook up error handling on a per-thread basis. Threads should
     //       report to a threadsafe error handler that does the error handling
@@ -192,16 +226,6 @@ void DataRun::startRun() {
         UI::UILock.lock();
         UISignalBus::getInstance().onRunStart();
         UI::UILock.unlock();
-
-        // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
-        //       not include hours/minutes/seconds
-        // NOTE: This assumes the DAT filenames are formatted as "run_YYYYMMDD_HHMMSS.dat"
-        int runN = (
-            (TObjString*)(TString(
-                runLabel.substr(3, runLabel.size()).data()
-            ).Tokenize("_")->At(0))
-        )->String().Atoi();
-        data.plots.geo.SetRunN(runN);
 
         LockableStream dataStream;
         initializeDataStream(dataStream);

@@ -21,15 +21,13 @@
 // NOTE: There should really only be one of those. DAQData holds it.
 struct Plots {
 
-	Plots();
+	Plots(MuonReco::Geometry &geo);
 
 	Plots         (const Plots &other);
 	void operator=(const Plots &other) = delete; // TODO: It's a little bit
 	                                             //       weird to have a
 	                                             //       copy constructor but
 	                                             //       not copy assignment
-
-	MuonReco::Geometry geo;
 
 	TH1F *                           p_leading_time          ;
 	TH1F *                           p_trailing_time         ;
@@ -61,5 +59,11 @@ struct Plots {
 	void binEvent     (const MuonReco::Event &e);
 	void updateHitRate(int total_events    );
 	void clear        (                    );
+
+private:
+
+	// NOTE: This is configured externally in DataRunOperations. No need to do
+	//       anything with it here. It's just here to be accessible.
+	MuonReco::Geometry &geo; 
 
 };

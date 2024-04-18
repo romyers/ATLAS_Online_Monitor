@@ -18,6 +18,7 @@
 
 #include "Plots.h"
 #include "MuonReco/Event.h"
+#include "MuonReco/Geometry.h"
 
 struct DAQData {
 
@@ -33,6 +34,8 @@ struct DAQData {
     // A struct of histograms containing aggregate event data. See
     // src/DataModel/Plots.cpp.
     Plots plots;
+
+    MuonReco::Geometry geo;
 
     int totalEventCount = 0;
     int packetCount     = 0;
