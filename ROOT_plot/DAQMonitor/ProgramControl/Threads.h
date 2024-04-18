@@ -13,7 +13,6 @@
 #include <thread>
 #include <mutex>
 
-namespace Muon {
 namespace ProgramFlow {
 
     extern std::vector<std::thread> threads;
@@ -26,5 +25,4 @@ namespace ProgramFlow {
      */
     void joinAllThreads();
 
-}
 }

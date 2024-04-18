@@ -3,7 +3,6 @@
 #include "Core/UILoop.h"
 
 using namespace std;
-using namespace Muon;
 
 DAQManager *buildGUI() {
 

@@ -12,7 +12,6 @@
 #include "AlertBox/AlertOperations.h"
 
 using namespace std;
-using namespace Muon;
 
 bool isRunning = false;
 
@@ -82,7 +81,7 @@ chrono::milliseconds runLoopStep() {
     } catch (UIException &e) {
 
     	// TODO: I don't want this here.
-        Error::popupAlert(
+        AlertPopup::popupAlert(
             gClient->GetRoot(), "Error", e.what()
         );
 

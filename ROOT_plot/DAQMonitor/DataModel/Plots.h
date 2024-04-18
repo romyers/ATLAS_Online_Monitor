@@ -15,7 +15,8 @@
 #include <TH2.h>
 #include <TGraph.h>
 
-#include "src/Event.h"
+#include "MuonReco/Event.h"
+#include "MuonReco/Geometry.h"
 
 // NOTE: There should really only be one of those. DAQData holds it.
 struct Plots {
@@ -27,6 +28,8 @@ struct Plots {
 	                                             //       weird to have a
 	                                             //       copy constructor but
 	                                             //       not copy assignment
+
+	MuonReco::Geometry geo;
 
 	TH1F *                           p_leading_time          ;
 	TH1F *                           p_trailing_time         ;
@@ -55,7 +58,7 @@ struct Plots {
 	TH2D *                           badHitByLC              ;
 	TH2D *                           goodHitByLC             ; 
 
-	void binEvent     (const Muon::Event &e);
+	void binEvent     (const MuonReco::Event &e);
 	void updateHitRate(int total_events    );
 	void clear        (                    );
 

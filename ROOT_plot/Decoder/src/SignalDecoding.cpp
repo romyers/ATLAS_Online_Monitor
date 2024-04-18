@@ -5,17 +5,16 @@
 #include <istream>
 
 #include <iostream>
-#include <chrono>
-#include <ctime>  
 
 #include "Logging/ErrorLogger.h"
 
-#include "src/Geometry.h"
+#include "MuonReco/Geometry.h"
 
-using namespace Muon;
+using namespace MuonReco;
 using namespace std;
 
-const string SIGNAL_ERROR = "signal" ;
+const string SIGNAL_ERROR     = "signal"      ;
+const string TDC_DECODE_ERROR = "tdcDecodeErr";
 
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(uint64_t data, uint8_t dataSize);
@@ -80,26 +79,27 @@ bool validateSignalErrors(const Signal &sig) {
 	if(sig.isEventTrailer()) return true;
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
-	Geometry    &geo    = Geometry::getInstance   ();
+
+	// FIXME: This needs to be a Geometry with a config read in
+	Geometry geo;
 
 	if(sig.isTDCDecodeErr()) {  //should be handled first
-		string msg = "ERROR -- Decoding error occured!";
-		logger.logError(msg, SIGNAL_ERROR, FATAL);
+
+		string msg = "Decoding error occured!";
+		logger.logError(msg, TDC_DECODE_ERROR, ERROR);
 
 		return false;
+
 	}
 
 	if(!geo.IsActiveTDC(sig.TDC())) {
-		auto end = std::chrono::system_clock::now();
-		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-		string msg;
-		msg += std::ctime(&end_time);
-		msg += "ERROR -- Unexpected data TDCID = ";
+
+		string msg = "Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR, FATAL);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
@@ -115,16 +115,12 @@ bool validateSignalErrors(const Signal &sig) {
 
 	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
 
-		auto end = std::chrono::system_clock::now();
-		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-		string msg;
-		msg += std::ctime(&end_time);
-		msg += "ERROR -- Unexpected data TDCID = ";
+		string msg = "Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR, FATAL);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
@@ -142,7 +138,9 @@ void validateSignalWarnings(const Signal &sig) {
 	if(sig.isEventHeader ()) return;
 	if(sig.isEventTrailer()) return;
 
-	if(!Geometry::getInstance().IsActiveTDC(sig.TDC())) return;
+	// FIXME: geo needs to be well-constructed
+	Geometry geo;
+	if(!geo.IsActiveTDC(sig.TDC())) return;
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
@@ -152,7 +150,7 @@ void validateSignalWarnings(const Signal &sig) {
 
 		TDCErrorData errorData = sig.getTDCError();
 
-		msg = "WARNING -- Received TDC Error Signal:";
+		msg = "Received TDC Error Signal:";
 
 		if(errorData.LSBFlag1 > 0) {
 

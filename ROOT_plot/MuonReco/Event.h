@@ -40,7 +40,7 @@ namespace MuonReco {
     std::vector<Cluster> Clusters   () const;
     std::vector<Track>   Tracks     () const;
     unsigned long        ID         () const;
-    bool               Pass       () const;
+    bool                 Pass       () const;
 
     std::vector<Cluster> mClusters();
     
@@ -68,8 +68,8 @@ namespace MuonReco {
     std::vector<Track>   tracks;
     int                  nTrigs        = 0;
     int                  nSigs         = 0;
-    bool               pass          = kFALSE;
-    bool               hasBadHitTime = kFALSE;
+    bool                 pass          = kFALSE;
+    bool                 hasBadHitTime = kFALSE;
   }; //class Event
 } //MuonReco
 

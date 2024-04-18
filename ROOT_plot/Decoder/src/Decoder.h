@@ -14,8 +14,8 @@
 
 #include "EventBufferValidator.h"
 
-#include "src/Signal.h"
-#include "src/Event.h"
+#include "MuonReco/Signal.h"
+#include "MuonReco/Event.h"
 
 /**
  * Checks if the input stream contains integral unread data.
@@ -49,7 +49,7 @@ struct DecodeData {
 	/**
 	 * A vector of nonempty events decoded while packing this DecodeData.
 	 */
-	std::vector<Muon::Event> nonemptyEvents;
+	std::vector<MuonReco::Event> nonemptyEvents;
 
 };
 
@@ -87,6 +87,6 @@ private:
 
 	EventBufferValidator eventBufferValidator;
 
-	std::vector<Muon::Signal> signalBuffer;
+	std::vector<MuonReco::Signal> signalBuffer;
 
 };

@@ -18,7 +18,6 @@
 #include <string>
 #include <mutex>
 
-namespace Muon {
 namespace State {
 
 	// DAQState::dataSource values
@@ -76,5 +75,4 @@ namespace State {
 
 	};
 
-}
 }

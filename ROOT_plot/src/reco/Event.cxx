@@ -14,6 +14,12 @@ namespace MuonReco {
     id       = 0;
   }
 
+  /*
+  Event e(hdr, trailer, signals, id);
+
+  e.AddTriggerHit(hit);
+  */
+
   Event::Event(Signal header, Signal trailer, std::vector<Signal> signals, uint16_t eID) {
     trigs = std::vector<Signal>();
     trigs.push_back(header);

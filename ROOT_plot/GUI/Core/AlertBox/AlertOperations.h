@@ -9,10 +9,12 @@
 
 #include "TGWindow.h"
 
-namespace Muon {
-namespace Error {
+namespace AlertPopup {
     
-    void popupAlert(const TGWindow *p, const char *alertType, const char *alertMsg);
+    void popupAlert(
+        const TGWindow *p, 
+        const char *alertType, 
+        const char *alertMsg
+    );
 
-}
 }

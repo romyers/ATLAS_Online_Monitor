@@ -9,13 +9,14 @@
 
 #include "DAQState.h"
 
-#include "src/Geometry.h"
+#include "MuonReco/Geometry.h"
 
 #include "DataModel/DAQData.h"
 
 #include "GUI/Components/ProgressBar.h"
 
 using namespace std;
+using namespace MuonReco;
 
 // TODO: Remove dependency on the progress bar
 
@@ -25,7 +26,7 @@ bool pathDirectoryExists(const string &path);
 
 void saveNoiseRate();
 
-void Muon::PlotSaving::savePlots() {
+void PlotSaving::savePlots() {
 
     // TODO: We might need to protect this from data race conditions
     static bool isSaving = false;
@@ -108,7 +109,7 @@ void Muon::PlotSaving::savePlots() {
 
     for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
-        if(Geometry::getInstance().IsActiveTDC(tdc)) {
+        if(snapshot.geo.IsActiveTDC(tdc)) {
 
             ++activeTDCs;
 
@@ -117,8 +118,8 @@ void Muon::PlotSaving::savePlots() {
         for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
 
             if(
-                Geometry::getInstance().IsActiveTDCChannel(tdc, chnl) || 
-                (tdc == Geometry::getInstance().TRIGGER_MEZZ)
+                snapshot.geo.IsActiveTDCChannel(tdc, chnl) || 
+                (tdc == snapshot.geo.TRIGGER_MEZZ)
             ) {
 
                 ++activeChannels;
@@ -136,7 +137,7 @@ void Muon::PlotSaving::savePlots() {
 
     for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
 
-        if(Geometry::getInstance().IsActiveTDC(tdc)) {
+        if(snapshot.geo.IsActiveTDC(tdc)) {
 
             string dirName = outputDirName + "/NoiseRate";
 
@@ -186,8 +187,8 @@ void Muon::PlotSaving::savePlots() {
             for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
 
                 if(
-                    Geometry::getInstance().IsActiveTDCChannel(tdc, chnl) || 
-                    (tdc == Geometry::getInstance().TRIGGER_MEZZ)
+                    snapshot.geo.IsActiveTDCChannel(tdc, chnl) || 
+                    (tdc == snapshot.geo.TRIGGER_MEZZ)
                 ) {
 
                     snapshot.p_tdc_time_corrected[tdc][chnl]->Draw("colz");

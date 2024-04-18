@@ -1,7 +1,6 @@
 #include "DAQManager.h"
 
 using namespace std;
-using namespace Muon;
 
 ClassImp(DAQManager);
 

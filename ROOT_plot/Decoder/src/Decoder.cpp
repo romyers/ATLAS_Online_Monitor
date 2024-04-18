@@ -3,11 +3,8 @@
 #include "EventDecoding.h"
 #include "SignalDecoding.h"
 
-// TODO: Break this dependency
-#include "Logging/ErrorLogger.h"
-
 using namespace std;
-using namespace Muon;
+using namespace MuonReco;
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////// HELPER FUNCTIONS /////////////////////////////////////
@@ -105,7 +102,7 @@ DecodeData Decoder::decodeStream(istream &in) {
 	for(Event &e : eventBuffer) {
 
 		// if it's nonempty
-		if(e.Trailer().HitCount() != 0) {
+		if(e.TrigSignals().back().HitCount() != 0) {
 
 			// process it
 			processEvent(e);

@@ -14,10 +14,10 @@
 
 #include "src/Decoder.h"
 
-#include "src/Geometry.h"
+#include "MuonReco/Geometry.h"
 
 using namespace std;
-using namespace Muon;
+using namespace MuonReco;
 
 void printUsage();
 
@@ -41,8 +41,11 @@ int main(int argc, char **argv) {
 
 	}
 
+	// FIXME: We need to initialize geometry properly.
+	Geometry geo;
+
 	// This must happen to properly initialize Geometry
-	Geometry::getInstance().SetRunN(0);
+	geo.SetRunN(0);
 
 	Decoder decoder(1000);
 

@@ -5,7 +5,7 @@
 #include "Logging/ErrorLogger.h"
 
 using namespace std;
-using namespace Muon;
+using namespace MuonReco;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +26,7 @@ void EventBufferValidator::validate(const vector<Event> &buffer) {
 			if(e.ID() == latestEventID) {
 
 				logger.logError(
-					string("WARNING -- Repeated event! Event ID=")
+					string("Repeated event! Event ID=")
 					+ to_string(e.ID()),
 					EVENT_BUFFER_ERROR,
 					WARNING
@@ -35,7 +35,7 @@ void EventBufferValidator::validate(const vector<Event> &buffer) {
 			} else if(e.ID() != (latestEventID + 1) % 4096) {
 
 				logger.logError(
-					string("WARNING -- Event lost! Current=")
+					string("Event lost! Current=")
 					+ to_string(e.ID())
 					+ ", Previous="
 					+ to_string(latestEventID),

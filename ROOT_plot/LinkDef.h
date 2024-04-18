@@ -26,11 +26,11 @@
 #pragma link C++ class DAQManager+;
 
 #include "DAQMonitor/DataRunOperations.h"
-#pragma link C++ namespace Muon::DataRun+;
-#pragma link C++ defined_in Muon::DataRun+;
+#pragma link C++ namespace DataRun+;
+#pragma link C++ defined_in DataRun+;
 
 #include "SignalHandlers.h"
-#pragma link C++ namespace Muon::SigHandlers+;
-#pragma link C++ defined_in Muon::SigHandlers+;
+#pragma link C++ namespace SigHandlers+;
+#pragma link C++ defined_in SigHandlers+;
 
 #endif

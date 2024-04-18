@@ -17,18 +17,18 @@
 #include <mutex>
 
 #include "Plots.h"
-#include "src/Event.h"
+#include "MuonReco/Event.h"
 
 struct DAQData {
 
     // A vector of fully processed and populated events, with hit finding
     // already performed. Excludes empty events.
-    std::vector<Muon::Event> processedEvents;
+    std::vector<MuonReco::Event> processedEvents;
 
     // A vector of the fully processed and populated events decoded in the
     // last decode iteration, with hit finding already performed.
     // Excludes empty events.
-    std::vector<Muon::Event> newEvents;
+    std::vector<MuonReco::Event> newEvents;
 
     // A struct of histograms containing aggregate event data. See
     // src/DataModel/Plots.cpp.

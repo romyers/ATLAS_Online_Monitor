@@ -9,7 +9,6 @@
 
 #pragma once
 
-namespace Muon {
 namespace DataRun {
 
     void startRun ();
@@ -17,5 +16,4 @@ namespace DataRun {
 
     bool isRunning();
 
-}
 }

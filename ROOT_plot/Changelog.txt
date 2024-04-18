@@ -98,6 +98,77 @@
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
+- Update to newest versions of Geometry.h/cxx
+
+-------------------------------------------------------------------------------
+
+## 2024-04-18
+
+## Added
+
+- Added documentation to the ErrorLogger's ErrorLevel enum.
+
+## Changed
+
+- TDCDecodeErrors have their own error type for accurate counting by the 
+  logger.
+- Deprecated old source files.
+- Logger now saves timestamps alongside errors. This functionality
+  has now been removed from SignalDecoding.
+- ErrorData now provides a stringify function composing an error message from
+  its constituent timestamp, error level, and message.
+- ErrorView has been updated to display error timestamps.
+- Error messages no longer explicitly describe their error level. This is now
+  injected into the output string during the call to ErrorData::stringify().
+
+- Started updating MuonReco files to be compatible with the online monitor.
+
+    - SIGNAL
+        - Split isTDCError into isTDCOverflow and isTDCDecodeErr.
+        - Split TDC_ERR_IDENT into TDC_OVERFLOW_IDENT and TDC_DECODE_ERR_IDENT.
+
+    - HIT
+        - Marked several accessors const.
+
+- Started updating decoder to be compatible with MuonReco files.
+
+    - EVENT_DECODING
+        - Switched src/HitFinder include to MuonReco/RecoUtils.
+        - Switched src/TimeCorrection include to MuonReco/TimeCorrection.
+        - Updated processEvent() for the DoHitFinding() interface presented by
+          RecoUtils.h.
+            - FIXME: Need to use well-constructed TimeCorrection and Geometry
+                   objects.
+        - Updated validators to account for the absence of Header() and Trailer()
+        accessors in the MuonReco version of Event.
+
+    - SIGNAL_DECODING
+        - Updated to MuonReco's Geometry file.
+            - FIXME: Need to use a well-constructed Geometry object.
+
+    - PLOTS
+        - Added a data member storing the Geometry.
+        - Switched to MuonReco objects.
+        - Switched Event::Hits() call to Event::WireHits().
+
+    - DAQ_DATA
+        - Switched to MuonReco objects.
+
+    - DATA_RUN_OPERATIONS
+        - Now uses the Geometry stored in DAQData::Plots.
+
+    - PLOT_SAVING_OPERATIONS
+        - Now uses the Geometry copied from DAQData::Plots.
+            - TODO: Make sure the geometry is copiable
+
+    - PHASE_2_DECODE_STANDALONE
+        - Switched to MuonReco geometry.
+            - FIXME: We need to read in a config file to get a well-constructed
+                     geometry object.
+
+## Removed
+
+- Removed references to obsolete Muon namespace.
 
 -------------------------------------------------------------------------------
 
@@ -145,6 +216,9 @@ While I was away:
 - A timestamp was added to the error message for "Unexpected data".
 - Some changes made to accommodate testing of an MDT chamber instead of an sMDT
   chamber.
+- SignalDecoding now validates against TDCDecodeErrors, and drop TDCDecodeError
+  signals.
+- TDCDecodeErr signals are counted and displayed in the run view.
 
 -------------------------------------------------------------------------------
 

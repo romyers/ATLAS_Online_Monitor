@@ -14,13 +14,21 @@
 
 #include "Logging/ErrorLogger.h"
 
-#include "src/HitFinder.cpp"
-#include "src/TimeCorrection.cpp"
+#include "MuonReco/RecoUtility.h"
+#include "MuonReco/TimeCorrection.h"
+#include "MuonReco/Geometry.h"
 
 using namespace std;
-using namespace Muon;
+using namespace MuonReco;
 
 const string EVENT_ERROR = "event" ;
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+Signal getHeader (const Event &e);
+Signal getTrailer(const Event &e);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -35,14 +43,21 @@ Event assembleEvent(vector<Signal> signals) {
 		vector<Signal>(
 			signals.begin() + 1, 
 			signals.end  () - 1
-		)
+		),
+		signals.back().TrailerEID()
 	);
 
 }
 
 void processEvent(Event &e) {
 
-	DoHitFinding(&e, *TimeCorrection::getInstance(), 0, 0);
+	// TODO: tc and recoUtil should take in configParser and parameter set
+	//       respectively
+	RecoUtility recoUtil;
+	TimeCorrection tc;
+	Geometry geo;
+
+	recoUtil.DoHitFinding(&e, &tc, geo);
 	// TODO: No hit clustering?
 
 	e.SetPassCheck(true);
@@ -55,10 +70,10 @@ bool validateEventErrors(const Event &e) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
-	if(!e.Header().isEventHeader()) {
+	if(!getHeader(e).isEventHeader()) {
 
 		logger.logError(
-			"ERROR -- Found event with no header",
+			"Found event with no header",
 			EVENT_ERROR,
 			ERROR
 		);
@@ -67,10 +82,10 @@ bool validateEventErrors(const Event &e) {
 
 	}
 
-	if(!e.Trailer().isEventTrailer()) {
+	if(!getTrailer(e).isEventTrailer()) {
 
 		logger.logError(
-			"ERROR -- Found event with no trailer",
+			"Found event with no trailer",
 			EVENT_ERROR,
 			ERROR
 		);
@@ -80,10 +95,10 @@ bool validateEventErrors(const Event &e) {
 	}
 
 	// Make sure the header and trailer event IDs match
-	if(e.Header().HeaderEID() != e.Trailer().TrailerEID()) {
+	if(getHeader(e).HeaderEID() != getTrailer(e).TrailerEID()) {
 
 		logger.logError(
-			"ERROR -- Found event with mismatched event IDs",
+			"Found event with mismatched event IDs",
 			EVENT_ERROR,
 			ERROR
 		);
@@ -91,12 +106,12 @@ bool validateEventErrors(const Event &e) {
 	}
 
 	// Make sure there aren't any extraneous event headers or trailers
-	for(const Signal &sig : e.Signals_All()) {
+	for(const Signal &sig : e.WireSignals()) {
 
 		if(sig.isEventHeader()) {
 
 			logger.logError(
-				"ERROR -- Found event with multiple headers",
+				"Found event with multiple headers",
 				EVENT_ERROR,
 				ERROR
 			);
@@ -108,7 +123,7 @@ bool validateEventErrors(const Event &e) {
 		if(sig.isEventTrailer()) {
 
 			logger.logError(
-				"ERROR -- Found event with multiple trailers",
+				"Found event with multiple trailers",
 				EVENT_ERROR,
 				ERROR
 			);
@@ -129,11 +144,11 @@ void validateEventWarnings(const Event &e) {
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
 	// Check the event trailer for the header count error flag
-	if(e.Trailer().HeaderCountErr()) {
+	if(getTrailer(e).HeaderCountErr()) {
 
 		logger.logError(
-			string("WARNING -- Header count error flag. Got ")
-			+ to_string(e.Trailer().TDCHdrCount())
+			string("Header count error flag. Got ")
+			+ to_string(getTrailer(e).TDCHdrCount())
 			+ " header(s)!",
 			EVENT_ERROR,
 			WARNING
@@ -142,11 +157,11 @@ void validateEventWarnings(const Event &e) {
 	}
 
 	// Check the event trailer for the trailer count error flag
-	if(e.Trailer().TrailerCountErr()) {
+	if(getTrailer(e).TrailerCountErr()) {
 
 		logger.logError(
-			string("WARNING -- Trailer count error flag. Got ")
-			+ to_string(e.Trailer().TDCTlrCount())
+			string("Trailer count error flag. Got ")
+			+ to_string(getTrailer(e).TDCTlrCount())
 			+ " trailer(s)!",
 			EVENT_ERROR,
 			WARNING
@@ -156,7 +171,7 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that all TDC headers have matching event IDs
 	int lastTDCHeaderID = -1;
-	for(const Signal &sig : e.Signals_All()) {
+	for(const Signal &sig : e.WireSignals()) {
 
 		if(sig.isTDCHeader()) {
 
@@ -165,7 +180,7 @@ void validateEventWarnings(const Event &e) {
 				if(sig.TDCHeaderEID() != lastTDCHeaderID) {
 
 					logger.logError(
-						string("WARNING -- TDC ")
+						string("TDC ")
 						+ to_string(sig.TDC())
 						+ " EventID mismatch! Current = "
 						+ to_string(sig.TDCHeaderEID())
@@ -195,23 +210,23 @@ void validateEventWarnings(const Event &e) {
 	// signals.
 
 	// Count all TDC headers, trailers, and errors in the event.
-	for(const Signal &sig : e.Signals_All()) {
+	for(const Signal &sig : e.WireSignals()) {
 
-		if(sig.isTDCHeader ()) ++TDCHeaderCount ;
-		if(sig.isTDCTrailer()) ++TDCTrailerCount;
+		if(sig.isTDCHeader  ()) ++TDCHeaderCount ;
+		if(sig.isTDCTrailer ()) ++TDCTrailerCount;
 		if(sig.isTDCOverflow()) ++TDCErrorCount  ;
 
 	}
 
 	// Check that the real hit count matches the count reported in the 
 	// event trailer
-	if(e.Trailer().HitCount() != e.Signals().size()) {
+	if(getTrailer(e).HitCount() != e.WireSignals().size()) {
 
 		logger.logError(
-			string("WARNING -- Hit count in trailer = ")
-			+ to_string(e.Trailer().HitCount())
+			string("Hit count in trailer = ")
+			+ to_string(getTrailer(e).HitCount())
 			+ ", real hit count = "
-			+ to_string(e.Signals().size()),
+			+ to_string(e.WireSignals().size()),
 			EVENT_ERROR,
 			WARNING
 		);
@@ -220,13 +235,12 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that the real TDC header count matches the count reported in the
 	// event trailer
-	if(TDCHeaderCount != e.Trailer().TDCHdrCount()) {
+	if(TDCHeaderCount != getTrailer(e).TDCHdrCount()) {
 
 		logger.logError(
-			string("WARNING -- ")
-			+ to_string(TDCHeaderCount)
+			to_string(TDCHeaderCount)
 			+ " TDC header(s) found in data, event trailer indicates "
-			+ to_string(e.Trailer().TDCHdrCount())
+			+ to_string(getTrailer(e).TDCHdrCount())
 			+ "!",
 			EVENT_ERROR,
 			WARNING
@@ -236,18 +250,29 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that the real TDC trailer count matches the count reported in the
 	// event trailer
-	if(TDCTrailerCount != e.Trailer().TDCTlrCount()) {
+	if(TDCTrailerCount != getTrailer(e).TDCTlrCount()) {
 
 		logger.logError(
-			string("WARNING -- ")
-			+ to_string(TDCTrailerCount)
+			to_string(TDCTrailerCount)
 			+ " TDC trailer(s) found in data, event trailer indicates "
-			+ to_string(e.Trailer().TDCTlrCount())
+			+ to_string(getTrailer(e).TDCTlrCount())
 			+ "!",
 			EVENT_ERROR,
 			WARNING
 		);
 
 	}
+
+}
+
+Signal getHeader (const Event &e) {
+
+	return e.TrigSignals().front();
+
+}
+
+Signal getTrailer(const Event &e) {
+
+	return e.TrigSignals().back();
 
 }

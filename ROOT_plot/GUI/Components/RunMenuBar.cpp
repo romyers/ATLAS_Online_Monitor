@@ -12,7 +12,6 @@
 
 
 using namespace std;
-using namespace Muon;
 
 // TODO: Pull TDC and ADC plot submenus to other components
 // TODO: Break direct dependence on DAQData. Interface with the data model

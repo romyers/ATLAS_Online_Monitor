@@ -1,3 +1,3 @@
 #include "UILock.h"
 
-mutex Muon::UI::UILock;
+mutex UI::UILock;

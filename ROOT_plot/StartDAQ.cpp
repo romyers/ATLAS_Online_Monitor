@@ -32,7 +32,6 @@
 #include "DAQMonitor/ProgramControl/Threads.h"
 
 using namespace std;
-using namespace Muon;
 
 
 // COPIED TODOS FROM START_MONITOR:
@@ -68,7 +67,7 @@ void forceExit(int signal) {
 
 void termHandler(int signal) {
 
-    Muon::SigHandlers::handleExit();
+    SigHandlers::handleExit();
 
     setTerminationHandlers(forceExit);
 
@@ -117,7 +116,7 @@ int main() {
 
             // Populate the device selector with connected devices.
             vector<string> devices;
-            for(const PCapDevice &device : Muon::DataCapture::getNetworkDevices()) {
+            for(const PCapDevice &device : DataCapture::getNetworkDevices()) {
 
                 devices.push_back(device.name);
 

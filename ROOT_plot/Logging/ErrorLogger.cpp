@@ -2,8 +2,66 @@
 
 #include <stdio.h>
 #include <algorithm>
+#include <chrono>
+#include <ctime>
 
 using namespace std;
+
+ErrorData::ErrorData(
+	const string &message, 
+	const string &type, 
+	ErrorLevel level
+) : msg(message), 
+	type(type), 
+	level(level), 
+	timestamp(chrono::system_clock::to_time_t(chrono::system_clock::now())) 
+{}
+
+string ErrorData::stringify() const {
+
+	string time = string(ctime(&timestamp));
+
+	string errorLevel = "";
+
+	// I use a switch statement instead of defining the enums as strings for
+	switch(level) {
+
+	case DEBUG:
+		errorLevel = "DEBUG";
+		break;
+
+	case INFORMATIVE:
+		errorLevel = "INFORMATIVE";
+		break;
+
+	case WARNING:
+		errorLevel = "WARNING";
+		break;
+
+	case ERROR:
+		errorLevel = "ERROR";
+		break;
+
+	case FATAL:
+		errorLevel = "FATAL";
+		break;
+
+	default:
+		errorLevel = "";
+		break;
+
+	}
+
+	// ctime adds a newline character we don't want. So we trim it from the end
+	// of the string.
+	
+	return time.substr(0, time.length() - 1) 
+		+ string(": ") 
+		+ errorLevel 
+		+ " -- " 
+		+ msg;
+
+}
 
 ErrorLogger::ErrorLogger() {
 
@@ -34,13 +92,11 @@ void ErrorLogger::logError(
 	ErrorLevel level
 ) {
 
-	// TODO: Consider saving the error level with the error
-
 	errorLock.lock();
-	for(ostream *stream : errorStreams) {
-		*stream << msg << endl;
-	}
 	errors.emplace_back(msg, type, level);
+	for(ostream *stream : errorStreams) {
+		*stream << errors.back().stringify() << endl;
+	}
 	errorLock.unlock();
 
 }

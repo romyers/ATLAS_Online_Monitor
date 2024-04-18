@@ -5,7 +5,6 @@
 #include <fstream>
 
 using namespace std;
-using namespace Muon;
 using namespace State;
 
 

@@ -14,7 +14,6 @@
 
 void connectDAQto(DAQManager *GUI);
 
-namespace Muon{
 namespace SigHandlers {
 
 	void handlePressedStartRun();
@@ -32,5 +31,4 @@ namespace SigHandlers {
 	void handleRunStartEvent();
 	void handleRunStopEvent ();
 
-}
 }

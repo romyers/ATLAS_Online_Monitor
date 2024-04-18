@@ -24,10 +24,9 @@
 
 #include "analysis/MonitorHooks.h"
 
-#include "src/Geometry.h"
+#include "MuonReco/Geometry.h"
 
 using namespace std;
-using namespace Muon;
 using namespace State;
 using namespace MonitorHooks;
 
@@ -190,9 +189,9 @@ void DataRun::startRun() {
 
         cout << endl << "Starting run: " << runLabel << endl; 
 
-        Muon::UI::UILock.lock();
+        UI::UILock.lock();
         UISignalBus::getInstance().onRunStart();
-        Muon::UI::UILock.unlock();
+        UI::UILock.unlock();
 
         // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
         //       not include hours/minutes/seconds
@@ -202,7 +201,7 @@ void DataRun::startRun() {
                 runLabel.substr(3, runLabel.size()).data()
             ).Tokenize("_")->At(0))
         )->String().Atoi();
-        Geometry::getInstance().SetRunN(runN);
+        data.plots.geo.SetRunN(runN);
 
         LockableStream dataStream;
         initializeDataStream(dataStream);
@@ -244,18 +243,18 @@ void DataRun::startRun() {
         runStarted = false;
         state.commit();
 
-        Muon::UI::UILock.lock();
+        UI::UILock.lock();
         UISignalBus::getInstance().onRunStop();
-        Muon::UI::UILock.unlock();
+        UI::UILock.unlock();
 
         MonitorHooks::finishedRun(data);
 
         cout << "Run finished!" << endl;
 
         // TODO: Yet another hard-to-find place we do this.
-        Muon::UI::UILock.lock();
+        UI::UILock.lock();
         UISignalBus::getInstance().onUpdate();
-        Muon::UI::UILock.unlock();
+        UI::UILock.unlock();
 
     }));
 

@@ -1,8 +1,11 @@
 #include "MuonReco/Signal.h"
 
 namespace MuonReco {
+
   Signal::Signal() {
+
     Signal(0);
+    
   }
   
   Signal::Signal(uint64_t word) {
@@ -63,7 +66,7 @@ namespace MuonReco {
 
     time_in_ns = ledge * 0.78125;
 
-    if(isTDCError()) {
+    if(isTDCOverflow()) {
 
       std::bitset<8> K28_6_flag  = word >> 16;
       std::bitset<3> LSBFlag2    = word >> 13;
@@ -83,31 +86,34 @@ namespace MuonReco {
 
   }
 
-  uint8_t  Signal:: Type           () const { return type                                ; }
-  uint16_t Signal:: HeaderEID      () const { return eventid                             ; }
-  uint16_t Signal:: TrailerEID     () const { return eventid_t                           ; }
-  uint32_t Signal:: TriggerLEdge   () const { return triggerledge                        ; }
-  uint8_t  Signal:: CSMID          () const { return csmid                               ; }
-  uint8_t  Signal:: TDC            () const { return tdcid                               ; }
-  uint8_t  Signal:: Channel        () const { return chnlid                              ; }
-  uint8_t  Signal:: Mode           () const { return mode                                ; }
-  uint32_t Signal:: LEdge          () const { return ledge                               ; }
-  uint8_t  Signal:: Width          () const { return width                               ; }
-  uint16_t Signal:: HitCount       () const { return hitcount                            ; }
-  uint16_t Signal:: TDCHeaderEID   () const { return tdc_eventid                         ; }
-  uint8_t  Signal:: TDCHdrTrlrID   () const { return tdc_hdrTrlrID                       ; }
-  uint8_t  Signal:: TDCHdrCount    () const { return tdc_hdr_count                       ; }
-  uint8_t  Signal:: TDCTlrCount    () const { return tdc_tlr_count                       ; }
-  uint8_t  Signal:: HeaderCountErr () const { return hdrCountErr                         ; }
-  uint8_t  Signal:: TrailerCountErr() const { return tlrCountErr                         ; }
+  uint8_t  Signal:: Type           () const { return type                                   ; }
+  uint16_t Signal:: HeaderEID      () const { return eventid                                ; }
+  uint16_t Signal:: TrailerEID     () const { return eventid_t                              ; }
+  uint32_t Signal:: TriggerLEdge   () const { return triggerledge                           ; }
+  uint8_t  Signal:: CSMID          () const { return csmid                                  ; }
+  uint8_t  Signal:: TDC            () const { return tdcid                                  ; }
+  uint8_t  Signal:: Channel        () const { return chnlid                                 ; }
+  uint8_t  Signal:: Mode           () const { return mode                                   ; }
+  uint32_t Signal:: LEdge          () const { return ledge                                  ; }
+  uint8_t  Signal:: Width          () const { return width                                  ; }
+  uint16_t Signal:: HitCount       () const { return hitcount                               ; }
+  uint16_t Signal:: TDCHeaderEID   () const { return tdc_eventid                            ; }
+  uint8_t  Signal:: TDCHdrTrlrID   () const { return tdc_hdrTrlrID                          ; }
+  uint8_t  Signal:: TDCHdrCount    () const { return tdc_hdr_count                          ; }
+  uint8_t  Signal:: TDCTlrCount    () const { return tdc_tlr_count                          ; }
+  uint8_t  Signal:: HeaderCountErr () const { return hdrCountErr                            ; }
+  uint8_t  Signal:: TrailerCountErr() const { return tlrCountErr                            ; }
 
-  bool     Signal:: isEventHeader  () const { return Type         () == HEADER           ; }
-  bool     Signal:: isEventTrailer () const { return Type         () == TRAILER          ; }
-  bool     Signal:: isTDCHeader    () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT ; }
-  bool     Signal:: isTDCTrailer   () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT; }
-  bool     Signal:: isTDCError     () const { return TDCHdrTrlrID () == TDC_ERROR_IDENT  ; }
-  double   Signal:: Time           () const { return time_in_ns;}
-  TDCErrorData Signal::getTDCError () const { return errorData                           ; }
+  bool     Signal:: isEventHeader  () const { return Type         () == HEADER              ; }
+  bool     Signal:: isEventTrailer () const { return Type         () == TRAILER             ; }
+  bool     Signal:: isTDCHeader    () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT    ; }
+  bool     Signal:: isTDCTrailer   () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT   ; }
+  bool     Signal:: isTDCOverflow  () const { return TDCHdrTrlrID () == TDC_OVERFLOW_IDENT  ; }
+  bool     Signal:: isTDCDecodeErr () const { return TDCHdrTrlrID () == TDC_DECODE_ERR_IDENT; }
+
+  double   Signal:: Time           () const { return time_in_ns;                              }
+
+  TDCErrorData Signal::getTDCError () const { return errorData                              ; }
 
 }  //MuonReco
 

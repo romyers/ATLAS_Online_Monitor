@@ -16,6 +16,7 @@ using namespace std;
 
 const string DEFAULT_COLOR = "black"  ;
 const string DEBUG_COLOR   = "black"  ;
+const string INFO_COLOR    = "black"  ;
 const string WARNING_COLOR = "orange" ;
 const string ERROR_COLOR   = "red"    ;
 const string FATAL_COLOR   = "#880808";
@@ -68,7 +69,7 @@ void ErrorView::update() {
 			htmlString += getColor(error);
 			htmlString += ">";
 
-				htmlString += error.msg;
+				htmlString += error.stringify();
 
 			htmlString += "</font>";
 
@@ -131,6 +132,10 @@ string getColor(const ErrorData &error) {
 
 		case DEBUG:
 			return DEBUG_COLOR;
+			break;
+
+		case INFORMATIVE:
+			return INFO_COLOR;
 			break;
 
 		case WARNING:

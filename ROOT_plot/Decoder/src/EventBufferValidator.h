@@ -11,7 +11,7 @@
 
 #include <vector>
 
-#include "src/Event.h"
+#include "MuonReco/Event.h"
 
 /**
  * A validator for event buffers that keeps track of data that must persist
@@ -28,7 +28,7 @@ public:
 	 * 
 	 * @param buffer The event buffer to validate.
 	 */
-	void validate(const std::vector<Muon::Event> &buffer);
+	void validate(const std::vector<MuonReco::Event> &buffer);
 
 private:
 

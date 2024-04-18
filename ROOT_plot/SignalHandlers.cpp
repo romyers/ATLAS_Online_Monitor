@@ -14,7 +14,6 @@
 #include "GUI/Components/UpdatePacket.h"
 
 using namespace std;
-using namespace Muon;
 
 // FIXME: This global is NOT what I want to be doing. Come up with a better
 //        way to push data updates.
@@ -26,56 +25,56 @@ void connectDAQto(DAQManager *GUI) {
 
 	GUI->Connect(
 		"pressedStart()",
-		"Muon::SigHandlers",
+		"SigHandlers",
 		nullptr,
 		"handlePressedStartRun()"
 	);
 
 	GUI->Connect(
 		"pressedStop()",
-		"Muon::SigHandlers",
+		"SigHandlers",
 		nullptr,
 		"handlePressedStopRun()"
 	);
 
     GUI->Connect(
         "pressedExit()",
-        "Muon::SigHandlers",
+        "SigHandlers",
         nullptr,
         "handleExit()"
     );
 
     GUI->Connect(
         "CloseWindow()",
-        "Muon::SigHandlers",
+        "SigHandlers",
         nullptr,
         "handleExit()"
     );
 
     GUI->Connect(
     	"selectedDeviceSource()",
-    	"Muon::SigHandlers",
+    	"SigHandlers",
     	nullptr,
     	"handleSelectedDeviceSource()"
     );
 
     GUI->Connect(
     	"selectedFileSource()",
-    	"Muon::SigHandlers",
+    	"SigHandlers",
     	nullptr,
     	"handleSelectedFileSource()"
     );
 
     GUI->Connect(
     	"selectedDevice(const char*)",
-    	"Muon::SigHandlers",
+    	"SigHandlers",
     	nullptr,
     	"handleSelectedDevice(const char*)"
     );
 
     GUI->Connect(
     	"selectedFile(const char*)",
-    	"Muon::SigHandlers",
+    	"SigHandlers",
     	nullptr,
     	"handleSelectedFile(const char*)"
     );
@@ -84,21 +83,21 @@ void connectDAQto(DAQManager *GUI) {
     //       GUI signals in this function.
     UISignalBus::getInstance().Connect(
     	"onUpdate()", 
-    	"Muon::SigHandlers", 
+    	"SigHandlers", 
     	nullptr, 
     	"handleDataUpdate()"
     );
 
     UISignalBus::getInstance().Connect(
     	"onRunStart()",
-    	"Muon::SigHandlers",
+    	"SigHandlers",
     	nullptr,
     	"handleRunStartEvent()"
     );
 
     UISignalBus::getInstance().Connect(
     	"onRunStop()",
-    	"Muon::SigHandlers",
+    	"SigHandlers",
     	nullptr,
     	"handleRunStopEvent()"
     );
@@ -219,9 +218,9 @@ void SigHandlers::handleDataUpdate() {
 	packet.droppedEvents   = data.droppedEvents                                ;
 	data.unlock();
 
-	packet.errorCount      = logger.countErrors(EMPTY_TYPE, ERROR)             ;
-	packet.decodeError     = logger.countErrors(EMPTY_TYPE, FATAL)             ;
-	packet.warningCount    = logger.countErrors(EMPTY_TYPE, WARNING)           ;
+	packet.errorCount      = logger.countErrors(EMPTY_TYPE    , ERROR  )       ;
+	packet.decodeError     = logger.countErrors("tdcDecodeErr", ERROR  )       ;
+	packet.warningCount    = logger.countErrors(EMPTY_TYPE    , WARNING)       ;
 
 	State::DAQState state = State::DAQState::getState();
 	if(state.tempState.runLabel != "") {

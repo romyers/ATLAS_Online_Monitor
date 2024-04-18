@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-#include "src/Signal.h"
+#include "MuonReco/Signal.h"
 
 /**
  * Checks whether the input stream has unread signals.
@@ -26,7 +26,7 @@ bool hasSignals(std::istream &in);
  * 
  * @param in The stream from which a signal should be extracted.
  */
-Muon::Signal extractSignal(std::istream &in);
+MuonReco::Signal extractSignal(std::istream &in);
 
 /**
  * Provides validation of 'sig', logging an error to the error logger
@@ -36,7 +36,7 @@ Muon::Signal extractSignal(std::istream &in);
  * 
  * @param sig The signal to validate.
  */
-bool validateSignalErrors(const Muon::Signal &sig);
+bool validateSignalErrors(const MuonReco::Signal &sig);
 
 /**
  * Provides validation of 'sig', logging any warnings to the error logger.
@@ -45,4 +45,4 @@ bool validateSignalErrors(const Muon::Signal &sig);
  * 
  * @param sig The signal to validate.
  */
-void validateSignalWarnings(const Muon::Signal &sig);
+void validateSignalWarnings(const MuonReco::Signal &sig);

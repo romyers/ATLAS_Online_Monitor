@@ -9,10 +9,8 @@
 
 #pragma once
 
-namespace Muon {
 namespace PlotSaving {
 
 	void savePlots();
 
-}
 }

@@ -53,27 +53,33 @@ set(recoObjs_SOURCES
 
 set(p2Objs_HEADERS 
 	MuonReco/RecoObject.h
+	MuonReco/RecoUtility.h
+	MuonReco/IOUtility.h
 	MuonReco/EventID.h
-	MuonReco/Hit.h
 	MuonReco/ParameterSet.h
 	MuonReco/ConfigParser.h
-	src/Signal.h
-	src/Cluster.h
-	src/Event.h
-	src/Track.h
-	src/Geometry.h
+	MuonReco/TimeCorrection.h
+	MuonReco/Hit.h
+	MuonReco/Signal.h
+	MuonReco/Cluster.h
+	MuonReco/Event.h
+	MuonReco/Track.h
+	MuonReco/Geometry.h
 )
 
 set(p2Objs_SOURCES
+	src/reco/RecoUtility.cxx
+	src/reco/IOUtility.cxx
 	src/reco/EventID.cxx
-	src/reco/Hit.cxx
 	src/reco/ParameterSet.cxx
 	src/reco/ConfigParser.cxx
-	src/Signal.cpp
-	src/Cluster.cpp
-	src/Event.cpp
-	src/Track.cpp
-	src/Geometry.cpp
+	src/reco/TimeCorrection.cxx
+	src/reco/Hit.cxx
+	src/reco/Signal.cxx
+	src/reco/Cluster.cxx
+	src/reco/Event.cxx
+	src/reco/Track.cxx
+	src/reco/Geometry.cxx
 )
 
 set(p2Core_HEADERS

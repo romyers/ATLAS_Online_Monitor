@@ -29,35 +29,35 @@ namespace MuonReco {
     y          = _y;
   }
 
-  unsigned int Hit::Channel() {
+  unsigned int Hit::Channel() const {
     return Chan;
   }
 
-  unsigned int Hit::TDC() {
+  unsigned int Hit::TDC() const {
     return tdc;
   }
 
-  double Hit::DriftTime() {
+  double Hit::DriftTime() const {
     return driftTime;
   }
 
-  double Hit::CorrTime() {
+  double Hit::CorrTime() const {
     return corrTime;
   }
 
-  double Hit::TDCTime() {
+  double Hit::TDCTime() const {
     return time_in_ns;
   }
 
-  double Hit::ADCTime() {
+  double Hit::ADCTime() const {
     return adctime;
   }
   
-  double Hit::Radius() {
+  double Hit::Radius() const {
     return radius;
   }
 
-  double Hit::TimeError() {
+  double Hit::TimeError() const {
     if (corrTime < 90)
       return 0.11;
     else

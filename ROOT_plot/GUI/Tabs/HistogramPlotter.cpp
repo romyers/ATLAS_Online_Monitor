@@ -5,7 +5,6 @@
 #include "GUI/Core/UILock.h"
 
 using namespace std;
-using namespace Muon;
 
 HistogramPlotter::HistogramPlotter(
 	const TGWindow *p, 

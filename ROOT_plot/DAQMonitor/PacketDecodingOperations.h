@@ -15,7 +15,6 @@
 
 #include "DataModel/DAQData.h"
 
-namespace Muon {
 namespace Decode {
 
     void startDecoding(
@@ -26,5 +25,4 @@ namespace Decode {
 
     void stopDecoding();
 
-}
 }
