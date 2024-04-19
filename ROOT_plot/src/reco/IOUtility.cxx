@@ -2,7 +2,7 @@
 
 namespace MuonReco {
 
-  const TString IOUtility::RAW_DATA_DIR             = "raw";
+  const TString IOUtility::RAW_DATA_DIR             = "../data";
   const TString IOUtility::SRC_DIR                  = "src";
   const TString IOUtility::OUTPUT_DIR               = "output";
   const TString IOUtility::MACRO_DIR                = "macros";

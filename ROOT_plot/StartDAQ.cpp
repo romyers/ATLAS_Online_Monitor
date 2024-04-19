@@ -150,6 +150,11 @@ int main() {
             //       explicitly stopped.
             // TODO: It's not semantically clear that startUILoop blocks its
             //       calling thread until the loop is stopped.
+            // TODO: Consider using gApplication->Run() instead -- this is 
+            //       ROOT's built-in event loop. I'm worried about thread
+            //       safety though.
+            //         -- Also look at TApplication::Run(), which we can call
+            //            with app.run().
             startUILoop(GUI_REFRESH_RATE);
 
         })

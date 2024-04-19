@@ -2,6 +2,11 @@
 
 - Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
   the GUI.
+    - Look at this:
+      https://root-forum.cern.ch/t/setbatch-root-kfalse/15844/3
+      We might be able to work around this issue by rebuilding the GUI after
+      we're done with batch mode.
+    - We might also try using another plotting library to output the plots.
 - Plot saving does not interact well with TDC and ADC plot windows opened 
   after the save is started. (cd() issues)
 - Plot saving blocks the decoder.
@@ -15,8 +20,6 @@
   same thread.
 - UI blocks during plot updates when plots are open.
 - The noise rate display graphics have some odd artifacts.
-- Sometimes we end up with more events than packets. I'm not sure if this is
-  valid behavior.
 
 ## TODO:
 
@@ -93,6 +96,10 @@
 - Include sMDT reco code as a cmake subproject in some fashion. See:
   https://stackoverflow.com/questions/56561591/link-one-project-to-another-cmake
 - Try to use a format like the conf files and ConfigParser for DAQState.
+- Consider replacing UILoop.h with ROOT's built-in gApplication->Run().
+    - My concern is thread safety.
+- Finish implementing the standalone decoder so it can replace Yuxiang's
+  version in the sMDTreco library.
 
 ## FIXME
 
@@ -110,10 +117,23 @@
 
 ## 2024-04-19
 
+## Highlights
+
+- Integration with Kevin's sMDTreco library is complete.
+
+## Added
+
+- Phase2Decode_Standalone now has a progress bar.
+
 ## Removed
 
 - DataRunOperations no longer sets Geometry's runN, following the pattern in
   the legacy DecodeRawData file in the sMDT reco libary.
+
+## Changed
+
+- IMPORTANT - IOUtility.h has been updated with a new directory path for raw
+              data files.
 
 ## Fixed
 
@@ -124,6 +144,7 @@
 - Event processing now uses a configured time correction contained in 
   DAQData.
 - Event processing now uses a configured RecoUtility contained in DAQData.
+- Phase2Decode_Standalone now works on the sMDTreco library.
 
 -------------------------------------------------------------------------------
 

@@ -56,8 +56,11 @@ set(p2Objs_HEADERS
 	MuonReco/RecoUtility.h
 	MuonReco/IOUtility.h
 	MuonReco/EventID.h
+	MuonReco/ArgParser.h
+	MuonReco/ConfigParser.h
 	MuonReco/ParameterSet.h
 	MuonReco/ConfigParser.h
+	MuonReco/ArgParser.h
 	MuonReco/TimeCorrection.h
 	MuonReco/Hit.h
 	MuonReco/Signal.h
@@ -71,6 +74,8 @@ set(p2Objs_SOURCES
 	src/reco/RecoUtility.cxx
 	src/reco/IOUtility.cxx
 	src/reco/EventID.cxx
+	src/reco/ArgParser.cxx
+	src/reco/ConfigParser.cxx
 	src/reco/ParameterSet.cxx
 	src/reco/ConfigParser.cxx
 	src/reco/TimeCorrection.cxx
