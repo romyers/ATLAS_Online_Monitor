@@ -14,6 +14,9 @@
 
 #include "MuonReco/Signal.h"
 #include "MuonReco/Event.h"
+#include "MuonReco/Geometry.h"
+#include "MuonReco/TimeCorrection.h"
+#include "MuonReco/RecoUtility.h"
 
 /**
  * Creates an event from the given signals.
@@ -57,4 +60,9 @@ void validateEventWarnings(const MuonReco::Event &e);
  * 
  * @param e The event to process.
  */
-void processEvent(MuonReco::Event &e);
+void processEvent(
+	MuonReco::Event          &e       , 
+	MuonReco::Geometry       &geo     , 
+	MuonReco::TimeCorrection &tc      ,
+	MuonReco::RecoUtility    &recoUtil
+);

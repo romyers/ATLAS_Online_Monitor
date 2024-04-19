@@ -28,7 +28,7 @@ public:
 	 * 
 	 * @param buffer The event buffer to validate.
 	 */
-	void validate(const std::vector<MuonReco::Event> &buffer);
+	void validateWarnings(const std::vector<MuonReco::Event> &buffer);
 
 private:
 

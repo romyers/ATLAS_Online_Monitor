@@ -183,25 +183,46 @@ void DataRun::startRun() {
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
-    // Configure the geometry
+    // Configure the geometry and time correction table.
+
+    // NOTE: Write operations on data.geo MUST NOT be performed concurrently
+    //       with the decode loop in the current implementation, or thread
+    //       safety is not guaranteed. So if data.geo needs to be reconfigured
+    //       during a run, the configuration and decoding operations must be
+    //       synchronized.
+    //         -- TL;DR the decode loop does not lock 'data' before reading 
+    //            from geo, so be careful not to change geo while the decode 
+    //            loop is running.
 
     // TODO: Allow setting this path at runtime.
     // TODO: 
     ConfigParser cp("../conf/run_20240412.conf");
 
     data.lock();
+
     data.geo.Configure(cp.items("Geometry"));
+
+    data.tc = TimeCorrection(cp);
+    // data.tc.Read();
+
+    data.recoUtil = RecoUtility(cp.items("RecoUtility"));
+
     data.unlock();
 
     // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
     //       not include hours/minutes/seconds
-    // NOTE: This assumes the DAT filenames are formatted as "run_YYYYMMDD_HHMMSS.dat"
+    // NOTE: This assumes the DAT filenames are formatted as 
+    //       "run_YYYYMMDD_HHMMSS.dat"
+    // NOTE: DecodeRawData from the sMDT reco library never sets runN, so I'm 
+    //       leaving it out here for now.
+    /*
     int runN = (
         (TObjString*)(TString(
             runLabel.substr(3, runLabel.size()).data()
         ).Tokenize("_")->At(0))
     )->String().Atoi();
     data.geo.SetRunN(runN);
+    */
 
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -230,7 +251,7 @@ void DataRun::startRun() {
         LockableStream dataStream;
         initializeDataStream(dataStream);
 
-        // TODO: Put the thread termination conditions here
+        // DATA CAPTURE LOOP
         thread dataCaptureThread([&dataStream, &data, runLabel]() {
 
             if(DAQState::getState().persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
@@ -241,6 +262,7 @@ void DataRun::startRun() {
 
         });
 
+        // DECODE LOOP
         thread decodeThread([&dataStream, &data, runLabel](){
 
             Decode::startDecoding(dataStream, data, runLabel);

@@ -15,6 +15,8 @@
 #include "src/Decoder.h"
 
 #include "MuonReco/Geometry.h"
+#include "MuonReco/TimeCorrection.h"
+#include "MuonReco/RecoUtility.h"
 
 using namespace std;
 using namespace MuonReco;
@@ -43,6 +45,8 @@ int main(int argc, char **argv) {
 
 	// FIXME: We need to initialize geometry properly.
 	Geometry geo;
+	TimeCorrection tc;
+	RecoUtility recoUtil;
 
 	// This must happen to properly initialize Geometry
 	geo.SetRunN(0);
@@ -55,7 +59,7 @@ int main(int argc, char **argv) {
 
 	while(hasNewData(in)) {
 
-		DecodeData loopData = decoder.decodeStream(in);
+		DecodeData loopData = decoder.decodeStream(in, geo, tc, recoUtil);
 
 		aggregateData.eventCount     += loopData.eventCount;
 		aggregateData.droppedSignals += loopData.droppedSignals;

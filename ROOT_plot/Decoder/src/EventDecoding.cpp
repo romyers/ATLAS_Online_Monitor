@@ -14,10 +14,6 @@
 
 #include "Logging/ErrorLogger.h"
 
-#include "MuonReco/RecoUtility.h"
-#include "MuonReco/TimeCorrection.h"
-#include "MuonReco/Geometry.h"
-
 using namespace std;
 using namespace MuonReco;
 
@@ -49,15 +45,15 @@ Event assembleEvent(vector<Signal> signals) {
 
 }
 
-void processEvent(Event &e) {
-
-	// TODO: tc and recoUtil should take in configParser and parameter set
-	//       respectively
-	RecoUtility recoUtil;
-	TimeCorrection tc;
-	Geometry geo;
+void processEvent(
+	Event          &e       , 
+	Geometry       &geo     , 
+	TimeCorrection &tc      , 
+	RecoUtility    &recoUtil
+) {
 
 	recoUtil.DoHitFinding(&e, &tc, geo);
+
 	// TODO: No hit clustering?
 
 	e.SetPassCheck(true);

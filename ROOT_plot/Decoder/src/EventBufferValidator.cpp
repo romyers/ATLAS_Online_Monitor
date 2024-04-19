@@ -15,7 +15,7 @@ const string EVENT_BUFFER_ERROR = "eventBuffer";
 
 EventBufferValidator::EventBufferValidator() : latestEventID(-1) {}
 
-void EventBufferValidator::validate(const vector<Event> &buffer) {
+void EventBufferValidator::validateWarnings(const vector<Event> &buffer) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 

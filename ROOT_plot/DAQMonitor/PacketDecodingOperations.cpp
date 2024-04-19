@@ -116,15 +116,25 @@ void Decode::startDecoding(
         dataStream.lock();
         if(hasNewData(*dataStream.stream)) {
 
-            loopData = decoder.decodeStream(*dataStream.stream);
+            MonitorHooks::beforeUpdateData(data);
+
+            // NOTE: We're not worried about thread safety with the geo object
+            //       because writes to geo are done only at the very beginning
+            //       of a data run, and can't happen concurrently with this 
+            //       call.
+            loopData = decoder.decodeStream(
+                *dataStream.stream, 
+                data.geo, 
+                data.tc,
+                data.recoUtil
+            );
+
             hasData = true;
 
         }
         dataStream.unlock();
 
         if(hasData) {
-
-            MonitorHooks::beforeUpdateData(data);
 
             data.lock();
 
@@ -133,6 +143,8 @@ void Decode::startDecoding(
             // Save the noise CSV file every 1000 events.
             if(data.totalEventCount >= noiseSavepoint) {
 
+                // TODO: Try to avoid doing file I/O within DAQData's critical
+                //       section.
                 saveNoiseRate(outputPath, data);
 
                 do {

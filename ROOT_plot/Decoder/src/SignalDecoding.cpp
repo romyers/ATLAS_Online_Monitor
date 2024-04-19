@@ -8,8 +8,6 @@
 
 #include "Logging/ErrorLogger.h"
 
-#include "MuonReco/Geometry.h"
-
 using namespace MuonReco;
 using namespace std;
 
@@ -73,15 +71,12 @@ Signal extractSignal(istream &in) {
 
 }
 
-bool validateSignalErrors(const Signal &sig) {
+bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 
 	if(sig.isEventHeader ()) return true;
 	if(sig.isEventTrailer()) return true;
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
-
-	// FIXME: This needs to be a Geometry with a config read in
-	Geometry geo;
 
 	if(sig.isTDCDecodeErr()) {  //should be handled first
 
@@ -107,8 +102,8 @@ bool validateSignalErrors(const Signal &sig) {
 
 	// In any of these cases, we have a valid signal, but we'll find a channel
 	// ID that is not considered active.
-	if(sig.isTDCHeader ()) { return true; }
-	if(sig.isTDCTrailer()) { return true; }
+	if(sig.isTDCHeader  ()) { return true; }
+	if(sig.isTDCTrailer ()) { return true; }
 	if(sig.isTDCOverflow()) { return true; }
 
 
@@ -132,14 +127,12 @@ bool validateSignalErrors(const Signal &sig) {
 
 }
 
-void validateSignalWarnings(const Signal &sig) {
+void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
 
 	// Skip cases that are handled by error validation to avoid double-errors
 	if(sig.isEventHeader ()) return;
 	if(sig.isEventTrailer()) return;
 
-	// FIXME: geo needs to be well-constructed
-	Geometry geo;
 	if(!geo.IsActiveTDC(sig.TDC())) return;
 
 	ErrorLogger &logger = ErrorLogger::getInstance();

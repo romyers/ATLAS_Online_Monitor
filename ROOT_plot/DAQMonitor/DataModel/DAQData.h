@@ -17,8 +17,11 @@
 #include <mutex>
 
 #include "Plots.h"
+
 #include "MuonReco/Event.h"
 #include "MuonReco/Geometry.h"
+#include "MuonReco/TimeCorrection.h"
+#include "MuonReco/RecoUtility.h"
 
 struct DAQData {
 
@@ -35,7 +38,9 @@ struct DAQData {
     // src/DataModel/Plots.cpp.
     Plots plots;
 
-    MuonReco::Geometry geo;
+    MuonReco::Geometry       geo     ;
+    MuonReco::TimeCorrection tc      ;
+    MuonReco::RecoUtility    recoUtil;
 
     int totalEventCount = 0;
     int packetCount     = 0;
