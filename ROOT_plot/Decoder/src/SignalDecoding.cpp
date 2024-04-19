@@ -5,17 +5,14 @@
 #include <istream>
 
 #include <iostream>
-#include <chrono>
-#include <ctime>  
 
 #include "Logging/ErrorLogger.h"
 
-#include "src/Geometry.h"
-
-using namespace Muon;
+using namespace MuonReco;
 using namespace std;
 
-const string SIGNAL_ERROR = "signal" ;
+const string SIGNAL_ERROR     = "signal"      ;
+const string TDC_DECODE_ERROR = "tdcDecodeErr";
 
 // Byte swap from big-endian to little-endian or vice versa
 uint64_t byteSwap(uint64_t data, uint8_t dataSize);
@@ -74,39 +71,30 @@ Signal extractSignal(istream &in) {
 
 }
 
-// TODO: Pull out validators
-// TODO: Test validators
-// TODO: We don't have event numbers, which we need to have for error reporting
-// TODO: Combine this with signal buffer validation. Either this can be done
-//       with access to the buffer or buffer validation can be done here.
-//       If it happens in buffer validation, we can still keep track of signal
-//       count.
-bool validateSignalErrors(const Signal &sig) {
+bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 
 	if(sig.isEventHeader ()) return true;
 	if(sig.isEventTrailer()) return true;
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
-	Geometry    &geo    = Geometry::getInstance   ();
 
 	if(sig.isTDCDecodeErr()) {  //should be handled first
-		string msg = "ERROR -- Decoding error occured!";
-		logger.logError(msg, SIGNAL_ERROR, FATAL);
+
+		string msg = "Decoding error occured!";
+		logger.logError(msg, TDC_DECODE_ERROR, ERROR);
 
 		return false;
+
 	}
 
 	if(!geo.IsActiveTDC(sig.TDC())) {
-		auto end = std::chrono::system_clock::now();
-		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-		string msg;
-		msg += std::ctime(&end_time);
-		msg += "ERROR -- Unexpected data TDCID = ";
+
+		string msg = "Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR, FATAL);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
@@ -114,24 +102,20 @@ bool validateSignalErrors(const Signal &sig) {
 
 	// In any of these cases, we have a valid signal, but we'll find a channel
 	// ID that is not considered active.
-	if(sig.isTDCHeader ()) { return true; }
-	if(sig.isTDCTrailer()) { return true; }
+	if(sig.isTDCHeader  ()) { return true; }
+	if(sig.isTDCTrailer ()) { return true; }
 	if(sig.isTDCOverflow()) { return true; }
 
 
 
 	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
 
-		auto end = std::chrono::system_clock::now();
-		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-		string msg;
-		msg += std::ctime(&end_time);
-		msg += "ERROR -- Unexpected data TDCID = ";
+		string msg = "Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
 		msg += ", Channel = ";
 		msg += to_string(sig.Channel());
 
-		logger.logError(msg, SIGNAL_ERROR, FATAL);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
 		return false;
 
@@ -143,13 +127,13 @@ bool validateSignalErrors(const Signal &sig) {
 
 }
 
-void validateSignalWarnings(const Signal &sig) {
+void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
 
 	// Skip cases that are handled by error validation to avoid double-errors
 	if(sig.isEventHeader ()) return;
 	if(sig.isEventTrailer()) return;
 
-	if(!Geometry::getInstance().IsActiveTDC(sig.TDC())) return;
+	if(!geo.IsActiveTDC(sig.TDC())) return;
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
@@ -159,7 +143,7 @@ void validateSignalWarnings(const Signal &sig) {
 
 		TDCErrorData errorData = sig.getTDCError();
 
-		msg = "WARNING -- Received TDC Error Signal:";
+		msg = "Received TDC Error Signal:";
 
 		if(errorData.LSBFlag1 > 0) {
 

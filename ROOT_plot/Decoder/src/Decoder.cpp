@@ -3,11 +3,8 @@
 #include "EventDecoding.h"
 #include "SignalDecoding.h"
 
-// TODO: Break this dependency
-#include "Logging/ErrorLogger.h"
-
 using namespace std;
-using namespace Muon;
+using namespace MuonReco;
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////// HELPER FUNCTIONS /////////////////////////////////////
@@ -23,9 +20,18 @@ bool isEvent(const vector<Signal> &signals);
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+// TODO: Consider separating decoding from validation to better observe a
+//       one-function-one-job pattern. Also consider separating out event
+//       processing. That can be separate too.
+
 Decoder::Decoder(int maxSignalCount) : maxSignalCount(maxSignalCount) {}
 
-DecodeData Decoder::decodeStream(istream &in) {
+DecodeData Decoder::decodeStream(
+	istream        &in      , 
+	Geometry       &geo     , 
+	TimeCorrection &tc      ,
+	RecoUtility    &recoUtil
+) {
 
 	vector<Event> eventBuffer;
 
@@ -50,7 +56,7 @@ DecodeData Decoder::decodeStream(istream &in) {
 		++signalCount;
 
 		// validate it
-		if(validateSignalErrors(sig)) {
+		if(validateSignalErrors(sig, geo)) {
 
 			// TODO: We should keep some metadata if it's a TDC header or
 			//       trailer. See DecodeOffline.cpp
@@ -64,7 +70,7 @@ DecodeData Decoder::decodeStream(istream &in) {
 
 		}
 
-		validateSignalWarnings(sig);
+		validateSignalWarnings(sig, geo);
 
 		// and, if it completes an event,
 		if(isEvent(signalBuffer)) {
@@ -99,16 +105,16 @@ DecodeData Decoder::decodeStream(istream &in) {
 	result.eventCount = eventBuffer.size();
 
 	// validate the buffer,
-	eventBufferValidator.validate(eventBuffer);
+	eventBufferValidator.validateWarnings(eventBuffer);
 
 	// and for each event
 	for(Event &e : eventBuffer) {
 
 		// if it's nonempty
-		if(e.Trailer().HitCount() != 0) {
+		if(e.TrigSignals().back().HitCount() != 0) {
 
 			// process it
-			processEvent(e);
+			processEvent(e, geo, tc, recoUtil);
 
 			// and store it in the return vector.
 			result.nonemptyEvents.push_back(e);

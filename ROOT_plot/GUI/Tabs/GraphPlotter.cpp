@@ -3,7 +3,6 @@
 #include "DAQMonitor/DataModel/DAQData.h"
 
 using namespace std;
-using namespace Muon;
 
 GraphPlotter::GraphPlotter(
 	const TGWindow *p, 

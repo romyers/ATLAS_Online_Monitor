@@ -170,8 +170,6 @@ namespace Muon {
     uint8_t  hdrCountErr  ;
     uint8_t  tlrCountErr  ;
 
-    std::bitset<40> word; // DEBUG
-
     TDCErrorData errorData;
 
   };

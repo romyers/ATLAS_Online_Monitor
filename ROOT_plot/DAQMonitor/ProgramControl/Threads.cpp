@@ -2,13 +2,13 @@
 
 using namespace std;
 
-vector<thread> Muon::ProgramFlow::threads;
+vector<thread> ProgramFlow::threads;
 
-mutex Muon::ProgramFlow::threadLock;
+mutex ProgramFlow::threadLock;
 
 bool joinNextThread();
 
-void Muon::ProgramFlow::joinAllThreads() {
+void ProgramFlow::joinAllThreads() {
 
     while(joinNextThread()) {}
 
@@ -30,7 +30,6 @@ void Muon::ProgramFlow::joinAllThreads() {
 //       after the first join call.
 bool joinNextThread() {
 
-    using namespace Muon;
     using namespace ProgramFlow;
 
     threadLock.lock();

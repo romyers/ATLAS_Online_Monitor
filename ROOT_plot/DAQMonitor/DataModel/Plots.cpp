@@ -4,21 +4,16 @@
 #include <numeric>
 
 #include "GlobalIncludes.h"
-#include "DAQMonitor/DAQState.h"
-#include <sys/stat.h>
 
-#include "src/Geometry.h"
-#include <iostream>
-#include <fstream>
-using namespace Muon;
+#include "MuonReco/Geometry.h"
+
+using namespace MuonReco;
 using namespace std;
 
 // TODO: Is there a better place to put this? E.g. Geometry.cpp?
 const double MATCH_WINDOW = 1.5; // us
 
-
-
-Plots::Plots(const Plots &other) {
+Plots::Plots(const Plots &other) : geo(other.geo) {
 
 	p_leading_time  = dynamic_cast<TH1F*>(other.p_leading_time ->Clone());
 	p_trailing_time = dynamic_cast<TH1F*>(other.p_trailing_time->Clone());
@@ -68,7 +63,7 @@ Plots::Plots(const Plots &other) {
 
 }
 
-Plots::Plots() {
+Plots::Plots(Geometry &geo) : geo(geo) {
 
 	TString plot_name_buffer;
 
@@ -280,7 +275,7 @@ void Plots::binEvent(const Event &e) {
 	// TODO: Go through DAQ.cpp and find everything we need to include
 	// TODO: Make sure all plots print
 
-	for(const Hit &hit : e.Hits()) {
+	for(const Hit &hit : e.WireHits()) {
 
 		p_tdc_tdc_time_corrected[hit.TDC()]->Fill(hit.CorrTime());
 		p_tdc_adc_time          [hit.TDC()]->Fill(hit.ADCTime ());
@@ -293,7 +288,7 @@ void Plots::binEvent(const Event &e) {
 		p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
 
 		int hitL, hitC;
-		Geometry::getInstance().GetHitLayerColumn(hit.TDC(), hit.Channel(), &hitL, &hitC);
+		geo.GetHitLayerColumn(hit.TDC(), hit.Channel(), &hitL, &hitC);
 
 		hitByLC->Fill(hitC, hitL);
 		if(hit.CorrTime() < 0 || hit.CorrTime() > 400) { // TODO: Magic numbers

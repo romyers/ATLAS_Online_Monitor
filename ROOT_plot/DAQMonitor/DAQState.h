@@ -18,7 +18,6 @@
 #include <string>
 #include <mutex>
 
-namespace Muon {
 namespace State {
 
 	// DAQState::dataSource values
@@ -31,6 +30,7 @@ namespace State {
 
 		std::string inputFilename   = ""                   ;
 		std::string inputDevicename = ""                   ;
+		std::string confFilename    = ""                   ;
 
 	};
 
@@ -76,5 +76,4 @@ namespace State {
 
 	};
 
-}
 }

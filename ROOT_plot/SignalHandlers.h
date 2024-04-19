@@ -14,7 +14,6 @@
 
 void connectDAQto(DAQManager *GUI);
 
-namespace Muon{
 namespace SigHandlers {
 
 	void handlePressedStartRun();
@@ -24,13 +23,13 @@ namespace SigHandlers {
 	void handleSelectedFileSource  ();
 	void handleSelectedDeviceSource();
 
-	void handleSelectedDevice(const char* selection);
-	void handleSelectedFile  (const char* selection);
+	void handleSelectedDevice  (const char* selection);
+	void handleSelectedFile    (const char* selection);
+	void handleSelectedConfFile(const char* selection);
 
 	void handleDataUpdate();
 
 	void handleRunStartEvent();
 	void handleRunStopEvent ();
 
-}
 }

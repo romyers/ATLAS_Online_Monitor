@@ -2,10 +2,10 @@
 #ifndef MUON_HITFINDER
 #define MUON_HITFINDER
 
-#include "src/Event.cpp"
-#include "src/Hit.cpp"
-#include "src/Signal.cpp"
-#include "src/TimeCorrection.cpp"
+#include "MuonReco/Event.h"
+#include "MuonReco/Hit.h"
+#include "MuonReco/Signal.h"
+#include "MuonReco/TimeCorrection.h"
 #include "src/Noisecut.cpp"
 #define BINSIZE 0.78125
 #define WIDTHSEL 2
@@ -13,6 +13,7 @@
 // 2^17 = 131072
 using namespace std;
 using namespace Muon;
+using namespace MuonReco;
 
 int rollover_bindiff_cal(int a, int b, int rollover){
     int bindiff;

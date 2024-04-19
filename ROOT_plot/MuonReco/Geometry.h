@@ -4,6 +4,7 @@
 #include <bitset>
 #include <vector>
 #include <stdbool.h>
+#include <sstream>
 
 #include "TGraph.h"
 #include "TPaveText.h"
@@ -52,6 +53,7 @@ namespace MuonReco {
     void   Configure         (ParameterSet ps);
     bool   IsPerpendicular   (int layer);
     std::vector<int> orientation();
+    void   ConfigureByGeo    (std::string geoconfigpath);
 
     void   GetHitXY   (int hitL, int hitC, double *hitX, double *hitY);
     static bool   AreAdjacent(double x1, double x2, double y1, double y2);
@@ -75,12 +77,19 @@ namespace MuonReco {
     static double tube_length;
 
     std::vector<int> hit_column_map = std::vector<int>();
+    std::vector<int> hit_column_map_ml0 = std::vector<int>();
+    std::vector<int> hit_column_map_ml1 = std::vector<int>();
+
     std::vector<int> hit_layer_map  = std::vector<int>();
+    std::vector<int> hit_layer_map_ml0 = std::vector<int>();
+    std::vector<int> hit_layer_map_ml1 = std::vector<int>();
+    
     int runN;            // configurable on the fly
     int tdcColByTubeNo = 0;
     int flipTDCs = 0;
     short TRIGGER_CH;
     short TRIGGER_MEZZ;
+    bool txtconfig_mode;
     std::vector<short> TDC_ML   = std::vector<short>();
     std::vector<short> TDC_COL  = std::vector<short>();
     std::vector<short> TDC_FLIP = std::vector<short>();
@@ -89,11 +98,16 @@ namespace MuonReco {
     std::vector<double> layerSlope  = std::vector<double>();
     std::vector<int>  ML_orientation = std::vector<int>();
 
+    std::vector<std::vector<int>> txt_layer_column = std::vector<std::vector<int>>();
+    std::vector<std::vector<double>> txt_x_y = std::vector<std::vector<double>>();
+    std::vector<std::vector<int>> txt_tdc_id_tdc_channel = std::vector<std::vector<int>>();
+    std::vector<int> txt_ml= std::vector<int>();
+
   private:
 
     void ResetTubeLayout();
     std::vector<bool> isActiveTDC = std::vector<bool>();
-
+    
     double center_x, center_y;
     double track_corner_x[2];
     double track_corner_y[2];

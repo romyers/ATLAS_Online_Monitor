@@ -14,8 +14,11 @@
 
 #include "EventBufferValidator.h"
 
-#include "src/Signal.h"
-#include "src/Event.h"
+#include "MuonReco/Signal.h"
+#include "MuonReco/Event.h"
+#include "MuonReco/Geometry.h"
+#include "MuonReco/TimeCorrection.h"
+#include "MuonReco/RecoUtility.h"
 
 /**
  * Checks if the input stream contains integral unread data.
@@ -49,7 +52,7 @@ struct DecodeData {
 	/**
 	 * A vector of nonempty events decoded while packing this DecodeData.
 	 */
-	std::vector<Muon::Event> nonemptyEvents;
+	std::vector<MuonReco::Event> nonemptyEvents;
 
 };
 
@@ -71,15 +74,24 @@ public:
 	Decoder(int maxSignalCount = 0);
 
 	/**
-	 * Reads all integral unread data from the input stream and packs it into a
-	 * DecodeData.
+	 * Reads all integral unread data from the input stream, validates it,
+	 * processes it, and packs it into a DecodeData object. This should
+	 * not be run concurrently with write operations to the geo parameter.
 	 * 
 	 * @param in The data stream to extract signals from.
+	 * 
+	 * @param geo The chamber geometry that signals and events should conform
+	 * to. Used to validate decoded data and process events.
 	 * 
 	 * @return A DecodeData containing the decoded data from this call to
 	 * decodeStream().
 	 */
-	DecodeData decodeStream(std::istream &in);
+	DecodeData decodeStream(
+		std::istream             &in      , 
+		MuonReco::Geometry       &geo     ,
+		MuonReco::TimeCorrection &tc      ,
+		MuonReco::RecoUtility    &recoUtil
+	);
 
 private:
 
@@ -87,6 +99,6 @@ private:
 
 	EventBufferValidator eventBufferValidator;
 
-	std::vector<Muon::Signal> signalBuffer;
+	std::vector<MuonReco::Signal> signalBuffer;
 
 };

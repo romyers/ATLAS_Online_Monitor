@@ -77,7 +77,9 @@ namespace MuonReco {
   };
 
   class Signal {
+
   public:
+    
     Signal(             );
     Signal(uint64_t word);
 
@@ -120,23 +122,27 @@ namespace MuonReco {
     bool         isEventTrailer () const;
     bool         isTDCHeader    () const;
     bool         isTDCTrailer   () const;
-    bool         isTDCError     () const;
+    bool         isTDCOverflow  () const;
+    bool         isTDCDecodeErr () const;
     double       Time           () const;
 
     TDCErrorData getTDCError    () const;
 
-    static const uint8_t HEADER            = 0b1010    ; // bits 37-39
-    static const uint8_t TRAILER           = 0b1100    ; // bits 37-39
+    static const uint8_t HEADER               = 0b1010    ; // bits 37-39
+    static const uint8_t TRAILER              = 0b1100    ; // bits 37-39
 
-    static const uint8_t TDC_HEADER_IDENT  = 0b11111000; // bits 24-31
-    static const uint8_t TDC_TRAILER_IDENT = 0b11110000; // bits 24-31
-    static const uint8_t TDC_ERROR_IDENT   = 0b11101000; // bits 24-31
+    static const uint8_t TDC_HEADER_IDENT     = 0b11111000; // bits 31-24
+    static const uint8_t TDC_TRAILER_IDENT    = 0b11110000; // bits 31-24
+    static const uint8_t TDC_OVERFLOW_IDENT   = 0b11101000; // bits 31-24
+    static const uint8_t TDC_DECODE_ERR_IDENT = 0b11110111; // bits 31-24
 
-    static const uint8_t WORD_SIZE         = 5         ; // bytes
+    static const uint8_t WORD_SIZE            = 5         ; // bytes
 
-    static const short RISING        = 4; //for phase1 compatibility
-    static const short FALLING       = 5; //for phase1 compatibility
+    static const short RISING                 = 4         ; //for phase1 compatibility
+    static const short FALLING                = 5         ; //for phase1 compatibility
+ 
   private:
+
     uint8_t  type         ;
     uint16_t eventid      ;
     uint16_t eventid_t    ;
@@ -160,6 +166,7 @@ namespace MuonReco {
     TDCErrorData errorData;
 
   }; //class Signal
+
 } //MuonReco
 
 #endif

@@ -12,8 +12,11 @@
 
 #include <vector>
 
-#include "src/Signal.h"
-#include "src/Event.h"
+#include "MuonReco/Signal.h"
+#include "MuonReco/Event.h"
+#include "MuonReco/Geometry.h"
+#include "MuonReco/TimeCorrection.h"
+#include "MuonReco/RecoUtility.h"
 
 /**
  * Creates an event from the given signals.
@@ -31,7 +34,7 @@
  * 
  * @return The assembled event.
  */
-Muon::Event assembleEvent(std::vector<Muon::Signal> signals);
+MuonReco::Event assembleEvent(std::vector<MuonReco::Signal> signals);
 
 /**
  * Checks if an event has no errors that require the event to be discarded.
@@ -40,7 +43,7 @@ Muon::Event assembleEvent(std::vector<Muon::Signal> signals);
  * 
  * @return True if e had no errors, and false otherwise.
  */
-bool validateEventErrors(const Muon::Event &e);
+bool validateEventErrors(const MuonReco::Event &e);
 
 /**
  * Checks if an event has no errors that do not require the event to be 
@@ -50,11 +53,16 @@ bool validateEventErrors(const Muon::Event &e);
  * 
  * @return True if e had no errors, and false otherwise.
  */
-void validateEventWarnings(const Muon::Event &e);
+void validateEventWarnings(const MuonReco::Event &e);
 
 /**
  * Performs hit finding and other processing on the event.
  * 
  * @param e The event to process.
  */
-void processEvent(Muon::Event &e);
+void processEvent(
+	MuonReco::Event          &e       , 
+	MuonReco::Geometry       &geo     , 
+	MuonReco::TimeCorrection &tc      ,
+	MuonReco::RecoUtility    &recoUtil
+);

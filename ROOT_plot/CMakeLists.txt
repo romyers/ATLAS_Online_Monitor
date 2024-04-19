@@ -52,27 +52,39 @@ set(recoObjs_SOURCES
 )
 
 set(p2Objs_HEADERS 
-	src/EventID.h
-	src/Signal.h
-	src/Cluster.h
-	src/Hit.h
-	src/Event.h
-	src/Track.h
-	src/Geometry.h
-	src/ParameterSet.h
-	src/ConfigParser.h
+	MuonReco/RecoObject.h
+	MuonReco/RecoUtility.h
+	MuonReco/IOUtility.h
+	MuonReco/EventID.h
+	MuonReco/ArgParser.h
+	MuonReco/ConfigParser.h
+	MuonReco/ParameterSet.h
+	MuonReco/ConfigParser.h
+	MuonReco/ArgParser.h
+	MuonReco/TimeCorrection.h
+	MuonReco/Hit.h
+	MuonReco/Signal.h
+	MuonReco/Cluster.h
+	MuonReco/Event.h
+	MuonReco/Track.h
+	MuonReco/Geometry.h
 )
 
 set(p2Objs_SOURCES
-	src/EventID.cpp
-	src/Signal.cpp
-	src/Cluster.cpp
-	src/Hit.cpp
-	src/Event.cpp
-	src/Track.cpp
-	src/Geometry.cpp
-	src/ParameterSet.cxx
-	src/ConfigParser.cxx
+	src/reco/RecoUtility.cxx
+	src/reco/IOUtility.cxx
+	src/reco/EventID.cxx
+	src/reco/ArgParser.cxx
+	src/reco/ConfigParser.cxx
+	src/reco/ParameterSet.cxx
+	src/reco/ConfigParser.cxx
+	src/reco/TimeCorrection.cxx
+	src/reco/Hit.cxx
+	src/reco/Signal.cxx
+	src/reco/Cluster.cxx
+	src/reco/Event.cxx
+	src/reco/Track.cxx
+	src/reco/Geometry.cxx
 )
 
 set(p2Core_HEADERS
@@ -122,6 +134,7 @@ set(monitor_HEADERS
 	GUI/Core/UILoop.h
 	GUI/Core/AlertBox/AlertOperations.h
 	GUI/Components/DAQManager.h
+	GUI/Components/ConfFileSelector.h
 	GUI/Components/DataSourcePanel.h
 	GUI/Components/DeviceSelectorPanel.h
 	GUI/Components/FileSelectorPanel.h
@@ -157,6 +170,7 @@ set(monitor_SOURCES
 	GUI/Core/UILoop.cpp
 	GUI/Core/AlertBox/AlertOperations.cpp
 	GUI/Components/DAQManager.cpp
+	GUI/Components/ConfFileSelector.cpp
 	GUI/Components/DataSourcePanel.cpp
 	GUI/Components/DeviceSelectorPanel.cpp
 	GUI/Components/FileSelectorPanel.cpp

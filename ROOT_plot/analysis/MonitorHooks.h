@@ -1,6 +1,5 @@
 #include "DAQMonitor/DataModel/DAQData.h"
 
-namespace Muon {
 namespace MonitorHooks {
 
 	/**
@@ -33,5 +32,4 @@ namespace MonitorHooks {
 	*/
 	void updatedData     (const DAQData &data);
 
-}
 }

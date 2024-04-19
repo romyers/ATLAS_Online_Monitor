@@ -140,7 +140,7 @@ void PCapSessionHandler::packetListener(
 				int missingPackets = (packetNum - (lastPacket + 1)) % 65536;
 
 				ErrorLogger::getInstance().logError(
-					string("WARNING -- ") + to_string(missingPackets) + " packets lost! Packet = "
+					to_string(missingPackets) + " packets lost! Packet = "
 						+ to_string(packetNum) + ", Last = " + to_string(lastPacket),
 					PCAP_WARN,
 					ERROR

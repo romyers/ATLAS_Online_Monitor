@@ -16,7 +16,6 @@
 #include "EthernetCapture/src/DeviceManager.h"
 
 using namespace std;
-using namespace Muon;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -30,7 +29,7 @@ void initializePCapSessionHandler(PCapSessionHandler &sessionHandler);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
     
-vector<PCapDevice> Muon::DataCapture::getNetworkDevices() {
+vector<PCapDevice> DataCapture::getNetworkDevices() {
 
     DeviceManager devices;
 
@@ -48,13 +47,13 @@ vector<PCapDevice> Muon::DataCapture::getNetworkDevices() {
 
 }
 
-void Muon::DataCapture::stopDataCapture() {
+void DataCapture::stopDataCapture() {
 
     isEcapRunning = false;
 
 }
 
-void Muon::DataCapture::startDataCapture(
+void DataCapture::startDataCapture(
     LockableStream &dataStream, 
     DAQData &data, 
     const string &runLabel

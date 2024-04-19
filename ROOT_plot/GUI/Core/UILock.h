@@ -19,10 +19,8 @@
 
 using namespace std;
 
-namespace Muon{
 namespace UI {
 
 	extern mutex UILock;
 
-}
 }

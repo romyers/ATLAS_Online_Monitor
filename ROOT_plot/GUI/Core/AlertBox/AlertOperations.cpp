@@ -6,7 +6,7 @@
 // so we'll just the box by itself.
 //   -- I think there's something odd happening with destruction logic
 //      when we subclass
-void Muon::Error::popupAlert(const TGWindow *p, const char *alertType, const char *alertMsg) {
+void AlertPopup::popupAlert(const TGWindow *p, const char *alertType, const char *alertMsg) {
 
     TGMsgBox *box = new TGMsgBox(gClient->GetRoot(), p, alertType, alertMsg);
 

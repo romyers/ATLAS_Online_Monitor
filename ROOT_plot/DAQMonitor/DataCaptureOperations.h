@@ -18,7 +18,6 @@
 
 #include "EthernetCapture/src/PCapDevice.h"
 
-namespace Muon {
 namespace DataCapture {
 
     void startDataCapture(
@@ -31,5 +30,4 @@ namespace DataCapture {
 
     std::vector<PCapDevice> getNetworkDevices();
 
-}
 }

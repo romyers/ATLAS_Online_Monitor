@@ -22,19 +22,18 @@
 #include "GUI/Components/TabSelector.h"
 #pragma link C++ class TabSelector+;
 
+#include "GUI/Components/ConfFileSelector.h"
+#pragma link C++ class ConfFileSelector+;
+
 #include "GUI/Components/DAQManager.h"
 #pragma link C++ class DAQManager+;
 
 #include "DAQMonitor/DataRunOperations.h"
-#pragma link C++ namespace Muon::DataRun+;
-#pragma link C++ defined_in Muon::DataRun+;
-
-#include "analysis/MonitorHooks.h"
-#pragma link C++ namespace Muon::MonitorHooks+;
-#pragma link c++ defined_in Muon::MonitorHooks+;
+#pragma link C++ namespace DataRun+;
+#pragma link C++ defined_in DataRun+;
 
 #include "SignalHandlers.h"
-#pragma link C++ namespace Muon::SigHandlers+;
-#pragma link C++ defined_in Muon::SigHandlers+;
+#pragma link C++ namespace SigHandlers+;
+#pragma link C++ defined_in SigHandlers+;
 
 #endif

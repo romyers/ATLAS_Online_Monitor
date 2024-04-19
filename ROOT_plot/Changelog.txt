@@ -2,6 +2,11 @@
 
 - Saving plots is slow. Batch mode greatly speeds things up, but also breaks 
   the GUI.
+    - Look at this:
+      https://root-forum.cern.ch/t/setbatch-root-kfalse/15844/3
+      We might be able to work around this issue by rebuilding the GUI after
+      we're done with batch mode.
+    - We might also try using another plotting library to output the plots.
 - Plot saving does not interact well with TDC and ADC plot windows opened 
   after the save is started. (cd() issues)
 - Plot saving blocks the decoder.
@@ -15,8 +20,6 @@
   same thread.
 - UI blocks during plot updates when plots are open.
 - The noise rate display graphics have some odd artifacts.
-- Sometimes we end up with more events than packets. I'm not sure if this is
-  valid behavior.
 
 ## TODO:
 
@@ -92,12 +95,134 @@
   PacketDecodingOperations to a 'DirectoryManager' file or something like that.
 - Include sMDT reco code as a cmake subproject in some fashion. See:
   https://stackoverflow.com/questions/56561591/link-one-project-to-another-cmake
+- Try to use a format like the conf files and ConfigParser for DAQState.
+- Consider replacing UILoop.h with ROOT's built-in gApplication->Run().
+    - My concern is thread safety.
+- Finish implementing the standalone decoder so it can replace Yuxiang's
+  version in the sMDTreco library.
+- Run in DEBUG mode with an optional cmd line arg. If running in debug mode,
+  no file saving.
+- Adding GUI events baddddddly needs to be streamlined. The process is long and
+  confusing right now.
+    - At least document the process.
 
 ## FIXME
 
 - Quick segfault occurs when running with enable_hit and enable_trigger on from
   xkcu vio 7. Only happens if plot tabs are open. Maybe GUI updates can't
   keep up with the decoder when packets are coming in that quickly?
+- Update to newest versions of Geometry.h/cxx
+- Hardcoded match window in plots should probably come from a conf file or a
+  DAQManager parameter.
+    - We can have a field for setting it in the Settings panel.
+- Should Geometry's run number be coming from the conf file or system time?
+- Should we be reading/writing the time correction?
+
+-------------------------------------------------------------------------------
+
+## 2024-04-19
+
+## Highlights
+
+- Integration with Kevin's sMDTreco library is complete.
+
+## Added
+
+- Phase2Decode_Standalone now has a progress bar.
+- There is now a text field in the GUI that can be used to set the conf file.
+
+## Removed
+
+- DataRunOperations no longer sets Geometry's runN, following the pattern in
+  the legacy DecodeRawData file in the sMDT reco libary.
+
+## Changed
+
+- IMPORTANT - IOUtility.h has been updated with a new directory path for raw
+              data files.
+
+## Fixed
+
+- MonitorHooks::beforeUpdateData() is now called before any data decoding
+  occurs.
+- Signal decoding now uses a configured Geometry contained in DAQData.
+- Event processing now uses a configured Geometry contained in DAQData.
+- Event processing now uses a configured time correction contained in 
+  DAQData.
+- Event processing now uses a configured RecoUtility contained in DAQData.
+- Phase2Decode_Standalone now works on the sMDTreco library.
+
+-------------------------------------------------------------------------------
+
+## 2024-04-18
+
+## Added
+
+- Added documentation to the ErrorLogger's ErrorLevel enum.
+- Added geometry config parsing to DataRunOperations.
+
+## Changed
+
+- TDCDecodeErrors have their own error type for accurate counting by the 
+  logger.
+- Deprecated old source files.
+- Logger now saves timestamps alongside errors. This functionality
+  has now been removed from SignalDecoding.
+- ErrorData now provides a stringify function composing an error message from
+  its constituent timestamp, error level, and message.
+- ErrorView has been updated to display error timestamps.
+- Error messages no longer explicitly describe their error level. This is now
+  injected into the output string during the call to ErrorData::stringify().
+
+- Started updating MuonReco files to be compatible with the online monitor.
+
+    - SIGNAL
+        - Split isTDCError into isTDCOverflow and isTDCDecodeErr.
+        - Split TDC_ERR_IDENT into TDC_OVERFLOW_IDENT and TDC_DECODE_ERR_IDENT.
+
+    - HIT
+        - Marked several accessors const.
+
+- Started updating decoder to be compatible with MuonReco files.
+
+    - EVENT_DECODING
+        - Switched src/HitFinder include to MuonReco/RecoUtils.
+        - Switched src/TimeCorrection include to MuonReco/TimeCorrection.
+        - Updated processEvent() for the DoHitFinding() interface presented by
+          RecoUtils.h.
+            - FIXME: Need to use well-constructed TimeCorrection and Geometry
+                   objects.
+        - Updated validators to account for the absence of Header() and Trailer()
+        accessors in the MuonReco version of Event.
+
+    - SIGNAL_DECODING
+        - Updated to MuonReco's Geometry file.
+
+    - PLOTS
+        - Added a reference member storing the Geometry.
+        - Switched to MuonReco objects.
+        - Switched Event::Hits() call to Event::WireHits().
+
+    - DAQ_DATA
+        - Switched to MuonReco objects.
+        - Added a geometry object.
+        - Constructor now stores the geometry object in plots.
+
+    - DATA_RUN_OPERATIONS
+        - Now uses the Geometry stored in DAQData::Plots.
+
+    - PLOT_SAVING_OPERATIONS
+        - Now uses the Geometry copied from DAQData::Plots.
+            - TODO: Make sure the geometry is copiable
+
+    - PHASE_2_DECODE_STANDALONE
+        - Switched to MuonReco geometry.
+            - FIXME: We need to read in a config file to get a well-constructed
+                     geometry object.
+
+## Removed
+
+- Removed references to obsolete Muon namespace.
 
 -------------------------------------------------------------------------------
 
@@ -145,6 +270,9 @@ While I was away:
 - A timestamp was added to the error message for "Unexpected data".
 - Some changes made to accommodate testing of an MDT chamber instead of an sMDT
   chamber.
+- SignalDecoding now validates against TDCDecodeErrors, and drop TDCDecodeError
+  signals.
+- TDCDecodeErr signals are counted and displayed in the run view.
 
 -------------------------------------------------------------------------------
 

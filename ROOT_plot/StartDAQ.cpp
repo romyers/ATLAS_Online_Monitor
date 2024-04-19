@@ -32,7 +32,6 @@
 #include "DAQMonitor/ProgramControl/Threads.h"
 
 using namespace std;
-using namespace Muon;
 
 
 // COPIED TODOS FROM START_MONITOR:
@@ -68,7 +67,7 @@ void forceExit(int signal) {
 
 void termHandler(int signal) {
 
-    Muon::SigHandlers::handleExit();
+    SigHandlers::handleExit();
 
     setTerminationHandlers(forceExit);
 
@@ -117,7 +116,7 @@ int main() {
 
             // Populate the device selector with connected devices.
             vector<string> devices;
-            for(const PCapDevice &device : Muon::DataCapture::getNetworkDevices()) {
+            for(const PCapDevice &device : DataCapture::getNetworkDevices()) {
 
                 devices.push_back(device.name);
 
@@ -142,8 +141,15 @@ int main() {
 
             }
 
-            mainFrame->setDeviceSelectorEntry(state.persistentState.inputDevicename);
-            mainFrame->setFileSelectorEntry(state.persistentState.inputFilename);
+            mainFrame->setDeviceSelectorEntry(
+                state.persistentState.inputDevicename
+            );
+            mainFrame->setFileSelectorEntry(
+                state.persistentState.inputFilename
+            );
+            mainFrame->setConfFileSelectorEntry(
+                state.persistentState.confFilename
+            );
 
             // Start the UI event loop in order to process user interactions
             // with the GUI
@@ -151,6 +157,11 @@ int main() {
             //       explicitly stopped.
             // TODO: It's not semantically clear that startUILoop blocks its
             //       calling thread until the loop is stopped.
+            // TODO: Consider using gApplication->Run() instead -- this is 
+            //       ROOT's built-in event loop. I'm worried about thread
+            //       safety though.
+            //         -- Also look at TApplication::Run(), which we can call
+            //            with app.run().
             startUILoop(GUI_REFRESH_RATE);
 
         })

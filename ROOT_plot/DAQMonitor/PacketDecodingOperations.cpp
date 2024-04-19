@@ -18,9 +18,9 @@ using namespace std;
 
 #include "analysis/MonitorHooks.h"
 
-#include "src/Geometry.h"
+#include "MuonReco/Geometry.h"
 
-using namespace Muon;
+using namespace MuonReco;
 
 /**
  * The approximate rate at which monitor data is refreshed. Note that the
@@ -59,9 +59,9 @@ void Decode::startDecoding(
 
     // Update data with everything zeroed out
     // TODO: Put this with the code that clears DAQData.
-    Muon::UI::UILock.lock();
+    UI::UILock.lock();
     UISignalBus::getInstance().onUpdate();
-    Muon::UI::UILock.unlock();
+    UI::UILock.unlock();
 
     Decoder decoder(300000);
 
@@ -116,15 +116,25 @@ void Decode::startDecoding(
         dataStream.lock();
         if(hasNewData(*dataStream.stream)) {
 
-            loopData = decoder.decodeStream(*dataStream.stream);
+            MonitorHooks::beforeUpdateData(data);
+
+            // NOTE: We're not worried about thread safety with the geo object
+            //       because writes to geo are done only at the very beginning
+            //       of a data run, and can't happen concurrently with this 
+            //       call.
+            loopData = decoder.decodeStream(
+                *dataStream.stream, 
+                data.geo, 
+                data.tc,
+                data.recoUtil
+            );
+
             hasData = true;
 
         }
         dataStream.unlock();
 
         if(hasData) {
-
-            MonitorHooks::beforeUpdateData(data);
 
             data.lock();
 
@@ -133,6 +143,8 @@ void Decode::startDecoding(
             // Save the noise CSV file every 1000 events.
             if(data.totalEventCount >= noiseSavepoint) {
 
+                // TODO: Try to avoid doing file I/O within DAQData's critical
+                //       section.
                 saveNoiseRate(outputPath, data);
 
                 do {
@@ -152,9 +164,9 @@ void Decode::startDecoding(
             //       that didn't happen.
             // TODO: For DAT file sources, this won't run until the entire
             //       file has been read. Not exactly ideal.
-            Muon::UI::UILock.lock();
+            UI::UILock.lock();
             UISignalBus::getInstance().onUpdate();
-            Muon::UI::UILock.unlock();
+            UI::UILock.unlock();
 
         }
 

@@ -14,29 +14,63 @@
 #include <iostream>
 #include <vector>
 #include <mutex>
+#include <time.h>
 
 const std::string EMPTY_TYPE = "";
 
 enum ErrorLevel {
+
+	/**
+	 * Marker for debug information that isn't necessarily erroneous.
+	 */
 	DEBUG,
+
+	/**
+	 * Marker for any nonerroneous information suitable for logging in a 
+	 * production build.
+	 */
 	INFORMATIVE,
+
+	/**
+	 * Marker for warnings that do not interfere with the program.
+	 */
 	WARNING,
+
+	/**
+	 * Marker for errors that may interfere with the program.
+	 */
 	ERROR,
+
+	/**
+	 * Marker for fatal errors that the program cannot recover from. FATAL
+	 * should be reserved for errors that will crash the program.
+	 */
 	FATAL,
+
+	/**
+	 * Marker used in filtering errors to signify that you do not wish to
+	 * filter by error level. Errors should not themselves be marked
+	 * UNDEFINED.
+	 */
 	UNDEFINED
+	
 };
 
 struct ErrorData {
 
 	ErrorData(
-		const std::string &msg, 
+		const std::string &message, 
 		const std::string &type, 
 		ErrorLevel level
-	) : msg(msg), type(type), level(level) {}
+	);
 
 	const std::string msg;
 	const std::string type;
 	const ErrorLevel level;
+
+	const time_t timestamp;
+
+	std::string stringify() const;
 
 };
 

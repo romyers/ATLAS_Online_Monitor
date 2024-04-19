@@ -12,12 +12,16 @@
 
 #include <iostream>
 
-#include "src/Signal.h"
+#include "MuonReco/Signal.h"
+#include "MuonReco/Geometry.h"
 
 /**
  * Checks whether the input stream has unread signals.
  * 
  * @param in The stream to be checked.
+ * 
+ * @return True if there are complete unread signals in the stream, and false
+ * otherwise.
  */
 bool hasSignals(std::istream &in);
 
@@ -25,8 +29,10 @@ bool hasSignals(std::istream &in);
  * Extracts one signal from the input stream.
  * 
  * @param in The stream from which a signal should be extracted.
+ * 
+ * @return The extracted signal.
  */
-Muon::Signal extractSignal(std::istream &in);
+MuonReco::Signal extractSignal(std::istream &in);
 
 /**
  * Provides validation of 'sig', logging an error to the error logger
@@ -35,8 +41,17 @@ Muon::Signal extractSignal(std::istream &in);
  * Signals that fail error validation should be dropped.
  * 
  * @param sig The signal to validate.
+ * 
+ * @param geo The chamber geometry the signal must conform to. Geo should be
+ * configured prior to signal validation.
+ * 
+ * @return False if the signal is invalid and should be discarded, and true
+ * otherwise.
  */
-bool validateSignalErrors(const Muon::Signal &sig);
+bool validateSignalErrors(
+	const MuonReco::Signal   &sig, 
+	const MuonReco::Geometry &geo
+);
 
 /**
  * Provides validation of 'sig', logging any warnings to the error logger.
@@ -44,5 +59,12 @@ bool validateSignalErrors(const Muon::Signal &sig);
  * Signals that fail warning validation should not be dropped.
  * 
  * @param sig The signal to validate.
+ * 
+ * @param geo The chamber geometry the signal must conform to. Geo should be
+ * configured prior to signal validation.
+ * 
  */
-void validateSignalWarnings(const Muon::Signal &sig);
+void validateSignalWarnings(
+	const MuonReco::Signal   &sig, 
+	const MuonReco::Geometry &geo
+);

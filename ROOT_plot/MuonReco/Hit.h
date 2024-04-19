@@ -24,20 +24,20 @@ namespace MuonReco {
     Hit(double tdctime, double adc_time, double drift_time, double corr_time, unsigned int _tdc, unsigned int chan, int layer, int column, double _x, double _y);
     ~Hit() {};
 
-    double       TDCTime  ();
-    double       Radius   ();
-    double       ADCTime  ();
-    double       DriftTime();
-    double       CorrTime ();
-    double       TimeError();
-    unsigned int TDC      ();
-    unsigned int Channel  ();
-    int          Layer    () {return layer;}
-    int          Column   () {return column;}
+    double       TDCTime  () const;
+    double       Radius   () const;
+    double       ADCTime  () const;
+    double       DriftTime() const;
+    double       CorrTime () const;
+    double       TimeError() const;
+    unsigned int TDC      () const;
+    unsigned int Channel  () const;
+    int          Layer    () const {return layer;}
+    int          Column   () const {return column;}
     void         SetRadius(double r);
     void         Draw     () override;
-    double       X        () {return x;}
-    double       Y        () {return y;}
+    double       X        () const {return x;}
+    double       Y        () const {return y;}
 
     static double RadiusError(double radius);
     static double CavernRadiusError(double radius);
