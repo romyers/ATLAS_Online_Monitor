@@ -22,6 +22,9 @@
 #include "GUI/Components/TabSelector.h"
 #pragma link C++ class TabSelector+;
 
+#include "GUI/Components/ConfFileSelector.h"
+#pragma link C++ class ConfFileSelector+;
+
 #include "GUI/Components/DAQManager.h"
 #pragma link C++ class DAQManager+;
 

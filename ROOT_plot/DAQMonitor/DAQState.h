@@ -30,6 +30,7 @@ namespace State {
 
 		std::string inputFilename   = ""                   ;
 		std::string inputDevicename = ""                   ;
+		std::string confFilename    = ""                   ;
 
 	};
 

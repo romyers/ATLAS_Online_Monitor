@@ -12,6 +12,13 @@ void DAQManager::makeConnections() {
     startButton->Connect("Clicked()", "DAQManager", this, "handlePressStart()");
     stopButton ->Connect("Clicked()", "DAQManager", this, "handlePressStop()");
 
+    confFileSelector->Connect(
+        "entryChanged(const char*)",
+        "DAQManager",
+        this,
+        "selectedConfFile(const char*)"
+    );
+
     dataSourcePanel->Connect(
         "selectedFileSource()",
         "DAQManager",
@@ -57,6 +64,12 @@ void DAQManager::selectedFile(const char *selection) {
 
 }
 
+void DAQManager::selectedConfFile(const char *selection) {
+
+    Emit("selectedConfFile(const char*)", selection);
+
+}
+
 DAQManager::DAQManager(
         const TGWindow *p, 
         int w, 
@@ -84,6 +97,9 @@ DAQManager::DAQManager(
 
             settings = new TGGroupFrame(leftPanel, "Settings", kVerticalFrame);
             leftPanel->AddFrame(settings, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5));
+
+                confFileSelector = new ConfFileSelector(settings);
+                settings->AddFrame(confFileSelector);
 
                 dataSourcePanel = new DataSourcePanel(settings);
                 settings->AddFrame(dataSourcePanel);
@@ -157,6 +173,12 @@ void DAQManager::setDeviceSelectorOptions(const vector<string> &entries) {
 
 }
 
+void DAQManager::setConfFileSelectorEntry(const string &entry) {
+
+    confFileSelector->setEntry(entry);
+
+}
+
 void DAQManager::setFileDataSource() {
 
     dataSourcePanel->setFileSource();
@@ -188,17 +210,20 @@ void DAQManager::disable() {
 
 }
 
-void DAQManager::disableStartButton() { startButton->SetEnabled(false); }
-void DAQManager::enableStartButton () { startButton->SetEnabled(true ); }
+void DAQManager::disableStartButton     () { startButton->SetEnabled(false); }
+void DAQManager::enableStartButton      () { startButton->SetEnabled(true ); }
 
-void DAQManager::disableStopButton () { stopButton->SetEnabled (false); }
-void DAQManager::enableStopButton  () { stopButton->SetEnabled (true ); }
+void DAQManager::disableStopButton      () { stopButton->SetEnabled (false); }
+void DAQManager::enableStopButton       () { stopButton->SetEnabled (true ); }
 
-void DAQManager::disableExitButton () { exitButton->SetEnabled (false); }
-void DAQManager::enableExitButton  () { exitButton->SetEnabled (true ); }
+void DAQManager::disableExitButton      () { exitButton->SetEnabled (false); }
+void DAQManager::enableExitButton       () { exitButton->SetEnabled (true ); }
 
-void DAQManager::disableDataSourcePanel() { dataSourcePanel->disable(); }
-void DAQManager::enableDataSourcePanel () { dataSourcePanel->enable (); }
+void DAQManager::disableConfFileSelector() { confFileSelector->disable()   ; }
+void DAQManager::enableConfFileSelector () { confFileSelector->enable()    ; }
+
+void DAQManager::disableDataSourcePanel () { dataSourcePanel->disable()    ; }
+void DAQManager::enableDataSourcePanel  () { dataSourcePanel->enable ()    ; }
 
 // TODO: Use these
 void DAQManager::pressedStart() { Emit("pressedStart()"); }

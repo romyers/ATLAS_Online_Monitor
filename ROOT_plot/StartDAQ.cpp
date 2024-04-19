@@ -141,8 +141,15 @@ int main() {
 
             }
 
-            mainFrame->setDeviceSelectorEntry(state.persistentState.inputDevicename);
-            mainFrame->setFileSelectorEntry(state.persistentState.inputFilename);
+            mainFrame->setDeviceSelectorEntry(
+                state.persistentState.inputDevicename
+            );
+            mainFrame->setFileSelectorEntry(
+                state.persistentState.inputFilename
+            );
+            mainFrame->setConfFileSelectorEntry(
+                state.persistentState.confFilename
+            );
 
             // Start the UI event loop in order to process user interactions
             // with the GUI

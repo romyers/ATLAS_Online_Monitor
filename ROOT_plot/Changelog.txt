@@ -100,6 +100,11 @@
     - My concern is thread safety.
 - Finish implementing the standalone decoder so it can replace Yuxiang's
   version in the sMDTreco library.
+- Run in DEBUG mode with an optional cmd line arg. If running in debug mode,
+  no file saving.
+- Adding GUI events baddddddly needs to be streamlined. The process is long and
+  confusing right now.
+    - At least document the process.
 
 ## FIXME
 
@@ -124,6 +129,7 @@
 ## Added
 
 - Phase2Decode_Standalone now has a progress bar.
+- There is now a text field in the GUI that can be used to set the conf file.
 
 ## Removed
 

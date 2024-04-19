@@ -134,6 +134,7 @@ set(monitor_HEADERS
 	GUI/Core/UILoop.h
 	GUI/Core/AlertBox/AlertOperations.h
 	GUI/Components/DAQManager.h
+	GUI/Components/ConfFileSelector.h
 	GUI/Components/DataSourcePanel.h
 	GUI/Components/DeviceSelectorPanel.h
 	GUI/Components/FileSelectorPanel.h
@@ -169,6 +170,7 @@ set(monitor_SOURCES
 	GUI/Core/UILoop.cpp
 	GUI/Core/AlertBox/AlertOperations.cpp
 	GUI/Components/DAQManager.cpp
+	GUI/Components/ConfFileSelector.cpp
 	GUI/Components/DataSourcePanel.cpp
 	GUI/Components/DeviceSelectorPanel.cpp
 	GUI/Components/FileSelectorPanel.cpp

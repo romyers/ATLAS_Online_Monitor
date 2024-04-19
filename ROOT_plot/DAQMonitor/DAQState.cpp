@@ -65,6 +65,7 @@ void DAQState::writePersistentState(ostream &out) {
 	out << "Data Source: "           << persistentState.dataSource         << endl;
 	out << "Input Device Name: "     << persistentState.inputDevicename    << endl;
 	out << "Input File Name: "       << persistentState.inputFilename      << endl;
+	out << "Conf File Name: "        << persistentState.confFilename       << endl;
 
 }
 
@@ -97,6 +98,7 @@ bool DAQState::readPersistentState(istream &in) {
 
 	persistentState.inputDevicename = tokens["Input Device Name"];
 	persistentState.inputFilename   = tokens["Input File Name"  ];
+	persistentState.confFilename    = tokens["Conf File Name"   ];
 
 	return true;
 

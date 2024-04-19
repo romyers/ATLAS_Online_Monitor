@@ -36,6 +36,8 @@ using namespace MuonReco;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+const string CONF_PATH = "../conf/";
+
 bool runStarted = false;
 
 
@@ -172,16 +174,7 @@ void DataRun::startRun() {
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
-    // Clear the DAQData of any data from a previous run
     DAQData &data = DAQData::getInstance();
-
-    data.lock  ();
-    data.clear ();
-    data.unlock();
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
 
     // Configure the geometry and time correction table.
 
@@ -194,18 +187,29 @@ void DataRun::startRun() {
     //            from geo, so be careful not to change geo while the decode 
     //            loop is running.
 
-    // TODO: Allow setting this path at runtime.
-    // TODO: 
-    ConfigParser cp("../conf/run_20240412.conf");
+    ConfigParser cp(CONF_PATH + state.persistentState.confFilename);
 
     data.lock();
 
-    data.geo.Configure(cp.items("Geometry"));
+    try{
 
-    data.tc = TimeCorrection(cp);
-    // data.tc.Read();
+        data.geo.Configure(cp.items("Geometry"));
+        data.tc = TimeCorrection(cp);
+        // data.tc.Read();
+        data.recoUtil = RecoUtility(cp.items("RecoUtility"));
 
-    data.recoUtil = RecoUtility(cp.items("RecoUtility"));
+    } catch(int e) {
+
+        data.unlock();
+
+        throw UIException(
+            string("Failed to configure from ") 
+                + state.persistentState.confFilename
+                + string(".\n Does the file exist?")
+        );
+
+
+    }
 
     data.unlock();
 
@@ -227,6 +231,12 @@ void DataRun::startRun() {
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
+    
+    // Clear the DAQData of any data from a previous run
+
+    data.lock  ();
+    data.clear ();
+    data.unlock();
 
     runStarted = true;
     state.tempState.runLabel = runLabel;

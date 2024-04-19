@@ -26,7 +26,7 @@ public:
 
     // SIGNALS
 
-    void TextChanged(const char *text);
+    void TextChanged(const char *text); // *SIGNAL*
 
     // METHODS
 

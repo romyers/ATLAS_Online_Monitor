@@ -20,6 +20,7 @@
 #include "TGLabel.h"
 
 #include "DataSourcePanel.h"
+#include "ConfFileSelector.h"
 #include "UpdatePacket.h"
 
 #include "RunView.h"
@@ -49,32 +50,37 @@ public:
     void selectedFileSource  (); // *SIGNAL*
     void selectedDeviceSource(); // *SIGNAL*
 
-    void selectedDevice(const char *selection); // *SIGNAL*
-    void selectedFile  (const char *selection); // *SIGNAL*
+    void selectedDevice  (const char *selection); // *SIGNAL*
+    void selectedFile    (const char *selection); // *SIGNAL*
+    void selectedConfFile(const char *selection); // *SIGNAL*
 
     // METHODS
 
     void disable();
 
-    void disableStartButton    ();
-    void enableStartButton     ();
+    void disableStartButton     ();
+    void enableStartButton      (); 
 
-    void disableStopButton     ();
-    void enableStopButton      ();
+    void disableStopButton      ();
+    void enableStopButton       ();
 
-    void disableExitButton     ();
-    void enableExitButton      ();
+    void disableExitButton      ();
+    void enableExitButton       ();
 
-    void disableDataSourcePanel();
-    void enableDataSourcePanel ();
+    void disableConfFileSelector();
+    void enableConfFileSelector ();
 
-    void handlePressStart      ();
-    void handlePressStop       ();
-    void handlePressExit       ();
+    void disableDataSourcePanel ();
+    void enableDataSourcePanel  ();
 
+    void handlePressStart       ();
+    void handlePressStop        ();
+    void handlePressExit        ();
+
+    void setConfFileSelectorEntry(const std::string &entry               );
     void setDeviceSelectorOptions(const std::vector<std::string> &entries);
-    void setDeviceSelectorEntry  (const std::string &entry);
-    void setFileSelectorEntry    (const std::string &entry);
+    void setDeviceSelectorEntry  (const std::string &entry               );
+    void setFileSelectorEntry    (const std::string &entry               );
 
     void setFileDataSource();
     void setDeviceDataSource();
@@ -96,7 +102,8 @@ private:
 
             TGGroupFrame *settings;
 
-                DataSourcePanel *dataSourcePanel;
+                ConfFileSelector *confFileSelector;
+                DataSourcePanel  *dataSourcePanel;
 
         // TGVSplitter *splitter;
 

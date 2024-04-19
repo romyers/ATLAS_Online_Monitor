@@ -1,7 +1,7 @@
 /**
  * @file DataSourcePanel.h
  *
- * @brief TODO: Write
+ * @brief Provides an interface for selecting the DAQ data source.
  *
  * @author Robert Myers
  * Contact: romyers@umich.edu

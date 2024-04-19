@@ -52,6 +52,13 @@ void connectDAQto(DAQManager *GUI) {
     );
 
     GUI->Connect(
+    	"selectedConfFile(const char*)",
+    	"SigHandlers",
+    	nullptr,
+    	"handleSelectedConfFile(const char*)"
+    );
+
+    GUI->Connect(
     	"selectedDeviceSource()",
     	"SigHandlers",
     	nullptr,
@@ -128,8 +135,9 @@ void SigHandlers::handleRunStartEvent() {
 
 	if(!GUIptr) return;
 
-	GUIptr->enableStopButton();
-	GUIptr->disableDataSourcePanel();
+	GUIptr->enableStopButton       ();
+	GUIptr->disableDataSourcePanel ();
+	GUIptr->disableConfFileSelector();
 
 }
 
@@ -145,8 +153,9 @@ void SigHandlers::handleRunStopEvent() {
 
 	if(!GUIptr) return;
 
-	GUIptr->enableStartButton();
-	GUIptr->enableDataSourcePanel();
+	GUIptr->enableStartButton     ();
+	GUIptr->enableDataSourcePanel ();
+	GUIptr->enableConfFileSelector();
 
 }
 
@@ -197,6 +206,16 @@ void SigHandlers::handleSelectedFile(const char* selection) {
     state.persistentState.inputFilename = selection;
 
     state.commit();
+
+}
+
+void SigHandlers::handleSelectedConfFile(const char* selection) {
+
+	State::DAQState state = State::DAQState::getState();
+
+	state.persistentState.confFilename = selection;
+
+	state.commit();
 
 }
 
