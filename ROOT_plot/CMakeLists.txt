@@ -140,9 +140,10 @@ set(monitor_HEADERS
 	GUI/Components/FileSelectorPanel.h
 	GUI/Components/RunView.h
 	GUI/Components/PairTable.h
-	GUI/Components/RunMenuBar.h
-	GUI/Components/TabSelector.h
+	GUI/Components/Menu.h
+	GUI/Components/Submenu.h
 	GUI/Components/ProgressBar.h
+	GUI/Tabs/TabPanel.h
 	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
 	GUI/Tabs/GraphPlotter.h
@@ -177,9 +178,10 @@ set(monitor_SOURCES
 	GUI/Components/FileSelectorPanel.cpp
 	GUI/Components/RunView.cpp
 	GUI/Components/PairTable.cpp
-	GUI/Components/RunMenuBar.cpp
-	GUI/Components/TabSelector.cpp
+	GUI/Components/Menu.cpp
+	GUI/Components/Submenu.cpp
 	GUI/Components/ProgressBar.cpp
+	GUI/Tabs/TabPanel.cpp
 	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp
 	GUI/Tabs/GraphPlotter.cpp

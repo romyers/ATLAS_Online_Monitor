@@ -17,6 +17,8 @@ public:
 
 	UITab(const TGWindow *p);
 
+	virtual ~UITab();
+
 	virtual void teardown();
 
 	virtual void update() = 0;

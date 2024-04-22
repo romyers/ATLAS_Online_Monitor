@@ -1,5 +1,7 @@
 #include "DAQManager.h"
 
+#include "../../DAQMonitor/PlotSavingOperations.h"
+
 using namespace std;
 
 ClassImp(DAQManager);
@@ -77,8 +79,22 @@ DAQManager::DAQManager(
         int options
 ) : TGMainFrame(p, w, h, options), viewer(nullptr) {
 
-    menuBar = new RunMenuBar(this);
+    ///////////////////////////////////////////////////////////////////////////
+    // Build the menu bar
+    ///////////////////////////////////////////////////////////////////////////
+
+    menuBar = new Menu(this);
     AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
+
+    Submenu *fileMenu = menuBar->AddSubmenu("&File");
+
+        fileMenu->AddEntry("Save Plots", [](int id) {
+
+            PlotSaving::savePlots();
+
+        });
+
+    Submenu *viewMenu = menuBar->AddSubmenu("&View");
 
     menuLine = new TGHorizontal3DLine(this);
     AddFrame(menuLine, new TGLayoutHints(kLHintsTop | kLHintsExpandX));
@@ -109,20 +125,10 @@ DAQManager::DAQManager(
 
         // splitter->SetFrame(leftPanel, true);
 
-        viewport = new TGTab(mainPanel);
+        viewport = new TabPanel(mainPanel);
         mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY));
 
-            // TODO: Base tab can be expanded into an info panel of some sort -- like a 
-            //       readme or like the info screens that pop up sometimes talking about e.g.
-            //       program title/version/usage
-            baseTab = new TGCompositeFrame(viewport, 1250, 850, kFixedSize);
-            viewport->AddTab("Home", baseTab);
-
-                baseLabel = new TGLabel(baseTab, "Open tabs from the view menu");
-                baseTab->AddFrame(baseLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
-
-        // TODO: This is an ugly solution
-        menuBar->setTabber(viewport);
+            viewport->AttachToMenu(viewMenu);
 
 
     ///////////////////////////////////////////////////////////////////////////

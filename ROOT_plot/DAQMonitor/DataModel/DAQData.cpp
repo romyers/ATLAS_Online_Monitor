@@ -36,3 +36,9 @@ void DAQData::clear () {
     droppedEvents   = 0;
 
 }
+
+bool DAQData::isPopulated() const {
+
+    return totalEventCount > 0;
+
+}

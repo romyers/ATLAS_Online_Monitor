@@ -29,7 +29,7 @@ public:
 		int rows = 1
 	);
 
-	~GraphPlotter();
+	virtual ~GraphPlotter();
 
 	virtual void update() override;
 

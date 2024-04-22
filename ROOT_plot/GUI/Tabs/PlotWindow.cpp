@@ -6,8 +6,6 @@ using namespace std;
 
 void PlotWindow::teardown() {
 
-	UITab::teardown();
-
 	delete canvas;
 	canvas = nullptr;
 
