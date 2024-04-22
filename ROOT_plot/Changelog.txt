@@ -105,6 +105,9 @@
 - Adding GUI events baddddddly needs to be streamlined. The process is long and
   confusing right now.
     - At least document the process.
+- Plot saving error messages should show as popup dialogs to the user.
+- Consider switching to a functional GUI framework, like the new menu bar
+  and tab system but across the board.
 
 ## FIXME
 
@@ -117,6 +120,25 @@
     - We can have a field for setting it in the Settings panel.
 - Should Geometry's run number be coming from the conf file or system time?
 - Should we be reading/writing the time correction?
+
+-------------------------------------------------------------------------------
+
+## 2024-04-22
+
+## Summary
+
+- Began work on tab framework rework.
+
+## Added
+
+- Menu system rework. The menu bar now uses a functional pattern, where new
+  menu items are associated with handler functions.
+
+## Fixed
+
+- Plot saving produced a segfault when called before a run was started, as it
+  expected the geometry to be initialized. A check has been added to make sure
+  events exist in the DAQData before plot saving is allowed.
 
 -------------------------------------------------------------------------------
 

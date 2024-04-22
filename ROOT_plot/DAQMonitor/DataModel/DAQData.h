@@ -50,6 +50,17 @@ struct DAQData {
     int droppedSignals  = 0;
     int droppedEvents   = 0;
 
+    /**
+     * Checks if the DAQData has any events in it at all.
+     * Useful for making empty checks before expecting
+     * DAQData members to be initialized.
+     * 
+     * E.g. DAQData::geo is sure to be initialized before any events are
+     * processed, so if isPopulated() is true, we can expect DAQData::geo to be
+     * safe to use.
+     */
+    bool isPopulated() const;
+
     void lock  () const; // Locks an internal mutex
     void unlock() const; // Unlocks an internal mutex
 

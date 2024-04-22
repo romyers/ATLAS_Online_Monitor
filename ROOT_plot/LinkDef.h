@@ -10,6 +10,9 @@
 #include "GUI/Core/UISignals.h"
 #pragma link C++ class UISignalBus+;
 
+#include "GUI/Components/Submenu.h"
+#pragma link C++ class Submenu+;
+
 #include "GUI/Components/DeviceSelectorPanel.h"
 #pragma link C++ class DeviceSelector+;
 

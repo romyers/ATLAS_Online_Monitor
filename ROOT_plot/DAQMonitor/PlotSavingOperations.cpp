@@ -1,6 +1,7 @@
 #include "PlotSavingOperations.h"
 
 #include <thread>
+#include <iostream>
 
 #include <sys/stat.h>
 
@@ -42,6 +43,24 @@ void PlotSaving::savePlots() {
 
     isSaving = true;
 
+    DAQData &data = DAQData::getInstance();
+
+    data.lock();
+
+    if(!data.isPopulated()) {
+
+        data.unlock();
+
+        cout << "Please conduct a run before saving a snapshot." << endl;
+
+        return;
+
+    }
+
+    Plots snapshot(data.plots);
+
+    data.unlock();
+
     cout << "Saving snapshot..." << endl;
 
     makeDirectory("../output");
@@ -76,12 +95,6 @@ void PlotSaving::savePlots() {
 
     // Plot saving should happen in a separate thread, while still updating the
     // progress bar. Otherwise we block the decode thread.
-
-    DAQData &data = DAQData::getInstance();
-
-    data.lock();
-    Plots snapshot(data.plots);
-    data.unlock();
 
     // NOTE: We can speed things up a lot by setting gROOT->SetBatch(), but
     //       this also breaks all the graphics. Useful if saves only happen

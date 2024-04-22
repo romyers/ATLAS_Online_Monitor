@@ -24,7 +24,8 @@
 #include "UpdatePacket.h"
 
 #include "RunView.h"
-#include "RunMenuBar.h"
+#include "Menu.h"
+#include "TabPanel.h"
 
 class DAQManager : public TGMainFrame {
 
@@ -90,7 +91,7 @@ public:
 private:
 
     // VIEW
-    RunMenuBar *menuBar;
+    Menu *menuBar;
 
     TGHorizontal3DLine *menuLine;
 
@@ -107,7 +108,7 @@ private:
 
         // TGVSplitter *splitter;
 
-        TGTab *viewport;
+        TabPanel *viewport;
 
             TGCompositeFrame *baseTab;
 
