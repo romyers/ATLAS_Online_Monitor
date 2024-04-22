@@ -142,8 +142,8 @@ set(monitor_HEADERS
 	GUI/Components/PairTable.h
 	GUI/Components/Menu.h
 	GUI/Components/Submenu.h
-	GUI/Components/TabPanel.h
 	GUI/Components/ProgressBar.h
+	GUI/Tabs/TabPanel.h
 	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
 	GUI/Tabs/GraphPlotter.h
@@ -180,8 +180,8 @@ set(monitor_SOURCES
 	GUI/Components/PairTable.cpp
 	GUI/Components/Menu.cpp
 	GUI/Components/Submenu.cpp
-	GUI/Components/TabPanel.cpp
 	GUI/Components/ProgressBar.cpp
+	GUI/Tabs/TabPanel.cpp
 	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp
 	GUI/Tabs/GraphPlotter.cpp

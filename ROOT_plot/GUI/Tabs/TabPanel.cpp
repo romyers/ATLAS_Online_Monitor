@@ -3,9 +3,9 @@
 // TODO: Try to get rid of this dependency?
 #include "DAQMonitor/DataModel/DAQData.h"
 
-#include "../Tabs/ErrorView.h"
-#include "../Tabs/GraphPlotter.h"
-#include "../Tabs/HistogramPlotter.h"
+#include "ErrorView.h"
+#include "GraphPlotter.h"
+#include "HistogramPlotter.h"
 
 using namespace std;
 

@@ -15,8 +15,8 @@
 #include "TGTab.h"
 #include "TGLabel.h"
 
-#include "Submenu.h"
-#include "../Tabs/UITab.h"
+#include "../Components/Submenu.h"
+#include "UITab.h"
 
 class TabPanel : public TGTab {
 

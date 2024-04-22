@@ -25,7 +25,8 @@
 
 #include "RunView.h"
 #include "Menu.h"
-#include "TabPanel.h"
+
+#include "../Tabs/TabPanel.h"
 
 class DAQManager : public TGMainFrame {
 
