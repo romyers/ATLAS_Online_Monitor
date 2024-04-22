@@ -27,7 +27,7 @@ string getColor(const ErrorData &error);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-ErrorView::ErrorView(const TGWindow *p) : TGCompositeFrame(p) {
+ErrorView::ErrorView(const TGWindow *p) : UITab(p) {
 
 	errorPanel = new TGHtml(this, 800, 600);
 	AddFrame(errorPanel, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
@@ -39,13 +39,11 @@ ErrorView::ErrorView(const TGWindow *p) : TGCompositeFrame(p) {
     
 	update();
 
-	makeConnections();
-
 }
 
 ErrorView::~ErrorView() {
 
-	breakConnections();
+	teardown();
 
 }
 
@@ -111,18 +109,6 @@ void ErrorView::update() {
 	cout << errorPanel->GetScrollPosition().fX << endl;
 	cout << errorPanel->GetScrollPosition().fY << endl;
 	*/
-
-}
-
-void ErrorView::makeConnections() {
-
-	UISignalBus::getInstance().Connect("onUpdate()", "ErrorView", this, "update()");
-
-}
-
-void ErrorView::breakConnections() {
-
-	UISignalBus::getInstance().Disconnect("onUpdate()", this, "update()");
 
 }
 

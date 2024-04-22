@@ -122,14 +122,15 @@
 
 ## 2024-04-19
 
-## Highlights
+## Summary
 
-- Integration with Kevin's sMDTreco library is complete.
+- Completed integration with Kevin's sMDTreco library.
 
 ## Added
 
 - Phase2Decode_Standalone now has a progress bar.
 - There is now a text field in the GUI that can be used to set the conf file.
+- UI tabs are now based on a UITab class.
 
 ## Removed
 

@@ -143,6 +143,7 @@ set(monitor_HEADERS
 	GUI/Components/RunMenuBar.h
 	GUI/Components/TabSelector.h
 	GUI/Components/ProgressBar.h
+	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
 	GUI/Tabs/GraphPlotter.h
 	GUI/Tabs/HistogramPlotter.h
@@ -179,6 +180,7 @@ set(monitor_SOURCES
 	GUI/Components/RunMenuBar.cpp
 	GUI/Components/TabSelector.cpp
 	GUI/Components/ProgressBar.cpp
+	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp
 	GUI/Tabs/GraphPlotter.cpp
 	GUI/Tabs/HistogramPlotter.cpp

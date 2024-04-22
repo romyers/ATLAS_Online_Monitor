@@ -11,15 +11,17 @@
 
 #include "TGHtml.h"
 
+#include "UITab.h"
+
 #include "GUI/Components/PairTable.h"
 
-class ErrorView : public TGCompositeFrame {
+class ErrorView : public UITab {
 
 public:
 
 	ErrorView(const TGWindow *p);
 
-	~ErrorView();
+	virtual ~ErrorView();
 
 	void update();
 

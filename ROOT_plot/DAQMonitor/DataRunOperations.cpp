@@ -170,6 +170,8 @@ void DataRun::startRun() {
 
     }
 
+    cout << endl;
+
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -212,6 +214,8 @@ void DataRun::startRun() {
     }
 
     data.unlock();
+
+    cout << "Conf file: " << state.persistentState.confFilename << endl;
 
     // NOTE: Following the legacy code, runN is in YYYYMMDD format and does
     //       not include hours/minutes/seconds
@@ -305,6 +309,7 @@ void DataRun::startRun() {
 
         MonitorHooks::finishedRun(data);
 
+        cout << endl;
         cout << "Run finished!" << endl;
 
         // TODO: Yet another hard-to-find place we do this.

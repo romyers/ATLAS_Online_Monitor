@@ -6,22 +6,12 @@ using namespace std;
 
 void PlotWindow::teardown() {
 
-	breakConnections();
+	UITab::teardown();
 
 	delete canvas;
 	canvas = nullptr;
 
 }
-
-/*
-void PlotWindow::CloseWindow() {
-
-	breakConnections();
-
-	TGMainFrame::CloseWindow();
-
-}
-*/
 
 PlotWindow::PlotWindow(
 	const TGWindow *p, 
@@ -30,7 +20,7 @@ PlotWindow::PlotWindow(
 	int w, 
 	int h,
 	int rows
-) : TGCompositeFrame(p) {
+) : UITab(p) {
 
 	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);
 	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX));
@@ -47,30 +37,5 @@ PlotWindow::PlotWindow(
 	MapSubwindows();
 	Resize(GetDefaultSize());
 	MapWindow();
-
-}
-
-PlotWindow::~PlotWindow() {
-
-}
-
-void PlotWindow::update() {
-
-}
-
-void PlotWindow::makeConnections() {
-
-	UISignalBus::getInstance().Connect(
-		"onUpdate()", 
-		"GraphPlotter", 
-		this, 
-		"update()"
-	);
-
-}
-
-void PlotWindow::breakConnections() {
-
-	UISignalBus::getInstance().Disconnect("onUpdate()", this, "update()");
 
 }

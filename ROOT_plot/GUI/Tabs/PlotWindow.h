@@ -14,7 +14,9 @@
 #include "TCanvas.h"
 #include "TRootEmbeddedCanvas.h"
 
-class PlotWindow : public TGCompositeFrame {
+#include "UITab.h"
+
+class PlotWindow : public UITab {
 
 public:
 
@@ -27,21 +29,12 @@ public:
 		int rows = 1
 	);
 
-	~PlotWindow();
-
-	void teardown();
-
-	virtual void update();
+	virtual void teardown();
 
 protected:
 
 	// VIEW
 
 	TRootEmbeddedCanvas *canvas;
-
-	// CONNECTIONS
-
-	void makeConnections ();
-	void breakConnections();
 
 };
