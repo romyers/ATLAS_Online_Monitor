@@ -10,6 +10,12 @@ UITab::UITab(const TGWindow *p) : TGCompositeFrame(p) {
 
 }
 
+UITab::~UITab() {
+
+	teardown();
+
+}
+
 void UITab::teardown() {
 
 	breakConnections();

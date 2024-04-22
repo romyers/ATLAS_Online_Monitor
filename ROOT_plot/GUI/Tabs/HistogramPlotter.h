@@ -29,7 +29,7 @@ public:
 		int rows
 	);
 
-	~HistogramPlotter();
+	virtual ~HistogramPlotter();
 
 	virtual void update() override;
 

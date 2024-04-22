@@ -43,8 +43,6 @@ ErrorView::ErrorView(const TGWindow *p) : UITab(p) {
 
 ErrorView::~ErrorView() {
 
-	teardown();
-
 }
 
 void ErrorView::update() {

@@ -108,6 +108,8 @@
 - Plot saving error messages should show as popup dialogs to the user.
 - Consider switching to a functional GUI framework, like the new menu bar
   and tab system but across the board.
+- Make sure tabs get destroyed when they're closed. Check the storeRemoved
+  parameter in RemoveTab(), and consider deleting explicitly.
 
 ## FIXME
 
@@ -127,12 +129,13 @@
 
 ## Summary
 
-- Began work on tab framework rework.
+- Tab and menubar system reworks.
 
 ## Added
 
 - Menu system rework. The menu bar now uses a functional pattern, where new
   menu items are associated with handler functions.
+- Tab system rework.
 
 ## Fixed
 

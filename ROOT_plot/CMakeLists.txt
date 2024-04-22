@@ -143,7 +143,6 @@ set(monitor_HEADERS
 	GUI/Components/Menu.h
 	GUI/Components/Submenu.h
 	GUI/Components/TabPanel.h
-	GUI/Components/TabSelector.h
 	GUI/Components/ProgressBar.h
 	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
@@ -182,7 +181,6 @@ set(monitor_SOURCES
 	GUI/Components/Menu.cpp
 	GUI/Components/Submenu.cpp
 	GUI/Components/TabPanel.cpp
-	GUI/Components/TabSelector.cpp
 	GUI/Components/ProgressBar.cpp
 	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp

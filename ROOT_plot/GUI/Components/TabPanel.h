@@ -10,11 +10,13 @@
 
 #pragma once
 
+#include <string>
+
 #include "TGTab.h"
-#include "TGFrame.h"
 #include "TGLabel.h"
 
 #include "Submenu.h"
+#include "../Tabs/UITab.h"
 
 class TabPanel : public TGTab {
 
@@ -30,11 +32,23 @@ public:
 	 */
 	void AttachToMenu(Submenu *tabMenu);
 
+	/**
+	 * Internal use only. Signal handler.
+	 */
+	void handleCloseTab(int id);
+
+	/**
+	 * Internal use only.
+	 */
+	void makeConnections();
+
 private:
 
 	// A landing page opened when the program starts
 	TGCompositeFrame *baseTab;
 
 		TGLabel *baseLabel;
+
+	void buildTab(const std::string &title, UITab *tab);
 
 };
