@@ -169,6 +169,7 @@
 
 - Fixed issue where pcap headers were not found if not present in usr/include,
   even if FindPCAP.cmake successfully found pcap.
+- Some Plot members are not copied in the copy constructor.
 
 -------------------------------------------------------------------------------
 
@@ -184,8 +185,8 @@
 ## Summary
 
 - Started event display integration.
-    - Residuals Display ...COMPLETE
-    - Efficiency Display...PENDING
+    - Residuals Display ...COMPLETE?
+    - Efficiency Display...COMPLETE?
     - Event Display     ...PENDING
 
 ## Added
@@ -197,6 +198,7 @@
 - Added hit clustering to EventDecoding::processEvents().
 - EventDecoding::processEvents() now sets Event::SetPassCheck() with the result
   of recoUtil::CheckEvent().
+- Populated efficiency plots in Plots::binEvents().
 
 ## Changed
 
