@@ -53,6 +53,7 @@ set(recoObjs_SOURCES
 )
 
 set(p2Objs_HEADERS 
+	src/EventDisplay.h
 	MuonReco/RecoObject.h
 	MuonReco/RecoUtility.h
 	MuonReco/IOUtility.h
@@ -77,10 +78,10 @@ set(p2Objs_HEADERS
 	MuonReco/Event.h
 	MuonReco/Track.h
 	MuonReco/Geometry.h
-	MuonReco/EventDisplay.h
 )
 
 set(p2Objs_SOURCES
+	src/EventDisplay.cxx
 	src/reco/RecoUtility.cxx
 	src/reco/IOUtility.cxx
 	src/reco/EventID.cxx
@@ -102,7 +103,6 @@ set(p2Objs_SOURCES
 	src/reco/Event.cxx
 	src/reco/Track.cxx
 	src/reco/Geometry.cxx
-	src/reco/EventDisplay.cxx
 )
 
 set(p2Core_HEADERS
