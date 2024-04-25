@@ -25,6 +25,7 @@ void DAQData::unlock() const { dataLock.unlock(); }
 void DAQData::clear () {
 
     plots.clear();
+    eventDisplay.Clear();
 
     totalEventCount    = 0;
     nonemptyEventCount = 0;
