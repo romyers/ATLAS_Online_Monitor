@@ -33,6 +33,8 @@ struct DAQData {
     // Excludes empty events.
     std::vector<MuonReco::Event> newEvents;
 
+    std::vector<MuonReco::Event> eventDisplayBuffer;
+
     // A struct of histograms containing aggregate event data. See
     // src/DataModel/Plots.cpp.
     Plots plots;
@@ -67,6 +69,9 @@ struct DAQData {
     void lock  () const; // Locks an internal mutex
     void unlock() const; // Unlocks an internal mutex
 
+    void binEvent     (MuonReco::Event &e  );
+    void updateHitRate(int total_events    );
+
     /**
      * Clears all data stored in the DAQData. Clear is called at the
      * beginning of each run to clear any latent data from the last run.
@@ -85,5 +90,8 @@ private:
     DAQData();
 
     mutable std::mutex dataLock;
+
+    std::vector<std::vector<double>> nHits ;
+    std::vector<std::vector<double>> nTotal;
 
 };
