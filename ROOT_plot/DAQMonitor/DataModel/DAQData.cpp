@@ -24,16 +24,16 @@ void DAQData::unlock() const { dataLock.unlock(); }
 
 void DAQData::clear () {
 
-    processedEvents.clear();
     plots.clear();
 
-    totalEventCount = 0;
-    packetCount     = 0;
+    totalEventCount    = 0;
+    nonemptyEventCount = 0;
+    packetCount        = 0;
 
-    lostPackets     = 0;
+    lostPackets        = 0;
 
-    droppedSignals  = 0;
-    droppedEvents   = 0;
+    droppedSignals     = 0;
+    droppedEvents      = 0;
 
 }
 

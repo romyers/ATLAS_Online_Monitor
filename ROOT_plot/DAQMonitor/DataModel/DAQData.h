@@ -25,10 +25,6 @@
 
 struct DAQData {
 
-    // A vector of fully processed and populated events, with hit finding
-    // already performed. Excludes empty events.
-    std::vector<MuonReco::Event> processedEvents;
-
     // A vector of the fully processed and populated events decoded in the
     // last decode iteration, with hit finding already performed.
     // Excludes empty events.
@@ -42,13 +38,14 @@ struct DAQData {
     MuonReco::TimeCorrection tc      ;
     MuonReco::RecoUtility    recoUtil;
 
-    int totalEventCount = 0;
-    int packetCount     = 0;
+    int totalEventCount    = 0;
+    int nonemptyEventCount = 0;
+    int packetCount        = 0;
 
-    int lostPackets     = 0;
+    int lostPackets        = 0;
 
-    int droppedSignals  = 0;
-    int droppedEvents   = 0;
+    int droppedSignals     = 0;
+    int droppedEvents      = 0;
 
     /**
      * Checks if the DAQData has any events in it at all.

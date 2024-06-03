@@ -229,17 +229,17 @@ void SigHandlers::handleDataUpdate() {
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
 	data.lock();
-	packet.packetCount     = data.packetCount                                  ;
-	packet.totalEventCount = data.totalEventCount                              ;
-	packet.emptyEventCount = data.totalEventCount - data.processedEvents.size();
-	packet.lostPackets     = data.lostPackets                                  ;
-	packet.droppedSignals  = data.droppedSignals                               ;
-	packet.droppedEvents   = data.droppedEvents                                ;
+	packet.packetCount     = data.packetCount                              ;
+	packet.totalEventCount = data.totalEventCount                          ;
+	packet.emptyEventCount = data.totalEventCount - data.nonemptyEventCount;
+	packet.lostPackets     = data.lostPackets                              ;
+	packet.droppedSignals  = data.droppedSignals                           ;
+	packet.droppedEvents   = data.droppedEvents                            ;
 	data.unlock();
 
-	packet.errorCount      = logger.countErrors(EMPTY_TYPE    , ERROR  )       ;
-	packet.decodeError     = logger.countErrors("tdcDecodeErr", ERROR  )       ;
-	packet.warningCount    = logger.countErrors(EMPTY_TYPE    , WARNING)       ;
+	packet.errorCount      = logger.countErrors(EMPTY_TYPE    , ERROR  )   ;
+	packet.decodeError     = logger.countErrors("tdcDecodeErr", ERROR  )   ;
+	packet.warningCount    = logger.countErrors(EMPTY_TYPE    , WARNING)   ;
 
 	State::DAQState state = State::DAQState::getState();
 	if(state.tempState.runLabel != "") {
