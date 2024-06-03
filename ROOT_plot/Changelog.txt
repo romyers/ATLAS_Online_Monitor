@@ -124,6 +124,8 @@
   macros to Event and/or RecoObject. The LinkDef then needs to deal with the
   class and namespace.
 - Continue autoplaying events after the run has stopped.
+- Change ROOT_PLOT folder to 'src'.
+- Muon track display code is very very slow when decoding data from a file.
 
 ## FIXME
 
@@ -147,6 +149,8 @@
 - Make an error message pop up for exceptions thrown in DataRunOperations instead
   of just crashing the program.
 - Set up ROOT and libpcap in the setup scripts?
+- Update README for muon_track_display branch.
+- Change ROOT_PLOT folder to 'src'.
 
 -------------------------------------------------------------------------------
 
@@ -161,6 +165,8 @@
 
 - Added .gitignore items for extraneous vivado and IDE files.
 - Marked plot saving as experimental.
+- Reduced maximum number of events decoded each decode loop to return 
+  preliminary data faster when reading data from file.
 
 -------------------------------------------------------------------------------
 

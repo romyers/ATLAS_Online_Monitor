@@ -5,6 +5,9 @@
 #include "EventDecoding.h"
 #include "SignalDecoding.h"
 
+// TODO: DEBUG
+#include <iostream>
+
 using namespace std;
 using namespace MuonReco;
 
@@ -66,7 +69,7 @@ DecodeData Decoder::decodeStream(
 			signalBuffer.push_back(sig);
 
 		} else {
-
+            
 			cerr << "Dropped signal" << endl;
 			++result.droppedSignals;
 
