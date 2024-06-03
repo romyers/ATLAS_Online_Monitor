@@ -4,6 +4,16 @@ This application provides a GUI interface for monitoring miniDAQ sMDT and MDT ch
 
 ![An image depicting the online monitor in action.](img/DAQManager_Interface.png)
 
+## Table of Contents
+
+- [Features](#features)
+- [Setup](#setup)
+- [Usage](#usage)
+  - [Starting a Data Run](#starting-a-data-run)
+  - [Monitoring a Run](#monitoring-a-run)
+  - [Recording Data](#recording-data)
+- [Common Problems](#common-problems)
+
 ## Features
 
 Planned features include:

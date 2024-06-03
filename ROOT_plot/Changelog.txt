@@ -140,6 +140,7 @@
 - Use max event count and max pass events from the conf file.
 - Make an error message pop up for exceptions thrown in DataRunOperations instead
   of just crashing the program.
+- Set up ROOT and libpcap in the setup scripts?
 
 -------------------------------------------------------------------------------
 
