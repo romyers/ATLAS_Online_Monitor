@@ -181,6 +181,10 @@
 - Fixed a missing include in the standalone decoder that sometimes caused gRoot
   to be undefined at compile time.
 
+-------------------------------------------------------------------------------
+
+## 2024-04-26
+
 ## Summary
 
 - Working on cleaning up event display tracks. Tracked the issue to failure to
