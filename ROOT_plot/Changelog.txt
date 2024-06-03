@@ -110,6 +110,14 @@
   and tab system but across the board.
 - Make sure tabs get destroyed when they're closed. Check the storeRemoved
   parameter in RemoveTab(), and consider deleting explicitly.
+- Deprecate the 'DAQ' folder.
+- Move the build folder up to the top level.
+- Is there a way we can automatically detect the miniDAQ via pcap, so that the
+  user doesn't have to find the miniDAQ's ethernet device?
+- Consider how pathing should work when opening files from the GUI.
+    -- A file browser would be nice.
+- Try to eliminate the need to source the root environment setup script every
+  time we run the program.
 
 ## FIXME
 
@@ -122,8 +130,43 @@
     - We can have a field for setting it in the Settings panel.
 - Should Geometry's run number be coming from the conf file or system time?
 - Should we be reading/writing the time correction?
+- When running from file, DAQManager still tries to e.g. save the noise rate.
+- Let number of plots shown in plot windows match the actual number of tubes
+  or channels.
+- Make sure noise rate csv saving sets up the directory correctly.
+- Make data saving locations configurable, at least in the settings.txt file.
+- IMPORTANT: The settings.txt file is ending up in the build directory. Decide
+             if this is okay or if we want it in ROOT_PLOT
+- Use max event count and max pass events from the conf file.
+- Make an error message pop up for exceptions thrown in DataRunOperations instead
+  of just crashing the program.
 
 -------------------------------------------------------------------------------
+
+## 2024-06-03
+
+## Changed
+
+- Added .gitignore items for extraneous vivado and IDE files.
+- Marked plot saving as experimental.
+
+-------------------------------------------------------------------------------
+
+## 2024-05-29
+
+## Fixed
+
+- Fixed issue where pcap headers were not found if not present in usr/include,
+  even if FindPCAP.cmake successfully found pcap.
+
+-------------------------------------------------------------------------------
+
+## 2024-05-21
+
+## Fixed
+
+- Fixed a missing include in the standalone decoder that sometimes caused gRoot
+  to be undefined at compile time.
 
 ## 2024-04-22
 

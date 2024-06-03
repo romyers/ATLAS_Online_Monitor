@@ -4,3 +4,5 @@ data
 build
 CMakeFiles
 noise/module0_miniDAQ
+vivado_lab*
+StartMonitor.sublime-workspace

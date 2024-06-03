@@ -88,7 +88,7 @@ DAQManager::DAQManager(
 
     Submenu *fileMenu = menuBar->AddSubmenu("&File");
 
-        fileMenu->AddEntry("Save Plots", [](int id) {
+        fileMenu->AddEntry("Save Plots [Experimental]", [](int id) {
 
             PlotSaving::savePlots();
 

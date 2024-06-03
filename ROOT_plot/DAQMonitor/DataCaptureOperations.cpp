@@ -65,7 +65,20 @@ void DataCapture::startDataCapture(
     PCapSessionHandler::reset();
 
     PCapSessionHandler sessionHandler;
-    initializePCapSessionHandler(sessionHandler);
+
+    try{
+
+        initializePCapSessionHandler(sessionHandler);
+
+    } catch(UIException &e) {
+
+        ErrorLogger::getInstance().logError(e.what(), "dataCapture", FATAL);
+
+        // TODO: Abort run and popup an error message in this case
+
+        throw e;
+
+    }
 
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
