@@ -145,6 +145,11 @@
 
 ## 2024-06-03
 
+## Added
+
+- Added setup scripts and a README. The setup scripts should now set permissions
+  for ethernet capture, eliminating the need to run as root.
+
 ## Changed
 
 - Added .gitignore items for extraneous vivado and IDE files.
