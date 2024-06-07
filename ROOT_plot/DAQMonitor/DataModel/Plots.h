@@ -58,6 +58,7 @@ struct Plots {
 
 	void binEvent     (const MuonReco::Event &e);
 	void updateHitRate(int total_events    );
+    void initialize   (                    );
 	void clear        (                    );
 
 private:

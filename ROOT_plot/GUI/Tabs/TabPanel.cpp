@@ -9,6 +9,18 @@
 
 using namespace std;
 
+/*
+We need to:
+  -- make view menu reflect configured plots structure sizes
+       >> reconstruct view submenu every time the menu size changes? What if 
+          it's already open?
+  -- handle open tabs that are for TDCs larger than the current size of the
+     plots lists.
+       >> Just close the tabs?
+  -- Remove initialization from Plots/DAQData constructors.
+  -- Figure out what's causing segfaults in the muon_track_display branch.
+*/
+
 // TODO: Allow setting tab frame sizes in one place. E.g. in the constructor
 
 TabPanel::TabPanel(const TGWindow *p) 
@@ -53,18 +65,12 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 
 			if(!GetTabTab("ADC Overview")) {
 
-				vector<TH1*> plotList(
-					data.plots.p_tdc_adc_time.begin(),
-					data.plots.p_tdc_adc_time.end()
-				);
-
 				HistogramPlotter *adcOverview = new HistogramPlotter(
 					this,
-					plotList,
+					data.plots.p_tdc_adc_time,
 					"ADC Plots",
 					1250,
-					850,
-					4
+					850
 				);
 
 				buildTab("ADC Overview", adcOverview);
@@ -90,18 +96,12 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 
 					if(!GetTabTab(plotTitle.data())) {
 
-						vector<TH1*> plotList(
-							data.plots.p_adc_time[i].begin(),
-							data.plots.p_adc_time[i].end()
-						);
-
 						HistogramPlotter *adcChannelPlot = new HistogramPlotter(
 							this,
-							plotList,
+							data.plots.p_adc_time[i],
 							plotTitle,
 							1250,
-							850,
-							4
+							850
 						);
 
 						buildTab(plotTitle, adcChannelPlot);
@@ -126,18 +126,12 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 
 			if(!GetTabTab("TDC Overview")) {
 
-				vector<TH1*> plotList(
-					data.plots.p_tdc_tdc_time_corrected.begin(),
-					data.plots.p_tdc_tdc_time_corrected.end()
-				);
-
 				HistogramPlotter *tdcOverview = new HistogramPlotter(
 					this,
-					plotList,
+					data.plots.p_tdc_tdc_time_corrected,
 					"TDC Plots",
 					1250,
-					850,
-					4
+					850
 				);
 
 				buildTab("TDC Overview", tdcOverview);
@@ -163,18 +157,12 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 
 					if(!GetTabTab(plotTitle.data())) {
 
-						vector<TH1*> plotList(
-							data.plots.p_tdc_time_corrected[i].begin(),
-							data.plots.p_tdc_time_corrected[i].end()
-						);
-
 						HistogramPlotter *tdcChannelPlot = new HistogramPlotter(
 							this,
-							plotList,
+							data.plots.p_tdc_time_corrected[i],
 							plotTitle,
 							1250,
-							850,
-							4
+							850
 						);
 
 						buildTab(plotTitle, tdcChannelPlot);
@@ -204,8 +192,7 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 				data.plots.p_tdc_hit_rate_graph,
 				"Noise Rate Display",
 				1250,
-				850,
-				4
+				850
 			);
 
 			buildTab("Noise Rate", noiseDisplay);

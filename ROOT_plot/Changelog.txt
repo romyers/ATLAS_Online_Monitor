@@ -144,6 +144,27 @@
 
 -------------------------------------------------------------------------------
 
+## 2024-06-06
+
+## Changed
+
+- Separated construction and initialization of DAQData and Plots.
+- Plots::Clear() now completely deletes all Plots data. Pointers contained
+  within plots are now invalidated by clear() and initialize() calls.
+- Plot vectors are now stored by reference in plot windows.
+- Changes in the sizes of Plots structures are now handled by plot windows.
+- The number of plots in the noise and ADC/TDC spectra displays is now set 
+  according to the geometry configuration for each run.
+
+## Fixed
+
+- Fixed issue where an outdated, unconfigured version of Geometry was used to
+  construct Plots structures. This would have caused out-of-bounds errors 
+  should values like MAX_TDC_CHANNELS have been larger in the configured
+  geometry than the default values.
+
+-------------------------------------------------------------------------------
+
 ## 2024-06-03
 
 ## Added

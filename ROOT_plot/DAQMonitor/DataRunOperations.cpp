@@ -189,16 +189,11 @@ void DataRun::startRun() {
     //            from geo, so be careful not to change geo while the decode 
     //            loop is running.
 
-    ConfigParser cp(CONF_PATH + state.persistentState.confFilename);
-
     data.lock();
 
     try{
 
-        data.geo.Configure(cp.items("Geometry"));
-        data.tc = TimeCorrection(cp);
-        // data.tc.Read();
-        data.recoUtil = RecoUtility(cp.items("RecoUtility"));
+        data.initialize(CONF_PATH + state.persistentState.confFilename);
 
     } catch(int e) {
 
@@ -235,12 +230,6 @@ void DataRun::startRun() {
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    
-    // Clear the DAQData of any data from a previous run
-
-    data.lock  ();
-    data.clear ();
-    data.unlock();
 
     runStarted = true;
     state.tempState.runLabel = runLabel;

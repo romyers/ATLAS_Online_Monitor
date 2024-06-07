@@ -25,9 +25,10 @@ public:
 		int canvasPanels = 1,
 		const std::string &title = "", 
 		int w = 1, 
-		int h = 1,
-		int rows = 1
+		int h = 1
 	);
+
+    virtual void relayout(int canvasPanels);
 
 	virtual void teardown();
 
@@ -36,5 +37,11 @@ protected:
 	// VIEW
 
 	TRootEmbeddedCanvas *canvas;
+
+private:
+
+    // DATA
+
+    int panelCount;
 
 };

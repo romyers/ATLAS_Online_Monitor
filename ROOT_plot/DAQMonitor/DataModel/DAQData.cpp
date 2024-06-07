@@ -1,5 +1,7 @@
 #include "DAQData.h"
 
+#include "MuonReco/ConfigParser.h"
+
 using namespace std;
 using namespace MuonReco;
 
@@ -21,6 +23,26 @@ DAQData &DAQData::getInstance() {
 
 void DAQData::lock  () const { dataLock.lock  (); }
 void DAQData::unlock() const { dataLock.unlock(); }
+
+void DAQData::initialize(
+    const string &confFile
+) {
+
+    clear();
+
+    ConfigParser cp(confFile);
+
+    geo.Configure(cp.items("Geometry"));
+
+    // Plots must be initialized before rtp, but after geo.
+    plots.initialize();
+
+    tc = TimeCorrection(cp);
+    // tc.Read();
+
+    recoUtil = RecoUtility(cp.items("RecoUtility"));
+
+}
 
 void DAQData::clear () {
 

@@ -63,7 +63,7 @@ void Decode::startDecoding(
     UISignalBus::getInstance().onUpdate();
     UI::UILock.unlock();
 
-    Decoder decoder(300000);
+    Decoder decoder(10000);
 
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
@@ -196,7 +196,7 @@ void Decode::startDecoding(
 
         // TODO: This thread logic should be at a higher level....
         this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
-
+        
     }
 
     cout << "Suspended data decoding." << endl; // TODO: mutex

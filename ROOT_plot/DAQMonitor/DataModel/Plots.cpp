@@ -65,6 +65,14 @@ Plots::Plots(const Plots &other) : geo(other.geo) {
 
 Plots::Plots(Geometry &geo) : geo(geo) {
 
+    initialize();
+
+}
+
+void Plots::initialize() {
+
+    clear();
+    
 	TString plot_name_buffer;
 
 	p_leading_time  = new TH1F("leading time spectrum" , "leading time spectrum", 100, 0, 1000);
@@ -308,75 +316,164 @@ void Plots::binEvent(const Event &e) {
 
 void Plots::clear() {
 
-	// TODO: We can also delete and remake everything to reset.
+    // TODO: Use ROOT versions of delete?
 
-	p_leading_time ->Reset();
-	p_trailing_time->Reset();
+    if(p_leading_time)  {
+        delete p_leading_time;
+        p_leading_time = nullptr;
+    }
 
-	for(TH1F *h : p_hits_distribution) { h->Reset(); }
+    if(p_trailing_time) {
+        delete p_trailing_time;
+        p_trailing_time = nullptr;
+    }
+
+	for(TH1F *h : p_hits_distribution) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_hits_distribution.clear();
 
 	for(vector<TH1F*> &v : p_tdc_time) {
 
-		for(TH1F *h : v) h->Reset();
+		for(TH1F *h : v) {
+            if(h) {
+                delete h;
+                h = nullptr;
+            }
+        }
 
 	}
+    p_tdc_time.clear();
 
 	for(vector<TH1F*> &v : p_tdc_time_original) {
 
-		for(TH1F *h : v) h->Reset();
+		for(TH1F *h : v) {
+            if(h) {
+                delete h;
+                h = nullptr;
+            }
+        }
 
 	}
+    p_tdc_time_original.clear();
 
 	for(vector<TH1F*> &v : p_tdc_time_corrected) {
 
-		for(TH1F *h : v) h->Reset();
+		for(TH1F *h : v) {
+            if(h) {
+                delete h;
+                h = nullptr;
+            }
+        } 
 
 	}
+    p_tdc_time_corrected.clear();
 
 	for(vector<TH1F*> &v : p_tdc_time_selected) {
 
-		for(TH1F *h : v) h->Reset();
+		for(TH1F *h : v) {
+            if(h) {
+                delete h;
+                h = nullptr;
+            }
+        }
 
 	}
+    p_tdc_time_selected.clear();
 
 	for(vector<TH1F*> &v : p_adc_time) {
 
-		for(TH1F *h : v) h->Reset();
+		for(TH1F *h : v) {
+            if(h) {
+                delete h;
+                h = nullptr;
+            }
+        }
 
 	}
+    p_adc_time.clear();
 
 
-	for(TH1F *h : p_tdc_tdc_time_original ) { h->Reset(); }
-	for(TH1F *h : p_tdc_tdc_time_corrected) { h->Reset(); }
-	for(TH1F *h : p_tdc_tdc_time_selected ) { h->Reset(); }
-	for(TH1F *h : p_tdc_adc_time          ) { h->Reset(); }
-	for(TH1F *h : p_tdc_channel           ) { h->Reset(); }
+	for(TH1F *h : p_tdc_tdc_time_original) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_tdc_tdc_time_original.clear();
 
-	for(TH2F *h : p_adc_vs_tdc            ) { h->Reset(); }
+	for(TH1F *h : p_tdc_tdc_time_corrected) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_tdc_tdc_time_corrected.clear();
+
+	for(TH1F *h : p_tdc_tdc_time_selected) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_tdc_tdc_time_selected.clear();
+
+	for(TH1F *h : p_tdc_adc_time) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_tdc_adc_time.clear();
+
+	for(TH1F *h : p_tdc_channel) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_tdc_channel.clear();
+
+	for(TH2F *h : p_adc_vs_tdc) { 
+        if(h) {
+            delete h;
+            h = nullptr;
+        }
+    }
+    p_adc_vs_tdc.clear();
 
 	for(vector<double> &vec : p_tdc_hit_rate) {
 
 		vec.clear();
-		vec.resize(Geometry::MAX_TDC_CHANNEL);
 
 	}
 
 	for(TGraph *graph : p_tdc_hit_rate_graph) {
 
-		for(int i = 0; i < Geometry::MAX_TDC_CHANNEL; ++i) {
-
-			graph->SetPoint(i, i, 0.);
-			double tmp_yrange = graph->GetHistogram()->GetMaximum();
-			graph->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
-			graph->GetHistogram()->SetMinimum(0);
-			graph->GetXaxis()->SetLimits(-0.5, static_cast<double>(Geometry::MAX_TDC_CHANNEL) - 0.5);
-
-		}
+        if(graph) {
+            delete graph;
+            graph = nullptr;
+        }
 
 	}
+    p_tdc_hit_rate_graph.clear();
 
-	hitByLC    ->Reset();
-	badHitByLC ->Reset();
-	goodHitByLC->Reset();
+    if(hitByLC) {
+        delete hitByLC;
+        hitByLC = nullptr;
+    }
+
+    if(badHitByLC) {
+        delete badHitByLC;
+        badHitByLC = nullptr;
+    }
+
+    if(goodHitByLC) {
+        delete goodHitByLC;
+        goodHitByLC = nullptr;
+    }
 
 }

@@ -62,6 +62,13 @@ struct DAQData {
     void unlock() const; // Unlocks an internal mutex
 
     /**
+     * Clears and initializes the DAQData. 
+     */
+    void initialize(
+        const std::string &confFile
+    );
+
+    /**
      * Clears all data stored in the DAQData. Clear is called at the
      * beginning of each run to clear any latent data from the last run.
      */

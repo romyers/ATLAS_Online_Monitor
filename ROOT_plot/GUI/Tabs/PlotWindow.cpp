@@ -16,24 +16,29 @@ PlotWindow::PlotWindow(
 	int canvasPanels,
 	const string &title, 
 	int w, 
-	int h,
-	int rows
-) : UITab(p) {
+	int h
+) : UITab(p), panelCount(canvasPanels) {
 
 	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);
 	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX));
 
-	int count = canvasPanels;
-	int cols = count / rows;
-    if(count % rows != 0) ++cols;
-
-    canvas->GetCanvas()->Divide(cols, rows);
+    canvas->GetCanvas()->DivideSquare(canvasPanels);
 
 	makeConnections();
 
 	SetWindowName(title.data());
-	MapSubwindows();
-	Resize(GetDefaultSize());
-	MapWindow();
+
+}
+
+void PlotWindow::relayout(int canvasPanels) {
+
+    // We only need to redivide the canvas if the number of panels has changed
+    if(panelCount == canvasPanels) return;
+
+    canvas->GetCanvas()->Clear();
+
+    canvas->GetCanvas()->DivideSquare(canvasPanels);
+
+    panelCount = canvasPanels;
 
 }

@@ -22,11 +22,10 @@ public:
 
 	GraphPlotter(
 		const TGWindow *p, 
-		std::vector<TGraph*> graphs, 
+		std::vector<TGraph*> &graphs, 
 		const std::string &title = "", 
 		int w = 1, 
-		int h = 1,
-		int rows = 1
+		int h = 1
 	);
 
 	virtual ~GraphPlotter();
@@ -37,6 +36,6 @@ private:
 
 	// DATA
 
-	std::vector<TGraph*> graphs;
+	std::vector<TGraph*> &graphs;
 
 };

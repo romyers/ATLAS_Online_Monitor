@@ -22,11 +22,10 @@ public:
 
 	HistogramPlotter(
 		const TGWindow *p, 
-		std::vector<TH1*> histograms, 
+		std::vector<TH1F*> &histograms, 
 		const std::string &title, 
 		int w, 
-		int h,
-		int rows
+		int h
 	);
 
 	virtual ~HistogramPlotter();
@@ -37,6 +36,6 @@ private:
 
 	// DATA
 
-	std::vector<TH1*> histograms;
+	std::vector<TH1F*> &histograms;
 
 };

@@ -6,12 +6,11 @@ using namespace std;
 
 GraphPlotter::GraphPlotter(
 	const TGWindow *p, 
-	vector<TGraph*> graphs, 
+	vector<TGraph*> &graphs, 
 	const string &title, 
 	int w, 
-	int h,
-	int rows
-) : PlotWindow(p, graphs.size(), title, w, h, rows), 
+	int h
+) : PlotWindow(p, graphs.size(), title, w, h), 
     graphs(graphs) {
 
     update();
@@ -24,19 +23,17 @@ GraphPlotter::~GraphPlotter() {
 
 void GraphPlotter::update() {
 
+    DAQData &data = DAQData::getInstance();
+
+    data.lock();
+
+    relayout(graphs.size());
+
 	for(int i = 0; i < graphs.size(); ++i) {
 
 		canvas->GetCanvas()->cd(i + 1);
 
-		// TODO: Try to break this dependence on DAQData. It's messy as heck,
-		//       and makes it weird to use the GraphPlotter for anything 
-		//       that's not in DAQData
-
-		DAQData &data = DAQData::getInstance();
-
-		data.lock();
 		graphs[i]->Draw("AB");
-		data.unlock();
 
 		/*
 		TText *xlabel = new TText();
@@ -49,6 +46,8 @@ void GraphPlotter::update() {
 		*/
 
 	}
+
+    data.unlock();
 
 	canvas->GetCanvas()->Update();
 

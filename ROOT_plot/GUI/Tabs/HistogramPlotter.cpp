@@ -8,12 +8,11 @@ using namespace std;
 
 HistogramPlotter::HistogramPlotter(
 	const TGWindow *p, 
-	vector<TH1*> histograms, 
+	vector<TH1F*> &histograms, 
 	const string &title = "", 
 	int w = 1, 
-	int h = 1,
-	int rows = 1
-) : PlotWindow(p, histograms.size(), title, w, h, rows), 
+	int h = 1
+) : PlotWindow(p, histograms.size(), title, w, h), 
     histograms(histograms) {
 
 	update();
@@ -26,6 +25,12 @@ HistogramPlotter::~HistogramPlotter() {
 
 void HistogramPlotter::update() {
 
+    DAQData &data = DAQData::getInstance();
+
+    data.lock();
+
+    relayout(histograms.size());
+
 	for(int i = 0; i < histograms.size(); ++i) {
 
 		canvas->GetCanvas()->cd(i + 1);
@@ -34,12 +39,11 @@ void HistogramPlotter::update() {
 		//       and makes it weird to use the HistogramPlotter for anything 
 		//       that's not in DAQData
 
-		DAQData &data = DAQData::getInstance();
-
-		data.lock();
 		histograms[i]->Draw();
-		data.unlock();
+
 	}
+
+    data.unlock();
 
 	canvas->GetCanvas()->Update();
 
