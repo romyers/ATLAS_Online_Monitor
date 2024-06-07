@@ -65,8 +65,6 @@ Plots::Plots(const Plots &other) : geo(other.geo) {
 
 Plots::Plots(Geometry &geo) : geo(geo) {
 
-    initialize();
-
 }
 
 void Plots::initialize() {
@@ -117,7 +115,7 @@ void Plots::initialize() {
 
 	p_tdc_hit_rate_graph    .reserve(Geometry::MAX_TDC);
 
-	vector<double> p_tdc_hit_rate_x(Geometry::MAX_TDC_CHANNEL);
+    p_tdc_hit_rate_x.resize(Geometry::MAX_TDC_CHANNEL);
 	iota(p_tdc_hit_rate_x.begin(), p_tdc_hit_rate_x.end(), 0.);
 
 	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {

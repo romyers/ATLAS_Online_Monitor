@@ -48,7 +48,6 @@ struct Plots {
 	std::vector<TH1F*>               p_tdc_channel           ;
 
 	std::vector<TH2F*>               p_adc_vs_tdc            ;
-
 	std::vector<std::vector<double>> p_tdc_hit_rate          ;
 	std::vector<TGraph*>             p_tdc_hit_rate_graph    ;
 
@@ -62,6 +61,8 @@ struct Plots {
 	void clear        (                    );
 
 private:
+
+    std::vector<double> p_tdc_hit_rate_x;
 
 	// NOTE: This is configured externally in DataRunOperations. No need to do
 	//       anything with it here. It's just here to be accessible.

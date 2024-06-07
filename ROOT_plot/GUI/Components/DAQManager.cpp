@@ -94,8 +94,6 @@ DAQManager::DAQManager(
 
         });
 
-    Submenu *viewMenu = menuBar->AddSubmenu("&View");
-
     menuLine = new TGHorizontal3DLine(this);
     AddFrame(menuLine, new TGLayoutHints(kLHintsTop | kLHintsExpandX));
 
@@ -125,10 +123,8 @@ DAQManager::DAQManager(
 
         // splitter->SetFrame(leftPanel, true);
 
-        viewport = new TabPanel(mainPanel);
-        mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY));
-
-            viewport->AttachToMenu(viewMenu);
+        viewport = new TabPanel(mainPanel, menuBar);
+        mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY | kLHintsRight));
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -204,6 +200,8 @@ void DAQManager::update(const UpdatePacket &packet) {
     statusTag->SetText(packet.statusTag.data());
 
     statusTag->Resize(statusTag->GetDefaultSize());
+
+    viewport->update();
     
 }
 

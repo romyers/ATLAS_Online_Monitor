@@ -9,22 +9,16 @@
 
 using namespace std;
 
-/*
-We need to:
-  -- make view menu reflect configured plots structure sizes
-       >> reconstruct view submenu every time the menu size changes? What if 
-          it's already open?
-  -- handle open tabs that are for TDCs larger than the current size of the
-     plots lists.
-       >> Just close the tabs?
-  -- Remove initialization from Plots/DAQData constructors.
-  -- Figure out what's causing segfaults in the muon_track_display branch.
-*/
-
 // TODO: Allow setting tab frame sizes in one place. E.g. in the constructor
 
-TabPanel::TabPanel(const TGWindow *p) 
-	: TGTab(p) {
+TabPanel::TabPanel(const TGWindow *p, Menu *menuBar) 
+	: TGTab(p), 
+    tabMenu(nullptr), 
+    adcMenu(nullptr), 
+    tdcMenu(nullptr),
+    adcChannelPlotCount(0),
+    tdcChannelPlotCount(0)
+{
 
     // TODO: Base tab can be expanded into an info panel of some sort -- like a 
     //       readme or like the info screens that pop up sometimes talking about e.g.
@@ -34,6 +28,8 @@ TabPanel::TabPanel(const TGWindow *p)
 
 		baseLabel = new TGLabel(baseTab, "Open tabs from the view menu");
 		baseTab->AddFrame(baseLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
+
+    if(menuBar) AttachToMenu(menuBar);
 
 	makeConnections();
 
@@ -51,7 +47,9 @@ void TabPanel::makeConnections() {
 }
 
 // Add new tabs here
-void TabPanel::AttachToMenu(Submenu *tabMenu) {
+void TabPanel::AttachToMenu(Menu *menuBar) {
+
+    tabMenu = menuBar->AddSubmenu("&View");
 
 	DAQData &data = DAQData::getInstance();
 
@@ -59,7 +57,7 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 	// ADC Tabs
 	///////////////////////////////////////////////////////////////////////////
 
-	Submenu *adcMenu = tabMenu->AddSubmenu("ADC Plots");
+	adcMenu = tabMenu->AddSubmenu("ADC Plots");
 
 		adcMenu->AddEntry("ADC Overview", [this, &data](int id) {
 
@@ -84,43 +82,13 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 
 		adcMenu->AddSeparator();
 
-		for(int i = 0; i < data.plots.p_adc_time.size(); ++i) {
-
-			adcMenu->AddEntry(
-				string("TDC ") + to_string(i),
-				[this, &data, i](int id) {
-
-					string plotTitle = string("TDC ") 
-						+ to_string(i) 
-						+ string(" ADC Channels");
-
-					if(!GetTabTab(plotTitle.data())) {
-
-						HistogramPlotter *adcChannelPlot = new HistogramPlotter(
-							this,
-							data.plots.p_adc_time[i],
-							plotTitle,
-							1250,
-							850
-						);
-
-						buildTab(plotTitle, adcChannelPlot);
-
-					}
-
-					// Switch to the new tab
-					SetTab(plotTitle.data());
-
-				}
-			);
-
-		}
+        // The update loop will add ADC channel plots here
 
 	///////////////////////////////////////////////////////////////////////////
 	// TDC Tabs
 	///////////////////////////////////////////////////////////////////////////
 
-	Submenu *tdcMenu = tabMenu->AddSubmenu("TDC Plots");
+	tdcMenu = tabMenu->AddSubmenu("TDC Plots");
 
 		tdcMenu->AddEntry("TDC Overview", [this, &data](int id) {
 
@@ -145,37 +113,7 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 
 		tdcMenu->AddSeparator();
 
-		for(int i = 0; i < data.plots.p_tdc_time_corrected.size(); ++i) {
-
-			tdcMenu->AddEntry(
-				string("TDC ") + to_string(i),
-				[this, &data, i](int id) {
-
-					string plotTitle = string("TDC ") 
-						+ to_string(i)
-						+ string(" TDC Channels");
-
-					if(!GetTabTab(plotTitle.data())) {
-
-						HistogramPlotter *tdcChannelPlot = new HistogramPlotter(
-							this,
-							data.plots.p_tdc_time_corrected[i],
-							plotTitle,
-							1250,
-							850
-						);
-
-						buildTab(plotTitle, tdcChannelPlot);
-
-					}
-
-					// Switch to the new tab
-					SetTab(plotTitle.data());
-
-				}
-			);
-
-		}
+		// The update loop will add TDC channel plots here
 
 	tabMenu->AddSeparator();
 
@@ -244,6 +182,188 @@ void TabPanel::AttachToMenu(Submenu *tabMenu) {
 		}
 
 	});
+
+}
+
+void TabPanel::update() {
+
+    // We don't need to do anything if there's no attached menu.
+    if(!isAttached()) return;
+
+    bool relayoutNeeded = false;
+
+    DAQData &data = DAQData::getInstance();
+
+    data.lock();
+
+    while(data.plots.p_adc_time.size() > adcChannelPlotCount) {
+
+        int tdc = adcChannelPlotCount;
+
+        // Add missing entries
+        adcMenu->AddEntry(
+            string("TDC ") + to_string(adcChannelPlotCount),
+            [this, &data, tdc](int id) {
+
+                string plotTitle = string("TDC ") 
+                    + to_string(tdc) 
+                    + string(" ADC Channels");
+
+                if(!GetTabTab(plotTitle.data())) {
+
+                    HistogramPlotter *adcChannelPlot = new HistogramPlotter(
+                        this,
+                        data.plots.p_adc_time[tdc],
+                        plotTitle,
+                        1250,
+                        850
+                    );
+
+                    buildTab(plotTitle, adcChannelPlot);
+
+                }
+
+                // Switch to the new tab
+                SetTab(plotTitle.data());
+
+            }
+        );
+
+        ++adcChannelPlotCount;
+
+    }
+
+    while(data.plots.p_adc_time.size() < adcChannelPlotCount) {
+
+        // Remove extra entries and close associated tabs
+
+        int tdc = adcChannelPlotCount - 1;
+
+        adcMenu->removeEntry(string("TDC ") + to_string(tdc));
+
+        string plotTitle = string("TDC ") 
+            + to_string(tdc)
+            + string(" ADC Channels");
+
+        // We need to get the tab index
+
+        int tabIndex = -1;
+        for(int i = 0; i < GetNumberOfTabs(); ++i) {
+
+            if(strcmp(GetTabTab(i)->GetString(), plotTitle.data()) == 0) {
+
+                tabIndex = i;
+                break;
+
+            }
+
+        }
+        
+        if(tabIndex != -1) {
+                
+            TGCompositeFrame *tab = GetTabContainer(tabIndex);
+
+            RemoveTab(tabIndex, kFALSE);
+
+            delete tab;
+
+            relayoutNeeded = true;
+
+        }
+
+        --adcChannelPlotCount;
+
+    }
+
+    while(data.plots.p_tdc_time_corrected.size() > tdcChannelPlotCount) {
+
+        int tdc = tdcChannelPlotCount;
+        
+        // Add missing entries
+        tdcMenu->AddEntry(
+            string("TDC ") + to_string(tdc),
+            [this, &data, tdc](int id) {
+
+                string plotTitle = string("TDC ") 
+                    + to_string(tdc)
+                    + string(" TDC Channels");
+
+                if(!GetTabTab(plotTitle.data())) {
+
+                    HistogramPlotter *tdcChannelPlot = new HistogramPlotter(
+                        this,
+                        data.plots.p_tdc_time_corrected[tdc],
+                        plotTitle,
+                        1250,
+                        850
+                    );
+
+                    buildTab(plotTitle, tdcChannelPlot);
+
+                }
+
+                // Switch to the new tab
+                SetTab(plotTitle.data());
+
+            }
+        );
+
+        ++tdcChannelPlotCount;
+
+    }
+
+    while(data.plots.p_tdc_time_corrected.size() < tdcChannelPlotCount) {
+
+        // Remove extra entries and close associated tabs
+
+        int tdc = tdcChannelPlotCount - 1;
+
+        tdcMenu->removeEntry(string("TDC ") + to_string(tdc));
+
+        string plotTitle = string("TDC ") 
+            + to_string(tdc)
+            + string(" TDC Channels");
+
+        // We need to get the tab index
+
+        int tabIndex = -1;
+        for(int i = 0; i < GetNumberOfTabs(); ++i) {
+
+            if(strcmp(GetTabTab(i)->GetString(), plotTitle.data()) == 0) {
+
+                tabIndex = i;
+                break;
+
+            }
+
+        }
+        
+        if(tabIndex != -1) {
+                
+            TGCompositeFrame *tab = GetTabContainer(tabIndex);
+
+            RemoveTab(tabIndex, kFALSE);
+
+            delete tab;
+
+            relayoutNeeded = true;
+
+        }
+
+        --tdcChannelPlotCount;
+
+    }
+
+    data.unlock();
+
+    if(relayoutNeeded) Layout();
+
+
+}
+
+bool TabPanel::isAttached() {
+
+    return tabMenu != nullptr;
 
 }
 

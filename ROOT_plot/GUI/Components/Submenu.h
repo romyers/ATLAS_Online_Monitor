@@ -69,16 +69,32 @@ public:
 	/**
 	 * Internal use only.
 	 */
-	virtual void handleEntrySelect(Int_t id);
+	virtual void handleEntrySelect(uint64_t id);
 
 	/**
 	 * Internal use only.
 	 */
 	virtual void makeConnections();
 
+    /**
+     * Removes all entries from the menu. Does not affect submenus.
+     * 
+     * NOTE: A better implementation would clear andremove submenus too. At 
+     *       present, this is unnecessary, and it's not obvious how to do it, 
+     *       so I've left it out.
+     */
+    virtual void clear();
+
+    /**
+     * Removes an entry from the menu.
+     * 
+     * @param label The label of the entry to remove.
+     */
+    virtual void removeEntry(const std::string &label);
+
 private:
 
-	std::vector<std::function<void(int)>> entryHandlers;
+    std::map<uint64_t, std::function<void(int)>> entryHandlers;
 
 	std::map<std::string, Submenu*> submenus;
 

@@ -144,6 +144,25 @@
 
 -------------------------------------------------------------------------------
 
+## 2024-06-07
+
+## Changed
+
+- The TabPanel now owns the entire view menu, rather than populating a view menu
+  created by DAQManager.
+- TabPanel::AttachToMenu() was made private, and now takes a Menu instead of a 
+  Submenu.
+- TabPanel now expects to receive the menu it is to be attached to in its
+  constructor.
+- Submenu::Handlers is now a map of uint64_ts to functions rather than a vector
+  of functions. Entry IDs are now generated from a static counter.
+- View menu channel plot options now respond dynamically to the number of TDC
+  channels in the geometry.
+- Plots is now left uninitialized until a run starts. Plot windows show a 
+  waiting message when opened before a run has been started.
+
+-------------------------------------------------------------------------------
+
 ## 2024-06-06
 
 ## Changed
