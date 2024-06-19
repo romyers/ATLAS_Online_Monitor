@@ -104,38 +104,6 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 	// ID that is not considered active.
 	if(sig.isTDCHeader  ()) { return true; }
 	if(sig.isTDCTrailer ()) { return true; }
-	if(sig.isTDCOverflow()) { return true; }
-
-
-
-	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
-
-		string msg = "Unexpected data TDCID = ";
-		msg += to_string(sig.TDC());
-		msg += ", Channel = ";
-		msg += to_string(sig.Channel());
-
-		logger.logError(msg, SIGNAL_ERROR, ERROR);
-
-		return false;
-
-	}
-
-	
-
-	return true;
-
-}
-
-void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
-
-	// Skip cases that are handled by error validation to avoid double-errors
-	if(sig.isEventHeader ()) return;
-	if(sig.isEventTrailer()) return;
-
-	if(!geo.IsActiveTDC(sig.TDC())) return;
-
-	ErrorLogger &logger = ErrorLogger::getInstance();
 
 	if(sig.isTDCOverflow()) {
 
@@ -163,9 +131,34 @@ void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
 
 		} 
 
-		logger.logError(msg, SIGNAL_ERROR, WARNING);
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
+
+        return false;
 
 	}
+
+
+
+	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
+
+		string msg = "Unexpected data TDCID = ";
+		msg += to_string(sig.TDC());
+		msg += ", Channel = ";
+		msg += to_string(sig.Channel());
+
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
+
+		return false;
+
+	}
+
+	return true;
+
+}
+
+void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
+
+
 
 }
 

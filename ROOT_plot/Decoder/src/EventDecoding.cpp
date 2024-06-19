@@ -198,9 +198,8 @@ void validateEventWarnings(const Event &e) {
 
 	int TDCHeaderCount  = 0;
 	int TDCTrailerCount = 0;
-	int TDCErrorCount   = 0;
 
-	// Event::Signals() now filters out TDC headers/trailers/errors to ensure
+	// Event::Signals() now filters out TDC headers/trailers to ensure
 	// backwards compatibility with other code that expects these signals not
 	// to be included in the first place. Event::Signals_All() includes these
 	// signals.
@@ -210,13 +209,14 @@ void validateEventWarnings(const Event &e) {
 
 		if(sig.isTDCHeader  ()) ++TDCHeaderCount ;
 		if(sig.isTDCTrailer ()) ++TDCTrailerCount;
-		if(sig.isTDCOverflow()) ++TDCErrorCount  ;
 
 	}
 
 	// Check that the real hit count matches the count reported in the 
 	// event trailer
 	if(getTrailer(e).HitCount() != e.WireSignals().size()) {
+
+        // TODO: We need to count TDC errors that were dropped from the event
 
 		logger.logError(
 			string("Hit count in trailer = ")
