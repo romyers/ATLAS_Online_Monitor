@@ -65,6 +65,9 @@ Plots::Plots(const Plots &other) : geo(other.geo), rtp(other.rtp) {
 
     residuals       = dynamic_cast<TH1D*>(other.residuals      ->Clone());
 
+    nHits = other.nHits;
+    nMiss = other.nMiss;
+
 }
 
 Plots::Plots(Geometry &geo, RTParam &rtp) : geo(geo), rtp(rtp) {
@@ -118,6 +121,16 @@ void Plots::initialize() {
 	}
 
 	p_tdc_hit_rate_graph    .reserve(Geometry::MAX_TDC);
+
+    nHits.resize(Geometry::MAX_TUBE_LAYER);
+	nMiss.resize(Geometry::MAX_TUBE_LAYER);
+
+	for(size_t i = 0; i < Geometry::MAX_TUBE_LAYER; ++i) {
+
+		nHits[i].resize(Geometry::MAX_TUBE_COLUMN);
+		nMiss[i].resize(Geometry::MAX_TUBE_COLUMN);
+
+	}
 
     p_tdc_hit_rate_x.resize(Geometry::MAX_TDC_CHANNEL);
 	iota(p_tdc_hit_rate_x.begin(), p_tdc_hit_rate_x.end(), 0.);
@@ -364,53 +377,84 @@ void Plots::binEvent(Event &e) {
 		}
 
 		// Populate efficiency
-		/*
-		double _hitX, _hitY;
 		for(int tdc_index = 0; tdc_index < Geometry::MAX_TDC; ++tdc_index) {
+
 			for(int ch_index = 0; ch_index < Geometry::MAX_TDC_CHANNEL; ++ch_index) {
+
 				if(geo.IsActiveTDCChannel(tdc_index, ch_index)) {
+
 					int iL, iC;
+                    double _hitX, _hitY;
+
 					geo.GetHitLayerColumn(tdc_index, ch_index, &iL, &iC);
 					geo.GetHitXY(tdc_index, ch_index, &_hitX, &_hitY);
+
 					// get track x position and figure out what tube(s) it may go through
-					double trackDist = tp.Distance_XY(_hitX, _hitY);
+					double trackDist = tp.Distance(Hit(
+						0, 0, 0, 0, 0, 0, iL, iC, _hitX, _hitY
+					));
+
 					if(trackDist <= Geometry::column_distance / 2) {
+
 						bool tubeIsHit = false;
-						for(Hit hit : e.Hits()) {
+
+						for(Hit hit : e.WireHits()) {
+
 							int hit_layer;
 							int hit_column;
+
 							geo.GetHitLayerColumn(
 								hit.TDC(), 
 								hit.Channel(),
 								&hit_layer,
 								&hit_column
 							);
+
 							if(hit_layer == iL && hit_column == iC) {
+
 								tubeIsHit = true;
+
 							}
+
 						}
+
 						int col = iC;
+
 						if(!tubeIsHit) {
+
 							nMiss[iL][col] = nMiss[iL][col] + 1.0;
+
 						} else {
+
 							nHits[iL][col] = nHits[iL][col] + 1.0;
+
 						}
+
 					}
+
 				}
+
 			}
+
 		}
+        
 		for(int iL = 0; iL < Geometry::MAX_TUBE_LAYER; ++iL) {
+
 			for(int iC = 0; iC < Geometry::MAX_TUBE_COLUMN; ++iC) {
+
 				if(nHits.at(iL).at(iC)) {
+
 					tube_efficiency->SetBinContent(
 						iC + 1, 
 						iL + 1, 
 						nHits[iL][iC] / (nHits[iL][iC] + nMiss[iL][iC])
 					);
+
 				}
+
 			}
+
 		}
-		*/
 
 		delete optTree;
 
@@ -549,11 +593,7 @@ void Plots::clear() {
     }
     p_adc_vs_tdc.clear();
 
-	for(vector<double> &vec : p_tdc_hit_rate) {
-
-		vec.clear();
-
-	}
+    p_tdc_hit_rate.clear();
 
 	for(TGraph *graph : p_tdc_hit_rate_graph) {
 
@@ -564,6 +604,9 @@ void Plots::clear() {
 
 	}
     p_tdc_hit_rate_graph.clear();
+
+    nHits.clear();
+    nMiss.clear();
 
     if(hitByLC) {
         delete hitByLC;

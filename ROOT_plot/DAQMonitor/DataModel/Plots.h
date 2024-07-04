@@ -59,6 +59,9 @@ struct Plots {
 
     TH1D *                           residuals               ;
 
+    std::vector<std::vector<double>> nHits                   ;
+    std::vector<std::vector<double>> nMiss                   ;
+
 	void binEvent     (MuonReco::Event &e  );
 	void updateHitRate(int total_events    );
     void initialize   (                    );
