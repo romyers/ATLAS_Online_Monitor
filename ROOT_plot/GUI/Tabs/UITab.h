@@ -25,7 +25,7 @@ protected:
 
 	// CONNECTIONS
 
-	void makeConnections ();
-	void breakConnections();
+	virtual void makeConnections ();
+	virtual void breakConnections();
 
 };

@@ -49,6 +49,7 @@ void DAQData::initialize(
 void DAQData::clear () {
 
     plots.clear();
+    eventDisplay.Clear();
 
     totalEventCount    = 0;
     nonemptyEventCount = 0;

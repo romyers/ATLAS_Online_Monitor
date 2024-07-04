@@ -101,13 +101,12 @@ void EventTab::startAutoplay() {
 
 bool EventTab::showCurrentEvent() {
 
-    /*
 	DAQData &data = DAQData::getInstance();
 
 	// Lock data to avoid race conditions
 	data.lock();
 
-	if(data.eventDisplayBuffer.empty()) {
+	if(data.plots.eventDisplayBuffer.empty()) {
 
 		data.unlock();
 
@@ -116,7 +115,7 @@ bool EventTab::showCurrentEvent() {
 	}
 
 	// If currentEventIndex is out of bounds, just stop
-	if(currentEventIndex >= data.eventDisplayBuffer.size()) {
+	if(currentEventIndex >= data.plots.eventDisplayBuffer.size()) {
 
 		data.unlock();
 
@@ -125,8 +124,8 @@ bool EventTab::showCurrentEvent() {
 	}
 
 	// Copy the size and event while we're sure data isn't getting modified
-	Event e = data.eventDisplayBuffer[currentEventIndex];
-	size_t size = data.eventDisplayBuffer.size();
+	Event e = data.plots.eventDisplayBuffer[currentEventIndex];
+	size_t size = data.plots.eventDisplayBuffer.size();
 
 	// Release data before the draw to avoid slow operations in the critical
 	// section. We've already gotten local copies of the members we need.
@@ -143,15 +142,13 @@ bool EventTab::showCurrentEvent() {
 		GetCanvas(),
 		e,
 		data.geo,
-		NULL,
+		nullptr,
 		true
 	);
 
 	// Update the interface around the canvas
 	updateLabel(size);
 	resetButtonStates(size);
-
-    */
 
 	return true;
 
@@ -185,23 +182,19 @@ void EventTab::showFirstEvent() {
 
 void EventTab::showLastEvent() {
 
-    /*
-
 	DAQData &data = DAQData::getInstance();
 
 	data.lock();
 
-	if(data.eventDisplayBuffer.empty()) {
+	if(data.plots.eventDisplayBuffer.empty()) {
 
 		data.unlock();
 		return;
 
 	}
-	currentEventIndex = data.eventDisplayBuffer.size() - 1;
+	currentEventIndex = data.plots.eventDisplayBuffer.size() - 1;
 
 	data.unlock();
-
-    */
 
 	showCurrentEvent();
 
@@ -231,13 +224,11 @@ void EventTab::updateLabel(size_t size) {
 
 void EventTab::update() {
 
-    /*
-
 	DAQData &data = DAQData::getInstance();
 
 	data.lock();
 
-	size_t size = data.eventDisplayBuffer.size();
+	size_t size = data.plots.eventDisplayBuffer.size();
 
 	data.unlock();
 
@@ -265,8 +256,6 @@ void EventTab::update() {
 	updateLabel(size);
 
 	resetButtonStates(size);
-
-    */
 
 }
 

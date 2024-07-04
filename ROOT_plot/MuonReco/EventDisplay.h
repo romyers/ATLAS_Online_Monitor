@@ -41,24 +41,19 @@ namespace MuonReco {
     EventDisplay();
     ~EventDisplay();
 
-    void Divide       (int nX, int nY);
-    void DrawEvent    (Event &e, Geometry &geo, TDirectory* outdir=NULL, bool isphase2data=kFALSE);
-    void DrawTubeHist (Geometry &geo, TH2D* hist, TDirectory* outdir=NULL, bool noROOT=kFALSE);
-    void DrawTrackZoom(Event &e, Geometry &geo, int ML, TDirectory* outdir=NULL);
-    void SaveCanvas   (TString name, TDirectory* outdir);
+    void Divide       (TCanvas *eCanv, int nX, int nY);
+    void DrawEvent    (TCanvas *eCanv, Event &e, Geometry &geo, TDirectory* outdir=NULL, bool isphase2data=kFALSE);
+    // void DrawTrackZoom(Event &e, Geometry &geo, int ML, TDirectory* outdir=NULL);
     void Clear        ();
     void SetRT        (Callable* rtp);
     void SetOutputDir (TString dir);
 
   private:
-    TCanvas*               eCanv;
-    std::vector<TEllipse*> hit_model;
     std::vector<TBox*>     boxes;
-    std::vector<TLine*>    track_model;
     Callable*              rtfunction = 0;
 
     void              DrawTDCBorders();
-    
+
     TString _dir = ".";
   };
 }

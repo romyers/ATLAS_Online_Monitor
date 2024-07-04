@@ -18,6 +18,8 @@
 
 #include "Plots.h"
 
+#include "MuonReco/EventDisplay.h"
+
 #include "MuonReco/Event.h"
 #include "MuonReco/Geometry.h"
 #include "MuonReco/TimeCorrection.h"
@@ -39,6 +41,8 @@ struct DAQData {
     MuonReco::TimeCorrection tc      ;
     MuonReco::RecoUtility    recoUtil;
     MuonReco::RTParam        rtp     ;
+
+    MuonReco::EventDisplay eventDisplay;
 
     int totalEventCount    = 0;
     int nonemptyEventCount = 0;

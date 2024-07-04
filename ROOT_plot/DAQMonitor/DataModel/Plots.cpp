@@ -7,6 +7,7 @@
 
 #include "MuonReco/Geometry.h"
 #include "MuonReco/TrackParam.h"
+#include "MuonReco/Track.h"
 
 using namespace MuonReco;
 using namespace std;
@@ -66,7 +67,7 @@ Plots::Plots(const Plots &other) : geo(other.geo), rtp(other.rtp) {
     residuals       = dynamic_cast<TH1D*>(other.residuals      ->Clone());
 
     nHits = other.nHits;
-    nMiss = other.nMiss;
+    nTotal = other.nTotal;
 
 }
 
@@ -123,12 +124,12 @@ void Plots::initialize() {
 	p_tdc_hit_rate_graph    .reserve(Geometry::MAX_TDC);
 
     nHits.resize(Geometry::MAX_TUBE_LAYER);
-	nMiss.resize(Geometry::MAX_TUBE_LAYER);
+	nTotal.resize(Geometry::MAX_TUBE_LAYER);
 
 	for(size_t i = 0; i < Geometry::MAX_TUBE_LAYER; ++i) {
 
 		nHits[i].resize(Geometry::MAX_TUBE_COLUMN);
-		nMiss[i].resize(Geometry::MAX_TUBE_COLUMN);
+		nTotal[i].resize(Geometry::MAX_TUBE_COLUMN);
 
 	}
 
@@ -262,7 +263,7 @@ void Plots::initialize() {
 	goodHitByLC->SetStats(0);
 
     tube_efficiency = new TH2D(
-		"tube_efficiency",
+		"Tube Efficiency",
 		";Layer;Column",
 		Geometry::MAX_TUBE_COLUMN, -0.5, Geometry::MAX_TUBE_COLUMN - 0.5,
 		Geometry::MAX_TUBE_LAYER , -0.5, Geometry::MAX_TUBE_LAYER  - 0.5
@@ -377,10 +378,12 @@ void Plots::binEvent(Event &e) {
 		}
 
 		// Populate efficiency
+		// Iterate through each tube via tdc and channel index
 		for(int tdc_index = 0; tdc_index < Geometry::MAX_TDC; ++tdc_index) {
 
 			for(int ch_index = 0; ch_index < Geometry::MAX_TDC_CHANNEL; ++ch_index) {
 
+				// If the channel is active,
 				if(geo.IsActiveTDCChannel(tdc_index, ch_index)) {
 
 					int iL, iC;
@@ -396,7 +399,7 @@ void Plots::binEvent(Event &e) {
 
 					if(trackDist <= Geometry::column_distance / 2) {
 
-						bool tubeIsHit = false;
+                        bool tubeIsHit = false;
 
 						for(Hit hit : e.WireHits()) {
 
@@ -410,25 +413,18 @@ void Plots::binEvent(Event &e) {
 								&hit_column
 							);
 
+                            // If this is true, the tube was hit
 							if(hit_layer == iL && hit_column == iC) {
 
-								tubeIsHit = true;
+                                tubeIsHit = true;
 
 							}
 
 						}
+                        
+                        ++nTotal[iL][iC];
 
-						int col = iC;
-
-						if(!tubeIsHit) {
-
-							nMiss[iL][col] = nMiss[iL][col] + 1.0;
-
-						} else {
-
-							nHits[iL][col] = nHits[iL][col] + 1.0;
-
-						}
+                        if(tubeIsHit) ++nHits[iL][iC];
 
 					}
 
@@ -442,12 +438,13 @@ void Plots::binEvent(Event &e) {
 
 			for(int iC = 0; iC < Geometry::MAX_TUBE_COLUMN; ++iC) {
 
-				if(nHits.at(iL).at(iC)) {
+				if(nHits[iL][iC] != 0) {
 
+                    // FIXME: Make sure the axes are right
 					tube_efficiency->SetBinContent(
-						iC + 1, 
 						iL + 1, 
-						nHits[iL][iC] / (nHits[iL][iC] + nMiss[iL][iC])
+						iC + 1, 
+						nHits[iL][iC] / nTotal[iL][iC]
 					);
 
 				}
@@ -457,6 +454,15 @@ void Plots::binEvent(Event &e) {
 		}
 
 		delete optTree;
+
+        // TODO: Clean up and add a condition so not all events
+		//       go on the event display buffer.
+		if(true) {
+
+			e.AddTrack(Track(tp.theta(), tp.y_int()));
+			eventDisplayBuffer.push_back(e);
+
+		}
 
 	}
 
@@ -606,7 +612,7 @@ void Plots::clear() {
     p_tdc_hit_rate_graph.clear();
 
     nHits.clear();
-    nMiss.clear();
+    nTotal.clear();
 
     if(hitByLC) {
         delete hitByLC;
@@ -632,5 +638,7 @@ void Plots::clear() {
         delete residuals;
         residuals = nullptr;
     }
+
+    eventDisplayBuffer.clear();
 
 }

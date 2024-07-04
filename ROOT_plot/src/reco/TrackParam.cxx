@@ -171,6 +171,24 @@ namespace MuonReco {
     return chiSq;
   }
 
+  double TrackParam::theta() {
+
+    return param[THETA];
+
+  }
+
+  double TrackParam::slope() {
+
+    return TMath::Tan(param[THETA]);
+
+  }
+
+  double TrackParam::y_int() {
+
+    return param[TrackParam::INTERCEPT];
+
+  }
+
   double TrackParam::LegendreUpperCurve(double theta, double x_0, double y_0, double r_0) {
     return x_0 * cos(theta) + y_0 * sin(theta) + r_0;
   }
