@@ -11,7 +11,7 @@ using namespace MuonReco;
 
 // TODO: Consider implementing copy constructor to handle geo better.
 
-DAQData::DAQData() : plots(geo) {}
+DAQData::DAQData() : plots(geo, rtp) {}
 
 DAQData &DAQData::getInstance() {
 
@@ -41,6 +41,8 @@ void DAQData::initialize(
     // tc.Read();
 
     recoUtil = RecoUtility(cp.items("RecoUtility"));
+
+    rtp = RTParam(cp);
 
 }
 

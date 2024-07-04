@@ -23,11 +23,9 @@ void ResidualsDisplay::update() {
 
 	DAQData &data = DAQData::getInstance();
 
-    /*
 	data.lock();
 	data.plots.residuals->Draw();
 	data.unlock();
-    */
 
 	GetCanvas()->Update();
 	

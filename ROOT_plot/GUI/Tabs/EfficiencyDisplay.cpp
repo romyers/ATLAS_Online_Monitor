@@ -23,11 +23,9 @@ void EfficiencyDisplay::update() {
 
 	DAQData &data = DAQData::getInstance();
 
-    /*
 	data.lock();
 	data.plots.tube_efficiency->Draw("colz");
 	data.unlock();
-    */
 
 	GetCanvas()->Update();
 	
