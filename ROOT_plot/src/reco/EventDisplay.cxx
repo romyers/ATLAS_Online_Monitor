@@ -10,11 +10,25 @@ namespace MuonReco {
   }
 
   void EventDisplay::Clear() {
+    
+    for(TEllipse *hit : hit_model) {
+      delete hit;
+    }
+    hit_model.clear();
+
+    for(TLine *track : track_model) {
+      delete track;
+    }
+    track_model.clear();
 
     for (auto it = boxes.begin(); it != boxes.end(); ++it) {
       delete (*it);
     }
     boxes = std::vector<TBox*>();
+    
+    hit_model_orientation  .clear();
+    track_model_orientation.clear();
+
   }
 
   void EventDisplay::Divide(TCanvas *eCanv, int nX, int nY) {
@@ -46,21 +60,10 @@ namespace MuonReco {
     bool isphase2data
   ) {
 
-    char canvas_name[256];
-    char canvas_output_name[256];
     double hit_x, hit_y;
     int hit_l, hit_c;
 
-    std::vector<TEllipse*> hit_model;
-    std::vector<bool>      hit_model_orientation;
-    std::vector<TLine*>    track_model;
-    std::vector<bool>      track_model_orientation;
-
-    // initialize the canvas and draw the background geometry
-
-    sprintf(canvas_name, "event_id_%lu", e.ID());
-    strcpy(canvas_output_name, canvas_name);
-    strcat(canvas_output_name, ".png");
+    // draw the background geometry
 
     bool has_perp = false;
     for (int counter = 0; counter < geo.orientation().size(); counter++) {
@@ -88,7 +91,8 @@ namespace MuonReco {
         // FIXME: Vertical line problem with y intercept and tangent
         track_model.push_back(
           new TLine(
-            0, t.YInt(), 1000, -1000 * TMath::Tan(t.Theta()) + t.YInt()
+            t.XInt(), 0, 
+            t.XInt() - 1000 * TMath::Sin(t.Theta()), 1000 * TMath::Cos(t.Theta())
           ));
         track_model.at(track_model.size()-1)->SetLineWidth(1);
         track_model.at(track_model.size()-1)->SetLineColor(kBlack);
@@ -180,23 +184,8 @@ namespace MuonReco {
     if (outdir != NULL) {
       outdir->WriteTObject(eCanv);
     }
-    if (_dir.CompareTo("")) {
-      // eCanv->SaveAs(IOUtility::join(_dir, canvas_output_name));
-    }
     eCanv->Modified();
     eCanv->Update();
-
-    for (auto it = hit_model.begin(); it != hit_model.end(); ++it) {
-      delete (*it);
-    }
-    hit_model.clear();
-
-
-    for (auto it = track_model.begin(); it != track_model.end(); ++it) {
-      delete (*it);
-    }
-    track_model.clear();
-
 
   } // end method: Event Display :: Draw Event
 

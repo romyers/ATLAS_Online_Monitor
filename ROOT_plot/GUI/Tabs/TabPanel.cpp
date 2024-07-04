@@ -270,6 +270,8 @@ void TabPanel::update() {
 
                 if(!hasTab(plotTitle.data())) {
 
+                    // FIXME: What if data.plots.p_adc_time[tdc] hasn't been 
+                    //        initialized yet?
                     HistogramPlotter *adcChannelPlot = new HistogramPlotter(
                         this,
                         data.plots.p_adc_time[tdc],
@@ -427,6 +429,11 @@ bool TabPanel::isAttached() {
 }
 
 void TabPanel::buildTab(const string &label, UITab *tab) {
+
+    // TODO: Check this as a possible segfault source
+    // TODO: Consider moving this somewhere else. It's not super obvious
+    //       that buildTab updates the tab.
+    tab->update();
 
 	AddTab(label.data(), tab);
 	MapSubwindows();

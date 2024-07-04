@@ -15,8 +15,6 @@ GraphPlotter::GraphPlotter(
 ) : PlotWindow(p, graphs.size(), title, w, h), 
     graphs(graphs) {
 
-    update();
-
 }
 
 GraphPlotter::~GraphPlotter() {

@@ -52,7 +52,7 @@ private:
 	virtual void updateLabel      (size_t size);
 	virtual bool showCurrentEvent (           );
 
-	virtual void makeConnections() /*override*/;
+	virtual void makeConnections() override;
 
 	int  currentEventIndex;
 	bool isAutoplaying    ;

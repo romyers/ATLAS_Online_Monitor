@@ -178,17 +178,6 @@ void DataRun::startRun() {
 
     DAQData &data = DAQData::getInstance();
 
-    // Configure the geometry and time correction table.
-
-    // NOTE: Write operations on data.geo MUST NOT be performed concurrently
-    //       with the decode loop in the current implementation, or thread
-    //       safety is not guaranteed. So if data.geo needs to be reconfigured
-    //       during a run, the configuration and decoding operations must be
-    //       synchronized.
-    //         -- TL;DR the decode loop does not lock 'data' before reading 
-    //            from geo, so be careful not to change geo while the decode 
-    //            loop is running.
-
     data.lock();
 
     try{
@@ -204,7 +193,6 @@ void DataRun::startRun() {
                 + state.persistentState.confFilename
                 + string(".\n Does the file exist?")
         );
-
 
     }
 

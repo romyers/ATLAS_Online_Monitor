@@ -17,8 +17,6 @@ HistogramPlotter::HistogramPlotter(
 ) : PlotWindow(p, histograms.size(), title, w, h), 
     histograms(histograms) {
 
-	update();
-
 }
 
 HistogramPlotter::~HistogramPlotter() {
