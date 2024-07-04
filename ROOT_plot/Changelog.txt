@@ -144,6 +144,17 @@
 
 -------------------------------------------------------------------------------
 
+## 2024-07-04
+
+Started integrating work done on the muon_track_display branch.
+
+## Added
+
+- Added event, residuals, efficiency displays, CanvasTab from the muon track 
+  display branch.
+
+-------------------------------------------------------------------------------
+
 ## 2024-06-07
 
 ## Changed

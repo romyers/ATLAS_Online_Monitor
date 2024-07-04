@@ -19,18 +19,28 @@
 #include "../Components/Submenu.h"
 #include "UITab.h"
 
+/*
+ * NOTE: New tabs should inherit from UITab.h. They can be added into the GUI
+ *       by building them in the implementation of AttachToMenu(). See that
+ *       implementation for more notes.
+ */
+
 class TabPanel : public TGTab {
 
 public:
 
-    /**
-     * Constructor.
+/**
+	 * Constructor.
+	 * 
+	 * @param width The width of constituent tab windows.
+	 * 
+	 * @param height The height of constituent tab windows.
      * 
      * @param menuBar The menu to attach the tab panel to. If a menubar is
      * specified, a submenu will be added to the menu bar that provides options
      * allowing the user to open tabs.
      */
-	TabPanel(const TGWindow *p, Menu *menuBar = nullptr);
+	TabPanel(const TGWindow *p, int width, int height, Menu *menuBar = nullptr);
 
 	/**
 	 * Internal use only. Signal handler.
@@ -41,6 +51,13 @@ public:
 	 * Internal use only.
 	 */
 	virtual void makeConnections();
+
+    /**
+	 * Returns true if a tab with the given title exists, and false otherwise.
+     * 
+     * @param label The title of the tab to check for.
+	 */
+    bool hasTab(const std::string &label);
 
     virtual void update();
 
@@ -65,5 +82,8 @@ private:
 	void AttachToMenu(Menu *menuBar);
 
     bool isAttached();
+
+    int width;
+    int height;
 
 };

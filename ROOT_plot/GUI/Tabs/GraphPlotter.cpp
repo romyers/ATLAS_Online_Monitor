@@ -33,7 +33,7 @@ void GraphPlotter::update() {
 
     if(graphs.size() == 0) {
 
-        canvas->GetCanvas()->cd(1);
+        GetCanvas()->cd(1);
 
         TPaveLabel *label = new TPaveLabel(
             0.2, 0.4, 
@@ -50,7 +50,7 @@ void GraphPlotter::update() {
 
 	for(int i = 0; i < graphs.size(); ++i) {
 
-		canvas->GetCanvas()->cd(i + 1);
+		GetCanvas()->cd(i + 1);
 
 		graphs[i]->Draw("AB");
 
@@ -68,7 +68,7 @@ void GraphPlotter::update() {
 
     // For some reason we get segfaults if the update happens outside the
     // critical section.
-	canvas->GetCanvas()->Update();
+	GetCanvas()->Update();
 
     data.unlock();
 

@@ -53,6 +53,7 @@ set(recoObjs_SOURCES
 )
 
 set(p2Objs_HEADERS 
+    MuonReco/EventDisplay.h
 	MuonReco/RecoObject.h
 	MuonReco/RecoUtility.h
 	MuonReco/IOUtility.h
@@ -72,6 +73,7 @@ set(p2Objs_HEADERS
 )
 
 set(p2Objs_SOURCES
+    src/reco/EventDisplay.cxx
 	src/reco/RecoUtility.cxx
 	src/reco/IOUtility.cxx
 	src/reco/EventID.cxx
@@ -146,9 +148,13 @@ set(monitor_HEADERS
 	GUI/Components/ProgressBar.h
 	GUI/Tabs/TabPanel.h
 	GUI/Tabs/UITab.h
+    GUI/Tabs/CanvasTab.h
 	GUI/Tabs/PlotWindow.h
 	GUI/Tabs/GraphPlotter.h
 	GUI/Tabs/HistogramPlotter.h
+    GUI/Tabs/EventTab.h
+    GUI/Tabs/ResidualsDisplay.h
+    GUI/Tabs/EfficiencyDisplay.h
 	GUI/Tabs/ErrorView.h
 	DAQMonitor/DAQState.h
 	DAQMonitor/DataRunOperations.h
@@ -184,9 +190,13 @@ set(monitor_SOURCES
 	GUI/Components/ProgressBar.cpp
 	GUI/Tabs/TabPanel.cpp
 	GUI/Tabs/UITab.cpp
+    GUI/Tabs/CanvasTab.cpp
 	GUI/Tabs/PlotWindow.cpp
 	GUI/Tabs/GraphPlotter.cpp
 	GUI/Tabs/HistogramPlotter.cpp
+    GUI/Tabs/EventTab.cpp 
+    GUI/Tabs/ResidualsDisplay.cpp
+    GUI/Tabs/EfficiencyDisplay.cpp
 	GUI/Tabs/ErrorView.cpp
 	DAQMonitor/DAQState.cpp
 	DAQMonitor/DataRunOperations.cpp
@@ -236,6 +246,7 @@ target_link_libraries(DAQManager PUBLIC libMonitor)
 
 ###############################################################################
 
+# TODO: Add a flag to enable/disable debugging
 # Add -g flag to make GDB work
 # Remove -g flag for production builds
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wno-shadow")

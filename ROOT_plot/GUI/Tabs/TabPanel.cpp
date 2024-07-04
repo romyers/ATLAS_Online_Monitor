@@ -6,13 +6,16 @@
 #include "ErrorView.h"
 #include "GraphPlotter.h"
 #include "HistogramPlotter.h"
+#include "EventTab.h"
+#include "ResidualsDisplay.h"
+#include "EfficiencyDisplay.h"
 
 using namespace std;
 
 // TODO: Allow setting tab frame sizes in one place. E.g. in the constructor
 
-TabPanel::TabPanel(const TGWindow *p, Menu *menuBar) 
-	: TGTab(p), 
+TabPanel::TabPanel(const TGWindow *p, int width, int height, Menu *menuBar)
+	: TGTab(p), width(width), height(height), 
     tabMenu(nullptr), 
     adcMenu(nullptr), 
     tdcMenu(nullptr),
@@ -23,7 +26,7 @@ TabPanel::TabPanel(const TGWindow *p, Menu *menuBar)
     // TODO: Base tab can be expanded into an info panel of some sort -- like a 
     //       readme or like the info screens that pop up sometimes talking about e.g.
     //       program title/version/usage
-	baseTab = new TGCompositeFrame(this, 1250, 850, kFixedSize);
+	baseTab = new TGCompositeFrame(this, width, 850, kFixedSize);
 	AddTab("Home", baseTab);
 
 		baseLabel = new TGLabel(baseTab, "Open tabs from the view menu");
@@ -61,14 +64,14 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 
 		adcMenu->AddEntry("ADC Overview", [this, &data](int id) {
 
-			if(!GetTabTab("ADC Overview")) {
+			if(!hasTab("ADC Overview")) {
 
 				HistogramPlotter *adcOverview = new HistogramPlotter(
 					this,
 					data.plots.p_tdc_adc_time,
 					"ADC Plots",
-					1250,
-					850
+					width,
+					height
 				);
 
 				buildTab("ADC Overview", adcOverview);
@@ -92,14 +95,14 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 
 		tdcMenu->AddEntry("TDC Overview", [this, &data](int id) {
 
-			if(!GetTabTab("TDC Overview")) {
+			if(!hasTab("TDC Overview")) {
 
 				HistogramPlotter *tdcOverview = new HistogramPlotter(
 					this,
 					data.plots.p_tdc_tdc_time_corrected,
 					"TDC Plots",
-					1250,
-					850
+					width,
+					height
 				);
 
 				buildTab("TDC Overview", tdcOverview);
@@ -118,19 +121,75 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 	tabMenu->AddSeparator();
 
 	///////////////////////////////////////////////////////////////////////////
+	// Event Displays
+	///////////////////////////////////////////////////////////////////////////
+
+    tabMenu->AddEntry("Residuals", [this](int id) {
+
+		if(!hasTab("Residuals")) {
+
+			ResidualsDisplay *residuals = new ResidualsDisplay(
+				this, 
+				width, 
+				height
+			);
+
+			buildTab("Residuals", residuals);
+
+		}
+
+		SetTab("Residuals");
+
+	});
+
+	tabMenu->AddEntry("Efficiency", [this](int id) {
+
+		if(!hasTab("Efficiency")) {
+
+			EfficiencyDisplay *efficiency = new EfficiencyDisplay(
+				this, 
+				width, 
+				height
+			);
+
+			buildTab("Efficiency", efficiency);
+
+		}
+
+		SetTab("Efficiency");
+
+	});
+
+	tabMenu->AddEntry("Event Display", [this](int id) {
+
+		if(!hasTab("Event Display")) {
+
+			EventTab *eventDisplay = new EventTab(this, width, height);
+
+			buildTab("Event Display", eventDisplay);
+
+		}
+
+		SetTab("Event Display");
+
+	});
+
+	tabMenu->AddSeparator();
+
+	///////////////////////////////////////////////////////////////////////////
 	// Noise Rate Tab
 	///////////////////////////////////////////////////////////////////////////
 
 	tabMenu->AddEntry("Noise Rate", [this, &data](int id) {
 
-		if(!GetTabTab("Noise Rate")) {
+		if(!hasTab("Noise Rate")) {
 
 			GraphPlotter *noiseDisplay = new GraphPlotter(
 				this,
 				data.plots.p_tdc_hit_rate_graph,
 				"Noise Rate Display",
-				1250,
-				850
+				width,
+				height
 			);
 
 			buildTab("Noise Rate", noiseDisplay);
@@ -148,9 +207,9 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 
 	tabMenu->AddEntry("Error Log", [this](int id) {
 
-		if(!GetTabTab("Error Log")) {
+		if(!hasTab("Error Log")) {
 
-			ErrorView *errorViewer = new ErrorView(this);
+			ErrorView *errorViewer = new ErrorView(this, width, height);
 
 			buildTab("Error Log", errorViewer);
 
@@ -209,14 +268,14 @@ void TabPanel::update() {
                     + to_string(tdc) 
                     + string(" ADC Channels");
 
-                if(!GetTabTab(plotTitle.data())) {
+                if(!hasTab(plotTitle.data())) {
 
                     HistogramPlotter *adcChannelPlot = new HistogramPlotter(
                         this,
                         data.plots.p_adc_time[tdc],
                         plotTitle,
-                        1250,
-                        850
+                        width,
+                        height
                     );
 
                     buildTab(plotTitle, adcChannelPlot);
@@ -288,14 +347,14 @@ void TabPanel::update() {
                     + to_string(tdc)
                     + string(" TDC Channels");
 
-                if(!GetTabTab(plotTitle.data())) {
+                if(!hasTab(plotTitle.data())) {
 
                     HistogramPlotter *tdcChannelPlot = new HistogramPlotter(
                         this,
                         data.plots.p_tdc_time_corrected[tdc],
                         plotTitle,
-                        1250,
-                        850
+                        width,
+                        height
                     );
 
                     buildTab(plotTitle, tdcChannelPlot);
@@ -386,5 +445,13 @@ void TabPanel::handleCloseTab(int id) {
 	Layout();
 
 	delete tab;
+
+    if(id != 0) SetTab(id - 1);
+
+}
+
+bool TabPanel::hasTab(const string &label) {
+
+    return GetTabTab(label.data()) != nullptr;
 
 }

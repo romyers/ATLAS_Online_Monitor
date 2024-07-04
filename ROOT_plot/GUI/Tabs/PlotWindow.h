@@ -14,9 +14,9 @@
 #include "TCanvas.h"
 #include "TRootEmbeddedCanvas.h"
 
-#include "UITab.h"
+#include "CanvasTab.h"
 
-class PlotWindow : public UITab {
+class PlotWindow : public CanvasTab {
 
 public:
 
@@ -30,7 +30,7 @@ public:
 
     virtual void relayout(int canvasPanels);
 
-	virtual void teardown();
+    virtual ~PlotWindow();
 
 protected:
 

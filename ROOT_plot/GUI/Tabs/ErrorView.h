@@ -19,7 +19,7 @@ class ErrorView : public UITab {
 
 public:
 
-	ErrorView(const TGWindow *p);
+	ErrorView(const TGWindow *p, int width, int height);
 
 	virtual ~ErrorView();
 

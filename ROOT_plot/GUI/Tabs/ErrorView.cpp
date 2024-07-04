@@ -27,9 +27,9 @@ string getColor(const ErrorData &error);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-ErrorView::ErrorView(const TGWindow *p) : UITab(p) {
+ErrorView::ErrorView(const TGWindow *p, int width, int height) : UITab(p) {
 
-	errorPanel = new TGHtml(this, 800, 600);
+	errorPanel = new TGHtml(this, width, height);
 	AddFrame(errorPanel, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
 	SetWindowName("Error Log");
@@ -72,6 +72,12 @@ void ErrorView::update() {
 		htmlString += "</p>";
 
 	}
+
+    if(errors.empty()) {
+
+        htmlString = "<p><font color=black>Nothing to display!</font></p>";
+
+    }
 
 	char *htmlText = new char[htmlString.size() + 1];
 

@@ -19,8 +19,6 @@ public:
 
 	virtual ~UITab();
 
-	virtual void teardown();
-
 	virtual void update() = 0;
 
 protected:
