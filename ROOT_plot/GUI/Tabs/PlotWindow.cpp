@@ -23,7 +23,7 @@ PlotWindow::PlotWindow(
 void PlotWindow::relayout(int canvasPanels) {
 
     // We only need to redivide the canvas if the number of panels has changed
-    // if(panelCount == canvasPanels) return;
+    if(panelCount == canvasPanels) return;
 
     GetCanvas()->Clear();
 

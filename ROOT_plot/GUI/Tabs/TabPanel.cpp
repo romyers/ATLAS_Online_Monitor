@@ -431,17 +431,16 @@ bool TabPanel::isAttached() {
 
 void TabPanel::buildTab(const string &label, UITab *tab) {
 
-    // TODO: Check this as a possible segfault source
-    // TODO: Consider moving this somewhere else. It's not super obvious
-    //       that buildTab updates the tab.
-    tab->update();
-
 	AddTab(label.data(), tab);
 	MapSubwindows();
 	Layout();
 
 	// Show the close button for the tab
 	GetTabTab(label.data())->ShowClose();
+
+    // TODO: Somehow removing this clears up our segfaults, which leads me to
+    //       believe the problem is hiding in here somewhere.
+    tab->update();
 
 }
 

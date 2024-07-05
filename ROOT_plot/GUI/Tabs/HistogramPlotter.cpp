@@ -25,8 +25,6 @@ HistogramPlotter::~HistogramPlotter() {
 
 void HistogramPlotter::update() {
 
-    GetCanvas()->Clear();
-
     DAQData &data = DAQData::getInstance();
 
     data.lock();
