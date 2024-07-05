@@ -8,6 +8,12 @@
 using namespace MuonReco;
 using namespace std;
 
+// TODO: This is a prime candidate for a redesign. We can and should avoid
+//       leaking GUI details like what buttons we have to press into the code
+//       that handles showing events. Try having functions like:
+//       showEvent(int eventNum) and getEventCount(), so e.g. showLastEvent
+//       becomes showEvent(getEventCount() - 1).
+
 EventTab::EventTab(const TGWindow *p, int width, int height) 
 	: CanvasTab(p, "Event Display", width, height - 20),
 	  currentEventIndex(0),
@@ -18,6 +24,18 @@ EventTab::EventTab(const TGWindow *p, int width, int height)
 
 		eventNum = new TGLabel(buttonFrame, "No events to display!");
 		buttonFrame->AddFrame(eventNum, new TGLayoutHints(kLHintsLeft | kLHintsCenterY));
+
+        eventSelector = new TGHorizontalFrame(buttonFrame);
+        buttonFrame->AddFrame(eventSelector, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
+
+            selectorLabel = new TGLabel(eventSelector, "Go to event:  ");
+            eventSelector->AddFrame(selectorLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
+
+            entryField = new TGTextEntry(eventSelector);
+            eventSelector->AddFrame(entryField, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
+
+            confirmButton = new TGTextButton(eventSelector, "Go");
+            eventSelector->AddFrame(confirmButton, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
 
 		endButton = new TGTextButton(buttonFrame, "->|");
 		buttonFrame->AddFrame(endButton, new TGLayoutHints(kLHintsRight | kLHintsCenterY));
@@ -49,19 +67,21 @@ EventTab::EventTab(const TGWindow *p, int width, int height)
 
 void EventTab::makeConnections() {
 
-	begButton  ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
-	begButton  ->Connect("Clicked()", "EventTab", this, "showFirstEvent()"   );
+    confirmButton->Connect("Clicked()", "EventTab", this, "goToSelectedEvent()");
 
-	leftButton ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
-	leftButton ->Connect("Clicked()", "EventTab", this, "showPreviousEvent()");
+	begButton    ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
+	begButton    ->Connect("Clicked()", "EventTab", this, "showFirstEvent()"   );
 
-	rightButton->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
-	rightButton->Connect("Clicked()", "EventTab", this, "showNextEvent()"    );
+	leftButton   ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
+	leftButton   ->Connect("Clicked()", "EventTab", this, "showPreviousEvent()");
 
-	autoDisplay->Connect("Clicked()", "EventTab", this, "toggleAutoplay()"   );
+	rightButton  ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
+	rightButton  ->Connect("Clicked()", "EventTab", this, "showNextEvent()"    );
 
-	endButton  ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
-	endButton  ->Connect("Clicked()", "EventTab", this, "showLastEvent()"    );
+	autoDisplay  ->Connect("Clicked()", "EventTab", this, "toggleAutoplay()"   );
+
+	endButton    ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );
+	endButton    ->Connect("Clicked()", "EventTab", this, "showLastEvent()"    );
 
 }
 
@@ -151,6 +171,42 @@ bool EventTab::showCurrentEvent() {
 	resetButtonStates(size);
 
 	return true;
+
+}
+
+void EventTab::goToSelectedEvent() {
+
+    string entry = entryField->GetText();
+
+    if(entry.empty()) return;
+
+    int eventNum = 0;
+
+    try {
+
+        eventNum = stoi(entry);
+
+    } catch(...) {
+
+        return;
+
+    }
+
+    if(eventNum < 1) return;
+
+    int prevIndex = currentEventIndex;
+
+    currentEventIndex = eventNum - 1;
+
+    if(!showCurrentEvent()) {
+
+        currentEventIndex = prevIndex;
+
+    } else {
+
+        stopAutoplay();
+        
+    }
 
 }
 

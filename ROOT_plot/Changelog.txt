@@ -146,6 +146,10 @@
 
 ## 2024-07-05
 
+## Added 
+
+- Added go to event functionality to event display.
+
 ## Fixed 
 
 - Fixed compiler warnings related to using the ClassDef macro instead of 

@@ -12,6 +12,7 @@
 #include "TGButton.h"
 #include "TGFrame.h"
 #include "TGLabel.h"
+#include "TGTextEntry.h"
 
 #include "CanvasTab.h"
 
@@ -34,18 +35,25 @@ public:
 	virtual void stopAutoplay     ();
 	virtual void startAutoplay    ();
 	virtual void toggleAutoplay   ();
+    virtual void goToSelectedEvent();
 
 private:
 
-	TGHorizontalFrame *buttonFrame;
+	TGHorizontalFrame *buttonFrame      ; 
 
-		TGLabel      *eventNum   ;
+		TGLabel *eventNum               ;
 
-		TGTextButton *begButton  ;
-		TGTextButton *leftButton ;
-		TGTextButton *autoDisplay;
-		TGTextButton *rightButton;
-		TGTextButton *endButton  ;
+        TGHorizontalFrame *eventSelector;
+
+            TGLabel      *selectorLabel ;
+            TGTextEntry  *entryField    ;
+            TGTextButton *confirmButton ;
+
+		TGTextButton *begButton         ;
+		TGTextButton *leftButton        ;
+		TGTextButton *autoDisplay       ;
+		TGTextButton *rightButton       ;
+		TGTextButton *endButton         ;
 
 
 	virtual void resetButtonStates(size_t size);
