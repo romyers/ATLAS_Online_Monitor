@@ -17,7 +17,7 @@
 
 class DeviceSelector : public TGVerticalFrame {
 
-ClassDef(DeviceSelector, 0);
+ClassDefOverride(DeviceSelector, 0);
 
 public:
 

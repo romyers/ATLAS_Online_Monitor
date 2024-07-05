@@ -22,7 +22,7 @@
 
 class DataSourcePanel : public TGVerticalFrame {
 
-ClassDef(DataSourcePanel, 0);
+ClassDefOverride(DataSourcePanel, 0);
 
 public:
 

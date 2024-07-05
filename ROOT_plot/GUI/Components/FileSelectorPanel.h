@@ -17,7 +17,7 @@
 
 class FileSelector : public TGVerticalFrame {
 
-ClassDef(FileSelector, 0);
+ClassDefOverride(FileSelector, 0);
 
 public:
 

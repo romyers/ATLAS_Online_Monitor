@@ -144,14 +144,19 @@
 
 -------------------------------------------------------------------------------
 
+## 2024-07-05
+
+## Fixed 
+
+- Fixed compiler warnings related to using the ClassDef macro instead of 
+  ClassDefOverride in classes that used the override c++ keyword.
+
+-------------------------------------------------------------------------------
+
 ## 2024-07-04
 
-Started integrating work done on the muon_track_display branch.
-
-## Added
-
-- Added event, residuals, efficiency displays, CanvasTab from the muon track 
-  display branch.
+Merged in work done on the muon track display branch, up to tube center track
+fits.
 
 -------------------------------------------------------------------------------
 

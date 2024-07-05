@@ -17,7 +17,7 @@
 
 class ConfFileSelector : public TGVerticalFrame {
 
-ClassDef(ConfFileSelector, 0);
+ClassDefOverride(ConfFileSelector, 0);
 
 public:
 
