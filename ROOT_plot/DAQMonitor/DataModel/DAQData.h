@@ -33,6 +33,10 @@ struct DAQData {
     // Excludes empty events.
     std::vector<MuonReco::Event> newEvents;
 
+    // A vector of fully processed and passing events buffered for display
+    // in the event tab.
+    std::vector<MuonReco::Event> eventDisplayBuffer;
+
     // A struct of histograms containing aggregate event data. See
     // src/DataModel/Plots.cpp.
     Plots plots;
@@ -67,6 +71,10 @@ struct DAQData {
     void lock  () const; // Locks an internal mutex
     void unlock() const; // Unlocks an internal mutex
 
+    // NOTE: If optTree is nullptr, we are not optimizing. Otherwise we are.
+    void binEvent     (MuonReco::Event &e, TTree *optTree = nullptr);
+    void updateHitRate(int total_events);
+
     /**
      * Clears and initializes the DAQData. 
      */
@@ -92,5 +100,8 @@ private:
     DAQData();
 
     mutable std::mutex dataLock;
+
+    std::vector<std::vector<double>> nHits ;
+    std::vector<std::vector<double>> nTotal;
 
 };

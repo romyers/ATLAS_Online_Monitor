@@ -6,16 +6,11 @@
 #include "GlobalIncludes.h"
 
 #include "MuonReco/Geometry.h"
-#include "MuonReco/TrackParam.h"
-#include "MuonReco/Track.h"
 
 using namespace MuonReco;
 using namespace std;
 
-// TODO: Is there a better place to put this? E.g. Geometry.cpp?
-const double MATCH_WINDOW = 1.5; // us
-
-Plots::Plots(const Plots &other) : geo(other.geo), rtp(other.rtp) {
+Plots::Plots(const Plots &other) {
 
 	p_leading_time  = dynamic_cast<TH1F*>(other.p_leading_time ->Clone());
 	p_trailing_time = dynamic_cast<TH1F*>(other.p_trailing_time->Clone());
@@ -66,12 +61,9 @@ Plots::Plots(const Plots &other) : geo(other.geo), rtp(other.rtp) {
 
     residuals       = dynamic_cast<TH1D*>(other.residuals      ->Clone());
 
-    nHits = other.nHits;
-    nTotal = other.nTotal;
-
 }
 
-Plots::Plots(Geometry &geo, RTParam &rtp) : geo(geo), rtp(rtp) {
+Plots::Plots() {
 
 }
 
@@ -122,16 +114,6 @@ void Plots::initialize() {
 	}
 
 	p_tdc_hit_rate_graph    .reserve(Geometry::MAX_TDC);
-
-    nHits.resize(Geometry::MAX_TUBE_LAYER);
-	nTotal.resize(Geometry::MAX_TUBE_LAYER);
-
-	for(size_t i = 0; i < Geometry::MAX_TUBE_LAYER; ++i) {
-
-		nHits[i].resize(Geometry::MAX_TUBE_COLUMN);
-		nTotal[i].resize(Geometry::MAX_TUBE_COLUMN);
-
-	}
 
     p_tdc_hit_rate_x.resize(Geometry::MAX_TDC_CHANNEL);
 	iota(p_tdc_hit_rate_x.begin(), p_tdc_hit_rate_x.end(), 0.);
@@ -280,180 +262,6 @@ void Plots::initialize() {
 
 }
 
-void Plots::updateHitRate(int total_events) {
-
-	for(int tdc = 0; tdc < Geometry::MAX_TDC; ++tdc) {
-
-		for(int chnl = 0; chnl < Geometry::MAX_TDC_CHANNEL; ++chnl) {
-
-			// Hits / total_events * (1 / MATCH_WINDOW (us)) * 1000 (us / ms)
-			p_tdc_hit_rate[tdc][chnl] 
-				= p_adc_time[tdc][chnl]->GetEntries() / total_events 
-				  *
-				  1000 / MATCH_WINDOW;
-
-			p_tdc_hit_rate_graph[tdc]->SetPoint(
-				chnl, 
-				chnl, 
-				p_tdc_hit_rate[tdc][chnl]
-			);
-
-			double tmp_yrange = p_tdc_hit_rate_graph[tdc]->GetHistogram()->GetMaximum();
-			p_tdc_hit_rate_graph[tdc]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
-			p_tdc_hit_rate_graph[tdc]->GetHistogram()->SetMinimum(0);
-			p_tdc_hit_rate_graph[tdc]->GetXaxis()->SetLimits(-0.5, static_cast<double>(Geometry::MAX_TDC_CHANNEL) - 0.5);
-
-		}
-
-	}
-
-}
-
-void Plots::binEvent(Event &e, TTree &optTree) {
-
-	// TODO: Event display
-	// TODO: Go through DAQ.cpp and find everything we need to include
-	// TODO: Make sure all plots print
-
-	for(const Hit &hit : e.WireHits()) {
-
-		p_tdc_tdc_time_corrected[hit.TDC()]->Fill(hit.CorrTime());
-		p_tdc_adc_time          [hit.TDC()]->Fill(hit.ADCTime ());
-
-		p_tdc_time_corrected[hit.TDC()][hit.Channel()]->Fill(hit.CorrTime ());
-		p_tdc_time          [hit.TDC()][hit.Channel()]->Fill(hit.DriftTime());
-		p_adc_time          [hit.TDC()][hit.Channel()]->Fill(hit.ADCTime  ());
-
-		double tmp_yrange = p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->GetMaximum();
-		p_tdc_hit_rate_graph[hit.TDC()]->GetHistogram()->SetMaximum(tmp_yrange > 0.5 ? tmp_yrange : 1);
-
-		int hitL, hitC;
-		geo.GetHitLayerColumn(hit.TDC(), hit.Channel(), &hitL, &hitC);
-
-		hitByLC->Fill(hitC, hitL);
-		if(hit.CorrTime() < 0 || hit.CorrTime() > 400) { // TODO: Magic numbers
-
-			badHitByLC->Fill(hitC, hitL);
-		
-		} else {
-		
-			goodHitByLC->Fill(hitC, hitL);
-		
-		}
-		p_hits_distribution[hitL]->Fill(hitC);
-
-	}
-
-	// Residuals, efficiency, and event display modified from work by 
-	// Rongqian Qian. See:
-	// https://github.com/Rong-qian/ATLAS_Online_Monitor/
-	if(e.Pass()) {
-
-        TrackParam tp;
-
-        tp.SetRT(&rtp);
-        tp.setVerbose(0);
-        tp.setMaxResidual(1000000);
-
-		tp.setTarget(&optTree);
-		tp.setRangeSingle(0);
-		tp.setIgnoreNone();
-		tp.optimize();
-
-		// Populate residuals
-		for(Cluster &c : e.Clusters()) {
-
-			for(Hit &hit : c.Hits()) {
-
-				residuals->Fill(tp.Residual(hit) * 1000.0);
-
-			}
-
-		}
-
-		// Populate efficiency
-		// Iterate through each tube via tdc and channel index
-		for(int tdc_index = 0; tdc_index < Geometry::MAX_TDC; ++tdc_index) {
-
-			for(int ch_index = 0; ch_index < Geometry::MAX_TDC_CHANNEL; ++ch_index) {
-
-				// If the channel is active,
-				if(geo.IsActiveTDCChannel(tdc_index, ch_index)) {
-
-					int iL, iC;
-                    double _hitX, _hitY;
-
-					geo.GetHitLayerColumn(tdc_index, ch_index, &iL, &iC);
-					geo.GetHitXY(tdc_index, ch_index, &_hitX, &_hitY);
-
-					// get track x position and figure out what tube(s) it may go through
-					double trackDist = tp.Distance(Hit(
-						0, 0, 0, 0, 0, 0, iL, iC, _hitX, _hitY
-					));
-
-					if(trackDist <= Geometry::column_distance / 2) {
-
-                        bool tubeIsHit = false;
-
-						for(Hit hit : e.WireHits()) {
-
-							int hit_layer;
-							int hit_column;
-
-							geo.GetHitLayerColumn(
-								hit.TDC(), 
-								hit.Channel(),
-								&hit_layer,
-								&hit_column
-							);
-
-                            // If this is true, the tube was hit
-							if(hit_layer == iL && hit_column == iC) {
-
-                                tubeIsHit = true;
-
-							}
-
-						}
-                        
-                        ++nTotal[iL][iC];
-
-                        if(tubeIsHit) ++nHits[iL][iC];
-
-					}
-
-				}
-
-			}
-
-		}
-        
-		for(int iL = 0; iL < Geometry::MAX_TUBE_LAYER; ++iL) {
-
-			for(int iC = 0; iC < Geometry::MAX_TUBE_COLUMN; ++iC) {
-
-				if(nHits[iL][iC] != 0) {
-
-                    // FIXME: Make sure the axes are right
-					tube_efficiency->SetBinContent(
-						iC + 1, 
-						iL + 1, 
-						nHits[iL][iC] / nTotal[iL][iC]
-					);
-
-				}
-
-			}
-
-		}
-
-        e.AddTrack(Track(tp.vertical_angle(), tp.x_int()));
-        eventDisplayBuffer.push_back(e);
-
-	}
-
-}
-
 void Plots::clear() {
 
     // TODO: Use ROOT versions of delete?
@@ -597,9 +405,6 @@ void Plots::clear() {
 	}
     p_tdc_hit_rate_graph.clear();
 
-    nHits.clear();
-    nTotal.clear();
-
     if(hitByLC) {
         delete hitByLC;
         hitByLC = nullptr;
@@ -624,7 +429,5 @@ void Plots::clear() {
         delete residuals;
         residuals = nullptr;
     }
-
-    eventDisplayBuffer.clear();
 
 }

@@ -170,18 +170,20 @@ void Decode::startDecoding(
                 //         -- It isn't in the legacy DAQ.cpp though
                 //         -- Look at how it's used in the offline analysis code
                 // TODO: Should we make the entire TrackParam here?
-                TTree optTree("optTree", "optTree");
-                optTree.Branch("event", "Event", &e);
-                optTree.Fill();
+                // TODO: We don't need optTree if we're not optimizing, but we need
+                //       to remember to add it back in if we reintroduce optimization.
+                // TTree optTree("optTree", "optTree");
+                // optTree.Branch("event", "Event", &e);
+                // optTree.Fill();
                 
                 data.lock();
-                data.plots.binEvent(e, optTree);
+                data.binEvent(e/*, optTree*/);
                 data.unlock();
                 
             }
 
             data.lock();
-            data.plots.updateHitRate(data.totalEventCount);
+            data.updateHitRate(data.totalEventCount);
             data.unlock();
 
             ///////////////////////////////////////////////////////////////////

@@ -438,8 +438,6 @@ void TabPanel::buildTab(const string &label, UITab *tab) {
 	// Show the close button for the tab
 	GetTabTab(label.data())->ShowClose();
 
-    // TODO: Somehow removing this clears up our segfaults, which leads me to
-    //       believe the problem is hiding in here somewhere.
     tab->update();
 
 }

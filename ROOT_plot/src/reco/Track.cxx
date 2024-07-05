@@ -39,7 +39,7 @@ namespace MuonReco {
 
   // TODO: Verify this distance function
   double Track::Distance(double x, double y) {
-    return TMath::Abs(x * TMath::Sin(theta) + (x_int - y) * TMath::Cos(theta));
+    return TMath::Abs((x + x_int) * TMath::Cos(theta) - y * TMath::Sin(theta));
   }
 
   void Track::Draw() {    

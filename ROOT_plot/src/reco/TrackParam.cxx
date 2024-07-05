@@ -107,6 +107,7 @@ namespace MuonReco {
 
 
   void TrackParam::Initialize(Event* e) {
+
     // create lists of doubles to hold x, y, radius
     std::vector<double> x, y, r;
     double hitX, hitY;
@@ -123,9 +124,13 @@ namespace MuonReco {
       }      
     }
 
+    // TODO: Understand the commented out code and evaluate whether I need it.
+    //       I get better-looking fits with the simpler code, but is that the
+    //       point? The simpler version does not really test the rtfunction.
+
+    /*
     // keep track of n pts
     // iterate over 2^n tries, doing a fit each time
-    /*
     double bestChiSq = DBL_MAX;
     double chiSq;
     for (int bitmap = 0; bitmap < 1<<npts; bitmap++) {
@@ -143,14 +148,20 @@ namespace MuonReco {
       }
       // do fitting
       double fitSlope, fitInt;
-      chiSq = LeastSquares(xtrial, y, r, &fitSlope, &fitInt);
+      chiSq = LeastSquares(y, xtrial, r, &fitSlope, &fitInt);
       if (chiSq < bestChiSq) {
         bestChiSq        = chiSq;
-        param[THETA]     = -1.0*TMath::ATan(1.0/fitSlope);
-        param[INTERCEPT] = -1.0*fitInt/fitSlope;
+        vertAng          = -1.0*TMath::ATan(fitSlope);
+        xInt             = fitInt;
+        param[THETA]     = vertAng;
+        param[INTERCEPT] = xInt;
       }
     }
     */
+
+    /////////////////////
+    // Simpler version //
+    /////////////////////
 
     double fitSlope, fitInt;
     LeastSquares(y, x, r, &fitSlope, &fitInt);
@@ -159,6 +170,8 @@ namespace MuonReco {
 
     vertAng = -1.0*TMath::ATan(fitSlope);
     xInt = fitInt;
+
+    //////////////////////
 
     param[DELTAT0] = 0;
     initialAngle[0] = getVerticalAngle()[0];    

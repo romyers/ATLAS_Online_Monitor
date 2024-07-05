@@ -29,6 +29,8 @@ void HistogramPlotter::update() {
 
     data.lock();
 
+    // TODO: This calls TCanvas::Clear(), which locks an internal mutex. Maybe
+    //       can cause the same deadlocking issues we saw with TTree?
     relayout(histograms.size());
 
     if(histograms.size() == 0) {
