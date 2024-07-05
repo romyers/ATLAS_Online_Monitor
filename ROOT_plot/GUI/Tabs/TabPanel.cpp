@@ -272,6 +272,8 @@ void TabPanel::update() {
 
                     // FIXME: What if data.plots.p_adc_time[tdc] hasn't been 
                     //        initialized yet?
+                    //        What if you try to access a menu during an 
+                    //        update?
                     HistogramPlotter *adcChannelPlot = new HistogramPlotter(
                         this,
                         data.plots.p_adc_time[tdc],
@@ -418,7 +420,6 @@ void TabPanel::update() {
     data.unlock();
 
     if(relayoutNeeded) Layout();
-
 
 }
 

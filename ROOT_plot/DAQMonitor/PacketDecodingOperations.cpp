@@ -136,9 +136,56 @@ void Decode::startDecoding(
 
         if(hasData) {
 
+            ///////////////////////////////////////////////////////////////////
+            // Aggregate data
+            ///////////////////////////////////////////////////////////////////
+
             data.lock();
 
-            aggregateEventData(loopData, data);
+            data.totalEventCount += loopData.eventCount;
+            data.nonemptyEventCount += loopData.nonemptyEvents.size();
+
+            data.droppedSignals  += loopData.droppedSignals;
+            data.droppedEvents   += loopData.droppedEvents ;
+
+            data.newEvents = loopData.nonemptyEvents;
+
+            data.unlock();
+
+            for(Event &e : data.newEvents) {
+
+                /*
+                * NOTE: TTree does not play nicely with multithreading. We need to
+                *       make sure the TTree is created outside the critical section
+                *       of any of our own locks, or trying to acquire the lock 
+                *       elsewhere will deadlock with internal TTree functionality.
+                * 
+                *       Thus we handle creation of the optTree outside of binEvent
+                *       then pass it in.
+                */
+                // TODO: I do not like leaking optTree into PacketDecodingOperations --
+                //       it should be hidden inside processing functions. But
+                //       we need to sort out the deadlock issue to do this.
+                // TODO: Shouldn't this object be persistent?
+                //         -- It isn't in the legacy DAQ.cpp though
+                //         -- Look at how it's used in the offline analysis code
+                TTree optTree("optTree", "optTree");
+                optTree.Branch("event", "Event", &e);
+                optTree.Fill();
+
+                data.lock();
+                data.plots.binEvent(e, optTree);
+                data.unlock();
+                
+            }
+
+            data.lock();
+            data.plots.updateHitRate(data.totalEventCount);
+            data.unlock();
+
+            ///////////////////////////////////////////////////////////////////
+            // Save noise rate
+            ///////////////////////////////////////////////////////////////////
 
             // Save the noise CSV file every 1000 events.
             if(data.totalEventCount >= noiseSavepoint) {
@@ -212,26 +259,6 @@ void Decode::startDecoding(
          << " nonempty events." 
          << endl;
     data.unlock();
-
-}
-
-void aggregateEventData(const DecodeData &loopData, DAQData &data) {
-
-    data.totalEventCount += loopData.eventCount;
-    data.nonemptyEventCount += loopData.nonemptyEvents.size();
-
-    data.droppedSignals  += loopData.droppedSignals;
-    data.droppedEvents   += loopData.droppedEvents ;
-
-    data.newEvents = loopData.nonemptyEvents;
-
-    for(Event &e : data.newEvents) {
-
-        data.plots.binEvent(e);
-        
-    }
-
-    data.plots.updateHitRate(data.totalEventCount);
 
 }
 

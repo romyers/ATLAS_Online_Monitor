@@ -309,7 +309,7 @@ void Plots::updateHitRate(int total_events) {
 
 }
 
-void Plots::binEvent(Event &e) {
+void Plots::binEvent(Event &e, TTree &optTree) {
 
 	// TODO: Event display
 	// TODO: Go through DAQ.cpp and find everything we need to include
@@ -344,24 +344,18 @@ void Plots::binEvent(Event &e) {
 
 	}
 
-    TrackParam tp;
-	tp.SetRT(&rtp);
-	tp.setVerbose(0);
-	tp.setMaxResidual(1000000);
-
 	// Residuals, efficiency, and event display modified from work by 
 	// Rongqian Qian. See:
 	// https://github.com/Rong-qian/ATLAS_Online_Monitor/
 	if(e.Pass()) {
 
-		// TODO: Shouldn't this object be persistent?
-		//         -- It isn't in the legacy DAQ.cpp though
-		TTree *optTree = new TTree("optTree", "optTree");
+        TrackParam tp;
 
-		optTree->Branch("event", "Event", &e);
-		optTree->Fill();
+        tp.SetRT(&rtp);
+        tp.setVerbose(0);
+        tp.setMaxResidual(1000000);
 
-		tp.setTarget(optTree);
+		tp.setTarget(&optTree);
 		tp.setRangeSingle(0);
 		tp.setIgnoreNone();
 		tp.optimize();
@@ -442,8 +436,8 @@ void Plots::binEvent(Event &e) {
 
                     // FIXME: Make sure the axes are right
 					tube_efficiency->SetBinContent(
-						iL + 1, 
 						iC + 1, 
+						iL + 1, 
 						nHits[iL][iC] / nTotal[iL][iC]
 					);
 
@@ -453,16 +447,8 @@ void Plots::binEvent(Event &e) {
 
 		}
 
-		delete optTree;
-
-        // TODO: Clean up and add a condition so not all events
-		//       go on the event display buffer.
-		if(true) {
-
-			e.AddTrack(Track(tp.vertical_angle(), tp.x_int()));
-			eventDisplayBuffer.push_back(e);
-
-		}
+        e.AddTrack(Track(tp.vertical_angle(), tp.x_int()));
+        eventDisplayBuffer.push_back(e);
 
 	}
 

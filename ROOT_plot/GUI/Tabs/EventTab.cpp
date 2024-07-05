@@ -253,6 +253,11 @@ void EventTab::update() {
 
 	}
 
+    // NOTE: Other exit points for this function go through 
+    //       showCurrentEvent(), which will update the label and reset
+    //       the buttons.
+    // TODO: This is a place where bugs could happen. It's best if these
+    //       calls happen in one place.
 	updateLabel(size);
 
 	resetButtonStates(size);
@@ -264,9 +269,6 @@ void EventTab::resetButtonStates(size_t size) {
 	// NOTE: eventDisplayBuffer.size() is a size_t. Don't subtract from it or
 	//       you might end up wrapping around to the very large numbers.
 
-	DAQData &data = DAQData::getInstance();
-
-	data.lock();
 	if(currentEventIndex > 0) {
 		leftButton->SetEnabled(true);
 		begButton ->SetEnabled(true);
@@ -283,6 +285,5 @@ void EventTab::resetButtonStates(size_t size) {
 		rightButton->SetEnabled(false);
 		endButton  ->SetEnabled(false);
 	}
-	data.unlock();
 
 }

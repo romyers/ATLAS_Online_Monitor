@@ -33,6 +33,10 @@
 
 using namespace std;
 
+// NOTE: Supposedly ROOT graphics are not threadsafe, and should be handled
+//       from the main thread:
+//       https://root-forum.cern.ch/t/using-root-gui-in-a-multithread-application/50915/2
+
 // COPIED TODOS FROM START_MONITOR:
 
 // TODO: Examine this for ROOT tips:
@@ -77,6 +81,9 @@ void termHandler(int signal) {
 ///////////////////////////////////////////////////////////////////////////////
 
 int main() {
+
+    ROOT::EnableThreadSafety();
+    ROOT::EnableImplicitMT();
 
     // NOTE: This appears to populate the global gApplication and gSystem 
     //       variables.

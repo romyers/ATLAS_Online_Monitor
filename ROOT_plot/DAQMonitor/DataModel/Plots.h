@@ -65,7 +65,7 @@ struct Plots {
 	// TODO: This would ideally be in DAQData.
 	std::vector<Event>               eventDisplayBuffer      ;
 
-	void binEvent     (MuonReco::Event &e  );
+	void binEvent     (MuonReco::Event &e, TTree &optTree);
 	void updateHitRate(int total_events    );
     void initialize   (                    );
 	void clear        (                    );
