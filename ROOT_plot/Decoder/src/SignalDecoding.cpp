@@ -76,16 +76,9 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 	if(sig.isEventHeader ()) return true;
 	if(sig.isEventTrailer()) return true;
 
+	if(sig.isTDCDecodeErr())  return true;
+
 	ErrorLogger &logger = ErrorLogger::getInstance();
-
-	if(sig.isTDCDecodeErr()) {  //should be handled first
-
-		string msg = "Decoding error occured!";
-		logger.logError(msg, TDC_DECODE_ERROR, ERROR);
-
-		return false;
-
-	}
 
 	if(!geo.IsActiveTDC(sig.TDC())) {
 
@@ -102,8 +95,37 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 
 	// In any of these cases, we have a valid signal, but we'll find a channel
 	// ID that is not considered active.
-	if(sig.isTDCHeader  ()) { return true; }
-	if(sig.isTDCTrailer ()) { return true; }
+	if(sig.isTDCHeader  ()) return true;
+	if(sig.isTDCTrailer ()) return true;
+    if(sig.isTDCOverflow()) return true;
+
+	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
+
+		string msg = "Unexpected data TDCID = ";
+		msg += to_string(sig.TDC());
+		msg += ", Channel = ";
+		msg += to_string(sig.Channel());
+
+		logger.logError(msg, SIGNAL_ERROR, ERROR);
+
+		return false;
+
+	}
+
+	return true;
+
+}
+
+void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
+
+	ErrorLogger &logger = ErrorLogger::getInstance();
+    
+    if(sig.isTDCDecodeErr()) { 
+
+		string msg = "Decoding error occured!";
+		logger.logError(msg, TDC_DECODE_ERROR, ERROR);
+
+	}
 
 	if(sig.isTDCOverflow()) {
 
@@ -133,32 +155,7 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 
 		logger.logError(msg, SIGNAL_ERROR, ERROR);
 
-        return false;
-
 	}
-
-
-
-	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
-
-		string msg = "Unexpected data TDCID = ";
-		msg += to_string(sig.TDC());
-		msg += ", Channel = ";
-		msg += to_string(sig.Channel());
-
-		logger.logError(msg, SIGNAL_ERROR, ERROR);
-
-		return false;
-
-	}
-
-	return true;
-
-}
-
-void validateSignalWarnings(const Signal &sig, const Geometry &geo) {
-
-
 
 }
 

@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(DAQManager)
+project(
+    DAQManager
+    # VERSION 0.1
+    DESCRIPTION "Online Monitor for the Phase 2 MiniDAQ"
+    LANGUAGES C CXX
+)
 
 # Point CMAKE at the project directory when it looks for e.g. FindPCAP.cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/")

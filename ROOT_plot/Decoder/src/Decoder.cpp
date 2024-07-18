@@ -58,6 +58,8 @@ DecodeData Decoder::decodeStream(
 		// validate it
 		if(validateSignalErrors(sig, geo)) {
 
+		    validateSignalWarnings(sig, geo);
+
 			// TODO: We should keep some metadata if it's a TDC header or
 			//       trailer. See DecodeOffline.cpp
 
@@ -70,30 +72,28 @@ DecodeData Decoder::decodeStream(
 
 		}
 
-		validateSignalWarnings(sig, geo);
-
 		// and, if it completes an event,
 		if(isEvent(signalBuffer)) {
 
-			// create the event,
-			Event e = assembleEvent(signalBuffer);
+            if(validateEventErrors(signalBuffer)) {
 
-			// and validate the event.
-			if(validateEventErrors(e)) {
+			    validateEventWarnings(signalBuffer);
 
-				eventBuffer.push_back(e);
+                // Weed out TDC signals that we don't want to include in the
+                // event
+                removeTDCSignals(signalBuffer);
 
-			} else {
+                eventBuffer.push_back(assembleEvent(signalBuffer));
 
-				cerr << "Dropped event" << endl;
+            } else {
 
-				++result.droppedEvents;
+                cerr << "Dropped event" << endl;
 
-			}
+                ++result.droppedEvents;
+
+            }
 
 			signalBuffer.clear();
-
-			validateEventWarnings(e);
 
 		}
 
