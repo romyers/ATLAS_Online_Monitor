@@ -118,7 +118,7 @@ string getColor(const ErrorData &error) {
 			return DEBUG_COLOR;
 			break;
 
-		case INFORMATIVE:
+		case INFO:
 			return INFO_COLOR;
 			break;
 
@@ -130,7 +130,7 @@ string getColor(const ErrorData &error) {
 			return ERROR_COLOR;
 			break;
 
-		case FATAL:
+		case CRITICAL:
 			return FATAL_COLOR;
 			break;
 

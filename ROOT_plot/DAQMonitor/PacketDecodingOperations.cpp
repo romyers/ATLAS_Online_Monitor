@@ -263,7 +263,7 @@ void saveNoiseRate(const string &path, const DAQData &data) {
         ErrorLogger::getInstance().logError(
             string("Noiserate CSV output file reopened"),
             "packetDecoding",
-            INFORMATIVE
+            INFO
         );
 
         lastSaveFailed = false;

@@ -30,8 +30,8 @@ string ErrorData::stringify() const {
 		errorLevel = "DEBUG";
 		break;
 
-	case INFORMATIVE:
-		errorLevel = "INFORMATIVE";
+	case INFO:
+		errorLevel = "INFO";
 		break;
 
 	case WARNING:
@@ -42,8 +42,8 @@ string ErrorData::stringify() const {
 		errorLevel = "ERROR";
 		break;
 
-	case FATAL:
-		errorLevel = "FATAL";
+	case CRITICAL:
+		errorLevel = "CRITICAL";
 		break;
 
 	default:

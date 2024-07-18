@@ -29,7 +29,7 @@ enum ErrorLevel {
 	 * Marker for any nonerroneous information suitable for logging in a 
 	 * production build.
 	 */
-	INFORMATIVE,
+	INFO,
 
 	/**
 	 * Marker for warnings that do not interfere with the program.
@@ -42,10 +42,10 @@ enum ErrorLevel {
 	ERROR,
 
 	/**
-	 * Marker for fatal errors that the program cannot recover from. FATAL
-	 * should be reserved for errors that will crash the program.
+	 * Marker for critical errors that the program cannot recover from. 
+     * CRITICAL should be reserved for errors that will crash the program.
 	 */
-	FATAL,
+	CRITICAL,
 
 	/**
 	 * Marker used in filtering errors to signify that you do not wish to

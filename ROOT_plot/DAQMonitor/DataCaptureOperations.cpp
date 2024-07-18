@@ -72,7 +72,7 @@ void DataCapture::startDataCapture(
 
     } catch(UIException &e) {
 
-        ErrorLogger::getInstance().logError(e.what(), "dataCapture", FATAL);
+        ErrorLogger::getInstance().logError(e.what(), "dataCapture", CRITICAL);
 
         // TODO: Abort run and popup an error message in this case
 
@@ -99,7 +99,7 @@ void DataCapture::startDataCapture(
         ErrorLogger::getInstance().logError(
             string("Failed to open output .dat file: ") + outputFile,
             "dataCapture",
-            FATAL
+            CRITICAL
         );
         cout << "Aborted run!" << endl;
 
@@ -113,7 +113,7 @@ void DataCapture::startDataCapture(
         ErrorLogger::getInstance().logError(
             string("Failed to open log file: ") + logFile,
             "errorLogging",
-            FATAL
+            CRITICAL
         );
         cout << "Aborted run!" << endl;
 
@@ -196,7 +196,7 @@ void initializePCapSessionHandler(
 
     } catch(NetworkDeviceException &e) {
 
-        ErrorLogger::getInstance().logError(e.what(), "dataCapture", FATAL);
+        ErrorLogger::getInstance().logError(e.what(), "dataCapture", CRITICAL);
         cout << "Aborted run!" << endl;
 
         throw UIException(

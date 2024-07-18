@@ -143,17 +143,35 @@ void DataRun::startRun() {
         cout << endl << "File source selected" << endl;
         cout << "Filename: " << filename << endl;
 
+        size_t filePos      = filename.find_last_of("/");
         size_t extensionPos = filename.find_last_of(".");
 
-        if(extensionPos == string::npos) {
+        // Check if it's a Windows-style path
+        if(filePos == string::npos) {
 
-            runLabel = filename;
+            filePos = filename.find_last_of("\\");
+
+        }
+
+        // If still nothing, set to beginning of string
+        if(filePos == string::npos) {
+
+            filePos = 0;
 
         } else {
 
-            runLabel = filename.substr(0, extensionPos);
+            // Otherwise increment to skip the slash
+            ++filePos;
 
         }
+
+        if(extensionPos == string::npos) {
+
+            extensionPos = filename.size();
+
+        }
+
+        runLabel = filename.substr(filePos, extensionPos - filePos);
 
     } else if (state.persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
