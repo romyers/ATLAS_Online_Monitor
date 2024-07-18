@@ -12,7 +12,8 @@ using namespace std;
 //       leaking GUI details like what buttons we have to press into the code
 //       that handles showing events. Try having functions like:
 //       showEvent(int eventNum) and getEventCount(), so e.g. showLastEvent
-//       becomes showEvent(getEventCount() - 1).
+//       becomes showEvent(getEventCount() - 1), and showNextEvent can be
+//       something like showEvent(getCurrentEvent() + 1).
 
 EventTab::EventTab(const TGWindow *p, int width, int height) 
 	: CanvasTab(p, "Event Display", width, height - 20),
@@ -57,8 +58,6 @@ EventTab::EventTab(const TGWindow *p, int width, int height)
 	leftButton ->SetEnabled(false);
 	endButton  ->SetEnabled(false);
 
-	// TODO: Weird behavior when opened after a run has started.
-
 	toggleAutoplay();
 
 	makeConnections();
@@ -67,6 +66,8 @@ EventTab::EventTab(const TGWindow *p, int width, int height)
 
 void EventTab::makeConnections() {
 
+    // TODO: It would be nice to do this on an enter keypress from the text
+    //       entry too.
     confirmButton->Connect("Clicked()", "EventTab", this, "goToSelectedEvent()");
 
 	begButton    ->Connect("Clicked()", "EventTab", this, "stopAutoplay()"     );

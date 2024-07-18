@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(DAQManager)
+project(
+    DAQManager
+    # VERSION 0.1
+    DESCRIPTION "Online Monitor for the Phase 2 MiniDAQ"
+    LANGUAGES C CXX
+)
 
 # Point CMAKE at the project directory when it looks for e.g. FindPCAP.cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/")
@@ -258,6 +263,30 @@ target_link_libraries(p2decode PUBLIC libP2Decode)
 
 add_executable(DAQManager StartDAQ.cpp)
 target_link_libraries(DAQManager PUBLIC libMonitor)
+
+
+#---Set up Catch2 testing if requested
+OPTION(BUILD_TESTING "Build the Test Suite" OFF)
+if(BUILD_TESTING)
+
+    # TODO: Find Catch2 if it exists, and only FetchContent if it doesn't
+    # TODO: Extract finding/fetching Catch2 into a CMake module
+
+    include(FetchContent)
+    include(CTest)
+
+    FetchContent_Declare(
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v3.6.0
+    )
+    FetchContent_MakeAvailable(Catch2)
+
+    list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+    include(Catch)
+
+endif()
+
 
 ###############################################################################
 

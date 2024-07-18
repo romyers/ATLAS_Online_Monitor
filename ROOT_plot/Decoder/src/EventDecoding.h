@@ -38,20 +38,21 @@
  * 
  * @return The assembled event.
  */
-MuonReco::Event assembleEvent(std::vector<MuonReco::Signal> signals);
+MuonReco::Event assembleEvent(const std::vector<MuonReco::Signal> &signals);
 
 /**
- * Checks if an event has no errors that require the event to be discarded.
+ * Checks if a signal buffer meant to represent an event has any errors
+ * that would require the event to be dropped.
  * 
- * @param e The event to check.
+ * @param signals The signals to check.
  * 
- * @return True if e had no errors, and false otherwise.
+ * @return True if signals had no errors, and false otherwise.
  */
-bool validateEventErrors(const MuonReco::Event &e);
+bool validateEventErrors(const std::vector<MuonReco::Signal> &signals);
 
 /**
- * Checks if an event has no errors that do not require the event to be 
- * discarded.
+ * Checks if a signal buffer meant to represent an event has any warnings
+ * that would not require the event to be dropped.
  * 
  * NOTE: TDC Error signals are dropped before event assembly, but are
  * counted in the event trailer's hit count. In this case, the event will
@@ -64,11 +65,11 @@ bool validateEventErrors(const MuonReco::Event &e);
  * triggered, then the event actually does exhibit a true hit count
  * mismatch.
  * 
- * @param e The event to check.
+ * @param signals The signals to check.
  * 
- * @return True if e had no errors, and false otherwise.
+ * @return True if signals had no warnings, and false otherwise.
  */
-void validateEventWarnings(const MuonReco::Event &e);
+void validateEventWarnings(const std::vector<MuonReco::Signal> &signals);
 
 /**
  * Performs hit finding and other processing on the event.
@@ -80,4 +81,13 @@ void processEvent(
 	MuonReco::Geometry       &geo     , 
 	MuonReco::TimeCorrection &tc      ,
 	MuonReco::RecoUtility    &recoUtil
+);
+
+/**
+ * Removes TDC Header, Trailer, Overflow, and Error signals from signals.
+ * 
+ * @param signals A pre-validated vector of signals.
+ */
+void removeTDCSignals(
+    std::vector<MuonReco::Signal> &signals
 );

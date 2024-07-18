@@ -10,6 +10,10 @@
 using namespace MuonReco;
 using namespace std;
 
+
+// TODO: Examine this:
+// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+
 Plots::Plots(const Plots &other) {
 
 	p_leading_time  = dynamic_cast<TH1F*>(other.p_leading_time ->Clone());

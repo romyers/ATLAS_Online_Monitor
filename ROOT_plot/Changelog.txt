@@ -141,6 +141,8 @@
 - Make an error message pop up for exceptions thrown in DataRunOperations instead
   of just crashing the program.
 - Set up ROOT and libpcap in the setup scripts?
+- Find a good way to handle restricting how many events can be in the
+  eventDisplayBuffer.
 
 -------------------------------------------------------------------------------
 
@@ -148,7 +150,11 @@
 
 ## Added 
 
-- Added go to event functionality to event display.
+- Added go-to-event functionality to event display.
+
+## Changed 
+
+- DAQState now uses std::lock_guard for cleaner mutex handling.
 
 ## Fixed 
 

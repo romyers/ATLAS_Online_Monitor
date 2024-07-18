@@ -23,15 +23,8 @@ const string EVENT_ERROR = "event" ;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Signal getHeader (const Event &e);
-Signal getTrailer(const Event &e);
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
 // TODO: We also want some metadata, as described in DecodeOffline
-Event assembleEvent(vector<Signal> signals) {
+Event assembleEvent(const vector<Signal> &signals) {
 
 	return Event(
 		signals.front(), 
@@ -64,11 +57,28 @@ void processEvent(
 }
 
 // Validation that, when failed, drops the event
-bool validateEventErrors(const Event &e) {
+bool validateEventErrors(const vector<Signal> &signals) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
-	if(!getHeader(e).isEventHeader()) {
+    // TODO: This is a logic error not a runtime error, so we should
+    //       really handle it separately.
+    if(signals.size() < 2) {
+
+        logger.logError(
+            "Found event with fewer than 2 signals",
+            EVENT_ERROR,
+            ERROR
+        );
+
+        return false;
+    
+    }
+
+    const Signal &header = signals.front();
+    const Signal &trailer = signals.back();
+
+	if(!header.isEventHeader()) {
 
 		logger.logError(
 			"Found event with no header",
@@ -80,7 +90,7 @@ bool validateEventErrors(const Event &e) {
 
 	}
 
-	if(!getTrailer(e).isEventTrailer()) {
+	if(!trailer.isEventTrailer()) {
 
 		logger.logError(
 			"Found event with no trailer",
@@ -93,7 +103,7 @@ bool validateEventErrors(const Event &e) {
 	}
 
 	// Make sure the header and trailer event IDs match
-	if(getHeader(e).HeaderEID() != getTrailer(e).TrailerEID()) {
+	if(header.HeaderEID() != trailer.TrailerEID()) {
 
 		logger.logError(
 			"Found event with mismatched event IDs",
@@ -104,49 +114,64 @@ bool validateEventErrors(const Event &e) {
 	}
 
 	// Make sure there aren't any extraneous event headers or trailers
-	for(const Signal &sig : e.WireSignals()) {
+    // hiding in the interior of the signals buffer
+    for(auto it = signals.cbegin() + 1; it != signals.cend() - 1; ++it) {
 
-		if(sig.isEventHeader()) {
+        if(it->isEventHeader()) {
 
-			logger.logError(
-				"Found event with multiple headers",
-				EVENT_ERROR,
-				ERROR
-			);
+            logger.logError(
+                "Found event with multiple headers",
+                EVENT_ERROR,
+                ERROR
+            );
 
-			return false;
+            return false;
 
-		}
+        }
 
-		if(sig.isEventTrailer()) {
+        if(it->isEventTrailer()) {
 
-			logger.logError(
-				"Found event with multiple trailers",
-				EVENT_ERROR,
-				ERROR
-			);
+            logger.logError(
+                "Found event with multiple trailers",
+                EVENT_ERROR,
+                ERROR
+            );
 
-			return false;
+            return false;
 
-		}
+        }
 
-	}
+    }
 
 	return true;
 
 }
 
 // Validation that, when failed, keeps the event but warns the user.
-void validateEventWarnings(const Event &e) {
+void validateEventWarnings(const vector<Signal> &signals) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
+    // TODO: Again, this is a logic error not a runtime error
+    if(signals.size() < 2) {
+
+        logger.logError(
+            "Found event with fewer than 2 signals",
+            EVENT_ERROR,
+            WARNING
+        );
+
+    }
+
+    const Signal &header = signals.front();
+    const Signal &trailer = signals.back();
+
 	// Check the event trailer for the header count error flag
-	if(getTrailer(e).HeaderCountErr()) {
+	if(trailer.HeaderCountErr()) {
 
 		logger.logError(
 			string("Header count error flag. Got ")
-			+ to_string(getTrailer(e).TDCHdrCount())
+			+ to_string(trailer.TDCHdrCount())
 			+ " header(s)!",
 			EVENT_ERROR,
 			WARNING
@@ -155,11 +180,11 @@ void validateEventWarnings(const Event &e) {
 	}
 
 	// Check the event trailer for the trailer count error flag
-	if(getTrailer(e).TrailerCountErr()) {
+	if(trailer.TrailerCountErr()) {
 
 		logger.logError(
 			string("Trailer count error flag. Got ")
-			+ to_string(getTrailer(e).TDCTlrCount())
+			+ to_string(trailer.TDCTlrCount())
 			+ " trailer(s)!",
 			EVENT_ERROR,
 			WARNING
@@ -169,7 +194,7 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that all TDC headers have matching event IDs
 	int lastTDCHeaderID = -1;
-	for(const Signal &sig : e.WireSignals()) {
+	for(const Signal &sig : signals) {
 
 		if(sig.isTDCHeader()) {
 
@@ -200,31 +225,45 @@ void validateEventWarnings(const Event &e) {
 
 	int TDCHeaderCount  = 0;
 	int TDCTrailerCount = 0;
+    int hitCount        = 0;
 
 	// Event::Signals() now filters out TDC headers/trailers to ensure
 	// backwards compatibility with other code that expects these signals not
 	// to be included in the first place. Event::Signals_All() includes these
 	// signals.
 
-	// Count all TDC headers, trailers, and errors in the event.
-	for(const Signal &sig : e.WireSignals()) {
+	// Count all TDC headers, trailers, and errors in the interior of the
+    // buffer.
+	for(auto it = signals.cbegin() + 1; it != signals.cend() - 1; ++it) {
 
-		if(sig.isTDCHeader  ()) ++TDCHeaderCount ;
-		if(sig.isTDCTrailer ()) ++TDCTrailerCount;
+		if(it->isTDCHeader()) {
+
+            ++TDCHeaderCount;
+
+        } else if(it->isTDCTrailer()) {
+
+            ++TDCTrailerCount;
+
+        } else if(!(it->isTDCOverflow() || it->isTDCDecodeErr())) {
+
+            ++hitCount;
+
+        }
 
 	}
 
+    // TODO: Do TDC headers/trailers count for the hit count?
 	// Check that the real hit count matches the count reported in the 
-	// event trailer
-	if(getTrailer(e).HitCount() != e.WireSignals().size()) {
+	// event trailer, minus the event header and trailer
+	if(trailer.HitCount() != hitCount) {
 
         // TODO: We need to count TDC errors that were dropped from the event
 
 		logger.logError(
 			string("Hit count in trailer = ")
-			+ to_string(getTrailer(e).HitCount())
+			+ to_string(trailer.HitCount())
 			+ ", real hit count = "
-			+ to_string(e.WireSignals().size()),
+			+ to_string(signals.size()),
 			EVENT_ERROR,
 			WARNING
 		);
@@ -233,12 +272,12 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that the real TDC header count matches the count reported in the
 	// event trailer
-	if(TDCHeaderCount != getTrailer(e).TDCHdrCount()) {
+	if(TDCHeaderCount != trailer.TDCHdrCount()) {
 
 		logger.logError(
 			to_string(TDCHeaderCount)
 			+ " TDC header(s) found in data, event trailer indicates "
-			+ to_string(getTrailer(e).TDCHdrCount())
+			+ to_string(trailer.TDCHdrCount())
 			+ "!",
 			EVENT_ERROR,
 			WARNING
@@ -248,12 +287,12 @@ void validateEventWarnings(const Event &e) {
 
 	// Check that the real TDC trailer count matches the count reported in the
 	// event trailer
-	if(TDCTrailerCount != getTrailer(e).TDCTlrCount()) {
+	if(TDCTrailerCount != trailer.TDCTlrCount()) {
 
 		logger.logError(
 			to_string(TDCTrailerCount)
 			+ " TDC trailer(s) found in data, event trailer indicates "
-			+ to_string(getTrailer(e).TDCTlrCount())
+			+ to_string(trailer.TDCTlrCount())
 			+ "!",
 			EVENT_ERROR,
 			WARNING
@@ -263,14 +302,23 @@ void validateEventWarnings(const Event &e) {
 
 }
 
-Signal getHeader (const Event &e) {
+void removeTDCSignals(
+    std::vector<MuonReco::Signal> &signals
+) {
 
-	return e.TrigSignals().front();
-
-}
-
-Signal getTrailer(const Event &e) {
-
-	return e.TrigSignals().back();
+    signals.erase(
+        std::remove_if(
+            signals.begin(), 
+            signals.end(),
+            [](const Signal &signal) {
+                if(signal.isTDCHeader   ()) { return true; }
+                if(signal.isTDCTrailer  ()) { return true; }
+                if(signal.isTDCOverflow ()) { return true; }
+                if(signal.isTDCDecodeErr()) { return true; }
+                return false;
+            }
+        ),
+        signals.end()
+    );
 
 }

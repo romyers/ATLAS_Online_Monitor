@@ -7,8 +7,6 @@
 using namespace std;
 using namespace State;
 
-
-
 string trim(const string &str);
 
 ///////////////////////////////////////////////////////////////////////////
@@ -112,7 +110,7 @@ DAQState::DAQState() {}
 
 bool DAQState::commit(bool force) {
 
-	stateLock.lock();
+    std::lock_guard<std::mutex> lock(stateLock);
 
 	if(!force) {
 
@@ -120,7 +118,6 @@ bool DAQState::commit(bool force) {
 
 			// TODO: Better to throw an exception here?
 
-			stateLock.unlock();
 			return false;
 
 		}
@@ -130,25 +127,23 @@ bool DAQState::commit(bool force) {
 	++commitNumber;
 	masterState = *this;
 
-	stateLock.unlock();
-
 	return true;
 
 }
 
 void DAQState::update() {
 
-	stateLock.lock();
+    std::lock_guard<std::mutex> lock(stateLock);
+
 	*this = masterState;
-	stateLock.unlock();
 
 }
 
 DAQState DAQState::getState() {
 
-	stateLock.lock();
+    std::lock_guard<std::mutex> lock(stateLock);
+
 	DAQState state = masterState;
-	stateLock.unlock();
 
 	return state;
 
