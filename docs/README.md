@@ -1,3 +1,6 @@
+\mainpage
+\tableofcontents
+
 # ATLAS MiniDAQ Online Monitor
 
 This application provides a GUI interface for monitoring miniDAQ sMDT and MDT chamber systems via an ethernet connection.
