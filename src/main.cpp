@@ -1,7 +1,11 @@
 #include "DAQApp.h"
 #include "MonitorView.h"
 
+#include "TSystem.h"
+
 #include "TGFrame.h"
+
+#include "TMath.h"
 
 const double GUI_REFRESH_RATE = 60.; // Hz
 
@@ -75,9 +79,9 @@ class System {
 
 public:
 
-    virtual TGFrame *getView() = 0;
+	virtual TGFrame *getView() = 0;
 
-    virtual void update([new shared state]) = 0;
+	virtual void update([new shared state]) = 0;
 
 }
 */
@@ -86,50 +90,103 @@ public:
 //   -- Good way to construct the systems in the first place? Can we keep
 //      higher level code agnostic?
 //        > Again, we can't keep higher level code completely agnostic, 
-//          since it still has to put the right views in the right spots
+//          since it still has to put the right views in the right spots.
+//          So it remains to be seen if having a standard interface actually
+//          helps us at all. It will depend on whether there is enough reason
+//          to want to treat each system the same way.
+// NOTE: We can override the AddFrame method in MonitorView to also register
+//       the system for updates, so all MonitorView has to do to connect a new
+//       system is AddFrame its view, and everything else happens 
+//       automatically.
+//         -- AddFrame can throw the new system into a vector of systems, and
+//            update() can run through the vector and call update() on each
+//            system.
+//         -- This lets us register systems in main() instead of in
+//            MonitorView.
+//         -- Or, better, MonitorView has an 'AddSystem' method that calls
+//            AddFrame() internally.
+// Process of adding a system is like this:
+// RunSystem runner(sharedState);
+// monitor->AddSystem(&runner); // Or pass in by reference
+//   -- Problem: the system's view needs its parent to be constructed.
+//        > TGFrames have a 'ReparentWindow' method that might help.
+
+// TODO: Everything on the settings panel goes together in one system. So
+//       config parsing, data source settings, etc all go together.
+//         -- Systems all link together via shared state passed into their
+//            constructors.
+
+/*
+SharedState state;
+
+DataRunner runner(state);
+monitor->AddSystem(runner);
+
+RunStats stats(state);
+monitor->AddSystem(runner);
+
+SettingsPanel settings(state);
+monitor->AddSystem(settings);
+
+// etc.
+*/
+// We might want an initialization function for each system too. Some of them
+// need to do things once per run.
+//   -- But this starts to get messy.
+
+// Try to flesh out the whole interface before we bash out implementations.
+
+// TODO: GUI elements should remember things like sizing and position across
+//       application launches
+
+// TODO: File browsers should block interactions with the gui until they are
+//       closed
 
 int main() {
 
-    // TODO: We'd like to make app a TGMainFrame, but we can't because we can't
-    //       use things like gClient->GetRoot() until the app is constructed.
+	// TODO: We'd like to make app a TGMainFrame, but we can't because we can't
+	//       use things like gClient->GetRoot() until the app is constructed.
 
-    App app("MiniDAQ Monitor");
+	App app("MiniDAQ Monitor");
 
-    ///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
-    // Construct a window for the DAQMonitor to live in.
-    TGMainFrame *frame = new TGMainFrame(gClient->GetRoot());
+	// Construct a window for the DAQMonitor to live in.
+	TGMainFrame *frame = new TGMainFrame(gClient->GetRoot());
 
-    // Build the Monitor GUI and attach it to the main frame.
-    MonitorView *window = new MonitorView(frame);
-    frame->AddFrame(window, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
+	// Build the Monitor GUI and attach it to the main frame.
+	MonitorView *monitor = new MonitorView(frame);
+	frame->AddFrame(
+		monitor, 
+		new TGLayoutHints(kLHintsExpandX | kLHintsExpandY)
+	);
 
-    // Title, size, and display the GUI.
-    frame->SetWindowName("MiniDAQ Monitor");
-    frame->MapSubwindows();
-    frame->Resize(frame->GetDefaultSize());
-    frame->MapWindow();
+	// Title, size, and display the GUI.
+	frame->SetWindowName("MiniDAQ Monitor");
+	frame->MapSubwindows();
+	frame->Resize(frame->GetDefaultSize());
+	frame->MapWindow();
 
-    // Tell the application to stop when the window is closed.
-    frame->Connect("CloseWindow()", "DAQ::App", &app, "stop()");
+	// Tell the application to stop when the window is closed.
+	frame->Connect("CloseWindow()", "DAQ::App", &app, "stop()");
 
-    ///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
-    // Run the UI loop, processing events at the specified refresh rate.
-    // This will not return until the GUI is stopped.
-    // The rest of the program's functionality will be driven by GUI events.
-    app.run(GUI_REFRESH_RATE);
+	// Run the UI loop, processing events at the specified refresh rate.
+	// This will not return until the GUI is stopped.
+	// The rest of the program's functionality will be driven by GUI events.
+	app.run(GUI_REFRESH_RATE);
 
-    // At this point, the GUI has been shut down, and we are free to clean up.
+	// At this point, the GUI has been shut down, and we are free to clean up.
 
-    // TODO: I don't fully understand ROOT's memory management scheme. Make
-    //       sure everything is getting cleaned up.
-    //         -- Valgrind says we're leaking memory, even if we call every
-    ///           delete function we can find
+	// TODO: I don't fully understand ROOT's memory management scheme. Make
+	//       sure everything is getting cleaned up.
+	//         -- Valgrind says we're leaking memory, even if we call every
+	///           delete function we can find
 
-    // Recursively delete the GUI frame and all of its children.
-    frame->Cleanup();
+	// Recursively delete the GUI frame and all of its children.
+	frame->Cleanup();
 
-    return 0;
+	return 0;
 
 }

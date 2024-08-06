@@ -18,50 +18,53 @@
 
 namespace DAQ {
 
-    /**
-     * @brief Top-level GUI interface for the DAQMonitor.
-     */
-    class MonitorView final : public TGVerticalFrame {
+	/**
+	 * @brief Top-level GUI interface for the DAQMonitor.
+	 */
+	class MonitorView final : public TGVerticalFrame {
 
-    ClassDef(MonitorView, 0);
+	ClassDef(MonitorView, 0);
 
-    public:
+	public:
 
-        /**
-         * @brief Construct a new MonitorView object.
-         * 
-         * @param p The window that should serve as this MonitorView's parent.
-         * By default, the parent is the root window.
-         */
-        MonitorView(
-            const TGWindow *p = gClient->GetRoot()
-        );
-        virtual ~MonitorView();
+		/**
+		 * @brief Construct a new MonitorView object.
+		 * 
+		 * @param p The window that should serve as this MonitorView's parent.
+		 * By default, the parent is the root window.
+		 */
+		MonitorView(
+			const TGWindow *p = gClient->GetRoot()
+		);
+		virtual ~MonitorView();
 
-        // Internal signal handlers. Not meant to be called directly.
-        // This one is called when the "Start Run" button is pressed.
-        void handlePressedStart();
-        // This one is called when the "Stop Run" button is pressed.
-        void handlePressedStop();
+		// Internal signal handlers. Not meant to be called directly.
+		// This one is called when the "Start Run" button is pressed.
+		void handlePressedStart();
+		// This one is called when the "Stop Run" button is pressed.
+		void handlePressedStop();
 
-    private:
+	private:
 
-        // The rest of this class represents the GUI layout. I've used
-        // indentation to show the hierarchy of the GUI elements. 
-        // The elements themselves are constructed and connected to the
-        // MonitorView in the MonitorView constructor.
+		MonitorView(const MonitorView &) = delete;
+		MonitorView &operator=(const MonitorView &) = delete;
 
-        TGHorizontalFrame *mainPanel;
+		// The rest of this class represents the GUI layout. I've used
+		// indentation to show the hierarchy of the GUI elements. 
+		// The elements themselves are constructed and connected to the
+		// MonitorView in the MonitorView constructor.
 
-            TGVerticalFrame *leftPanel;
+		TGHorizontalFrame *mainPanel;
 
-        TGHorizontalFrame *bottomPanel;
+			TGVerticalFrame *leftPanel;
 
-            TGButtonGroup *buttonGroup;
+		TGHorizontalFrame *bottomPanel;
 
-                TGTextButton *startButton;
-                TGTextButton *stopButton ;
+			TGButtonGroup *buttonGroup;
 
-    };
+				TGTextButton *startButton;
+				TGTextButton *stopButton ;
+
+	};
 
 }
