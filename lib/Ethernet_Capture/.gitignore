@@ -32,7 +32,6 @@ PyMovie.ini
 /out/
 /output/
 /data/
-/ROOT_plot/data/
 
 # Compiled Object files
 *.slo
