@@ -113,6 +113,12 @@ void connectDAQto(DAQManager *GUI) {
 
 void SigHandlers::handlePressedStartRun() {
 
+	// TODO: We also save once the run has actually started in 
+	//       DataRunOperations. Which is the better place?
+	//         -- This one makes sure that if something goes
+	//            wrong, the settings still persist.
+	//         -- In redesign, just save the settings whenever
+	//            they change. It's not that expensive.
 	State::DAQState::getState().save();
 
 	GUIptr->disableStartButton();
@@ -138,6 +144,7 @@ void SigHandlers::handleRunStartEvent() {
 	GUIptr->enableStopButton       ();
 	GUIptr->disableDataSourcePanel ();
 	GUIptr->disableConfFileSelector();
+	GUIptr->disableRunNumberPanel  ();
 
 }
 
@@ -156,6 +163,7 @@ void SigHandlers::handleRunStopEvent() {
 	GUIptr->enableStartButton     ();
 	GUIptr->enableDataSourcePanel ();
 	GUIptr->enableConfFileSelector();
+	GUIptr->enableRunNumberPanel  ();
 
 }
 

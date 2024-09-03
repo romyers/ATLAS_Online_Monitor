@@ -66,6 +66,7 @@ void DAQState::writePersistentState(ostream &out) {
 	out << "Input Device Name: "     << persistentState.inputDevicename    << endl;
 	out << "Input File Name: "       << persistentState.inputFilename      << endl;
 	out << "Conf File Name: "        << persistentState.confFilename       << endl;
+	out << "Run Number: "            << persistentState.runNumber          << endl;
 
 }
 
@@ -93,6 +94,16 @@ bool DAQState::readPersistentState(istream &in) {
 	} else {
 
 		persistentState.dataSource = stoi(tokens["Data Source"]);
+
+	}
+
+	if(tokens["Run Number"] == "") {
+
+		persistentState.runNumber = 0;
+
+	} else {
+
+		persistentState.runNumber = stoi(tokens["Run Number"]);
 
 	}
 

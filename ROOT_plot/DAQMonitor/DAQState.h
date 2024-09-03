@@ -27,6 +27,7 @@ namespace State {
 	struct PersistentState {
 
 		int    dataSource           = NETWORK_DEVICE_SOURCE;
+		int    runNumber            = 0                    ;
 
 		std::string inputFilename   = ""                   ;
 		std::string inputDevicename = ""                   ;

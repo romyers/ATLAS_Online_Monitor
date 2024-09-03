@@ -19,6 +19,7 @@
 #include "TGButton.h"
 #include "TGLabel.h"
 
+#include "RunNumberPanel.h"
 #include "DataSourcePanel.h"
 #include "ConfFileSelector.h"
 #include "UpdatePacket.h"
@@ -75,6 +76,9 @@ public:
     void disableDataSourcePanel ();
     void enableDataSourcePanel  ();
 
+	void disableRunNumberPanel  ();
+	void enableRunNumberPanel   ();
+
     void handlePressStart       ();
     void handlePressStop        ();
     void handlePressExit        ();
@@ -104,6 +108,7 @@ private:
 
             TGGroupFrame *settings;
 
+				RunNumberPanel   *runNumberPanel;
                 ConfFileSelector *confFileSelector;
                 DataSourcePanel  *dataSourcePanel;
 

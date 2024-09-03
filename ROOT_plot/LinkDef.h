@@ -25,6 +25,9 @@
 #include "GUI/Components/ConfFileSelector.h"
 #pragma link C++ class ConfFileSelector+;
 
+#include "GUI/Components/RunNumberPanel.h"
+#pragma link C++ class RunNumberPanel+;
+
 #include "GUI/Components/DAQManager.h"
 #pragma link C++ class DAQManager+;
 

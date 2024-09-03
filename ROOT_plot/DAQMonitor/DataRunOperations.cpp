@@ -184,7 +184,12 @@ void DataRun::startRun() {
         cout << endl << "Network source selected" << endl;
         cout << "Ethernet device: " << state.persistentState.inputDevicename << endl;
 
-        runLabel = string("run_") + getCurrentTimestamp("%Y%m%d_%H%M%S");
+        runLabel = string("run") 
+			+ to_string(state.persistentState.runNumber) 
+			+ string("_") 
+			+ getCurrentTimestamp("%Y%m%d_%H%M%S");
+
+		++state.persistentState.runNumber;
 
     }
 
@@ -252,6 +257,7 @@ void DataRun::startRun() {
     runStarted = true;
     state.tempState.runLabel = runLabel;
     state.commit(); // TODO: This shouldn't fail, but better if it's robust
+	state.save();
 
     // TODO: Hook up error handling on a per-thread basis. Threads should
     //       report to a threadsafe error handler that does the error handling

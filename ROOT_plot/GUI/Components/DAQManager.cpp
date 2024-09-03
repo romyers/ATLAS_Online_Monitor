@@ -112,6 +112,9 @@ DAQManager::DAQManager(
             settings = new TGGroupFrame(leftPanel, "Settings", kVerticalFrame);
             leftPanel->AddFrame(settings, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5));
 
+				runNumberPanel = new RunNumberPanel(settings);
+				settings->AddFrame(runNumberPanel);
+
                 confFileSelector = new ConfFileSelector(settings);
                 settings->AddFrame(confFileSelector);
 
@@ -202,15 +205,19 @@ void DAQManager::update(const UpdatePacket &packet) {
     statusTag->Resize(statusTag->GetDefaultSize());
 
     viewport->update();
+
+	runNumberPanel->update();
     
 }
 
 void DAQManager::disable() {
 
-    disableStartButton    ();
-    disableStopButton     ();
-    disableExitButton     ();
-    disableDataSourcePanel();
+    disableStartButton     ();
+    disableStopButton      ();
+    disableExitButton      ();
+    disableDataSourcePanel ();
+	disableConfFileSelector();
+	disableRunNumberPanel  ();
 
 }
 
@@ -228,6 +235,9 @@ void DAQManager::enableConfFileSelector () { confFileSelector->enable()    ; }
 
 void DAQManager::disableDataSourcePanel () { dataSourcePanel->disable()    ; }
 void DAQManager::enableDataSourcePanel  () { dataSourcePanel->enable ()    ; }
+
+void DAQManager::disableRunNumberPanel  () { runNumberPanel->disable()     ; }
+void DAQManager::enableRunNumberPanel   () { runNumberPanel->enable()      ; }
 
 // TODO: Use these
 void DAQManager::pressedStart() { Emit("pressedStart()"); }

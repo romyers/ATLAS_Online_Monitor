@@ -144,6 +144,7 @@ set(monitor_HEADERS
 	GUI/Components/DataSourcePanel.h
 	GUI/Components/DeviceSelectorPanel.h
 	GUI/Components/FileSelectorPanel.h
+	GUI/Components/RunNumberPanel.h
 	GUI/Components/RunView.h
 	GUI/Components/PairTable.h
 	GUI/Components/Menu.h
@@ -182,6 +183,7 @@ set(monitor_SOURCES
 	GUI/Components/DataSourcePanel.cpp
 	GUI/Components/DeviceSelectorPanel.cpp
 	GUI/Components/FileSelectorPanel.cpp
+	GUI/Components/RunNumberPanel.cpp
 	GUI/Components/RunView.cpp
 	GUI/Components/PairTable.cpp
 	GUI/Components/Menu.cpp
