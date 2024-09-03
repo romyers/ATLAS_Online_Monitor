@@ -80,7 +80,7 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
-	if(!geo.IsActiveTDC(sig.TDC())) {
+	if(sig.TDC() >= Geometry::MAX_TDC || !geo.IsActiveTDC(sig.TDC())) {
 
 		string msg = "Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
@@ -99,7 +99,10 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 	if(sig.isTDCTrailer ()) return true;
     if(sig.isTDCOverflow()) return true;
 
-	if(!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())) {
+	if(
+		sig.Channel() >= Geometry::MAX_TDC_CHANNEL || 
+		!geo.IsActiveTDCChannel(sig.TDC(), sig.Channel())
+	) {
 
 		string msg = "Unexpected data TDCID = ";
 		msg += to_string(sig.TDC());
