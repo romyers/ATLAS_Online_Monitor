@@ -80,6 +80,11 @@ bool validateSignalErrors(const Signal &sig, const Geometry &geo) {
 
 	ErrorLogger &logger = ErrorLogger::getInstance();
 
+	// NOTE: It's important that we bounds-check the TDC number before we
+	//       pass it to geo.IsActiveTDC(), since IsActiveTDC() will not
+	//       bounds-check the TDC number itself. If we don't, we should
+	//       expect an out of bounds array access for bad TDC numbers.
+	
 	if(sig.TDC() >= Geometry::MAX_TDC || !geo.IsActiveTDC(sig.TDC())) {
 
 		string msg = "Unexpected data TDCID = ";

@@ -261,7 +261,7 @@ void validateEventWarnings(const vector<Signal> &signals) {
 			string("Hit count in trailer = ")
 			+ to_string(trailer.HitCount())
 			+ ", real hit count = "
-			+ to_string(signals.size()),
+			+ to_string(hitCount),
 			EVENT_ERROR,
 			WARNING
 		);
