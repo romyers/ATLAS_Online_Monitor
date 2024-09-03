@@ -1,0 +1,10 @@
+<map id="/home/romyers/ATLAS/Ethernet_Capture/src/NetworkInterface.h" name="/home/romyers/ATLAS/Ethernet_Capture/src/NetworkInterface.h">
+<area shape="rect" id="node1" title="Provides a flexible interface for managing network devices." alt="" coords="168,5,335,61"/>
+<area shape="rect" id="node2" href="$Packet_8h.html" title="Represents a raw network data packet." alt="" coords="105,109,181,136"/>
+<area shape="rect" id="node4" title=" " alt="" coords="195,184,257,211"/>
+<area shape="rect" id="node6" href="$DAQCapDevice_8h.html" title="Provides a struct for representing network devices." alt="" coords="314,109,447,136"/>
+<area shape="rect" id="node7" title=" " alt="" coords="282,184,341,211"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,184,76,211"/>
+<area shape="rect" id="node5" title=" " alt="" coords="100,184,171,211"/>
+<area shape="rect" id="node8" title=" " alt="" coords="365,184,442,211"/>
+</map>

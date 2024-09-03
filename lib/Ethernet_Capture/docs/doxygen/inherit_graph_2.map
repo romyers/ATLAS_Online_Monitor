@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classDAQCap_1_1NetworkManager.html" title="Provides an interface for retrieving packets from a network device." alt="" coords="5,5,201,32"/>
+<area shape="rect" id="node2" href="$classDAQCap_1_1PCapManager.html" title="Implementation of NetworkManager for libpcap. See NetworkInterface.h::NetworkManager for documentatio..." alt="" coords="249,5,424,32"/>
+</map>

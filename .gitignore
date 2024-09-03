@@ -30,6 +30,7 @@ PyMovie.ini
 *.log
 *.out
 out/
+output/
 data/
 
 # Compiled Object files

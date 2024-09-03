@@ -1,0 +1,4 @@
+<map id="DAQCap::NetworkManager" name="DAQCap::NetworkManager">
+<area shape="rect" id="node1" title="Provides an interface for retrieving packets from a network device." alt="" coords="5,5,201,32"/>
+<area shape="rect" id="node2" href="$classDAQCap_1_1PCapManager.html" title="Implementation of NetworkManager for libpcap. See NetworkInterface.h::NetworkManager for documentatio..." alt="" coords="16,80,191,107"/>
+</map>

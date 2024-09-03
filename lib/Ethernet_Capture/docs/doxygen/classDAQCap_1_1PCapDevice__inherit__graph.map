@@ -1,0 +1,4 @@
+<map id="DAQCap::PCapDevice" name="DAQCap::PCapDevice">
+<area shape="rect" id="node1" title="Implementation of a DAQCap::Device for libpcap. See DAQCapDevice.h::Device for documentation." alt="" coords="5,80,168,107"/>
+<area shape="rect" id="node2" href="$classDAQCap_1_1Device.html" title="Represents a network device on the system." alt="" coords="22,5,151,32"/>
+</map>
