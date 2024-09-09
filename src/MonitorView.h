@@ -10,9 +10,13 @@
 #pragma once
 
 #include "TGFrame.h"
-#include "TGButton.h"
+#include "TGMenu.h"
 #include "TGLabel.h"
-#include "TGButtonGroup.h"
+
+#include "RunControl.h"
+#include "RunView.h"
+#include "SettingsPanel.h"
+#include "TabPanel.h"
 
 #include <string>
 
@@ -38,12 +42,6 @@ namespace DAQ {
 		);
 		virtual ~MonitorView();
 
-		// Internal signal handlers. Not meant to be called directly.
-		// This one is called when the "Start Run" button is pressed.
-		void handlePressedStart();
-		// This one is called when the "Stop Run" button is pressed.
-		void handlePressedStop();
-
 	private:
 
 		MonitorView(const MonitorView &) = delete;
@@ -54,16 +52,23 @@ namespace DAQ {
 		// The elements themselves are constructed and connected to the
 		// MonitorView in the MonitorView constructor.
 
+		TGMenuBar *menuBar;
+
 		TGHorizontalFrame *mainPanel;
 
 			TGVerticalFrame *leftPanel;
 
+				RunView *runView;
+
+				SettingsPanel *settings;
+
+			TabPanel *tabPanel;
+
 		TGHorizontalFrame *bottomPanel;
 
-			TGButtonGroup *buttonGroup;
+			RunStatusPanel *runStatus;
 
-				TGTextButton *startButton;
-				TGTextButton *stopButton ;
+			ControlPanel *controlPanel;
 
 	};
 

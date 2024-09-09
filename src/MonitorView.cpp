@@ -11,42 +11,61 @@ MonitorView::MonitorView(
 	// TODO: Use dynamic values for widths and heights
 	//         -- Maybe it's as simple as resizing to GetDefaultSize()
 
+	menuBar = new TGMenuBar(this);
+	AddFrame(menuBar, new TGLayoutHints(kLHintsExpandX));
+
 	mainPanel = new TGHorizontalFrame(this);
 	AddFrame(mainPanel, new TGLayoutHints(kLHintsExpandX, 5, 5, 5, 5));
 
 		leftPanel = new TGVerticalFrame(mainPanel, 430, 300, kRaisedFrame);
-		mainPanel->AddFrame(leftPanel, new TGLayoutHints(kLHintsExpandY | kLHintsLeft));
+		mainPanel->AddFrame(
+			leftPanel, 
+			new TGLayoutHints(kLHintsExpandY | kLHintsLeft)
+		);
 		leftPanel->ChangeOptions(leftPanel->GetOptions() | kFixedWidth);
+
+			runView = new RunView(leftPanel);
+			leftPanel->AddFrame(
+				runView, 
+				new TGLayoutHints(kLHintsExpandX | kLHintsTop, 5, 5, 5, 5)
+			);
+
+			settings = new SettingsPanel(leftPanel, "Settings");
+			leftPanel->AddFrame(
+				settings, 
+				new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5)
+			);
+
+		tabPanel = new TabPanel(mainPanel, 1250, 800);
+		mainPanel->AddFrame(
+			tabPanel, 
+			new TGLayoutHints(kLHintsRight)
+		);
 
 	bottomPanel = new TGHorizontalFrame(this);
 	AddFrame(bottomPanel, new TGLayoutHints(kLHintsExpandX));
 
-		buttonGroup = new TGButtonGroup(bottomPanel, "", kHorizontalFrame);
-		bottomPanel->AddFrame(buttonGroup, new TGLayoutHints(kLHintsRight, 5, 50, 5, 5));
+		runStatus = new RunStatusPanel(
+			bottomPanel
+		);
+		bottomPanel->AddFrame(
+			runStatus, 
+			new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 30, 5, 5, 5)
+		);
 
-			startButton = new TGTextButton(buttonGroup, "Start Run");
-			buttonGroup->AddFrame(startButton, new TGLayoutHints(kLHintsRight));
-
-			stopButton = new TGTextButton(buttonGroup, "Stop Run");
-			buttonGroup->AddFrame(stopButton, new TGLayoutHints(kLHintsRight));
-
-	startButton->Connect("Clicked()", "DAQ::MonitorView", this, "handlePressedStart()");
-	stopButton->Connect("Clicked()", "DAQ::MonitorView", this, "handlePressedStop()");
+		controlPanel = new ControlPanel(
+			bottomPanel, 
+			"", 
+			kHorizontalFrame, 
+			RIGHT
+		);
+		bottomPanel->AddFrame(
+			controlPanel, 
+			new TGLayoutHints(kLHintsRight, 5, 50, 5, 5)
+		);
 
 }
 
 MonitorView::~MonitorView() {
-
-}
-
-void MonitorView::handlePressedStart() {
-
-	throw std::runtime_error("Start Run not yet implemented");
-
-}
-
-void MonitorView::handlePressedStop() {
-
-	throw std::runtime_error("Stop Run not yet implemented");
 
 }

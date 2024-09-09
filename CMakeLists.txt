@@ -6,9 +6,21 @@ project(
 	LANGUAGES C CXX
 )
 
-# Add external libraries
-add_subdirectory(external/MuonReco)
-add_subdirectory(external/DAQDecode)
+# Add libraries
+include(ExternalProject)
+# add_subdirectory(external/SMDT_RECO)
+# add_subdirectory(lib/DAQDecode)
+# ExternalProject_Add(
+#	MuonReco
+#	SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/SMDT_RECO
+#	INSTALL_COMMAND cmake -E echo "Skipping install step."
+# )
+# ExternalProject_Add(
+#	DAQDecode
+#	SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/DAQDecode
+#	INSTALL_COMMAND cmake -E echo "Skipping install step."
+#)
+# add_subdirectory(lib/Ethernet_Capture)
 
 # We only want to do these things if we are the top-level project
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) 
@@ -51,12 +63,30 @@ find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Tree Net Gui GuiHtml)
 
 message(ROOT\ include\ directory:\ ${ROOT_INCLUDE_DIRS})
 
+
+# ROOT won't can't generate dictionaries correctly without this
+include(GNUInstallDirs)
+
+# Root_Generate_Dictionary will fail if there are no globally defined
+# include directories, so we make a nonexistent one. Supposedly this
+# was fixed after ROOT 6.16, but I've found that we still need this
+# for ROOT 6.30
+include_directories(ROOT_NONEXISTENT_DIRECTORY_HACK)
+
 # Build libraries
 
+# DEVELOPER NOTE: If you define a new class using signals and slots, you must
+# follow the steps included in the top comment on LinkDef.h or the signals and
+# slots will not connect.
 set(
 	DAQGUI_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MonitorView.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DAQApp.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/FileExplorer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/RunControl.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/RunView.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsPanel.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/TabPanel.h
 )
 
 set(
@@ -64,14 +94,18 @@ set(
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MonitorView.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DAQApp.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/FileExplorer.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/RunControl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/RunView.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsPanel.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/TabPanel.cpp
 )
 
-# This makes signals and slots work
+# This makes signals and slots work in the DAQGUI library
+# See: https://github.com/eguiraud/root_dictionaries_tutorial?tab=readme-ov-file#the-cmake-way
 root_generate_dictionary(
 	G__UISignals
 	${DAQGUI_HEADERS}
-	LINKDEF
-	${CMAKE_CURRENT_SOURCE_DIR}/LinkDef.h
+	LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/LinkDef.h
 )
 
 add_library(
@@ -101,5 +135,4 @@ target_link_libraries(
 	DAQMonitor
 	PRIVATE
 	DAQGUI
-	DAQDecode
 )

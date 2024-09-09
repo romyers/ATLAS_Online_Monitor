@@ -5,10 +5,6 @@ project(DAQDecode
 	LANGUAGES C CXX
 )
 
-# TODO: Use fetchcontent or git submodules
-# TODO: Or use a find module to get the library
-add_subdirectory(external/MuonReco)
-
 OPTION(BUILD_TESTING "Build the Test Suite" OFF)
 
 include(FetchContent)
@@ -40,6 +36,10 @@ add_library(
 	DAQDecode 
 	SHARED
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Decoder.cpp
+)
+add_dependencies(
+	DAQDecode 
+	MuonReco
 )
 target_link_libraries(
 	DAQDecode
