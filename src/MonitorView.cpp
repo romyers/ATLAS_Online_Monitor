@@ -8,6 +8,7 @@ ClassImp(MonitorView);
 // https://root.cern.ch/root/htmldoc/guides/users-guide/WritingGUI.html
 
 MonitorView::MonitorView(
+	SettingsManager &settings,
 	const TGWindow *p
 ) : TGVerticalFrame(p) {
 
@@ -45,9 +46,9 @@ MonitorView::MonitorView(
 				new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5)
 			);
 
-			settings = new SettingsPanel(leftPanel, "Settings");
+			settingsPanel = new SettingsPanel(settings, leftPanel, "Settings");
 			leftPanel->AddFrame(
-				settings, 
+				settingsPanel, 
 				new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5)
 			);
 

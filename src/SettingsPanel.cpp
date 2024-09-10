@@ -5,10 +5,40 @@ using namespace DAQ;
 ClassImp(SettingsPanel);
 
 SettingsPanel::SettingsPanel(
+	SettingsManager &settings,
 	const TGWindow *p,
 	const TString &title,
 	UInt_t options
-) : TGGroupFrame(p, title, options) {
+) : TGGroupFrame(p, title, options), settings(settings) {
+
+	// Register setting defaults
+	settings.setDefault("run_number", "1");
+	settings.setDefault("conf_file", "");
+	settings.setDefault("source_type", "1");
+	settings.setDefault("dat_file", "");
+
+	// Validate the run number -- it needs to be an integer with at most 5
+	// digits
+	if(
+		settings.at("run_number").empty() ||
+		settings.at("run_number").size() > 5 ||
+		std::find_if(
+			settings.at("run_number").begin(), 
+			settings.at("run_number").end(), 
+			[](char c) { 
+				return !std::isdigit(c); 
+			}
+		) != settings.at("run_number").end()
+	) {
+		
+		settings["run_number"] = "1";
+
+	}
+
+	// TODO: We have to do a little extra work to validate the device setting
+	settings.setDefault("device", "");
+
+	// TODO: Validate settings file fields
 
 	runNumberPanel = new TGVerticalFrame(this);
 	AddFrame(runNumberPanel, new TGLayoutHints(kLHintsExpandX, 10, 10, 10, 10));
@@ -16,16 +46,24 @@ SettingsPanel::SettingsPanel(
 		runNumberEntryLabel = new TGLabel(runNumberPanel, "Run Number");
 		runNumberPanel->AddFrame(runNumberEntryLabel, new TGLayoutHints(kLHintsLeft));
 
-		runNumberEntry = new TGNumberEntry(runNumberPanel, 1, 5, -1,
+		runNumberEntry = new TGNumberEntry(runNumberPanel, 
+			stoi(settings.at("run_number")), 
+			5, -1,
 			TGNumberFormat::kNESInteger,
 			TGNumberFormat::kNEANonNegative
 		);
 		runNumberPanel->AddFrame(runNumberEntry, new TGLayoutHints(kLHintsExpandX));
+		runNumberEntry->Connect(
+			"ValueSet(Long_t)",
+			"DAQ::SettingsPanel",
+			this,
+			"handleRunNumberChange()"
+		);
 
 	confFileSelector = new FileSelector(
 		this, 
 		"Configuration File:", 
-		""
+		settings.at("conf_file")
 	);
 	AddFrame(confFileSelector, new TGLayoutHints(kLHintsExpandX, 10, 10, 10, 10));
 
@@ -44,7 +82,7 @@ SettingsPanel::SettingsPanel(
 		datFileSelector = new FileSelector(
 			sourceTypePanel,
 			"Select Data File:",
-			""
+			settings.at("dat_file")
 		);
 		sourceTypePanel->AddFrame(
 			datFileSelector, 
@@ -64,7 +102,36 @@ SettingsPanel::SettingsPanel(
 			devicePanel->AddFrame(deviceDropdown, new TGLayoutHints(kLHintsExpandX));
 			deviceDropdown->Resize(150, 20);
 
-	sourceTypePanel->SetButton(1);
+	// Make sure source_type is an integer
+	if(
+		settings.at("source_type").empty() ||
+		std::find_if(
+			settings.at("source_type").begin(), 
+			settings.at("source_type").end(), 
+			[](char c) { 
+				return !std::isdigit(c); 
+			}
+		) != settings.at("source_type").end()
+	) {
+
+		settings["source_type"] = "1";
+
+	}
+
+	// Bound-check sourceType against the number of buttons
+	int sourceType = stoi(settings.at("source_type"));
+	if(sourceType <= 0 || sourceType > sourceTypePanel->GetCount()) {
+
+		sourceType = 1;
+		settings["source_type"] = "1";
+
+	}
+
+	// Set the appropriate button
+	sourceTypePanel->SetButton(sourceType);
+
+	// TODO: Probably an unnecessary save
+	settings.save();
 
 }
 
@@ -135,5 +202,18 @@ void SettingsPanel::handleSourceTypeSelection(Int_t button) {
 		);
 
 	}
+
+	settings.at("source_type") = std::to_string(button);
+	settings.save();
+
+}
+
+void SettingsPanel::handleRunNumberChange() {
+
+	settings.at("run_number") = std::to_string(runNumberEntry->GetIntNumber());
+	settings.save();
+
+	// FIXME: Run number is not kept in sync with changes typed into the number
+	//        field unless enter is pressed. This absolutely needs to be fixed.
 
 }

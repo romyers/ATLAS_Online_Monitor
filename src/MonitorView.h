@@ -9,13 +9,14 @@
 
 #pragma once
 
-#include "TGFrame.h"
-#include "TGMenu.h"
-
 #include "RunControl.h"
 #include "RunView.h"
 #include "SettingsPanel.h"
 #include "TabPanel.h"
+#include "SettingsManager.h"
+
+#include "TGFrame.h"
+#include "TGMenu.h"
 
 namespace DAQ {
 
@@ -35,6 +36,7 @@ namespace DAQ {
 		 * By default, the parent is the root window.
 		 */
 		MonitorView(
+			SettingsManager &settings,
 			const TGWindow *p = gClient->GetRoot()
 		);
 		virtual ~MonitorView();
@@ -55,7 +57,7 @@ namespace DAQ {
 
 				RunView *runView;
 
-				SettingsPanel *settings;
+				SettingsPanel *settingsPanel;
 
 			TabPanel *tabPanel;
 

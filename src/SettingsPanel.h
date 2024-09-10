@@ -10,6 +10,7 @@
 #pragma once
 
 #include "FileSelector.h"
+#include "SettingsManager.h"
 
 #include "TGFrame.h"
 #include "TGNumberEntry.h"
@@ -39,6 +40,7 @@ namespace DAQ {
 		 * configured to be a vertical frame.
 		 */
 		SettingsPanel(
+			SettingsManager &settings,
 			const TGWindow *p = nullptr,
 			const TString &title = "Settings",
 			UInt_t options = kVerticalFrame
@@ -59,7 +61,13 @@ namespace DAQ {
 
 		void handleSourceTypeSelection(Int_t button);
 
+		void handleRunNumberChange();
+
+		// TODO: Handlers for device selection and conf/dat file selection
+
 	private:
+
+		SettingsManager &settings;
 
 		TGVerticalFrame *runNumberPanel;
 

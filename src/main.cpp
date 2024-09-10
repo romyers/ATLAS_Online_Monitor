@@ -15,6 +15,9 @@
 
 const double GUI_REFRESH_RATE = 60.; // Hz
 
+const std::string DEFAULT_WINDOW_WIDTH  = "1800"; // pixels
+const std::string DEFAULT_WINDOW_HEIGHT = "900" ; // pixels
+
 using namespace DAQ;
 
 // TODO: We really need a way to test GUI elements
@@ -208,9 +211,44 @@ int main(int argc, char **argv) {
 
 	SettingsManager settings(SETTINGS_PATH);
 
-	settings.setDefault("window_width", "1800");
-	settings.setDefault("window_height", "900");
+	settings.setDefault("window_width" , DEFAULT_WINDOW_WIDTH);
+	settings.setDefault("window_height", DEFAULT_WINDOW_HEIGHT);
 
+	// If the settings file is corrupted, reset the window size to defaults
+	if(
+		settings.at("window_width").empty() || 
+		settings.at("window_height").empty()
+	) {
+
+		settings["window_width" ] = DEFAULT_WINDOW_WIDTH;
+		settings["window_height"] = DEFAULT_WINDOW_HEIGHT;
+
+	}
+
+	// This just says that if the window width or height
+	// is not a number, then we need to reset it to the default.
+	if(
+		std::find_if(
+			settings.at("window_width").begin(), 
+			settings.at("window_width").end(), 
+			[](char c) { 
+				return !std::isdigit(c); 
+			}
+		) != settings.at("window_width" ).end() ||
+		std::find_if(
+			settings.at("window_height").begin(), 
+			settings.at("window_height").end(), 
+			[](char c) { 
+				return !std::isdigit(c); 
+			}
+		) != settings.at("window_height").end()
+	) {
+
+		settings["window_width" ] = DEFAULT_WINDOW_WIDTH;
+		settings["window_height"] = DEFAULT_WINDOW_HEIGHT;
+
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 	// Initialize and start the GUI
 	///////////////////////////////////////////////////////////////////////////
@@ -224,7 +262,7 @@ int main(int argc, char **argv) {
 	TGMainFrame *frame = new TGMainFrame(gClient->GetRoot());
 
 	// Build the Monitor GUI and attach it to the main frame.
-	MonitorView *monitor = new MonitorView(frame);
+	MonitorView *monitor = new MonitorView(settings, frame);
 	frame->AddFrame(
 		monitor, 
 		new TGLayoutHints(kLHintsExpandX | kLHintsExpandY)
@@ -270,7 +308,7 @@ int main(int argc, char **argv) {
 	//         -- Valgrind says we're leaking memory, even if we call every
 	///           delete function we can find
 
-	// Recursively delete the GUI frame and all of its children.
+	// Delete the GUI frame
 	frame->CloseWindow();
 
 	return EXIT_SUCCESS;
