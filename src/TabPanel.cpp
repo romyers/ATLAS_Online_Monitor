@@ -16,7 +16,7 @@ TabPanel::TabPanel(
 		baseTab = new TGCompositeFrame(this, width, height);
 		tabView->AddTab("Home", baseTab);
 
-			baseLabel = new TGLabel(baseTab, "Open tabs from the View menu");
+			baseLabel = new TGLabel(baseTab, "Open tabs from the menu panel on the right");
 			baseTab->AddFrame(baseLabel, new TGLayoutHints(kLHintsCenterX | kLHintsCenterY));
 
 		tabView->Resize(width, height);
@@ -49,7 +49,8 @@ TabPanel::TabPanel(
 		);
 
 		
-	// Let's set up some icons, sourced from the icons packaged with ROOT
+	// Let's set up some icons for tabList nodes using the icons packaged with
+	// ROOT
 	const TGPicture *tree_node_open = gClient->GetPicture("icons/arrow_down.xpm");
 	const TGPicture *tree_node_closed = gClient->GetPicture("icons/arrow_right.xpm");
 	const TGPicture *leaf_node = gClient->GetPicture("icons/bld_newtab.png");

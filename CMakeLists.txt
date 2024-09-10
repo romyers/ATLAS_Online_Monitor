@@ -137,8 +137,10 @@ target_link_libraries(
 	DAQGUI
 )
 
-# Let's give the program access to ROOT's icon directory
+# Give the program access to ROOT's icon directory via symlink
 # SOURCE: https://qrikko.blogspot.com/2016/05/cmake-and-how-to-copy-resources-during.html
+# DEVELOPER NOTE: This is a point of failure if future versions of ROOT change
+#                 the directory structure.
 set(source "${ROOT_INCLUDE_DIRS}/../icons")
 set(destination "${CMAKE_CURRENT_BINARY_DIR}/icons")
 add_custom_command(

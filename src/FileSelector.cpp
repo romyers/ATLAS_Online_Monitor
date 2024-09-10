@@ -4,7 +4,7 @@
 #include "TGFileBrowser.h"
 #include "TGListTree.h"
 
-#include <string>
+#include <sys/stat.h>
 
 using namespace DAQ;
 
@@ -34,14 +34,14 @@ FileSelector::FileSelector(
 		entryField = new TGTextEntry(inputPanel, defaultEntry);
 		inputPanel->AddFrame(entryField, new TGLayoutHints(kLHintsExpandX));
 
-		// This uses an icon that we copied from ROOT's icons directory
+		// This uses an icon from ROOT's icon set
 		fileButton = new TGPictureButton(
 			inputPanel, 
 			gClient->GetPicture("icons/ed_open.png")
 		);
 		inputPanel->AddFrame(
 			fileButton, 
-			new TGLayoutHints(kLHintsRight, 5, 0, 0, 0)
+			new TGLayoutHints(kLHintsRight, 0, 0, 0, 0)
 		);
 		fileButton->Connect(
 			"Clicked()", 
@@ -114,18 +114,45 @@ void FileSelector::handleBrowserSelection(TGListTreeItem *selection) {
 
 	if(selection == nullptr) return;
 
-	// Ignore directories if they are not allowed
-	if(!directoriesAllowed) {
+	TString path = fileExplorer->FullPathName(selection);
 
-		if(selection->GetFirstChild() != nullptr) return;
+	// This is a Linux-specific struct we can use to validate the user's
+	// selection against the filesystem
+	struct stat fileStat;
+
+	// If something went wrong, refresh the explorer and alert the user
+	if(stat(path.Data(), &fileStat) != 0) {
+
+		if(fileExplorer) fileExplorer->Refresh();
+
+		throw std::runtime_error("The selected file could not be accessed");
 
 	}
 
-	entryField->SetText(
-		fileExplorer->FullPathName(selection)
-	);
-	
-	closeBrowser();
+	// If we allow directories, and this is a directory, just set the entry
+	// field and leave
+	if(directoriesAllowed) {
+
+		if(S_ISDIR(fileStat.st_mode)) {
+
+			entryField->SetText(path);
+			closeBrowser();
+			return;
+
+		}
+
+	}
+
+	// If it's a normal file, set the entry field and leave
+	if(S_ISREG(fileStat.st_mode)) {
+
+		entryField->SetText(path);
+		closeBrowser();
+		return;
+
+	}
+
+	// If it's not a valid selection, but it does exist, do nothing
 
 }
 

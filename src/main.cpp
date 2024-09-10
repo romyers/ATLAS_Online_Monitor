@@ -146,6 +146,8 @@ monitor->AddSystem(settings);
 
 // TODO: For resizing, look at guitest.c. Also, CenterOnParent()?
 
+// TODO: CL options e.g. for 'emulate' mode
+
 int main() {
 
 	// TODO: We'd like to make app a TGMainFrame, but we can't because we can't
@@ -170,6 +172,9 @@ int main() {
 	frame->MapSubwindows();
 	frame->Resize(1800, 900);
 	frame->MapWindow();
+
+	// TODO: Remember window size and position across launches
+	// TODO: Try to adapt window size to screen size
 
 	// Tell the application to stop when the window is closed.
 	frame->Connect("CloseWindow()", "DAQ::App", &app, "stop()");
