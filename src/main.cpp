@@ -7,6 +7,10 @@
 
 #include "TMath.h"
 
+#include <getopt.h>
+
+#include <iostream>
+
 const double GUI_REFRESH_RATE = 60.; // Hz
 
 using namespace DAQ;
@@ -148,7 +152,39 @@ monitor->AddSystem(settings);
 
 // TODO: CL options e.g. for 'emulate' mode
 
-int main() {
+struct Arguments {
+
+	unsigned int emulate_rate = 0;
+
+	bool resetDefaults = false;
+
+	bool help = false;
+
+	bool isValid = true;
+
+};
+
+Arguments parseArgs(int argc, char **argv);
+
+std::string getUsage();
+
+int main(int argc, char **argv) {
+
+	///////////////////////////////////////////////////////////////////////////
+	// Parse command line arguments
+	///////////////////////////////////////////////////////////////////////////
+
+	Arguments args = parseArgs(argc, argv);
+
+	if(!args.isValid) {
+		std::cout << getUsage() << std::endl;
+		return 1;
+	}
+
+	if(args.help) {
+		std::cout << getUsage() << std::endl;
+		return 0;
+	}
 
 	// TODO: We'd like to make app a TGMainFrame, but we can't because we can't
 	//       use things like gClient->GetRoot() until the app is constructed.
@@ -197,5 +233,71 @@ int main() {
 	frame->CloseWindow();
 
 	return 0;
+
+}
+
+Arguments parseArgs(int argc, char **argv) {
+
+	Arguments args;
+
+	// Define arguments
+	const char *shortOpts = "e:hr";
+	const struct option longOpts[] = {
+		{"emulate", required_argument, nullptr, 'e'},
+		{"help", no_argument, nullptr, 'h'},
+		{"reset", no_argument, nullptr, 'r'},
+		{nullptr, 0, nullptr, 0}
+	};
+
+	// Handle arguments
+	while(optind < argc) {
+
+		int opt = getopt_long(argc, argv, shortOpts, longOpts, nullptr);
+
+		if(opt == -1) break;
+
+		switch(opt) {
+
+			case 'e':
+
+				try {
+						
+					args.emulate_rate = std::stoi(optarg);
+
+				} catch(std::invalid_argument &e) {
+
+					std::cerr << "-e, --emulate must take an integer argument." << std::endl;
+					args.isValid = false;
+				}
+				break;
+
+			case 'h':
+				args.help = true;
+				break;
+
+			case 'r':
+				args.resetDefaults = true;
+				break;
+
+			default:
+				args.isValid = false;
+
+		}
+
+	}
+
+	return args;
+
+}
+
+std::string getUsage() {
+
+	// TODO: More careful option descriptions
+
+	return "Usage: DAQMonitor [-e rate] [-r] [-h]\n"
+		"Options:\n"
+		"\t-e, --emulate       Emulate data at the specified rate in Hz.\n"
+		"\t-r, --reset         Reset all settings to their default values.\n"
+		"\t-h, --help          Display this help message.\n";
 
 }
