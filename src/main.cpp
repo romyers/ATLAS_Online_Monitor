@@ -1,5 +1,6 @@
 #include "DAQApp.h"
 #include "MonitorView.h"
+#include "SettingsManager.h"
 
 #include "TSystem.h"
 
@@ -10,6 +11,7 @@
 #include <getopt.h>
 
 #include <iostream>
+#include <fstream>
 
 const double GUI_REFRESH_RATE = 60.; // Hz
 
@@ -152,11 +154,14 @@ monitor->AddSystem(settings);
 
 // TODO: CL options e.g. for 'emulate' mode
 
+// TODO: Better to set the settings path with CMake?
+const std::string SETTINGS_PATH = "settings.cfg";
+
 struct Arguments {
 
 	unsigned int emulate_rate = 0;
 
-	bool resetDefaults = false;
+	bool resetSettings = false;
 
 	bool help = false;
 
@@ -171,27 +176,49 @@ std::string getUsage();
 int main(int argc, char **argv) {
 
 	///////////////////////////////////////////////////////////////////////////
-	// Parse command line arguments
+	// Handle command line arguments
 	///////////////////////////////////////////////////////////////////////////
 
 	Arguments args = parseArgs(argc, argv);
 
 	if(!args.isValid) {
+
 		std::cout << getUsage() << std::endl;
-		return 1;
+		return EXIT_FAILURE;
+
 	}
 
 	if(args.help) {
+
 		std::cout << getUsage() << std::endl;
-		return 0;
+		return EXIT_SUCCESS;
+
 	}
+
+	if(args.resetSettings) {
+
+		// Clear the settings file
+		std::ofstream(SETTINGS_PATH, std::ofstream::trunc).close();
+
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	// Read settings and set default window size
+	///////////////////////////////////////////////////////////////////////////
+
+	SettingsManager settings(SETTINGS_PATH);
+
+	settings.setDefault("window_width", "1800");
+	settings.setDefault("window_height", "900");
+
+	///////////////////////////////////////////////////////////////////////////
+	// Initialize and start the GUI
+	///////////////////////////////////////////////////////////////////////////
 
 	// TODO: We'd like to make app a TGMainFrame, but we can't because we can't
 	//       use things like gClient->GetRoot() until the app is constructed.
 
 	App app("MiniDAQ Monitor");
-
-	///////////////////////////////////////////////////////////////////////////
 
 	// Construct a window for the DAQMonitor to live in.
 	TGMainFrame *frame = new TGMainFrame(gClient->GetRoot());
@@ -206,7 +233,10 @@ int main(int argc, char **argv) {
 	// Title, size, and display the GUI.
 	frame->SetWindowName("MiniDAQ Monitor");
 	frame->MapSubwindows();
-	frame->Resize(1800, 900);
+	frame->Resize(
+		stoi(settings.at("window_width")), 
+		stoi(settings.at("window_height"))
+	);
 	frame->MapWindow();
 
 	// TODO: Remember window size and position across launches
@@ -222,7 +252,18 @@ int main(int argc, char **argv) {
 	// The rest of the program's functionality will be driven by GUI events.
 	app.run(GUI_REFRESH_RATE);
 
+	// EXECUTION BLOCKS HERE UNTIL THE GUI IS SHUT DOWN
+
+	///////////////////////////////////////////////////////////////////////////
+	// Cleanup
+	///////////////////////////////////////////////////////////////////////////
+
 	// At this point, the GUI has been shut down, and we are free to clean up.
+
+	// Save the window size for next time
+	settings["window_width" ] = std::to_string(frame->GetWidth ());
+	settings["window_height"] = std::to_string(frame->GetHeight());
+	settings.save();
 
 	// TODO: I don't fully understand ROOT's memory management scheme. Make
 	//       sure everything is getting cleaned up.
@@ -232,7 +273,7 @@ int main(int argc, char **argv) {
 	// Recursively delete the GUI frame and all of its children.
 	frame->CloseWindow();
 
-	return 0;
+	return EXIT_SUCCESS;
 
 }
 
@@ -276,7 +317,7 @@ Arguments parseArgs(int argc, char **argv) {
 				break;
 
 			case 'r':
-				args.resetDefaults = true;
+				args.resetSettings = true;
 				break;
 
 			default:

@@ -9,8 +9,8 @@ FetchContent_MakeAvailable(Catch2)
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(Catch)
 
-set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 # Build the test executables
 add_executable(

@@ -87,6 +87,7 @@ set(
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RunView.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsPanel.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TabPanel.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsManager.h
 )
 
 set(
@@ -98,6 +99,7 @@ set(
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RunView.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsPanel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TabPanel.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsManager.cpp
 )
 
 # This makes signals and slots work in the DAQGUI library
