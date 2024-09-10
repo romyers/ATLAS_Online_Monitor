@@ -164,6 +164,41 @@ void validateEventWarnings(const vector<Signal> &signals) {
     const Signal &header = signals.front();
     const Signal &trailer = signals.back();
 
+    // logger.logError(
+	// 		string("Received Event=")
+	// 		+ to_string(header.HeaderEID())
+	// 		+ string(", BCID=")
+	// 		+ to_string(header.TriggerLEdge()>>5)
+	// 		,
+	// 		EVENT_ERROR,
+	// 		WARNING
+	// 	);
+	// if(trailer.TDCHdrCount()!=6) {
+
+	// 	logger.logError(
+	// 		string("Got ")
+	// 		+ to_string(trailer.TDCHdrCount())
+	// 		+ string(" header(s) for Event ")
+	// 		+ to_string(header.HeaderEID())
+	// 		,
+	// 		EVENT_ERROR,
+	// 		WARNING
+	// 	);
+	// }
+
+	// if(trailer.TDCTlrCount()!=6) {
+
+	// 	logger.logError(
+	// 		string("Got ")
+	// 		+ to_string(trailer.TDCTlrCount())
+	// 		+ string(" trailer(s) for Event ")
+	// 		+ to_string(header.HeaderEID())
+	// 		,
+	// 		EVENT_ERROR,
+	// 		WARNING
+	// 	);
+	// }
+
 	// Check the event trailer for the header count error flag
 	if(trailer.HeaderCountErr()) {
 
@@ -196,28 +231,36 @@ void validateEventWarnings(const vector<Signal> &signals) {
 
 		if(sig.isTDCHeader()) {
 
-			if(lastTDCHeaderID != -1) {
+			// if(lastTDCHeaderID != -1) {
 
-				if(sig.TDCHeaderEID() != lastTDCHeaderID) {
+				if(sig.TDCHeaderEID() != header.HeaderEID()) {
 
 					logger.logError(
 						string("TDC ")
 						+ to_string(sig.TDC())
 						+ " EventID mismatch! Current = "
 						+ to_string(sig.TDCHeaderEID())
-						+ ", previous = "
-						+ to_string(lastTDCHeaderID),
+						+ ", HeaderEID = "
+						+ to_string(header.HeaderEID()),
 						EVENT_ERROR,
 						WARNING
 					);
 
 				}
 
-			}
+			// }
 
-			lastTDCHeaderID = sig.TDCHeaderEID();
+			// // lastTDCHeaderID = sig.TDCHeaderEID();
+			// logger.logError(
+			// string("TDC ")
+			// + to_string(sig.TDC())
+			// + " header BCID = "
+			// + to_string(sig.TDCHeaderBCID()),
+			// EVENT_ERROR,
+			// WARNING);
 
 		}
+		
 
 	}
 

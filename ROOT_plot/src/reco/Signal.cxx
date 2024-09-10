@@ -22,6 +22,7 @@ namespace MuonReco {
     std::bitset<8>  _width        ;
     std::bitset<10> _hitcount     ;
     std::bitset<12> _tdc_eventid  ;
+    std::bitset<12> _tdc_bcid     ;
     std::bitset<8>  _tdc_hdrTrlrID;
     std::bitset<4>  _tdc_hdr_count;
     std::bitset<4>  _tdc_tlr_count;
@@ -40,6 +41,7 @@ namespace MuonReco {
     _width         = word >>  0;
     _hitcount      = word >>  0;
     _tdc_eventid   = word >> 12;
+    _tdc_bcid      = word >>  0;
     _tdc_hdrTrlrID = word >> 24;
     _tdc_hdr_count = word >> 32;
     _tdc_tlr_count = word >> 28;
@@ -58,6 +60,7 @@ namespace MuonReco {
     width          = static_cast<uint8_t >((_width        .to_ulong()));
     hitcount       = static_cast<uint16_t>((_hitcount     .to_ulong()));
     tdc_eventid    = static_cast<uint16_t>((_tdc_eventid  .to_ulong()));
+    tdc_bcid       = static_cast<uint16_t>((_tdc_bcid     .to_ulong()));
     tdc_hdrTrlrID  = static_cast<uint8_t >((_tdc_hdrTrlrID.to_ulong()));
     tdc_hdr_count  = static_cast<uint8_t >((_tdc_hdr_count.to_ulong()));
     tdc_tlr_count  = static_cast<uint8_t >((_tdc_tlr_count.to_ulong()));
@@ -98,6 +101,7 @@ namespace MuonReco {
   uint8_t  Signal:: Width          () const { return width                                  ; }
   uint16_t Signal:: HitCount       () const { return hitcount                               ; }
   uint16_t Signal:: TDCHeaderEID   () const { return tdc_eventid                            ; }
+  uint16_t Signal:: TDCHeaderBCID  () const { return tdc_bcid                               ; }  
   uint8_t  Signal:: TDCHdrTrlrID   () const { return tdc_hdrTrlrID                          ; }
   uint8_t  Signal:: TDCHdrCount    () const { return tdc_hdr_count                          ; }
   uint8_t  Signal:: TDCTlrCount    () const { return tdc_tlr_count                          ; }

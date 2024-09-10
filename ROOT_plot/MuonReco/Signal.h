@@ -108,7 +108,8 @@ namespace MuonReco {
     //       info and add more extra public info
 
     // TDC Data triggered mode extra public info
-    uint16_t     TDCHeaderEID   () const;   
+    uint16_t     TDCHeaderEID   () const;  
+    uint16_t     TDCHeaderBCID  () const;
     uint8_t      TDCHdrTrlrID   () const;
 
     // MiniDAQ Event Trailer triggered mode extra public info
@@ -155,6 +156,7 @@ namespace MuonReco {
     uint8_t  width        ;
     uint16_t hitcount     ;
     uint16_t tdc_eventid  ;
+    uint16_t tdc_bcid     ;
     uint8_t  tdc_hdrTrlrID;
     uint8_t  tdc_hdr_count;
     uint8_t  tdc_tlr_count;
