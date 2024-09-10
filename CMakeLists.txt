@@ -137,16 +137,13 @@ target_link_libraries(
 	DAQGUI
 )
 
-# TODO: It would be better to take the icon from the root icon folder, but
-#       we have to recover the path to that folder from ROOT_INCLUDE_DIRS
-# Let's make sure that the executable can find the program's icons
-# no matter where it is compiled to
+# Let's give the program access to ROOT's icon directory
 # SOURCE: https://qrikko.blogspot.com/2016/05/cmake-and-how-to-copy-resources-during.html
-set(source "${CMAKE_CURRENT_SOURCE_DIR}/icons")
+set(source "${ROOT_INCLUDE_DIRS}/../icons")
 set(destination "${CMAKE_CURRENT_BINARY_DIR}/icons")
 add_custom_command(
 	TARGET DAQMonitor POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination} 
 	DEPENDS ${destination}
-	COMMENT "Creating symlink to icon directory"
+	COMMENT "Creating symlink to ROOT Icons"
 )

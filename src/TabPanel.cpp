@@ -24,7 +24,7 @@ TabPanel::TabPanel(
 	tabSelector = new TGVerticalFrame(this);
 	AddFrame(tabSelector, new TGLayoutHints(kLHintsRight | kLHintsExpandY, 0, 0, 20, 0));
 
-		tabCanvas = new TGCanvas(tabSelector, 200, height + 20);
+		tabCanvas = new TGCanvas(tabSelector, 300, height + 20);
 		tabSelector->AddFrame(
 			tabCanvas, 
 			new TGLayoutHints(kLHintsExpandX | kLHintsExpandY)
@@ -52,9 +52,7 @@ TabPanel::TabPanel(
 	// Let's set up some icons, sourced from the icons packaged with ROOT
 	const TGPicture *tree_node_open = gClient->GetPicture("icons/arrow_down.xpm");
 	const TGPicture *tree_node_closed = gClient->GetPicture("icons/arrow_right.xpm");
-
-	// This one I made with GIMP
-	const TGPicture *leaf_node = gClient->GetPicture("icons/empty.xpm");
+	const TGPicture *leaf_node = gClient->GetPicture("icons/bld_newtab.png");
 
 	// TODO: We'll want to not hardcode these
 	TGListTreeItem *ADCList = tabList->AddItem(nullptr, "ADC Plots", tree_node_open, tree_node_closed);

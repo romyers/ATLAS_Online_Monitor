@@ -16,7 +16,7 @@ SettingsPanel::SettingsPanel(
 		runNumberEntryLabel = new TGLabel(runNumberPanel, "Run Number");
 		runNumberPanel->AddFrame(runNumberEntryLabel, new TGLayoutHints(kLHintsLeft));
 
-		runNumberEntry = new TGNumberEntry(runNumberPanel, 0, 5, -1,
+		runNumberEntry = new TGNumberEntry(runNumberPanel, 1, 5, -1,
 			TGNumberFormat::kNESInteger,
 			TGNumberFormat::kNEANonNegative
 		);
