@@ -39,7 +39,7 @@
 
 #pragma link C++ class DAQ::App+;
 
-#pragma link C++ class DAQ::FileExplorer+;
+#pragma link C++ class DAQ::FileSelector+;
 
 #pragma link C++ class DAQ::ControlPanel+;
 

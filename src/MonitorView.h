@@ -11,14 +11,11 @@
 
 #include "TGFrame.h"
 #include "TGMenu.h"
-#include "TGLabel.h"
 
 #include "RunControl.h"
 #include "RunView.h"
 #include "SettingsPanel.h"
 #include "TabPanel.h"
-
-#include <string>
 
 namespace DAQ {
 
@@ -51,8 +48,6 @@ namespace DAQ {
 		// indentation to show the hierarchy of the GUI elements. 
 		// The elements themselves are constructed and connected to the
 		// MonitorView in the MonitorView constructor.
-
-		TGMenuBar *menuBar;
 
 		TGHorizontalFrame *mainPanel;
 

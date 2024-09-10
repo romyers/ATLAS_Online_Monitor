@@ -82,7 +82,7 @@ set(
 	DAQGUI_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MonitorView.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DAQApp.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/FileExplorer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/FileSelector.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RunControl.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RunView.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsPanel.h
@@ -93,7 +93,7 @@ set(
 	DAQGUI_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/MonitorView.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DAQApp.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/FileExplorer.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/FileSelector.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RunControl.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/RunView.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/SettingsPanel.cpp
@@ -135,4 +135,18 @@ target_link_libraries(
 	DAQMonitor
 	PRIVATE
 	DAQGUI
+)
+
+# TODO: It would be better to take the icon from the root icon folder, but
+#       we have to recover the path to that folder from ROOT_INCLUDE_DIRS
+# Let's make sure that the executable can find the program's icons
+# no matter where it is compiled to
+# SOURCE: https://qrikko.blogspot.com/2016/05/cmake-and-how-to-copy-resources-during.html
+set(source "${CMAKE_CURRENT_SOURCE_DIR}/icons")
+set(destination "${CMAKE_CURRENT_BINARY_DIR}/icons")
+add_custom_command(
+	TARGET DAQMonitor POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination} 
+	DEPENDS ${destination}
+	COMMENT "Creating symlink to icon directory"
 )

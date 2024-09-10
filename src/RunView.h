@@ -13,8 +13,6 @@
 #include "TGHtml.h"
 #include "TGLabel.h"
 
-#include <string.h>
-
 namespace DAQ {
 	
 	/**

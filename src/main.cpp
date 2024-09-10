@@ -11,6 +11,8 @@ const double GUI_REFRESH_RATE = 60.; // Hz
 
 using namespace DAQ;
 
+// TODO: We really need a way to test GUI elements
+
 // TODO: Where do we tie everything together? It might be nice to have setup
 //       for each system in main, so that main provides a record of everything
 //       that's going on.
@@ -142,6 +144,8 @@ monitor->AddSystem(settings);
 // TODO: File browsers should block interactions with the gui until they are
 //       closed
 
+// TODO: For resizing, look at guitest.c. Also, CenterOnParent()?
+
 int main() {
 
 	// TODO: We'd like to make app a TGMainFrame, but we can't because we can't
@@ -164,7 +168,7 @@ int main() {
 	// Title, size, and display the GUI.
 	frame->SetWindowName("MiniDAQ Monitor");
 	frame->MapSubwindows();
-	frame->Resize(frame->GetDefaultSize());
+	frame->Resize(1800, 900);
 	frame->MapWindow();
 
 	// Tell the application to stop when the window is closed.
@@ -185,7 +189,7 @@ int main() {
 	///           delete function we can find
 
 	// Recursively delete the GUI frame and all of its children.
-	frame->Cleanup();
+	frame->CloseWindow();
 
 	return 0;
 

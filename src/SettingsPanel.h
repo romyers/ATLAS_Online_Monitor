@@ -9,7 +9,12 @@
 
 #pragma once
 
+#include "FileSelector.h"
+
 #include "TGFrame.h"
+#include "TGNumberEntry.h"
+#include "TGButtonGroup.h"
+#include "TGComboBox.h"
 
 namespace DAQ {
 
@@ -40,7 +45,41 @@ namespace DAQ {
 		);
 		virtual ~SettingsPanel();
 
+		/**
+		 * @brief Enables the SettingsPanel for user interaction, allowing the
+		 * user to change settings.
+		 */
+		void enable();
+
+		/**
+		 * @brief Disables the SettingsPanel, preventing the user from changing
+		 * settings.
+		 */
+		void disable();
+
+		void handleSourceTypeSelection(Int_t button);
+
 	private:
+
+		TGVerticalFrame *runNumberPanel;
+
+			TGLabel *runNumberEntryLabel;
+			
+			TGNumberEntry *runNumberEntry;
+
+		FileSelector *confFileSelector;
+
+		TGButtonGroup *sourceTypePanel;
+
+			TGRadioButton *fileButton;
+			FileSelector  *datFileSelector;
+
+			TGRadioButton *networkButton;
+
+			TGVerticalFrame *devicePanel;
+			
+				TGLabel       *deviceLabel;
+				TGComboBox    *deviceDropdown;
 
 	};
 
