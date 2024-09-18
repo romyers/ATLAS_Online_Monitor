@@ -38,6 +38,7 @@ namespace State {
 	struct TemporaryState {
 
 		std::string runLabel = "";
+		int pcapBufferSize   = 100;
 
 	};
 

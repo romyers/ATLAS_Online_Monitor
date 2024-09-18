@@ -45,9 +45,9 @@ public:
 	PCapSessionHandler ();
 	~PCapSessionHandler();
 
-	void setCheckPackets         (      bool         val       );
-	void initializeSession       (      PCapDevice  &device    );
-	void initializeSession       (const std::string &deviceName);
+	void setCheckPackets         (      bool         val                           );
+	void initializeSession       (      PCapDevice  &device    , int dataBufferSize);
+	void initializeSession       (const std::string &deviceName, int dataBufferSize);
 
 	PacketData  bufferPackets    (                             );
 

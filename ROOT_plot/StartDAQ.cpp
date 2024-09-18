@@ -17,6 +17,8 @@
 
 #include <iostream>
 
+#include <getopt.h>
+
 #include "TApplication.h"
 #include "TUnixSystem.h" // Needed for calls to gSystem
 #include "TGFrame.h"
@@ -76,7 +78,80 @@ void termHandler(int signal) {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-int main() {
+void printUsage() {
+
+	cout << "Usage: DAQManager [options]" << endl;
+	cout << "Options:" << endl;
+	cout << "  -s, --buffer-size <size>  Set the PCap buffer size in MB. Default is 100 MB." << endl;
+	cout << "  -h, --help                Display this help message" << endl;
+
+}
+
+int main(int argc, char **argv) {
+
+	int pcapBufferSize = 100; // MB
+
+	const char *shortopts = "s:h";
+	const struct option longopts[] = {
+		{ "buffer-size", required_argument, nullptr, 's' },
+		{ "help",        no_argument,       nullptr, 'h' },
+		{ nullptr, 0, nullptr, 0 }
+	};
+
+	while(optind < argc) {
+
+		int opt = getopt_long(argc, argv, shortopts, longopts, nullptr);
+
+		if(opt == -1) {
+
+			break;
+
+		}
+
+		switch(opt) {
+
+			case 's':
+
+				try {
+
+					pcapBufferSize = std::stoi(optarg);
+
+					// Make sure the argument is an integer with no fractional part
+					if(pcapBufferSize != std::stod(optarg)) {
+
+						throw std::invalid_argument("Buffer size must be an integer.");
+
+					}
+
+					if(pcapBufferSize <= 0) {
+
+						throw std::invalid_argument("Buffer size must be a positive integer.");
+
+					}
+
+				} catch(std::invalid_argument &e) {
+
+					cout << "Invalid buffer size: " << optarg << endl;
+					cout << "Buffer size must be a positive integer." << endl;
+					return EXIT_FAILURE;
+
+				}
+
+				break;
+
+			case 'h':
+
+				printUsage();
+				return EXIT_SUCCESS;
+
+			default:
+ 
+				printUsage();
+				return EXIT_FAILURE;
+
+		}
+
+	}
 
     // NOTE: This appears to populate the global gApplication and gSystem 
     //       variables.
@@ -100,7 +175,7 @@ int main() {
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(
 
-        thread([]() {
+        thread([pcapBufferSize]() {
 
             // Create the GUI for the online monitor
             DAQManager *mainFrame = buildGUI();
@@ -112,6 +187,7 @@ int main() {
              *       rather set up the connections in this file.
              */
             connectDAQto(mainFrame);
+			setPCapBufferSize(pcapBufferSize);
 
             // Populate the device selector with connected devices.
             vector<string> devices;

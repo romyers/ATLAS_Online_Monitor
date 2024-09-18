@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 
 		PCapDevice networkDevice = runDeviceSelector(devices);
 
-		handler.initializeSession(networkDevice);
+		handler.initializeSession(networkDevice, 100000000);
 
 		// Sets the handler to notify the user when a packet is lost
 		handler.setCheckPackets(true);

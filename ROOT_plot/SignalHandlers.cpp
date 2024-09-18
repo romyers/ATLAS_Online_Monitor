@@ -111,6 +111,16 @@ void connectDAQto(DAQManager *GUI) {
 
 }
 
+void setPCapBufferSize(int size) {
+
+	State::DAQState state = State::DAQState::getState();
+
+	state.tempState.pcapBufferSize = size;
+
+	state.commit();
+
+}
+
 void SigHandlers::handlePressedStartRun() {
 
 	// TODO: We also save once the run has actually started in 

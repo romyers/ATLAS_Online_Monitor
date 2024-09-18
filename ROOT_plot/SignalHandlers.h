@@ -14,6 +14,8 @@
 
 void connectDAQto(DAQManager *GUI);
 
+void setPCapBufferSize(int size);
+
 namespace SigHandlers {
 
 	void handlePressedStartRun();

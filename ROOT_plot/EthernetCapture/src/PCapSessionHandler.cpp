@@ -22,8 +22,6 @@ const unsigned char EVENT_TRAILER        = 0b1100                          ;
 const unsigned char IDLE_WORD[WORD_SIZE] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 const unsigned int  DATA_START           = 14                              ;
 
-const unsigned int DATA_BUFFER_SIZE = 100000000; // 100 MB
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,7 +45,7 @@ void PCapSessionHandler::setCheckPackets(bool val) {
 
 }
 
-void PCapSessionHandler::initializeSession(const string &deviceName) {
+void PCapSessionHandler::initializeSession(const string &deviceName, int dataBufferSize) {
 
 	char errorBuffer[PCAP_ERRBUF_SIZE];
 
@@ -65,7 +63,9 @@ void PCapSessionHandler::initializeSession(const string &deviceName) {
 	pcap_set_snaplen(handler, 65536);
 	pcap_set_promisc(handler, 1);
 	pcap_set_timeout(handler, 10000);
-	pcap_set_buffer_size(handler, DATA_BUFFER_SIZE);
+	pcap_set_buffer_size(handler, dataBufferSize);
+
+	std::cout << "Buffer size: " << dataBufferSize << std::endl;
 
 
 	int ret = pcap_activate(handler);
@@ -117,9 +117,9 @@ void PCapSessionHandler::initializeSession(const string &deviceName) {
 
 }
 
-void PCapSessionHandler::initializeSession(PCapDevice &device) {
+void PCapSessionHandler::initializeSession(PCapDevice &device, int dataBufferSize) {
 
-	initializeSession(device.name.data());
+	initializeSession(device.name.data(), dataBufferSize);
 
 }
 

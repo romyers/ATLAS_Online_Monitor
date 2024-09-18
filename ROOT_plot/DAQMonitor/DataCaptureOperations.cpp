@@ -189,7 +189,8 @@ void initializePCapSessionHandler(
     try {
 
         sessionHandler.initializeSession(
-            state.persistentState.inputDevicename
+            state.persistentState.inputDevicename,
+			state.tempState.pcapBufferSize * 1000000
         );
 
         sessionHandler.setCheckPackets(true);
