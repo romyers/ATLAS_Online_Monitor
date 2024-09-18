@@ -65,8 +65,6 @@ void PCapSessionHandler::initializeSession(const string &deviceName, int dataBuf
 	pcap_set_timeout(handler, 10000);
 	pcap_set_buffer_size(handler, dataBufferSize);
 
-	std::cout << "Buffer size: " << dataBufferSize << std::endl;
-
 
 	int ret = pcap_activate(handler);
 	if(ret < 0) {
