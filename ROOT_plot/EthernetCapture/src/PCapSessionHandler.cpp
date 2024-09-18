@@ -17,10 +17,12 @@ const unsigned int WORD_SIZE = 5; // TODO: Make sure this and Signal's word size
                                   //       come from the same place
 
 // TODO: Do we use the header and trailer chars?
-unsigned char EVENT_HEADER         = 0b1010                          ;
-unsigned char EVENT_TRAILER        = 0b1100                          ;
-unsigned char IDLE_WORD[WORD_SIZE] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-unsigned int  DATA_START           = 14                              ;
+const unsigned char EVENT_HEADER         = 0b1010                          ;
+const unsigned char EVENT_TRAILER        = 0b1100                          ;
+const unsigned char IDLE_WORD[WORD_SIZE] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+const unsigned int  DATA_START           = 14                              ;
+
+const unsigned int DATA_BUFFER_SIZE = 100000000; // 100 MB
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,14 +51,31 @@ void PCapSessionHandler::initializeSession(const string &deviceName) {
 
 	char errorBuffer[PCAP_ERRBUF_SIZE];
 
-    // Arguments: device name, snap length, promiscuous mode, to_ms, error_buffer
-	handler = pcap_open_live(deviceName.data(), 65536, 1, 10000, errorBuffer);
+	handler = pcap_create(deviceName.data(), errorBuffer);
 	if(!handler) {
 
 		handler = nullptr;
 
 		throw NetworkDeviceException(
 			string("Could not open device ") + deviceName + " : " + errorBuffer
+		);
+
+	}
+
+	pcap_set_snaplen(handler, 65536);
+	pcap_set_promisc(handler, 1);
+	pcap_set_timeout(handler, 10000);
+	pcap_set_buffer_size(handler, DATA_BUFFER_SIZE);
+
+
+	int ret = pcap_activate(handler);
+	if(ret < 0) {
+
+		if(handler) pcap_close(handler);
+		handler = nullptr;
+
+		throw NetworkDeviceException(
+			string("Could not activate device ") + deviceName
 		);
 
 	}
@@ -95,8 +114,6 @@ void PCapSessionHandler::initializeSession(const string &deviceName) {
     // filter program for a pcap structure by a call to
     // pcap_setfilter(3PCAP).
 	pcap_freecode(&fcode);
-
-
 
 }
 
