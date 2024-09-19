@@ -10,29 +10,29 @@
 
 #pragma once
 
-#include <iostream>
+#include <deque>
 
 #include "MuonReco/Signal.h"
 #include "MuonReco/Geometry.h"
 
 /**
- * Checks whether the input stream has unread signals.
+ * Checks whether the input data has unread signals.
  * 
- * @param in The stream to be checked.
+ * @param in The data to be checked.
  * 
- * @return True if there are complete unread signals in the stream, and false
+ * @return True if there are complete unread signals in the data, and false
  * otherwise.
  */
-bool hasSignals(std::istream &in);
+bool hasSignals(std::deque<unsigned char> &in);
 
 /**
- * Extracts one signal from the input stream.
+ * Extracts one signal from the input data.
  * 
- * @param in The stream from which a signal should be extracted.
+ * @param in The data from which a signal should be extracted.
  * 
  * @return The extracted signal.
  */
-MuonReco::Signal extractSignal(std::istream &in);
+MuonReco::Signal extractSignal(std::deque<unsigned char> &in);
 
 /**
  * Provides validation of 'sig', logging an error to the error logger

@@ -45,6 +45,10 @@ void displayProgressBar(double current, double total);
 
 int main(int argc, char **argv) {
 
+	cout << "STANDALONE DATA DECODE NOT YET IMPLEMENTED" << endl;
+
+	return EXIT_SUCCESS;
+
     // NOTE: This appears to populate the global gApplication and gSystem 
     //       variables.
     TApplication app("p2Decode", nullptr, nullptr);
@@ -106,6 +110,8 @@ int main(int argc, char **argv) {
 
 	cout << "Decoding data from input file: " << filename << endl;
 
+	/*
+
 	while(hasNewData(in)) {
 
 		DecodeData loopData = decoder.decodeStream(in, geo, tc, recoUtil);
@@ -136,6 +142,8 @@ int main(int argc, char **argv) {
 	cout << "Found "     << aggregateData.nonemptyEvents.size() << " nonempty events" << endl;
 	cout << "Dropped "   << aggregateData.droppedSignals        << " signals"         << endl;
 	cout << "Dropped "   << aggregateData.droppedEvents         << " events"          << endl;
+
+	*/
 
 	return 0;
 

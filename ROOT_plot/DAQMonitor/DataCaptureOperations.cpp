@@ -54,7 +54,7 @@ void DataCapture::stopDataCapture() {
 }
 
 void DataCapture::startDataCapture(
-    LockableStream &dataStream, 
+    LockableData &dataStream, 
     DAQData &data, 
     const string &runLabel
 ) {
@@ -142,11 +142,11 @@ void DataCapture::startDataCapture(
 
         // Write buffered packets to dataStream
         dataStream.lock();
-        dataStream.stream->write(
-            (char*)packetData.packetBuffer.data(), 
-            packetData.packetBuffer.size()
-        );
-        dataStream.stream->flush();
+		dataStream.data.insert(
+			dataStream.data.end(), 
+			packetData.packetBuffer.cbegin(), 
+			packetData.packetBuffer.cend()
+		);
         dataStream.unlock();
 
         // Write buffered packets to the .dat file

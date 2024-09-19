@@ -2,7 +2,7 @@
 
 using namespace std;
 
-LockableStream::LockableStream() : stream(nullptr) {}
+LockableData::LockableData() {}
 
-void LockableStream::lock  () { m.lock  (); }
-void LockableStream::unlock() { m.unlock(); }
+void LockableData::lock  () { m.lock  (); }
+void LockableData::unlock() { m.unlock(); }

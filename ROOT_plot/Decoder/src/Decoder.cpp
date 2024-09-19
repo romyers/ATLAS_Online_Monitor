@@ -29,7 +29,7 @@ bool isEvent(const vector<Signal> &signals);
 Decoder::Decoder(int maxSignalCount) : maxSignalCount(maxSignalCount) {}
 
 DecodeData Decoder::decodeStream(
-	istream        &in      , 
+	deque<unsigned char> &in      , 
 	Geometry       &geo     , 
 	TimeCorrection &tc      ,
 	RecoUtility    &recoUtil
@@ -148,7 +148,7 @@ bool isEvent(const vector<Signal> &signals) {
 
 }
 
-bool hasNewData(istream &in) {
+bool hasNewData(deque<unsigned char> &in) {
 
 	return hasSignals(in);
 

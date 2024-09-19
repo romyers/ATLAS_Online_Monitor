@@ -9,23 +9,23 @@
 
 #pragma once
 
-#include <iostream>
 #include <mutex>
+#include <deque>
 
-class LockableStream {
+class LockableData {
 
 public:
 
-	LockableStream();
+	LockableData();
 
 	// We don't want copying or we'll lose the mutex
-	LockableStream(      LockableStream &other) = delete;
-	void operator=(const LockableStream &other) = delete;
+	LockableData  (      LockableData &other) = delete;
+	void operator=(const LockableData &other) = delete;
 
 	void lock  ();
 	void unlock();
 
-	std::iostream *stream;
+	std::deque<unsigned char> data;
 
 private:
 
