@@ -10,7 +10,7 @@
 #pragma once
 
 #include <vector>
-#include <iostream>
+#include <deque>
 
 #include "EventBufferValidator.h"
 
@@ -21,13 +21,13 @@
 #include "MuonReco/RecoUtility.h"
 
 /**
- * Checks if the input stream contains integral unread data.
+ * Checks if the input data contains integral unread data.
  * 
- * @param in The data stream to check.
+ * @param in The data to check.
  * 
- * @return True if the stream contains unread data, and false otherwise.
+ * @return True if the data contains unread data, and false otherwise.
  */
-bool hasNewData(std::istream &in);
+bool hasNewData(std::deque<unsigned char> &in);
 
 /**
  * Struct packaging newly decoded events along with associated metadata.
@@ -74,11 +74,13 @@ public:
 	Decoder(int maxSignalCount = 0);
 
 	/**
-	 * Reads all integral unread data from the input stream, validates it,
+	 * Reads all integral unread data from the input data, validates it,
 	 * processes it, and packs it into a DecodeData object. This should
 	 * not be run concurrently with write operations to the geo parameter.
 	 * 
-	 * @param in The data stream to extract signals from.
+	 * MODIFES: Decoded data will be removed from the input deque.
+	 * 
+	 * @param in The data to extract signals from.
 	 * 
 	 * @param geo The chamber geometry that signals and events should conform
 	 * to. Used to validate decoded data and process events.
@@ -87,7 +89,7 @@ public:
 	 * decodeStream().
 	 */
 	DecodeData decodeStream(
-		std::istream             &in      , 
+		std::deque<unsigned char>  &in      , 
 		MuonReco::Geometry       &geo     ,
 		MuonReco::TimeCorrection &tc      ,
 		MuonReco::RecoUtility    &recoUtil

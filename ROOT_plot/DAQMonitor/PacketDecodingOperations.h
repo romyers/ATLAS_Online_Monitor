@@ -18,7 +18,7 @@
 namespace Decode {
 
     void startDecoding(
-        LockableStream &dataStream, 
+        LockableData &dataStream, 
         DAQData &data, 
         const std::string &runLabel
     );

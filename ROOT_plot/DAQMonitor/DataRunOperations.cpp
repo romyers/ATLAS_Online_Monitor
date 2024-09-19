@@ -40,43 +40,17 @@ const string CONF_PATH = "../conf/";
 
 bool runStarted = false;
 
+bool isCaptureRunning = false;
 
-void   initializeDataStream(LockableStream &dataStream   );
 string getCurrentTimestamp (const string   &format       );
 
+
+
+size_t getFileSize(ifstream &in);
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-
-void initializeDataStream(LockableStream &dataStream) {
-
-    dataStream.stream = nullptr;
-
-    State::DAQState state = State::DAQState::getState();
-
-    if(state.persistentState.dataSource == DAT_FILE_SOURCE) {
-
-        cout << "Reading data from file: " << state.persistentState.inputFilename << endl;
-
-        fstream *fileStream = new fstream(state.persistentState.inputFilename);
-        if(!fileStream->is_open()) {
-                            
-            delete fileStream;
-            fileStream = nullptr;
-
-            throw logic_error("Could not open input file stream.");
-
-        }
-
-        dataStream.stream = fileStream;
-
-    } else if(state.persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
-
-        dataStream.stream = new stringstream();
-
-    }
-
-}
 
 bool DataRun::isRunning() { return runStarted; }
 
@@ -92,6 +66,8 @@ void DataRun::stopRun() {
 
     DataCapture::stopDataCapture();
     Decode::stopDecoding();
+
+	isCaptureRunning = false;
 
 }
 
@@ -275,17 +251,84 @@ void DataRun::startRun() {
         UISignalBus::getInstance().onRunStart();
         UI::UILock.unlock();
 
-        LockableStream dataStream;
-        initializeDataStream(dataStream);
+        LockableData dataStream;
 
         // DATA CAPTURE LOOP
         thread dataCaptureThread([&dataStream, &data, runLabel]() {
 
-            if(DAQState::getState().persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
+			DAQState state = DAQState::getState();
+
+            if(state.persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
                 DataCapture::startDataCapture(dataStream, data, runLabel);
 
-            }
+            } else if(state.persistentState.dataSource == DAT_FILE_SOURCE) {
+
+				isCaptureRunning = true;
+
+				cout << "Reading data from file: " << state.persistentState.inputFilename << endl;
+
+				// Open the file stream
+				ifstream fileStream(state.persistentState.inputFilename);
+				if(!fileStream.is_open()) {
+
+					throw logic_error("Could not open input file stream.");
+
+				}
+
+				size_t fileSize = getFileSize(fileStream);
+
+				// Loop through the file and buffer the data
+				size_t readBits = 0;
+				unsigned char buffer[1000];
+				while(
+					readBits + 1000 < fileSize
+					&& isCaptureRunning
+				) {
+
+					// Wait if the buffer is getting too big
+					dataStream.lock();
+					if(dataStream.data.size() > 1000000) {
+						dataStream.unlock();
+						this_thread::sleep_for(chrono::milliseconds(100));
+						continue;
+					} 
+					dataStream.unlock();
+
+					// Read the data OUTSIDE the critical section
+					fileStream.read((char*)buffer, 1000);
+
+					// Buffer the data. This MUST happen whenever a read
+					// happens or we'll lose data.
+					dataStream.lock();
+					dataStream.data.insert(
+						dataStream.data.end(), 
+						buffer, 
+						buffer + 1000
+					);
+					dataStream.unlock();
+
+					readBits += 1000;
+
+				}
+
+				if(isCaptureRunning) {
+
+					fileStream.read((char*) buffer, fileSize - readBits);
+
+					dataStream.lock();
+					dataStream.data.insert(
+						dataStream.data.end(), 
+						buffer, 
+						buffer + fileSize - readBits
+					);
+					dataStream.unlock();
+
+				}
+
+				fileStream.close();
+
+			}
 
         });
 
@@ -300,17 +343,6 @@ void DataRun::startRun() {
 
         dataCaptureThread.join();
         decodeThread     .join();
-
-        // TODO: Again, I would rather avoid caring about the type of stream.
-        dataStream.lock();
-        fstream *temp = dynamic_cast<fstream*>(dataStream.stream);
-        if(temp) {
-            temp->close();
-        }
-        dataStream.unlock();
-
-        if(dataStream.stream) delete dataStream.stream;
-        dataStream.stream = nullptr;
 
         DAQState state = DAQState::getState();
         runStarted = false;
@@ -347,5 +379,19 @@ string getCurrentTimestamp(const string &format) {
     strftime(formatBuffer, 40, format.data(), timeinfo);
 
     return string(formatBuffer);
+
+}
+
+size_t getFileSize(ifstream &in) {
+
+	streampos pos = in.tellg();
+
+	in.seekg(0, in.end);
+	size_t size = static_cast<size_t>(in.tellg());
+
+	in.clear();
+	in.seekg(pos, in.beg);
+
+	return size;
 
 }

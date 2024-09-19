@@ -24,22 +24,9 @@ bool systemIsLittleEndian();
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-bool hasSignals(istream &in) {
+bool hasSignals(deque<unsigned char> &in) {
 
-	// TODO: What if no in.end?
-
-	// Get initial and end positions for the stream
-	streampos initialPos = in.tellg();
-	in.seekg(0, in.end);
-	streampos endPos = in.tellg();
-
-	// Reset the stream
-	in.clear();
-	in.seekg(initialPos, in.beg);
-
-	// Return true if there are at least WORD_SIZE characters left on the
-	// stream
-	return (endPos - initialPos) >= Signal::WORD_SIZE;
+	return in.size() >= Signal::WORD_SIZE;
 
 }
 
@@ -47,13 +34,18 @@ bool hasSignals(istream &in) {
 //       into signals later
 // TODO: Remember the power of memcpy and static casting for parsing things
 //         -- build the right struct and you can memcpy right into it very fast
-Signal extractSignal(istream &in) {
+Signal extractSignal(deque<unsigned char> &in) {
 
 	// Set aside some space to store the data word
 	char readBuffer[Signal::WORD_SIZE];
 
-	// Read the data word
-	in.read(readBuffer, Signal::WORD_SIZE);
+	// Pop the word off the deque
+	for(int i = 0; i < Signal::WORD_SIZE; ++i) {
+
+		readBuffer[i] = in.front();
+		in.pop_front();
+
+	}
 
 	// Copy the data word into an int
 	uint64_t word = 0;
