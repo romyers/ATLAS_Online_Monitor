@@ -6,6 +6,12 @@
 using namespace std;
 using namespace MuonReco;
 
+// NOTE: It's really important that the signal buffer is guaranteed to have
+//       at least two signals in it during the call to removeTDCSignals() and
+//       assembleEvent(). If you see errors relating to vector bounds accesses
+//       or vectors overrunning max_size, this is the first thing you should
+//       check.
+
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////// HELPER FUNCTIONS /////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -19,10 +25,6 @@ bool isEvent(const vector<Signal> &signals);
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////// IMPLEMENTATION ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-
-// TODO: Consider separating decoding from validation to better observe a
-//       one-function-one-job pattern. Also consider separating out event
-//       processing. That can be separate too.
 
 Decoder::Decoder(int maxSignalCount) : maxSignalCount(maxSignalCount) {}
 
@@ -81,8 +83,12 @@ DecodeData Decoder::decodeStream(
 
                 // Weed out TDC signals that we don't want to include in the
                 // event
+				// NOTE: We MUST be sure that signalBuffer.size() >= 2 before
+				//       calling removeTDCSignals()
                 removeTDCSignals(signalBuffer);
 
+				// NOTE: We MUST be sure that signalBuffer.size() >= 2 before
+				//       calling assembleEvent()
                 eventBuffer.push_back(assembleEvent(signalBuffer));
 
             } else {

@@ -75,7 +75,9 @@ void processEvent(
 /**
  * Removes TDC Header, Trailer, Overflow, and Error signals from signals.
  * 
- * @param signals A pre-validated vector of signals.
+ * REQUIRES: signals must have at least two elements.
+ * 
+ * @param signals A pre-validated vector of signals with at least two elements.
  */
 void removeTDCSignals(
     std::vector<MuonReco::Signal> &signals

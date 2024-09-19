@@ -347,10 +347,20 @@ void removeTDCSignals(
     std::vector<MuonReco::Signal> &signals
 ) {
 
+	// Erase-Remove Idiom.
+	// NOTE: Careful with the bounds here. We only want to remove TDC signals
+	//       from the _interior_ of the buffer, since header signals can be
+	//       confused with TDC signals and we don't ever want to remove 
+	//       header and trailer signals.
+	//
+	//       We also need to make sure that we erase only up to
+	//       signals.end() - 1, since the last signal in the buffer
+	//       will be a trailer signal undisturbed by remove_if, and
+	//       should not be erased.
     signals.erase(
         std::remove_if(
-            signals.begin(), 
-            signals.end(),
+            signals.begin() + 1, 
+            signals.end() - 1,
             [](const Signal &signal) {
                 if(signal.isTDCHeader   ()) { return true; }
                 if(signal.isTDCTrailer  ()) { return true; }
@@ -359,7 +369,7 @@ void removeTDCSignals(
                 return false;
             }
         ),
-        signals.end()
+        signals.end() - 1
     );
 
 }
