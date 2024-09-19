@@ -97,6 +97,7 @@ namespace MuonReco {
 
     // MiniDAQ Event Header triggerless mode public info
     uint16_t     HeaderEID      () const;
+    uint32_t     HeaderEIDext   () const;
     uint32_t     TriggerLEdge   () const;
 
     // MiniDAQ Event Trailer triggerless mode public info
@@ -147,6 +148,7 @@ namespace MuonReco {
     uint8_t  type         ;
     uint16_t eventid      ;
     uint16_t eventid_t    ;
+    uint32_t eventid_ext  ;
     uint32_t triggerledge ;
     uint8_t  csmid        ;
     uint8_t  tdcid        ;

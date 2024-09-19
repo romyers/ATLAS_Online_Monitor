@@ -12,6 +12,7 @@ namespace MuonReco {
 
     std::bitset<4>  _type         ;
     std::bitset<12> _eventid      ;
+    std::bitset<19> _eventidext   ;
     std::bitset<12> _eventid_t    ;
     std::bitset<17> _triggerledge ;
     std::bitset<3>  _csmid        ;
@@ -21,7 +22,7 @@ namespace MuonReco {
     std::bitset<17> _ledge        ;
     std::bitset<8>  _width        ;
     std::bitset<10> _hitcount     ;
-    std::bitset<12> _tdc_eventid  ;
+    std::bitset<12> _tdc_eventid  ;    
     std::bitset<12> _tdc_bcid     ;
     std::bitset<8>  _tdc_hdrTrlrID;
     std::bitset<4>  _tdc_hdr_count;
@@ -31,7 +32,8 @@ namespace MuonReco {
 
     _type          = word >> 36;
     _eventid       = word >> 17;
-    _eventid_t     = word >> 16;
+    _eventidext    = word >> 17;
+    _eventid_t     = word >> 16;    
     _triggerledge  = word >>  0;
     _csmid         = word >> 37;
     _tdcid         = word >> 32;
@@ -51,6 +53,7 @@ namespace MuonReco {
     type           = static_cast<uint8_t >((_type         .to_ulong()));
     eventid        = static_cast<uint16_t>((_eventid      .to_ulong()));
     eventid_t      = static_cast<uint16_t>((_eventid_t    .to_ulong()));
+    eventid_ext    = static_cast<uint32_t>((_eventidext   .to_ulong()));
     triggerledge   = static_cast<uint32_t>((_triggerledge .to_ulong()));
     csmid          = static_cast<uint8_t >((_csmid        .to_ulong()));
     tdcid          = static_cast<uint8_t >((_tdcid        .to_ulong()));
@@ -91,6 +94,7 @@ namespace MuonReco {
 
   uint8_t  Signal:: Type           () const { return type                                   ; }
   uint16_t Signal:: HeaderEID      () const { return eventid                                ; }
+  uint32_t Signal:: HeaderEIDext   () const { return eventid_ext                            ; }
   uint16_t Signal:: TrailerEID     () const { return eventid_t                              ; }
   uint32_t Signal:: TriggerLEdge   () const { return triggerledge                           ; }
   uint8_t  Signal:: CSMID          () const { return csmid                                  ; }
@@ -110,10 +114,10 @@ namespace MuonReco {
 
   bool     Signal:: isEventHeader  () const { return Type         () == HEADER              ; }
   bool     Signal:: isEventTrailer () const { return Type         () == TRAILER             ; }
-  bool     Signal:: isTDCHeader    () const { return TDCHdrTrlrID () == TDC_HEADER_IDENT    ; }
-  bool     Signal:: isTDCTrailer   () const { return TDCHdrTrlrID () == TDC_TRAILER_IDENT   ; }
-  bool     Signal:: isTDCOverflow  () const { return TDCHdrTrlrID () == TDC_OVERFLOW_IDENT  ; }
-  bool     Signal:: isTDCDecodeErr () const { return TDCHdrTrlrID () == TDC_DECODE_ERR_IDENT; }
+  bool     Signal:: isTDCHeader    () const { return (!isEventHeader())&&(!isEventTrailer())&&(TDCHdrTrlrID () == TDC_HEADER_IDENT    ); }
+  bool     Signal:: isTDCTrailer   () const { return (!isEventHeader())&&(!isEventTrailer())&&(TDCHdrTrlrID () == TDC_TRAILER_IDENT   ); }
+  bool     Signal:: isTDCOverflow  () const { return (!isEventHeader())&&(!isEventTrailer())&&(TDCHdrTrlrID () == TDC_OVERFLOW_IDENT  ); }
+  bool     Signal:: isTDCDecodeErr () const { return (!isEventHeader())&&(!isEventTrailer())&&(TDCHdrTrlrID () == TDC_DECODE_ERR_IDENT); }
 
   double   Signal:: Time           () const { return time_in_ns;                              }
 
