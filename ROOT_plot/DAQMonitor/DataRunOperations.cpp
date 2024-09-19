@@ -40,6 +40,8 @@ const string CONF_PATH = "../conf/";
 
 bool runStarted = false;
 
+bool isCaptureRunning = false;
+
 string getCurrentTimestamp (const string   &format       );
 
 
@@ -64,6 +66,8 @@ void DataRun::stopRun() {
 
     DataCapture::stopDataCapture();
     Decode::stopDecoding();
+
+	isCaptureRunning = false;
 
 }
 
@@ -260,6 +264,8 @@ void DataRun::startRun() {
 
             } else if(state.persistentState.dataSource == DAT_FILE_SOURCE) {
 
+				isCaptureRunning = true;
+
 				cout << "Reading data from file: " << state.persistentState.inputFilename << endl;
 
 				// Open the file stream
@@ -277,44 +283,48 @@ void DataRun::startRun() {
 				unsigned char buffer[1000];
 				while(
 					readBits + 1000 < fileSize
+					&& isCaptureRunning
 				) {
 
-					fileStream.read((char*)buffer, 1000);
-
+					// Wait if the buffer is getting too big
 					dataStream.lock();
-
-					// Buffer up to 1000000 bits
 					if(dataStream.data.size() > 1000000) {
-
 						dataStream.unlock();
 						this_thread::sleep_for(chrono::milliseconds(100));
 						continue;
+					} 
+					dataStream.unlock();
 
-					} else {
+					// Read the data OUTSIDE the critical section
+					fileStream.read((char*)buffer, 1000);
 
-						dataStream.data.insert(
-							dataStream.data.end(), 
-							buffer, 
-							buffer + 1000
-						);
-						dataStream.unlock();
-
-					}
+					// Buffer the data. This MUST happen whenever a read
+					// happens or we'll lose data.
+					dataStream.lock();
+					dataStream.data.insert(
+						dataStream.data.end(), 
+						buffer, 
+						buffer + 1000
+					);
+					dataStream.unlock();
 
 					readBits += 1000;
 
 				}
 
-				fileStream.read((char*) buffer, fileSize - readBits);
+				if(isCaptureRunning) {
 
-				dataStream.lock();
-				dataStream.data.insert(
-					dataStream.data.end(), 
-					buffer, 
-					buffer + fileSize - readBits
-				);
+					fileStream.read((char*) buffer, fileSize - readBits);
 
-				dataStream.unlock();
+					dataStream.lock();
+					dataStream.data.insert(
+						dataStream.data.end(), 
+						buffer, 
+						buffer + fileSize - readBits
+					);
+					dataStream.unlock();
+
+				}
 
 				fileStream.close();
 
