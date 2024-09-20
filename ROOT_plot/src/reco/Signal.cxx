@@ -12,7 +12,8 @@ namespace MuonReco {
 
     std::bitset<4>  _type         ;
     std::bitset<12> _eventid      ;
-    std::bitset<19> _eventidext   ;
+    std::bitset<18> _eventidext   ;
+    std::bitset<1>  _trigoverflow ;
     std::bitset<12> _eventid_t    ;
     std::bitset<17> _triggerledge ;
     std::bitset<3>  _csmid        ;
@@ -33,6 +34,7 @@ namespace MuonReco {
     _type          = word >> 36;
     _eventid       = word >> 17;
     _eventidext    = word >> 17;
+    _trigoverflow  = word >> 35;
     _eventid_t     = word >> 16;    
     _triggerledge  = word >>  0;
     _csmid         = word >> 37;
@@ -54,6 +56,8 @@ namespace MuonReco {
     eventid        = static_cast<uint16_t>((_eventid      .to_ulong()));
     eventid_t      = static_cast<uint16_t>((_eventid_t    .to_ulong()));
     eventid_ext    = static_cast<uint32_t>((_eventidext   .to_ulong()));
+    trigoverflow   = static_cast<uint8_t >((_trigoverflow .to_ulong()));
+    
     triggerledge   = static_cast<uint32_t>((_triggerledge .to_ulong()));
     csmid          = static_cast<uint8_t >((_csmid        .to_ulong()));
     tdcid          = static_cast<uint8_t >((_tdcid        .to_ulong()));
@@ -95,6 +99,7 @@ namespace MuonReco {
   uint8_t  Signal:: Type           () const { return type                                   ; }
   uint16_t Signal:: HeaderEID      () const { return eventid                                ; }
   uint32_t Signal:: HeaderEIDext   () const { return eventid_ext                            ; }
+  uint8_t  Signal:: TrigOverflow   () const { return trigoverflow                           ; }
   uint16_t Signal:: TrailerEID     () const { return eventid_t                              ; }
   uint32_t Signal:: TriggerLEdge   () const { return triggerledge                           ; }
   uint8_t  Signal:: CSMID          () const { return csmid                                  ; }

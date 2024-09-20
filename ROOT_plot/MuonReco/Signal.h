@@ -15,8 +15,8 @@
 
 
    Header:
-   39-36     35-29    28-17        16-0  
-   4'b1010   7'b0     12'EventID   17'TriggerLEdge
+   39-36     35                 34-29             28-17        16-0  
+   4'b1010   1'TriggerOverflow  6'EventIDext      12'EventID   17'TriggerLEdge
 
    TDC Data:
    39-37     36-32    31-27       26-25   24-8      7-0
@@ -43,8 +43,8 @@
    And in triggered mode:
 
    Header:
-   39-36     35-29    28-17        16-0  
-   4'b1010   7'b0     12'EventID   17'TriggerLEdge
+   39-36     35                 34-29             28-17        16-0  
+   4'b1010   1'TriggerOverflow  6'EventIDext      12'EventID   17'TriggerLEdge
 
    TDC Data:
    39-37     36-32    31-27       26-25   24-8      7-0
@@ -98,6 +98,7 @@ namespace MuonReco {
     // MiniDAQ Event Header triggerless mode public info
     uint16_t     HeaderEID      () const;
     uint32_t     HeaderEIDext   () const;
+    uint8_t      TrigOverflow   () const;
     uint32_t     TriggerLEdge   () const;
 
     // MiniDAQ Event Trailer triggerless mode public info
@@ -149,6 +150,7 @@ namespace MuonReco {
     uint16_t eventid      ;
     uint16_t eventid_t    ;
     uint32_t eventid_ext  ;
+    uint8_t  trigoverflow ;
     uint32_t triggerledge ;
     uint8_t  csmid        ;
     uint8_t  tdcid        ;

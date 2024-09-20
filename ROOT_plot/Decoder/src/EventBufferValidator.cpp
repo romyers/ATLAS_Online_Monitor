@@ -31,8 +31,18 @@ void EventBufferValidator::validateWarnings(const vector<Event> &buffer) {
 					EVENT_BUFFER_ERROR,
 					WARNING
 				);
+			}
+			else {
+				if(e.TrigSignals().at(0).TrigOverflow()) {
+				logger.logError(
+					string("Trigger buffer overflow before event ")
+					+ to_string(e.TrigSignals().at(0).HeaderEID()),
+					EVENT_BUFFER_ERROR,
+					WARNING
+				);
 
-			} else if(e.ID() != (latestEventID + 1) % 4096) {
+				} 
+				if(e.ID() != (latestEventID + 1) % 4096) {
 
 				logger.logError(
 					string("Event lost! Current=")
@@ -43,6 +53,7 @@ void EventBufferValidator::validateWarnings(const vector<Event> &buffer) {
 					WARNING
 				);
 
+				}
 			}
 
 		}
