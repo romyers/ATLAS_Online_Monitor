@@ -57,7 +57,7 @@ const string STATE_STORAGE = "settings.txt";
  * The approximate rate at which the GUI is refreshed.
  */
 const double GUI_REFRESH_RATE  = 60.; //Hz
-const double DATA_REFRESH_RATE = 2.; // Hz
+const double DATA_REFRESH_RATE = 1.; // Hz
 
 void forceExit(int signal) {
 

@@ -86,10 +86,10 @@ void startLoop(double refreshRate, double dataRefreshRate) {
 			// consistent frame rate
 			int sleepTime = (int)(1000. / dataRefreshRate) - (int)(updateTime.count());
 
-			// Deal with the case where the update loop took too long
-			if(sleepTime < 0) {
+			// Make sure we sleep at least a little bit
+			if(sleepTime < 100) {
 
-				sleepTime = 0;
+				sleepTime = 100;
 
 			}
 

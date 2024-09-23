@@ -157,13 +157,6 @@ void Decode::startDecoding(
 
             MonitorHooks::updatedData(data);
 
-            // TODO: This blocks the decode thread while the plots are 
-            //       updating. Not a big deal, but it would be nice if
-            //       that didn't happen.
-            // UI::UILock.lock();
-            // UISignalBus::getInstance().onUpdate();
-            // UI::UILock.unlock();
-
         }
         
     }

@@ -359,6 +359,7 @@ void DataRun::startRun() {
         cout << "Run finished!" << endl;
 
         // TODO: Yet another hard-to-find place we do this.
+		// This one makes sure the last group of data is displayed.
         UI::UILock.lock();
         UISignalBus::getInstance().onUpdate();
         UI::UILock.unlock();

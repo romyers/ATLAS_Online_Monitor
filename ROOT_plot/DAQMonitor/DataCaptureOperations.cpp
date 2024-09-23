@@ -162,6 +162,7 @@ void DataCapture::startDataCapture(
         data.lock();
         data.packetCount = packets;
         data.lostPackets += packetData.lostPackets;
+		data.markDirty();
         data.unlock();
 
     }
