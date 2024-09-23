@@ -20,6 +20,9 @@ using namespace std;
 
 using namespace MuonReco;
 
+size_t MAX_CACHE_SIZE = 1000000;
+size_t MAX_SIGNALS_PER_LOOP = 10000;
+
 /**
  * The approximate rate at which monitor data is refreshed. Note that the
  * monitor will fall short of this rate if it must process too much data
@@ -48,7 +51,7 @@ void Decode::stopDecoding() {
 }
 
 void Decode::startDecoding(
-    LockableData &dataStream, 
+    LockableStream &dataStream, 
     DAQData &data, 
     const string &runLabel
 ) {
@@ -61,7 +64,7 @@ void Decode::startDecoding(
     UISignalBus::getInstance().onUpdate();
     UI::UILock.unlock();
 
-    Decoder decoder(10000);
+    Decoder decoder(MAX_SIGNALS_PER_LOOP);
 
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
@@ -94,6 +97,9 @@ void Decode::startDecoding(
     // When the next noise rate CSV save operation should occur
     int noiseSavepoint = 0; // Events
 
+	vector<unsigned char> dataBuffer;
+	dataBuffer.reserve(MAX_CACHE_SIZE);
+
     while(isDecodeRunning) {
 
         // TODO: Performance analysis. I'd like this loop to run faster
@@ -111,8 +117,28 @@ void Decode::startDecoding(
         DecodeData loopData;
         bool hasData = false;
 
-        dataStream.lock();
-        if(hasNewData(dataStream.data)) {
+		// RETRIEVE DATA FROM THE LOCKABLE STREAM
+
+		// Prepare the data buffer for reading
+		size_t endPos = dataBuffer.size();
+		dataBuffer.resize(MAX_SIGNALS_PER_LOOP * Signal::WORD_SIZE + dataBuffer.size());
+
+		dataStream.lock();
+
+		// Read as much as we can from the file and resize the buffer to fit
+		// what we actually were able to read
+		dataBuffer.resize(
+			dataStream.read(
+				(char*)dataBuffer.data() + endPos,
+				dataBuffer.size()
+			) + endPos
+		);
+
+		dataStream.unlock();
+
+		// PROCESS THE DATA
+
+        if(dataBuffer.size() > Signal::WORD_SIZE) {
 
             MonitorHooks::beforeUpdateData(data);
 
@@ -121,7 +147,7 @@ void Decode::startDecoding(
             //       of a data run, and can't happen concurrently with this 
             //       call.
             loopData = decoder.decodeStream(
-                dataStream.data, 
+                dataBuffer, 
                 data.geo, 
                 data.tc,
                 data.recoUtil
@@ -130,7 +156,6 @@ void Decode::startDecoding(
             hasData = true;
 
         }
-        dataStream.unlock();
 
         if(hasData) {
 

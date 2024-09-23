@@ -9,26 +9,51 @@
 
 #pragma once
 
+#include "RingBuffer.h"
+
 #include <mutex>
+#include <fstream>
 #include <vector>
 
-class LockableData {
+class LockableStream {
 
 public:
 
-	LockableData();
+	LockableStream(size_t cacheSize = 0);
+	~LockableStream();
+
+	// Creates the file if it doesn't exist and opens it for IO
+	void open(const std::string &filename);
+	void close();
 
 	// We don't want copying or we'll lose the mutex
-	LockableData  (      LockableData &other) = delete;
-	void operator=(const LockableData &other) = delete;
+	LockableStream  (      LockableStream &other) = delete;
+	void operator=(const LockableStream &other) = delete;
 
 	void lock  ();
 	void unlock();
 
-	std::vector<unsigned char> data;
+	size_t fileSize();
+
+	size_t unreadBytes();
+
+	bool is_open();
+
+	// Will read as many bytes as are available up to size, and
+	// return the number of bytes read.
+	size_t read(char *buffer, size_t size);
+	
+	bool write(const char *buffer, size_t size);
+
+	void flush();
 
 private:
 
+	std::ifstream in;
+	std::ofstream out;
+
 	std::mutex m;
+
+	RingBuffer<unsigned char> cache;
 
 };

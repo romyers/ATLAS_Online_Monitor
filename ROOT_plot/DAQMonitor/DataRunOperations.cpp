@@ -27,6 +27,8 @@
 #include "MuonReco/Geometry.h"
 #include "MuonReco/ConfigParser.h"
 
+#include "FileManagement/FileManager.h"
+
 using namespace std;
 using namespace State;
 using namespace MonitorHooks;
@@ -243,6 +245,82 @@ void DataRun::startRun() {
     ProgramFlow::threadLock.lock();
     ProgramFlow::threads.emplace_back(thread([&data, runLabel]() {
 
+		State::DAQState state = State::DAQState::getState();
+
+		ofstream logWriter;
+			
+		LockableStream dataStream;
+
+		if(state.persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
+
+			string dataFile("../data/");
+			dataFile += runLabel;
+
+			string logFile(dataFile + ".log");
+
+			dataFile += ".dat";
+
+			// It's important to open the dataStream first. If a directory in
+			// the dataFile path does not exist, the dataStream can create it,
+			// but the logWriter cannot.
+			dataStream.lock();
+			dataStream.open(dataFile);
+			if(!dataStream.is_open()) {
+
+				ErrorLogger::getInstance().logError(
+					string("Failed to open .dat file: ") + dataFile,
+					"dataCapture",
+					CRITICAL
+				);
+				cout << "Aborted run!" << endl;
+
+				dataStream.unlock();
+
+				throw logic_error("Data capture could not open .dat file");
+
+			}
+			dataStream.unlock();
+
+			logWriter.open(logFile);
+			if(!logWriter.is_open()) {
+
+				ErrorLogger::getInstance().logError(
+					string("Failed to open log file: ") + logFile,
+					"errorLogging",
+					CRITICAL
+				);
+				cout << "Aborted run!" << endl;
+
+				// TODO: This won't handle stopping the run properly.
+				throw logic_error("Data capture could not open logging .log file");
+
+			}
+			ErrorLogger::getInstance().addOutputStream(logWriter);
+
+			cout << "Saving packet data to: " << dataFile << endl;
+
+		} else {
+
+			dataStream.lock();
+			dataStream.open(state.persistentState.inputFilename);
+			if(!dataStream.is_open()) {
+
+				ErrorLogger::getInstance().logError(
+					string("Failed to open .dat file: ") + state.persistentState.inputFilename,
+					"dataCapture",
+					CRITICAL
+				);
+				cout << "Aborted run!" << endl;
+
+				dataStream.unlock();
+
+				throw logic_error("Data capture could not open .dat file");
+
+			}
+			dataStream.unlock();
+
+		}
+
         MonitorHooks::beforeStartRun(data);
 
         cout << endl << "Starting run: " << runLabel << endl; 
@@ -251,85 +329,14 @@ void DataRun::startRun() {
         UISignalBus::getInstance().onRunStart();
         UI::UILock.unlock();
 
-        LockableData dataStream;
-		dataStream.data.reserve(100000); // TODO: Magic number
-
         // DATA CAPTURE LOOP
         thread dataCaptureThread([&dataStream, &data, runLabel]() {
 
-			DAQState state = DAQState::getState();
-
-            if(state.persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
+            if(DAQState::getState().persistentState.dataSource == NETWORK_DEVICE_SOURCE) {
 
                 DataCapture::startDataCapture(dataStream, data, runLabel);
 
-            } else if(state.persistentState.dataSource == DAT_FILE_SOURCE) {
-
-				isCaptureRunning = true;
-
-				cout << "Reading data from file: " << state.persistentState.inputFilename << endl;
-
-				// Open the file stream
-				ifstream fileStream(state.persistentState.inputFilename);
-				if(!fileStream.is_open()) {
-
-					throw logic_error("Could not open input file stream.");
-
-				}
-
-				size_t fileSize = getFileSize(fileStream);
-
-				// Loop through the file and buffer the data
-				size_t readBits = 0;
-				unsigned char buffer[1000];
-				while(
-					readBits + 1000 < fileSize
-					&& isCaptureRunning
-				) {
-
-					// Wait if the buffer is getting too big
-					dataStream.lock();
-					if(dataStream.data.size() > 1000000) {
-						dataStream.unlock();
-						this_thread::sleep_for(chrono::milliseconds(100));
-						continue;
-					} 
-					dataStream.unlock();
-
-					// Read the data OUTSIDE the critical section
-					fileStream.read((char*)buffer, 1000);
-
-					// Buffer the data. This MUST happen whenever a read
-					// happens or we'll lose data.
-					dataStream.lock();
-					dataStream.data.insert(
-						dataStream.data.end(), 
-						buffer, 
-						buffer + 1000
-					);
-					dataStream.unlock();
-
-					readBits += 1000;
-
-				}
-
-				if(isCaptureRunning) {
-
-					fileStream.read((char*) buffer, fileSize - readBits);
-
-					dataStream.lock();
-					dataStream.data.insert(
-						dataStream.data.end(), 
-						buffer, 
-						buffer + fileSize - readBits
-					);
-					dataStream.unlock();
-
-				}
-
-				fileStream.close();
-
-			}
+            } 
 
         });
 
@@ -345,7 +352,10 @@ void DataRun::startRun() {
         dataCaptureThread.join();
         decodeThread     .join();
 
-        DAQState state = DAQState::getState();
+		ErrorLogger::getInstance().disconnectStreams();
+
+		if(logWriter.is_open()) logWriter.close ();
+
         runStarted = false;
         state.commit();
 

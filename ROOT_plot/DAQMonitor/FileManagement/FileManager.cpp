@@ -43,14 +43,35 @@ bool createDirectory(const string &path) {
 
 bool createIfMissing(const string &path) {
 
-    if(!directoryExists(path)) {
+	bool created = false;
 
-        createDirectory(path);
+	for(
+		size_t pos = path.find("/"); 
+		pos != string::npos; 
+		pos = path.find("/", pos + 1)
+	) {
 
-        return true;
+		string subpath = path.substr(0, pos);
 
-    }
+		if(!directoryExists(subpath)) {
 
-    return false;
+			createDirectory(subpath);
+
+			created = true;
+
+		}
+
+	}
+
+	if(!directoryExists(path)) {
+
+		createDirectory(path);
+
+		created = true;
+
+	}
+
+	
+	return created;
 
 }

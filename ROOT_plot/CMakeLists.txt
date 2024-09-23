@@ -32,6 +32,14 @@ include(${ROOT_USE_FILE})
 include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${ROOT_LIBRARY_DIR})
 
+# Build tests
+if(BUILD_TESTING)
+	
+	include(CTest)
+	add_subdirectory(tests)
+
+endif()
+
 ###############################################################################
 
 set(recoObjs_HEADERS
@@ -159,6 +167,7 @@ set(monitor_HEADERS
 	DAQMonitor/DAQState.h
 	DAQMonitor/DataRunOperations.h
 	DAQMonitor/LockableStream.h
+	DAQMonitor/RingBuffer.h
 	DAQMonitor/PlotSavingOperations.h
 	DAQMonitor/PacketDecodingOperations.h
 	DAQMonitor/DataCaptureOperations.h

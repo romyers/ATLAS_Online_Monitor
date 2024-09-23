@@ -54,7 +54,7 @@ void DataCapture::stopDataCapture() {
 }
 
 void DataCapture::startDataCapture(
-    LockableData &dataStream, 
+    LockableStream &dataStream, 
     DAQData &data, 
     const string &runLabel
 ) {
@@ -84,77 +84,23 @@ void DataCapture::startDataCapture(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
-    createIfMissing("../data");
-
-    string outputFile("../data/");
-    outputFile += runLabel;
-
-    string logFile(outputFile + ".log");
-
-    outputFile += ".dat";
-
-    ofstream fileWriter(outputFile);
-    if(!fileWriter.is_open()) {
-
-        ErrorLogger::getInstance().logError(
-            string("Failed to open output .dat file: ") + outputFile,
-            "dataCapture",
-            CRITICAL
-        );
-        cout << "Aborted run!" << endl;
-
-        throw logic_error("Data capture could not open output .dat file");
-
-    }
-
-    ofstream logWriter(logFile);
-    if(!logWriter.is_open()) {
-
-        ErrorLogger::getInstance().logError(
-            string("Failed to open log file: ") + logFile,
-            "errorLogging",
-            CRITICAL
-        );
-        cout << "Aborted run!" << endl;
-
-        // TODO: This won't handle stopping the run properly.
-        throw logic_error("Data capture could not open logging .log file");
-
-    }
-    ErrorLogger::getInstance().addOutputStream(logWriter);
-
-    cout << "Saving packet data to: " << outputFile << endl;
-
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-
     isEcapRunning = true;
 
-    // TODO: Main shouldn't need to care about packet counting
-    // TODO: If the data stream is a stringstream, it needs to be reset
-    //       each loop, or else it will act like a memory leak
     int packets   = 0;
     while(isEcapRunning) {
  
         // Retrieve buffered packets and metadata
         PacketData packetData = sessionHandler.bufferPackets(); // Retrieves and buffers packets from device 
 
-        // Write buffered packets to dataStream
+        // Write buffered packets to output
+		// This will write them to a DAT file with caching for the decoder
         dataStream.lock();
-		dataStream.data.insert(
-			dataStream.data.end(), 
-			packetData.packetBuffer.cbegin(), 
-			packetData.packetBuffer.cend()
+		dataStream.write(
+			(char*)packetData.packetBuffer.data(), 
+			packetData.packetBuffer.size()
 		);
+		dataStream.flush();
         dataStream.unlock();
-
-        // Write buffered packets to the .dat file
-        fileWriter.write(
-            (char*)packetData.packetBuffer.data(), 
-            packetData.packetBuffer.size()
-        );
-        fileWriter.flush();
 
         packets += packetData.bufferedPackets;
 
@@ -170,11 +116,6 @@ void DataCapture::startDataCapture(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
-
-    ErrorLogger::getInstance().disconnectStreams();
-
-    fileWriter.close();
-    logWriter.close ();
 
     cout << "Suspended data capture." << endl;
     cout << data.packetCount << " packets recorded." << endl;
