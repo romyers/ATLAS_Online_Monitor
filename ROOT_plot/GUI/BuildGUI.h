@@ -20,8 +20,10 @@ DAQManager *buildGUI();
  * Starts the UI event loop.
  * 
  * @param refreshRate The loop rate for the UI event loop, in Hz.
+ * @param dataRefreshRate The loop rate for updates to the data display
+ * components of the GUI, in Hz.
  */
-void startUILoop(double refreshRate);
+void startUILoop(double refreshRate, double dataRefreshRate);
 
 /**
  * Stops the UI event loop.

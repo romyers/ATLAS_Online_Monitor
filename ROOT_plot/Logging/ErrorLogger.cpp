@@ -124,6 +124,10 @@ size_t ErrorLogger::countErrors(
 	ErrorLevel level
 ) const {
 
+	// TODO: This function is a huge time sink when errors occurs.
+	//       Clean it up by using a map to store errors and thus
+	//       reduce how much count_if has to do.
+
 	size_t val;
 
 	errorLock.lock();

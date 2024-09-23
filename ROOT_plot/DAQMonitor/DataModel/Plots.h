@@ -60,6 +60,9 @@ struct Plots {
     void initialize   (                    );
 	void clear        (                    );
 
+	bool isDirty() const;
+	void markClean();
+
 private:
 
     std::vector<double> p_tdc_hit_rate_x;
@@ -67,5 +70,7 @@ private:
 	// NOTE: This is configured externally in DataRunOperations. No need to do
 	//       anything with it here. It's just here to be accessible.
 	MuonReco::Geometry &geo; 
+
+	bool dirty;
 
 };

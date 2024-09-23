@@ -12,7 +12,7 @@
 /**
  * Starts the UI loop.
  */
-void startLoop(double refreshRate);
+void startLoop(double refreshRate, double dataRefreshRate);
 
 /**
  * Stops the UI loop.

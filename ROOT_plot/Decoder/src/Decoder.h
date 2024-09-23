@@ -10,7 +10,6 @@
 #pragma once
 
 #include <vector>
-#include <deque>
 
 #include "EventBufferValidator.h"
 
@@ -27,7 +26,7 @@
  * 
  * @return True if the data contains unread data, and false otherwise.
  */
-bool hasNewData(std::deque<unsigned char> &in);
+bool hasNewData(std::vector<unsigned char> &in);
 
 /**
  * Struct packaging newly decoded events along with associated metadata.
@@ -78,7 +77,7 @@ public:
 	 * processes it, and packs it into a DecodeData object. This should
 	 * not be run concurrently with write operations to the geo parameter.
 	 * 
-	 * MODIFES: Decoded data will be removed from the input deque.
+	 * MODIFES: Decoded data will be removed from the input vector.
 	 * 
 	 * @param in The data to extract signals from.
 	 * 
@@ -89,7 +88,7 @@ public:
 	 * decodeStream().
 	 */
 	DecodeData decodeStream(
-		std::deque<unsigned char>  &in      , 
+		std::vector<unsigned char>  &in      , 
 		MuonReco::Geometry       &geo     ,
 		MuonReco::TimeCorrection &tc      ,
 		MuonReco::RecoUtility    &recoUtil

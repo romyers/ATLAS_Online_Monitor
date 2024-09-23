@@ -23,16 +23,17 @@
  * @return True if there are complete unread signals in the data, and false
  * otherwise.
  */
-bool hasSignals(std::deque<unsigned char> &in);
+bool hasSignals(std::vector<unsigned char> &in);
 
 /**
  * Extracts one signal from the input data.
  * 
- * @param in The data from which a signal should be extracted.
+ * @param wordStart A pointer to a char array with at least wordSize elements
+ * containing a signal.
  * 
  * @return The extracted signal.
  */
-MuonReco::Signal extractSignal(std::deque<unsigned char> &in);
+MuonReco::Signal extractSignal(unsigned char *wordStart, int wordSize);
 
 /**
  * Provides validation of 'sig', logging an error to the error logger

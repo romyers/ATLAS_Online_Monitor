@@ -24,7 +24,7 @@ bool systemIsLittleEndian();
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-bool hasSignals(deque<unsigned char> &in) {
+bool hasSignals(vector<unsigned char> &in) {
 
 	return in.size() >= Signal::WORD_SIZE;
 
@@ -34,27 +34,16 @@ bool hasSignals(deque<unsigned char> &in) {
 //       into signals later
 // TODO: Remember the power of memcpy and static casting for parsing things
 //         -- build the right struct and you can memcpy right into it very fast
-Signal extractSignal(deque<unsigned char> &in) {
-
-	// Set aside some space to store the data word
-	char readBuffer[Signal::WORD_SIZE];
-
-	// Pop the word off the deque
-	for(int i = 0; i < Signal::WORD_SIZE; ++i) {
-
-		readBuffer[i] = in.front();
-		in.pop_front();
-
-	}
+Signal extractSignal(unsigned char *wordStart, int wordSize) {
 
 	// Copy the data word into an int
 	uint64_t word = 0;
-	memcpy(&word, readBuffer, Signal::WORD_SIZE);
+	memcpy(&word, wordStart, wordSize);
 
 	// Convert the data word to the correct endianness
 	if(systemIsLittleEndian()) {
 
-		word = byteSwap(word, Signal::WORD_SIZE);
+		word = byteSwap(word, wordSize);
 
 	}
 

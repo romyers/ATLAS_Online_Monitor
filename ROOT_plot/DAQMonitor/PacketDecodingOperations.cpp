@@ -160,16 +160,11 @@ void Decode::startDecoding(
             // TODO: This blocks the decode thread while the plots are 
             //       updating. Not a big deal, but it would be nice if
             //       that didn't happen.
-            // TODO: For DAT file sources, this won't run until the entire
-            //       file has been read. Not exactly ideal.
-            UI::UILock.lock();
-            UISignalBus::getInstance().onUpdate();
-            UI::UILock.unlock();
+            // UI::UILock.lock();
+            // UISignalBus::getInstance().onUpdate();
+            // UI::UILock.unlock();
 
         }
-
-        // TODO: This thread logic should be at a higher level....
-        this_thread::sleep_for(chrono::milliseconds((int)(1000 / DATA_REFRESH_RATE)));
         
     }
 
@@ -206,6 +201,8 @@ void aggregateEventData(const DecodeData &loopData, DAQData &data) {
     }
 
     data.plots.updateHitRate(data.totalEventCount);
+
+	data.markDirty();
 
 }
 

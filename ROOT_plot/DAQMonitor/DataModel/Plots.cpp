@@ -61,9 +61,17 @@ Plots::Plots(const Plots &other) : geo(other.geo) {
 	badHitByLC  = dynamic_cast<TH2D*>(other.badHitByLC ->Clone());
 	goodHitByLC = dynamic_cast<TH2D*>(other.goodHitByLC->Clone());
 
+	dirty = true;
+
 }
 
 Plots::Plots(Geometry &geo) : geo(geo) {
+
+}
+
+bool Plots::isDirty() const {
+
+	return dirty;
 
 }
 
@@ -244,6 +252,8 @@ void Plots::initialize() {
 	);
 	goodHitByLC->SetStats(0);
 
+	dirty = true;
+
 }
 
 void Plots::updateHitRate(int total_events) {
@@ -272,6 +282,8 @@ void Plots::updateHitRate(int total_events) {
 		}
 
 	}
+
+	dirty = true;
 
 }
 
@@ -309,6 +321,8 @@ void Plots::binEvent(const Event &e) {
 		p_hits_distribution[hitL]->Fill(hitC);
 
 	}
+
+	dirty = true;
 
 }
 
@@ -473,5 +487,13 @@ void Plots::clear() {
         delete goodHitByLC;
         goodHitByLC = nullptr;
     }
+
+	dirty = true;
+
+}
+
+void Plots::markClean() {
+
+	dirty = false;
 
 }

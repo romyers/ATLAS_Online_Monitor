@@ -2,16 +2,11 @@
 
 namespace MuonReco {
 
-  Event::Event() {
-    trigs    = std::vector<Signal>();
-    sigs     = std::vector<Signal>();
-    trigHits = std::vector<Hit>();
-    sigHits  = std::vector<Hit>();
-    clusters = std::vector<Cluster>();
-    tracks   = std::vector<Track>();
-    nTrigs   = 0;
-    nSigs    = 0;
-    id       = 0;
+  Event::Event() 
+  	:nTrigs(0),
+	 nSigs(0),
+	 id(0) {
+
   }
 
   /*
@@ -20,42 +15,34 @@ namespace MuonReco {
   e.AddTriggerHit(hit);
   */
 
-  Event::Event(Signal header, Signal trailer, std::vector<Signal> signals, uint16_t eID) {
-    trigs = std::vector<Signal>();
-    trigs.push_back(header);
-    trigs.push_back(trailer);
-    sigs     = signals;
-    trigHits = std::vector<Hit>();
-    sigHits  = std::vector<Hit>();
-    clusters = std::vector<Cluster>();
-    tracks   = std::vector<Track>();
-    nTrigs   = 0;
-    nSigs    = 0;
-    id       = eID;
+  Event::Event(const Signal &header, const Signal &trailer, const std::vector<Signal> &signals, uint16_t eID)
+  	: trigs({header, trailer}), 
+	  sigs(signals), 
+	  nTrigs(0), 
+	  nSigs(0), 
+	  id(eID) {
   }
 
 
-  Event::Event(std::vector<Signal> triggers, std::vector<Signal> signals, EventID eID) {
-    trigs    = triggers;
-    sigs     = signals;
-    trigHits = std::vector<Hit>();
-    sigHits  = std::vector<Hit>();
-    clusters = std::vector<Cluster>();
-    tracks   = std::vector<Track>();
-    id       = eID.ID();
-    nTrigs   = 0;
-    nSigs    = 0;
+  Event::Event(const std::vector<Signal> &triggers, const std::vector<Signal> &signals, EventID eID) 
+  	: trigs(triggers), 
+	  sigs(signals), 
+	  id(eID.ID()), 
+	  nTrigs(0), 
+	  nSigs(0) {
   }
 
-  Event::Event(std::vector<Signal> triggers, std::vector<Signal> signals, std::vector<Hit> wHits, std::vector<Hit>    tHits,    std::vector<Cluster> clusts, std::vector<Track> trks, unsigned long ID) {
-    trigs    = triggers;
-    sigs     = signals;
-    trigHits = tHits;
-    sigHits  = wHits;
-    clusters = clusts;
-    tracks   = trks;
-    id       = ID;
+  Event::Event(const std::vector<Signal> &triggers, const std::vector<Signal> &signals, const std::vector<Hit> &wHits, const std::vector<Hit>    &tHits,    const std::vector<Cluster> &clusts, const std::vector<Track> &trks, unsigned long ID) 
+  	: trigs(triggers),
+	  sigs(signals),
+	  trigHits(tHits),
+	  sigHits(wHits),
+	  clusters(clusts),
+	  tracks(trks),
+	  id(ID) {
+
     update();
+	
   }
 
   Event::Event(const Event &e) {

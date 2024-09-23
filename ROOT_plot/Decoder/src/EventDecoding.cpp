@@ -23,21 +23,6 @@ const string EVENT_ERROR = "event" ;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO: We also want some metadata, as described in DecodeOffline
-Event assembleEvent(const vector<Signal> &signals) {
-
-	return Event(
-		signals.front(), 
-		signals.back(),
-		vector<Signal>(
-			signals.begin() + 1, 
-			signals.end  () - 1
-		),
-		signals.back().TrailerEID()
-	);
-
-}
-
 void processEvent(
 	Event          &e       , 
 	Geometry       &geo     , 

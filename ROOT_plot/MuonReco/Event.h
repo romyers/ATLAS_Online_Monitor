@@ -26,10 +26,10 @@ namespace MuonReco {
   class Event : public RecoObject {
   public:
     Event();
-    Event(std::vector<Signal> triggers, std::vector<Signal> signals, EventID eID);
-    Event(Signal header, Signal trailer, std::vector<Signal> signals, uint16_t eID);
-    Event(std::vector<Signal> triggers, std::vector<Signal> signals, std::vector<Hit> wHits,
-          std::vector<Hit>    tHits,    std::vector<Cluster> clusts, std::vector<Track> trks,
+    Event(const std::vector<Signal> &triggers, const std::vector<Signal> &signals, EventID eID);
+    Event(const Signal &header, const Signal &trailer, const std::vector<Signal> &signals, uint16_t eID);
+    Event(const std::vector<Signal> &triggers, const std::vector<Signal> &signals, const std::vector<Hit> &wHits,
+          const std::vector<Hit>    &tHits,    const std::vector<Cluster> &clusts, const std::vector<Track> &trks,
           unsigned long ID);
     Event(const Event &e);
 

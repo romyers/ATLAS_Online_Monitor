@@ -57,6 +57,7 @@ const string STATE_STORAGE = "settings.txt";
  * The approximate rate at which the GUI is refreshed.
  */
 const double GUI_REFRESH_RATE  = 60.; //Hz
+const double DATA_REFRESH_RATE = 2.; // Hz
 
 void forceExit(int signal) {
 
@@ -237,7 +238,7 @@ int main(int argc, char **argv) {
             //       safety though.
             //         -- Also look at TApplication::Run(), which we can call
             //            with app.run().
-            startUILoop(GUI_REFRESH_RATE);
+            startUILoop(GUI_REFRESH_RATE, DATA_REFRESH_RATE);
 
         })
 

@@ -19,28 +19,6 @@
 #include "MuonReco/RecoUtility.h"
 
 /**
- * Creates an event from the given signals.
- * 
- * REQUIRES: signals must have at least two elements.
- * 
- * @param signals A vector of Signals representing exactly one well-formed
- * event. A vector of Signals representing a well-formed event must respect
- * the following invariants:
- *   -- The first signal in the vector must be an event header
- *   -- The last signal in the vector must be an event trailer
- *   -- There must be no other event headers or trailers
- * Any vector with size at least 2 that does not adhere to these invariants 
- * will fail validation, so as long as any event produced with assembleEvent 
- * is validated using validateEventErrors() and validateEventWarnings(), 
- * results should be well-defined.
- * 
- * CAUTION: Results are undefined for signals.size() < 2.
- * 
- * @return The assembled event.
- */
-MuonReco::Event assembleEvent(const std::vector<MuonReco::Signal> &signals);
-
-/**
  * Checks if a signal buffer meant to represent an event has any errors
  * that would require the event to be dropped.
  * 

@@ -81,10 +81,16 @@ struct DAQData {
     // Access the singleton DAQData instance by reference here.
     static DAQData &getInstance();
 
+	bool isDirty() const;
+	void markClean();
+	void markDirty();
+
 private:
 
     DAQData();
 
     mutable std::mutex dataLock;
+
+	bool dirty;
 
 };

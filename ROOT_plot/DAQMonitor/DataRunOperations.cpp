@@ -252,6 +252,7 @@ void DataRun::startRun() {
         UI::UILock.unlock();
 
         LockableData dataStream;
+		dataStream.data.reserve(100000); // TODO: Magic number
 
         // DATA CAPTURE LOOP
         thread dataCaptureThread([&dataStream, &data, runLabel]() {

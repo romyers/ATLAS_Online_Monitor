@@ -11,7 +11,7 @@ using namespace MuonReco;
 
 // TODO: Consider implementing copy constructor to handle geo better.
 
-DAQData::DAQData() : plots(geo) {}
+DAQData::DAQData() : plots(geo), dirty(true) {}
 
 DAQData &DAQData::getInstance() {
 
@@ -42,6 +42,26 @@ void DAQData::initialize(
 
     recoUtil = RecoUtility(cp.items("RecoUtility"));
 
+	dirty = true;
+
+}
+
+void DAQData::markClean() {
+
+	dirty = false;
+
+}
+
+void DAQData::markDirty() {
+
+	dirty = true;
+
+}
+
+bool DAQData::isDirty() const {
+
+	return dirty;
+
 }
 
 void DAQData::clear () {
@@ -56,6 +76,8 @@ void DAQData::clear () {
 
     droppedSignals     = 0;
     droppedEvents      = 0;
+
+	dirty = true;
 
 }
 

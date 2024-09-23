@@ -21,9 +21,9 @@ DAQManager *buildGUI() {
 
 }
 
-void startUILoop(double refreshRate) {
+void startUILoop(double refreshRate, double dataRefreshRate) {
 
-    startLoop(refreshRate);
+    startLoop(refreshRate, dataRefreshRate);
 
 }
 

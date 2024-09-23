@@ -10,7 +10,7 @@
 #pragma once
 
 #include <mutex>
-#include <deque>
+#include <vector>
 
 class LockableData {
 
@@ -25,7 +25,7 @@ public:
 	void lock  ();
 	void unlock();
 
-	std::deque<unsigned char> data;
+	std::vector<unsigned char> data;
 
 private:
 

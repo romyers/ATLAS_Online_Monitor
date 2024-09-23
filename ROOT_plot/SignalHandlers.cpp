@@ -253,6 +253,7 @@ void SigHandlers::handleDataUpdate() {
 	packet.lostPackets     = data.lostPackets                              ;
 	packet.droppedSignals  = data.droppedSignals                           ;
 	packet.droppedEvents   = data.droppedEvents                            ;
+	data.markClean();
 	data.unlock();
 
 	packet.errorCount      = logger.countErrors(EMPTY_TYPE    , ERROR  )   ;

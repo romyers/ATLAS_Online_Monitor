@@ -29,33 +29,37 @@ bool isEvent(const vector<Signal> &signals);
 Decoder::Decoder(int maxSignalCount) : maxSignalCount(maxSignalCount) {}
 
 DecodeData Decoder::decodeStream(
-	deque<unsigned char> &in      , 
+	vector<unsigned char> &in      , 
 	Geometry       &geo     , 
 	TimeCorrection &tc      ,
 	RecoUtility    &recoUtil
 ) {
 
 	vector<Event> eventBuffer;
+	eventBuffer.reserve(maxSignalCount); // An upper bound to the number of events
 
 	DecodeData result;
 
-	int signalCount = 0;
+	// Total number of whole signals in the data, excluding any trailing
+	// partial signal
+	int signalCount = in.size() / Signal::WORD_SIZE;
 
-	// As long as unread signals exist in the input stream,
-	while(hasSignals(in)) {
-
-		// Abort the loop if we have at least one finished event, but have too
-		// many signals. Limits memory footprint for applications where all 
-		// processed events do not need to be preserved.
-		if(maxSignalCount > 0) {
-			if(!eventBuffer.empty() && signalCount > maxSignalCount) {
-				break;
-			}
-		}
+	// Limit the total number of signals read at once.  Limits memory footprint
+	// for applications where all 
+	// processed events do not need to be preserved.
+	if(maxSignalCount > 0) {
+		signalCount = min(signalCount, maxSignalCount);
+	}
+	
+	// Iterate across the words in the data
+	for(
+		unsigned char *wordStart = in.data(); 
+		wordStart < in.data() + signalCount * Signal::WORD_SIZE; 
+		wordStart += Signal::WORD_SIZE
+	) {
 
 		// extract a signal,
-		Signal sig = extractSignal(in);
-		++signalCount;
+		Signal sig = extractSignal(wordStart, Signal::WORD_SIZE);
 
 		// validate it
 		if(validateSignalErrors(sig, geo)) {
@@ -88,8 +92,16 @@ DecodeData Decoder::decodeStream(
                 removeTDCSignals(signalBuffer);
 
 				// NOTE: We MUST be sure that signalBuffer.size() >= 2 before
-				//       calling assembleEvent()
-                eventBuffer.push_back(assembleEvent(signalBuffer));
+				//       trying to access its strict interior.
+				eventBuffer.emplace_back(
+					signalBuffer.front(),
+					signalBuffer.back(),
+					vector<Signal>(
+						signalBuffer.begin() + 1, // Copy inefficient?
+						signalBuffer.end  () - 1
+					),
+					signalBuffer.back().TrailerEID()
+				);
 
             } else {
 
@@ -114,6 +126,7 @@ DecodeData Decoder::decodeStream(
 	eventBufferValidator.validateWarnings(eventBuffer);
 
 	// and for each event
+	result.nonemptyEvents.reserve(eventBuffer.size());
 	for(Event &e : eventBuffer) {
 
 		// if it's nonempty
@@ -129,7 +142,10 @@ DecodeData Decoder::decodeStream(
 
 	}
 
-	// Finally, return all processed events.
+	// Finally, clear out the processed signals from the input buffer
+	in.erase(in.begin(), in.begin() + signalCount * Signal::WORD_SIZE);
+	
+	// and return all processed events.
 	return result;
 
 }
@@ -148,7 +164,7 @@ bool isEvent(const vector<Signal> &signals) {
 
 }
 
-bool hasNewData(deque<unsigned char> &in) {
+bool hasNewData(vector<unsigned char> &in) {
 
 	return hasSignals(in);
 
