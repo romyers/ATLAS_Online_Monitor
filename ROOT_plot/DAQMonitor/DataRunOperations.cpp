@@ -34,7 +34,10 @@ using namespace State;
 using namespace MonitorHooks;
 using namespace MuonReco;
 
-size_t MAX_CACHE_SIZE = 100000000; // 100 MB
+// size_t MAX_CACHE_SIZE = 100000000; // 100 MB
+
+// NONZERO VALUES ARE EXPERIMENTAL
+size_t MAX_CACHE_SIZE = 0;
 
 
 ///////////////////////////////////////////////////////////////////////////////
