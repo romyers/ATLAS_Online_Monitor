@@ -47,6 +47,10 @@ public:
 
 	void flush();
 
+	size_t getCacheCapacity() const;
+
+	size_t getCacheUsage() const;
+
 private:
 
 	std::ifstream in;

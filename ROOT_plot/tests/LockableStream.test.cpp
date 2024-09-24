@@ -490,4 +490,40 @@ TEST_CASE("LockableStream mixed reads and writes") {
 
 }
 
+TEST_CASE("Cache is used appropriately") {
+
+	SECTION("Cache is populated on write") {
+
+		LockableStream ls(5);
+
+		ls.open("empty.txt");
+
+		REQUIRE(ls.write("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09", 10));
+
+		REQUIRE(ls.getCacheUsage() == 5);
+
+		unlink("empty.txt");
+
+	}
+
+	SECTION("Cache is populated on read") {
+
+		LockableStream ls(5);
+
+		ofstream out("empty.txt", ios::binary);
+		out.write("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09", 10);
+		out.close();
+
+		ls.open("empty.txt");
+
+		char buffer[1];
+		REQUIRE(ls.read(buffer, 1) == 1);
+
+		REQUIRE(ls.getCacheUsage() == 5);
+
+		unlink("empty.txt");
+
+	}
+
+}
 //

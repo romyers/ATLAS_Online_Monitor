@@ -20,7 +20,6 @@ using namespace std;
 
 using namespace MuonReco;
 
-size_t MAX_CACHE_SIZE = 1000000;
 size_t MAX_SIGNALS_PER_LOOP = 10000;
 
 /**
@@ -98,7 +97,7 @@ void Decode::startDecoding(
     int noiseSavepoint = 0; // Events
 
 	vector<unsigned char> dataBuffer;
-	dataBuffer.reserve(MAX_CACHE_SIZE);
+	dataBuffer.reserve(dataStream.getCacheCapacity());
 
     while(isDecodeRunning) {
 

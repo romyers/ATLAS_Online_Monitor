@@ -64,6 +64,18 @@ size_t LockableStream::read(char *buffer, size_t size) {
 
 }
 
+size_t LockableStream::getCacheCapacity() const {
+
+	return cache.capacity();
+
+}
+
+size_t LockableStream::getCacheUsage() const {
+
+	return cache.size();
+
+}
+
 bool LockableStream::write(const char *buffer, size_t size) {
 
 	cache.insert((unsigned char*)buffer, size);
