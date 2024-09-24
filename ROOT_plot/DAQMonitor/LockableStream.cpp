@@ -42,13 +42,26 @@ bool LockableStream::is_open() {
 
 }
 
+vector<unsigned char> LockableStream::get(size_t size) {
+
+	vector<unsigned char> buffer(size);
+
+	buffer.resize(read((char*)buffer.data(), size));
+
+	return buffer;
+
+}
+
 size_t LockableStream::read(char *buffer, size_t size) {
 
 	size_t bytesFromCache = cache.get((unsigned char*)buffer, size);
 	cache.erase(bytesFromCache);
 
-	in.seekg(bytesFromCache, in.cur);
-	in.read(buffer,  size - bytesFromCache);
+	// Problem to address -- sometimes in.cur is already at the end of the cache
+	// (if we've repopulated the cache from the file) and sometimes it isn't 
+	// (if we populated the cache directly)
+	// in.seekg(bytesFromCache, in.cur);
+	in.read(buffer + bytesFromCache,  size - bytesFromCache);
 
 	size_t bytesRead = in.gcount() + bytesFromCache;
 
@@ -59,6 +72,7 @@ size_t LockableStream::read(char *buffer, size_t size) {
 		// This will repopulate the cache from whatever is left in the file,
 		// and behaves nicely with respect to cache size and file size.
 		in >> cache;
+		// in.seekg(-cache.size(), in.cur);
 
 	}
 
@@ -80,17 +94,16 @@ size_t LockableStream::getCacheUsage() const {
 
 bool LockableStream::write(const char *buffer, size_t size) {
 
-	cache.insert((unsigned char*)buffer, size);
+	size_t bytesCached = cache.insert((unsigned char*)buffer, size);
 
 	out.write(buffer, size);
+	out.flush();
+
+	// Jump input cursor past the bytes we cached, since they should not
+	// be read again.
+	in.seekg(bytesCached, in.cur);
 
 	return out.good();
-
-}
-
-void LockableStream::flush() {
-
-	out.flush();
 
 }
 

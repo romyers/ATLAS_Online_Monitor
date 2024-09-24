@@ -209,7 +209,7 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-// RingBuffer Implementation
+// Implementation
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
@@ -269,14 +269,14 @@ size_t RingBuffer<T>::insert(T const *data, size_t size) {
 
 	size = std::min(size, capacity() - this->size());
 
+	// This takes care of both the empty data case and the bufferCapacity = 0
+	// case
+	if(size == 0) return 0;
+
 	int partition = std::min(bufferCapacity - head, size);
 
 	std::memcpy(buffer + head, data, partition * sizeof(T));
 	std::memcpy(buffer, data + partition, (size - partition) * sizeof(T));
-
-	// This takes care of both the empty data case and the bufferCapacity = 0
-	// case
-	if(size == 0) return 0;
 
 	head = (head + size) % bufferCapacity;
 
@@ -438,6 +438,9 @@ RingBuffer<T> &RingBuffer<T>::operator=(RingBuffer<T> &other) {
 
 template<typename T>
 std::istream &operator>>(std::istream &in, RingBuffer<T> &rb) {
+
+	// TODO: Look for the bug here
+	//         -- Something goes wrong when the buffer is full
 
 	// Do nothing for the zero capacity case
 	if(rb.capacity() == 0) return in;

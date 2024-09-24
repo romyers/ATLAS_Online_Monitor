@@ -1066,6 +1066,20 @@ TEST_CASE("RingBuffer::get()") {
 
 	}
 
+	SECTION("get() overrun from full buffer") {
+
+		RingBuffer<int> buffer(2);
+
+		buffer.push(1);
+		buffer.push(2);
+
+		auto vec = buffer.get(3);
+
+		REQUIRE(vec.size() == 2);
+		REQUIRE(vec == std::vector<int>{1, 2});
+
+	}
+
 }
 
 TEST_CASE("RingBuffer stream extraction") {

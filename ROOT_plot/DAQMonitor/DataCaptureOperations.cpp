@@ -99,7 +99,6 @@ void DataCapture::startDataCapture(
 			(char*)packetData.packetBuffer.data(), 
 			packetData.packetBuffer.size()
 		);
-		dataStream.flush();
         dataStream.unlock();
 
         packets += packetData.bufferedPackets;

@@ -22,6 +22,9 @@ using namespace MuonReco;
 
 size_t MAX_SIGNALS_PER_LOOP = 10000;
 
+// Should be bigger than MAX_SIGNALS_PER_LOOP * Signal::WORD_SIZE
+size_t READ_BLOCK_SIZE = MAX_SIGNALS_PER_LOOP * Signal::WORD_SIZE * 10;
+
 /**
  * The approximate rate at which monitor data is refreshed. Note that the
  * monitor will fall short of this rate if it must process too much data
@@ -97,45 +100,31 @@ void Decode::startDecoding(
     int noiseSavepoint = 0; // Events
 
 	vector<unsigned char> dataBuffer;
-	dataBuffer.reserve(dataStream.getCacheCapacity());
+	dataBuffer.reserve(READ_BLOCK_SIZE);
 
     while(isDecodeRunning) {
 
-        // TODO: Performance analysis. I'd like this loop to run faster
-        //         -- I think binning and drawing is our weak point. Let's
-        //            bin every event before drawing
-
-        // FIXME: In file reading mode, this will read the whole file before
-        //        terminating on ctrl+c
-
-        // NOTE: Checking any independent member of loopData to determine if
-        //       new data has been processed is unreliable. E.g. if there
-        //       are new signals but each one was dropped, loopData's
-        //       event vector will be empty, but the dropped signals
-        //       still need to be recorded.
-        DecodeData loopData;
-        bool hasData = false;
-
 		// RETRIEVE DATA FROM THE LOCKABLE STREAM
 
-		// Prepare the data buffer for reading
-		size_t endPos = dataBuffer.size();
-		dataBuffer.resize(MAX_SIGNALS_PER_LOOP * Signal::WORD_SIZE + dataBuffer.size());
+		if(dataBuffer.size() < MAX_SIGNALS_PER_LOOP * Signal::WORD_SIZE) {
+			
+			dataStream.lock();
+			vector<unsigned char> newData = dataStream.get(
+				READ_BLOCK_SIZE - dataBuffer.size()
+			);
+			dataStream.unlock();
 
-		dataStream.lock();
+			dataBuffer.insert(
+				dataBuffer.end(),
+				make_move_iterator(newData.begin()),
+				make_move_iterator(newData.end())
+			);
 
-		// Read as much as we can from the file and resize the buffer to fit
-		// what we actually were able to read
-		dataBuffer.resize(
-			dataStream.read(
-				(char*)dataBuffer.data() + endPos,
-				dataBuffer.size()
-			) + endPos
-		);
-
-		dataStream.unlock();
+		}
 
 		// PROCESS THE DATA
+
+        DecodeData loopData;
 
         if(dataBuffer.size() > Signal::WORD_SIZE) {
 
@@ -145,18 +134,13 @@ void Decode::startDecoding(
             //       because writes to geo are done only at the very beginning
             //       of a data run, and can't happen concurrently with this 
             //       call.
+			// NOTE: This call will remove data from dataBuffer.
             loopData = decoder.decodeStream(
                 dataBuffer, 
                 data.geo, 
                 data.tc,
                 data.recoUtil
             );
-
-            hasData = true;
-
-        }
-
-        if(hasData) {
 
             data.lock();
 

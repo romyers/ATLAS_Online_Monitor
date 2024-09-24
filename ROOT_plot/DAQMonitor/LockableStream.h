@@ -45,7 +45,7 @@ public:
 	
 	bool write(const char *buffer, size_t size);
 
-	void flush();
+	std::vector<unsigned char> get(size_t size);
 
 	size_t getCacheCapacity() const;
 
