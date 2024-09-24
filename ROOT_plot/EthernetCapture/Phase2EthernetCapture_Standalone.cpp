@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
 		while(packets / 1000 > thousands) {
 
 			++thousands;
-			cout << "Recorded " << thousands * 1000 << " packets";
+			cout << '\r' << "Recorded " << thousands * 1000 << " packets";
 
 		}
 
