@@ -4,6 +4,8 @@
 
 using namespace std;
 
+// TODO: Something goes wrong when the buffer fills up. Figure it out.
+
 string dir(const string &filename);
 
 LockableStream::LockableStream(size_t cacheSize) : cache(cacheSize) {}

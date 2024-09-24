@@ -215,6 +215,9 @@ private:
 template<typename T>
 size_t RingBuffer<T>::erase(size_t size) {
 
+	// If we don't do this, we run into trouble setting the isEmpty flag
+	if(size == 0) return 0;
+
 	if(size >= this->size()) {
 
 		size = this->size();

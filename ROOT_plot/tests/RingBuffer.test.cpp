@@ -720,6 +720,20 @@ TEST_CASE("RingBuffer::erase()") {
 
 	}
 
+	SECTION("erase(0) on full buffer does nothing") {
+
+		RingBuffer<int> buffer(2);
+
+		buffer.push(1);
+		buffer.push(2);
+
+		REQUIRE(buffer.erase(0) == 0);
+
+		REQUIRE(buffer.size() == 2);
+		REQUIRE(buffer.get(2) == std::vector<int>{1, 2});
+
+	}
+
 	SECTION("erase() removes elements from the buffer") {
 
 		RingBuffer<int> buffer(10);
