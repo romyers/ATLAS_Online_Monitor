@@ -386,6 +386,12 @@ void DataRun::startRun() {
         runStarted = false;
         state.commit();
 
+        // TODO: Yet another hard-to-find place we do this.
+		// This one makes sure the last group of data is displayed.
+        UI::UILock.lock();
+        UISignalBus::getInstance().onUpdate();
+        UI::UILock.unlock();
+
         UI::UILock.lock();
         UISignalBus::getInstance().onRunStop();
         UI::UILock.unlock();
@@ -394,12 +400,6 @@ void DataRun::startRun() {
 
         cout << endl;
         cout << "Run finished!" << endl;
-
-        // TODO: Yet another hard-to-find place we do this.
-		// This one makes sure the last group of data is displayed.
-        UI::UILock.lock();
-        UISignalBus::getInstance().onUpdate();
-        UI::UILock.unlock();
 
     }));
 
