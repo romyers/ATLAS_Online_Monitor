@@ -69,7 +69,17 @@ void DataRun::stopRun() {
     }
 
     DataCapture::stopDataCapture();
-    Decode::stopDecoding();
+
+	if(DAQState::getState().persistentState.dataSource != NETWORK_DEVICE_SOURCE) {
+
+		// Stop immediately if we're reading from a file
+		Decode::stopImmediately();
+
+		// The network device source case is handled by stopping data capture.
+		// The main thread will wait for data capture to finish then stop
+		// the decode thread
+
+	}
 
 	isCaptureRunning = false;
 
@@ -343,15 +353,30 @@ void DataRun::startRun() {
         });
 
         // DECODE LOOP
+		Decode::markStart();
         thread decodeThread([&dataStream, &data, runLabel](){
 
-            Decode::startDecoding(dataStream, data, runLabel);
+			// Regarding the last parameter, we want to make sure the decoder
+			// stops when told to if we're reading from a file, but we want
+			// it to keep going until it's out of data if we're reading from
+			// a live capture.
+            Decode::startDecoding(
+				dataStream, 
+				data, 
+				runLabel
+			);
 
         });
 
         MonitorHooks::startedRun(data);
 
         dataCaptureThread.join();
+
+		cout << "Data capture finished!" << endl;
+
+		// Make the decoder stop once the data capture thread is done
+		Decode::stopSoftly();
+
         decodeThread     .join();
 
 		ErrorLogger::getInstance().disconnectStreams();

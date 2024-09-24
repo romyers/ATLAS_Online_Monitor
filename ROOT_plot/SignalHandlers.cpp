@@ -171,6 +171,7 @@ void SigHandlers::handleRunStopEvent() {
 	if(!GUIptr) return;
 
 	GUIptr->enableStartButton     ();
+	GUIptr->disableStopButton     ();
 	GUIptr->enableDataSourcePanel ();
 	GUIptr->enableConfFileSelector();
 	GUIptr->enableRunNumberPanel  ();
@@ -269,7 +270,7 @@ void SigHandlers::handleDataUpdate() {
 
 		} else {
 
-			packet.statusTag = string("Stopped Run: ") + state.tempState.runLabel;
+			packet.statusTag = string("Finished Run: ") + state.tempState.runLabel;
 
 		}
 

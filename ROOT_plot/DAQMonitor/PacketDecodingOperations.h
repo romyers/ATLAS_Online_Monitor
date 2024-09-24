@@ -23,6 +23,10 @@ namespace Decode {
         const std::string &runLabel
     );
 
-    void stopDecoding();
+    void stopSoftly();
+
+	void stopImmediately();
+	
+	void markStart();
 
 }

@@ -36,7 +36,8 @@ const double DATA_REFRESH_RATE = 10.; // Hz
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-bool isDecodeRunning = false;
+bool stop = true;
+bool immediateStop = true;
 
 void aggregateEventData(const DecodeData &loopData, DAQData &data);
 
@@ -46,9 +47,23 @@ void saveNoiseRate(const string &path, const DAQData &data);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void Decode::stopDecoding() {
+void Decode::markStart() {
 
-    isDecodeRunning = false;
+	stop = false;
+	immediateStop = false;
+
+}
+
+void Decode::stopSoftly() {
+
+    stop = true;
+
+}
+
+void Decode::stopImmediately() {
+
+	stop = true;
+	immediateStop = true;
 
 }
 
@@ -57,8 +72,6 @@ void Decode::startDecoding(
     DAQData &data, 
     const string &runLabel
 ) {
-
-    if(isDecodeRunning) return;
 
     // Update data with everything zeroed out
     // TODO: Put this with the code that clears DAQData.
@@ -94,15 +107,17 @@ void Decode::startDecoding(
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
-    isDecodeRunning = true;
-
     // When the next noise rate CSV save operation should occur
     int noiseSavepoint = 0; // Events
 
 	vector<unsigned char> dataBuffer;
 	dataBuffer.reserve(READ_BLOCK_SIZE);
 
-    while(isDecodeRunning) {
+	// Problem: We don't want to stop if there's still data in the 
+	//          live capture case, but we do want to be able to stop
+	//          if there's still data and we're reading from a file
+
+    while(true) {
 
 		// RETRIEVE DATA FROM THE LOCKABLE STREAM
 
@@ -165,7 +180,22 @@ void Decode::startDecoding(
 
             MonitorHooks::updatedData(data);
 
-        }
+        } else if(stop) {
+
+			// Stop when we're out of data and we've been told to stop
+
+			break;
+
+		}
+
+		if(immediateStop) {
+
+			// If we're supposed to stop immediately, stop
+			// when we're told even if we're not out of data.
+
+			break;
+
+		}
         
     }
 

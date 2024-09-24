@@ -22,12 +22,14 @@ void EventBufferValidator::validateWarnings(const vector<Event> &buffer) {
 	for(const Event &e : buffer) {
 				
 		if(e.TrigSignals().at(0).TrigOverflow()) {
+			
 			logger.logError(
 				string("Trigger buffer overflow before event ")
 				+ to_string(e.TrigSignals().at(0).HeaderEID()),
 				EVENT_BUFFER_ERROR,
 				WARNING
 			);
+
 		} 
 
 		if(latestEventID != -1) {
