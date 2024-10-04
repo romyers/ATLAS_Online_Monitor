@@ -1,7 +1,5 @@
 #include "PCapDevice.h"
 
-#include <iostream>
-
 using namespace std;
 
 PCapDevice::PCapDevice(pcap_if_t *d) 

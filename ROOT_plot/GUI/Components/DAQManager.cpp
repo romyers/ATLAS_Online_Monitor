@@ -84,7 +84,7 @@ DAQManager::DAQManager(
     ///////////////////////////////////////////////////////////////////////////
 
     menuBar = new Menu(this);
-    AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft));
+    AddFrame(menuBar, new TGLayoutHints(kLHintsTop | kLHintsLeft | kLHintsExpandX));
 
     Submenu *fileMenu = menuBar->AddSubmenu("&File");
 
@@ -100,7 +100,7 @@ DAQManager::DAQManager(
     ///////////////////////////////////////////////////////////////////////////
 
     mainPanel = new TGHorizontalFrame(this);
-    AddFrame(mainPanel, new TGLayoutHints(kLHintsExpandX, 5, 5, 5, 5));
+    AddFrame(mainPanel, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY, 5, 5, 5, 5));
 
         leftPanel = new TGVerticalFrame(mainPanel, 430, 300, kRaisedFrame);
         mainPanel->AddFrame(leftPanel, new TGLayoutHints(kLHintsExpandY | kLHintsLeft));
@@ -127,7 +127,7 @@ DAQManager::DAQManager(
         // splitter->SetFrame(leftPanel, true);
 
         viewport = new TabPanel(mainPanel, menuBar);
-        mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY | kLHintsRight));
+        mainPanel->AddFrame(viewport, new TGLayoutHints(kLHintsExpandY | kLHintsExpandX | kLHintsRight));
 
 
     ///////////////////////////////////////////////////////////////////////////
