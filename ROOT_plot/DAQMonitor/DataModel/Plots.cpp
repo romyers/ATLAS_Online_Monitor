@@ -82,6 +82,7 @@ void Plots::initialize() {
 	TString plot_name_buffer;
 
 	p_leading_time  = new TH1F("leading time spectrum" , "leading time spectrum", 100, 0, 1000);
+
 	p_trailing_time = new TH1F("trailing time spectrum", "trailing time spectrum", 100, 0, 1000);
 
 	p_hits_distribution.reserve(Geometry::MAX_TUBE_LAYER);

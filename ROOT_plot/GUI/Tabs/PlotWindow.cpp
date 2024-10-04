@@ -20,7 +20,7 @@ PlotWindow::PlotWindow(
 ) : UITab(p), panelCount(canvasPanels) {
 
 	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);
-	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX));
+	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX | kLHintsExpandX | kLHintsExpandY));
 
     canvas->GetCanvas()->DivideSquare(canvasPanels);
 

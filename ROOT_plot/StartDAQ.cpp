@@ -22,6 +22,7 @@
 #include "TApplication.h"
 #include "TUnixSystem.h" // Needed for calls to gSystem
 #include "TGFrame.h"
+#include "TStyle.h"
 
 #include "SignalHandlers.h"
 
@@ -84,6 +85,7 @@ void printUsage() {
 	cout << "Usage: DAQManager [options]" << endl;
 	cout << "Options:" << endl;
 	cout << "  -s, --buffer-size <size>  Set the PCap buffer size in MB. Default is 100 MB." << endl;
+	cout << "  -f, --font-size <size>    Set the font size for plot tabs, in pixels. Default is 11 pixels." << endl;
 	cout << "  -h, --help                Display this help message" << endl;
 
 }
@@ -91,10 +93,12 @@ void printUsage() {
 int main(int argc, char **argv) {
 
 	int pcapBufferSize = 100; // MB
+	double fontSize = 11;     // Pixels
 
-	const char *shortopts = "s:h";
+	const char *shortopts = "s:f:h";
 	const struct option longopts[] = {
 		{ "buffer-size", required_argument, nullptr, 's' },
+		{ "font-size",   required_argument, nullptr, 'f' },
 		{ "help",        no_argument,       nullptr, 'h' },
 		{ nullptr, 0, nullptr, 0 }
 	};
@@ -140,6 +144,27 @@ int main(int argc, char **argv) {
 
 				break;
 
+			case 'f':
+
+				try {
+
+					fontSize = std::stod(optarg);
+
+					if(fontSize <= 0) {
+
+						throw std::invalid_argument("Font size must be a positive number.");
+
+					}
+
+				} catch(std::invalid_argument &e) {
+
+					cout << "Invalid font size: " << optarg << endl;
+					cout << "Font size must be a positive number." << endl;
+					return EXIT_FAILURE;
+
+				}
+				break;
+
 			case 'h':
 
 				printUsage();
@@ -167,6 +192,33 @@ int main(int argc, char **argv) {
     // THIS MUST BE CALLED BEFORE STARTING ANY THREADS.
     // It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly terminate threads.
     setTerminationHandlers(termHandler);
+
+	// Set up GUI styles
+	
+	// Set graph title fonts
+	// The font code is (font number)*10 + precision
+	// We want font 6 (the default) and precision 3 (so that sizes are
+	// set in pixels instead of as a percentage of pad size), so that's
+	// font code 43.
+	gStyle->SetTitleFont(63, "t");
+	gStyle->SetTitleFontSize(fontSize);
+
+	gStyle->SetLabelFont(63, "XYZ");
+	gStyle->SetLabelSize(fontSize, "XYZ");
+	gStyle->SetTitleFont(63, "XYZ");
+	gStyle->SetTitleSize(fontSize, "XYZ");
+	gStyle->SetTitleOffset(0.7, "X");
+	
+	// We can't set the stat box size absolutely, so we have to set it and
+	// the font size of its contents relatively. We signal this by setting
+	// a font code with precision 2, then setting the font size by scaling
+	// the absolute font size to numbers that I trialed and found looked okay
+	// for the default GUI size. This is a workaround to deal with the
+	// seeming absence of any way to set the stat box size in absolute terms.
+	gStyle->SetStatFont(62);
+	gStyle->SetStatFontSize(fontSize * 0.006);
+	gStyle->SetStatW(fontSize * 0.036);
+	gStyle->SetStatH(fontSize * 0.0175);
 
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////// SET UP UI ////////////////////////////////////
