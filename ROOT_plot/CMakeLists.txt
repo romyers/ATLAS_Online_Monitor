@@ -161,8 +161,6 @@ set(monitor_HEADERS
 	GUI/Tabs/TabPanel.h
 	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
-	GUI/Tabs/GraphPlotter.h
-	GUI/Tabs/HistogramPlotter.h
 	GUI/Tabs/ErrorView.h
 	DAQMonitor/DAQState.h
 	DAQMonitor/DataRunOperations.h
@@ -201,8 +199,6 @@ set(monitor_SOURCES
 	GUI/Tabs/TabPanel.cpp
 	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp
-	GUI/Tabs/GraphPlotter.cpp
-	GUI/Tabs/HistogramPlotter.cpp
 	GUI/Tabs/ErrorView.cpp
 	DAQMonitor/DAQState.cpp
 	DAQMonitor/DataRunOperations.cpp

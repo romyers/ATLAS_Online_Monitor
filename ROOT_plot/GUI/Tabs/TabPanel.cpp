@@ -4,8 +4,7 @@
 #include "DAQMonitor/DataModel/DAQData.h"
 
 #include "ErrorView.h"
-#include "GraphPlotter.h"
-#include "HistogramPlotter.h"
+#include "PlotWindow.h"
 
 using namespace std;
 
@@ -63,9 +62,9 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 
 			if(!GetTabTab("ADC Overview")) {
 
-				HistogramPlotter *adcOverview = new HistogramPlotter(
+				PlotWindow *adcOverview = new PlotWindow(
 					this,
-					data.plots.p_tdc_adc_time,
+					&data.plots.p_tdc_adc_time,
 					"ADC Plots",
 					1250,
 					850
@@ -94,9 +93,9 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 
 			if(!GetTabTab("TDC Overview")) {
 
-				HistogramPlotter *tdcOverview = new HistogramPlotter(
+				PlotWindow *tdcOverview = new PlotWindow(
 					this,
-					data.plots.p_tdc_tdc_time_corrected,
+					&data.plots.p_tdc_tdc_time_corrected,
 					"TDC Plots",
 					1250,
 					850
@@ -125,9 +124,9 @@ void TabPanel::AttachToMenu(Menu *menuBar) {
 
 		if(!GetTabTab("Noise Rate")) {
 
-			GraphPlotter *noiseDisplay = new GraphPlotter(
+			PlotWindow *noiseDisplay = new PlotWindow(
 				this,
-				data.plots.p_tdc_hit_rate_graph,
+				&data.plots.p_tdc_hit_rate_graph,
 				"Noise Rate Display",
 				1250,
 				850
@@ -211,9 +210,9 @@ void TabPanel::update() {
 
                 if(!GetTabTab(plotTitle.data())) {
 
-                    HistogramPlotter *adcChannelPlot = new HistogramPlotter(
+                    PlotWindow *adcChannelPlot = new PlotWindow(
                         this,
-                        data.plots.p_adc_time[tdc],
+                        &data.plots.p_adc_time[tdc],
                         plotTitle,
                         1250,
                         850
@@ -290,9 +289,9 @@ void TabPanel::update() {
 
                 if(!GetTabTab(plotTitle.data())) {
 
-                    HistogramPlotter *tdcChannelPlot = new HistogramPlotter(
+                    PlotWindow *tdcChannelPlot = new PlotWindow(
                         this,
-                        data.plots.p_tdc_time_corrected[tdc],
+                        &data.plots.p_tdc_time_corrected[tdc],
                         plotTitle,
                         1250,
                         850
