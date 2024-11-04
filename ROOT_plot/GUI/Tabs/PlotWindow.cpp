@@ -2,43 +2,192 @@
 
 #include "GUI/Core/UISignals.h"
 
+#include "DAQMonitor/DataModel/DAQData.h"
+
+#include "TPaveLabel.h"
+
 using namespace std;
 
-void PlotWindow::teardown() {
+const int PLOT_WIDTH = 300;
+const int PLOT_HEIGHT = 200;
 
-	delete canvas;
-	canvas = nullptr;
+void drawSplashScreen(TCanvas *canvas) {
+
+	canvas->cd(1);
+	TPaveLabel *label = new TPaveLabel(
+		0.2, 0.4, 
+		0.8, 0.6, 
+		"Waiting for data..."
+	);
+	label->SetFillColor(16);
+	label->SetTextFont(52);
+	label->Draw();
+
+}
+
+size_t PlotWindow::plotCount() {
+
+	if(histograms) return histograms->size();
+	if(graphs) return graphs->size();
+
+	return 0;
 
 }
 
 PlotWindow::PlotWindow(
 	const TGWindow *p, 
-	int canvasPanels,
 	const string &title, 
 	int w, 
 	int h
-) : UITab(p), panelCount(canvasPanels) {
+) : UITab(p), histograms(nullptr), graphs(nullptr) {
 
-	canvas = new TRootEmbeddedCanvas(title.data(), this, w, h);
-	AddFrame(canvas, new TGLayoutHints(kLHintsCenterX | kLHintsExpandX | kLHintsExpandY));
-
-    canvas->GetCanvas()->DivideSquare(canvasPanels);
+	plotsWide = 0;
+	plotsTall = 0;
+	numPages = 0;
+	
+	canvas = new PageCanvas(this, title, w, h);
+	AddFrame(canvas, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
 	makeConnections();
 
 	SetWindowName(title.data());
 
+	// Without this, the tab will not detect the right canvas size if the
+	// tab is opened after the window is resized.
+	Resize(GetDefaultSize());
+
 }
 
-void PlotWindow::relayout(int canvasPanels) {
+PlotWindow::PlotWindow(
+	const TGWindow *p,
+	std::vector<TH1F*> *histograms,
+	const std::string &title,
+	int w,
+	int h
+) : PlotWindow(p, title, w, h) {
 
-    // We only need to redivide the canvas if the number of panels has changed
-    // if(panelCount == canvasPanels) return;
+	this->histograms = histograms;
+	
+	update();
 
-    canvas->GetCanvas()->Clear();
+}
 
-    canvas->GetCanvas()->DivideSquare(canvasPanels);
+PlotWindow::PlotWindow(
+	const TGWindow *p,
+	vector<TGraph*> *graphs,
+	const string &title,
+	int w,
+	int h
+) : PlotWindow(p, title, w, h) {
 
-    panelCount = canvasPanels;
+	this->graphs = graphs;
+
+	update();
+
+}
+
+void PlotWindow::update() {
+
+	// Figure out how many plots we can fit on each page
+	int t_plotsWide = std::max((int)canvas->GetWidth() / PLOT_WIDTH, 1);
+	int t_plotsTall = std::max((int)canvas->GetHeight() / PLOT_HEIGHT, 1);
+
+	// Figure out how many pages we need
+	int t_numPages = ceil((double)plotCount() / (t_plotsWide * t_plotsTall));
+
+	// If the required number of pages has changed, repage the canvas
+	if(t_plotsWide != plotsWide || t_plotsTall != plotsTall || t_numPages != numPages) {
+
+		plotsWide = t_plotsWide;
+		plotsTall = t_plotsTall;
+		numPages = t_numPages;
+
+		canvas->clear();
+
+		for(int i = 0; i < numPages; ++i) {
+
+			canvas->addPage([this, i](TCanvas *c) {
+
+				// We need data so we can lock it while we're drawing plots,
+				// and prevent the plots from changing while we're drawing them.
+				DAQData &data = DAQData::getInstance();
+
+				data.lock();
+
+				// Clear and relayout the canvas for the required canvas size
+				c->Clear();
+				c->Divide(plotsWide, plotsTall);
+
+				// Draw the plots over the no-data text, if there are any to
+				// draw.
+				for(int j = 0; j < plotsWide * plotsTall; ++j) {
+
+					int plotIndex = i * plotsWide * plotsTall + j;
+
+					if(plotIndex >= plotCount()) break;
+
+					c->cd(j + 1);
+
+					if(histograms) {
+
+						(*histograms)[plotIndex]->Draw();
+
+					} else {
+
+						(*graphs)[plotIndex]->Draw("AB");
+
+					}
+
+				}
+
+				c->Update();
+
+				data.unlock();
+
+			});
+
+		}
+
+	}
+
+	if(canvas->numPages() == 0) {
+
+		drawSplashScreen(canvas->GetCanvas());
+
+	}
+
+	canvas->update();	
+
+}
+
+void PlotWindow::makeConnections() {
+
+	UITab::makeConnections();
+
+	canvas->Connect("ProcessedEvent(Event_t*)", "PlotWindow", this, "handleResize(Event_t*)");
+
+}
+
+void PlotWindow::breakConnections() {
+
+	UITab::breakConnections();
+
+}
+
+PlotWindow::~PlotWindow() {
+
+	breakConnections();
+
+}
+
+void PlotWindow::handleResize(Event_t *event) {
+
+	// Experimentation shows that kExpose is the type of event that fires
+	// when a resize occurs
+	if(event->fType == kExpose) {
+
+		update();
+
+	}
 
 }

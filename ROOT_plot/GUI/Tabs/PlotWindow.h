@@ -9,39 +9,70 @@
 
 #pragma once
 
-#include <string>
+#include "UITab.h"
+#include "GUI/Components/PageCanvas.h"
 
 #include "TCanvas.h"
 #include "TRootEmbeddedCanvas.h"
+#include "TGButton.h"
+#include "TGLabel.h"
+#include "TH1.h"
+#include "TGraph.h"
 
-#include "UITab.h"
+#include <string>
 
 class PlotWindow : public UITab {
 
 public:
 
 	PlotWindow(
-		const TGWindow *p, 
-		int canvasPanels = 1,
-		const std::string &title = "", 
-		int w = 1, 
+		const TGWindow *p,
+		std::vector<TH1F*> *histograms,
+		const std::string &title = "",
+		int w = 1,
 		int h = 1
 	);
 
-    virtual void relayout(int canvasPanels);
+	PlotWindow(
+		const TGWindow *p,
+		std::vector<TGraph*> *graphs,
+		const std::string &title = "",
+		int w = 1,
+		int h = 1
+	);
+	~PlotWindow();
 
-	virtual void teardown();
+	virtual void update() override;
+
+	virtual size_t plotCount();
+
+	virtual void handleResize(Event_t *event);
 
 protected:
 
 	// VIEW
 
-	TRootEmbeddedCanvas *canvas;
+	PageCanvas *canvas;
+
+	virtual void makeConnections() override;
+	virtual void breakConnections() override;
 
 private:
 
     // DATA
 
-    int panelCount;
+	std::vector<TH1F*> *histograms;
+	std::vector<TGraph*> *graphs;
+
+	PlotWindow(
+		const TGWindow *p,
+		const std::string &title = "",
+		int w = 1,
+		int h = 1
+	);
+
+	int plotsWide;
+	int plotsTall;
+	int numPages;
 
 };

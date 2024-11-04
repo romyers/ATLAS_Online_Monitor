@@ -193,9 +193,12 @@ int main(int argc, char **argv) {
     // It intercepts SIGINT/SIGTERM/SIGQUIT to cleanly terminate threads.
     setTerminationHandlers(termHandler);
 
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////// SET UP UI ////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
 	// Set up GUI styles
 	
-	// Set graph title fonts
 	// The font code is (font number)*10 + precision
 	// We want font 6 (the default) and precision 3 (so that sizes are
 	// set in pixels instead of as a percentage of pad size), so that's
@@ -219,10 +222,6 @@ int main(int argc, char **argv) {
 	gStyle->SetStatFontSize(fontSize * 0.006);
 	gStyle->SetStatW(fontSize * 0.036);
 	gStyle->SetStatH(fontSize * 0.0175);
-
-    ///////////////////////////////////////////////////////////////////////////
-    //////////////////////////// SET UP UI ////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
 
     // Start the UI event loop thread
     ProgramFlow::threadLock.lock();

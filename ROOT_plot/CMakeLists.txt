@@ -158,11 +158,10 @@ set(monitor_HEADERS
 	GUI/Components/Menu.h
 	GUI/Components/Submenu.h
 	GUI/Components/ProgressBar.h
+	GUI/Components/PageCanvas.h
 	GUI/Tabs/TabPanel.h
 	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
-	GUI/Tabs/GraphPlotter.h
-	GUI/Tabs/HistogramPlotter.h
 	GUI/Tabs/ErrorView.h
 	DAQMonitor/DAQState.h
 	DAQMonitor/DataRunOperations.h
@@ -198,11 +197,10 @@ set(monitor_SOURCES
 	GUI/Components/Menu.cpp
 	GUI/Components/Submenu.cpp
 	GUI/Components/ProgressBar.cpp
+	GUI/Components/PageCanvas.cpp
 	GUI/Tabs/TabPanel.cpp
 	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp
-	GUI/Tabs/GraphPlotter.cpp
-	GUI/Tabs/HistogramPlotter.cpp
 	GUI/Tabs/ErrorView.cpp
 	DAQMonitor/DAQState.cpp
 	DAQMonitor/DataRunOperations.cpp
