@@ -6,124 +6,55 @@
 
 #include "TPaveLabel.h"
 
-// TODO: DEBUG
-#include <iostream>
-
 using namespace std;
 
-PlotList::PlotList(vector<TH1F*> *histograms) 
-	: isHistograms(true), histograms(histograms) {}
+const int PLOT_WIDTH = 300;
+const int PLOT_HEIGHT = 200;
 
-PlotList::PlotList(vector<TGraph*> *graphs)
-	: isHistograms(false), graphs(graphs) {}
+void drawSplashScreen(TCanvas *canvas) {
 
-void PlotList::Draw(TCanvas *canvas) {
-
-	// Relayout the canvas for the current number of plots
-	canvas->DivideSquare(size());
-
-	// Display the no-data text
-	canvas->GetCanvas()->cd(1);
-
+	canvas->cd(1);
 	TPaveLabel *label = new TPaveLabel(
 		0.2, 0.4, 
 		0.8, 0.6, 
 		"Waiting for data..."
 	);
-
 	label->SetFillColor(16);
 	label->SetTextFont(52);
-
 	label->Draw();
-
-	// Draw the histograms or graphs over the no-data text, if there
-	// are any to draw.
-	if(isHistograms) {
-
-		for(int i = 0; i < size(); ++i) {
-
-			canvas->cd(i + 1);
-
-			(*histograms)[i]->Draw();
-
-		}
-
-	} else {
-
-		for(int i = 0; i < size(); ++i) {
-
-			canvas->cd(i + 1);
-
-			(*graphs)[i]->Draw("AB");
-
-			/*
-			TText *xlabel = new TText();
-			xlabel->SetNDC();
-			xlabel->SetTextFont(42);
-			xlabel->SetTextSize(0.05);
-			xlabel->SetTextAngle(0);
-			string text_content;
-			xlabel->DrawText(0.5, 0.9, text_content.c_str());
-			*/
-
-		}
-
-	}
-
-};
-
-size_t PlotList::size() {
-
-	return isHistograms ? histograms->size() : graphs->size();
 
 }
 
-void PlotWindow::teardown() {
+size_t PlotWindow::plotCount() {
 
-	delete canvas;
-	canvas = nullptr;
+	if(histograms) return histograms->size();
+	if(graphs) return graphs->size();
+
+	return 0;
 
 }
 
 PlotWindow::PlotWindow(
 	const TGWindow *p, 
-	PlotList plotList,
 	const string &title, 
 	int w, 
 	int h
-) : UITab(p), plotList(plotList) {
+) : UITab(p), histograms(nullptr), graphs(nullptr) {
 
-	mainView = new TGHorizontalFrame(this);
-	AddFrame(mainView, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY | kLHintsTop));
-
-		canvas = new TRootEmbeddedCanvas(title.data(), mainView, w, h);
-		mainView->AddFrame(canvas, new TGLayoutHints(kLHintsCenterX | kLHintsExpandX | kLHintsExpandY));
-
-	buttonFrame = new TGHorizontalFrame(this);
-	AddFrame(buttonFrame, new TGLayoutHints(kLHintsExpandX | kLHintsBottom));
-
-		pageNum = new TGLabel(buttonFrame, "Page 1/1");
-		buttonFrame->AddFrame(pageNum, new TGLayoutHints(kLHintsLeft | kLHintsCenterY));
-
-		endButton = new TGTextButton(buttonFrame, "->|");
-		buttonFrame->AddFrame(endButton, new TGLayoutHints(kLHintsRight | kLHintsCenterY));
-
-		rightButton = new TGTextButton(buttonFrame, "-->");
-		buttonFrame->AddFrame(rightButton, new TGLayoutHints(kLHintsRight | kLHintsCenterY));
-
-		leftButton = new TGTextButton(buttonFrame, "<--");
-		buttonFrame->AddFrame(leftButton, new TGLayoutHints(kLHintsRight | kLHintsCenterY));
-
-		begButton = new TGTextButton(buttonFrame, "|<-");
-		buttonFrame->AddFrame(begButton, new TGLayoutHints(kLHintsRight | kLHintsCenterY));
-
-    canvas->GetCanvas()->DivideSquare(plotList.size());
+	plotsWide = 0;
+	plotsTall = 0;
+	numPages = 0;
+	
+	canvas = new PageCanvas(this, title, w, h);
+	AddFrame(canvas, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
 	makeConnections();
 
 	SetWindowName(title.data());
 
-	update();
+	// Without this, the tab will not detect the right canvas size if the
+	// tab is opened after the window is resized.
+	Resize(GetDefaultSize());
 
 }
 
@@ -133,7 +64,13 @@ PlotWindow::PlotWindow(
 	const std::string &title,
 	int w,
 	int h
-) : PlotWindow(p, PlotList(histograms), title, w, h) {}
+) : PlotWindow(p, title, w, h) {
+
+	this->histograms = histograms;
+	
+	update();
+
+}
 
 PlotWindow::PlotWindow(
 	const TGWindow *p,
@@ -141,19 +78,116 @@ PlotWindow::PlotWindow(
 	const string &title,
 	int w,
 	int h
-) : PlotWindow(p, PlotList(graphs), title, w, h) {}
+) : PlotWindow(p, title, w, h) {
+
+	this->graphs = graphs;
+
+	update();
+
+}
 
 void PlotWindow::update() {
 
-	// We need data so we can lock it while we're drawing plots,
-	// and prevent the plots from changing while we're drawing them.
-    DAQData &data = DAQData::getInstance();
+	// Figure out how many plots we can fit on each page
+	int t_plotsWide = std::max((int)canvas->GetWidth() / PLOT_WIDTH, 1);
+	int t_plotsTall = std::max((int)canvas->GetHeight() / PLOT_HEIGHT, 1);
 
-    data.lock();
-	canvas->GetCanvas()->Clear();
-	plotList.Draw(canvas->GetCanvas());
+	// Figure out how many pages we need
+	int t_numPages = ceil((double)plotCount() / (t_plotsWide * t_plotsTall));
 
-	canvas->GetCanvas()->Update();
-	data.unlock();
+	// If the required number of pages has changed, repage the canvas
+	if(t_plotsWide != plotsWide || t_plotsTall != plotsTall || t_numPages != numPages) {
+
+		plotsWide = t_plotsWide;
+		plotsTall = t_plotsTall;
+		numPages = t_numPages;
+
+		canvas->clear();
+
+		for(int i = 0; i < numPages; ++i) {
+
+			canvas->addPage([this, i](TCanvas *c) {
+
+				// We need data so we can lock it while we're drawing plots,
+				// and prevent the plots from changing while we're drawing them.
+				DAQData &data = DAQData::getInstance();
+
+				data.lock();
+
+				// Clear and relayout the canvas for the required canvas size
+				c->Clear();
+				c->Divide(plotsWide, plotsTall);
+
+				// Draw the plots over the no-data text, if there are any to
+				// draw.
+				for(int j = 0; j < plotsWide * plotsTall; ++j) {
+
+					int plotIndex = i * plotsWide * plotsTall + j;
+
+					if(plotIndex >= plotCount()) break;
+
+					c->cd(j + 1);
+
+					if(histograms) {
+
+						(*histograms)[plotIndex]->Draw();
+
+					} else {
+
+						(*graphs)[plotIndex]->Draw("AB");
+
+					}
+
+				}
+
+				c->Update();
+
+				data.unlock();
+
+			});
+
+		}
+
+	}
+
+	if(canvas->numPages() == 0) {
+
+		drawSplashScreen(canvas->GetCanvas());
+
+	}
+
+	canvas->update();	
+
+}
+
+void PlotWindow::makeConnections() {
+
+	UITab::makeConnections();
+
+	canvas->Connect("ProcessedEvent(Event_t*)", "PlotWindow", this, "handleResize(Event_t*)");
+
+}
+
+void PlotWindow::breakConnections() {
+
+	UITab::breakConnections();
+
+}
+
+PlotWindow::~PlotWindow() {
+
+	breakConnections();
+
+}
+
+void PlotWindow::handleResize(Event_t *event) {
+
+	// Experimentation shows that kExpose is the type of event that fires
+	// when a resize occurs
+	if(event->fType == kExpose) {
+
+		update();
+
+	}
 
 }

@@ -158,6 +158,7 @@ set(monitor_HEADERS
 	GUI/Components/Menu.h
 	GUI/Components/Submenu.h
 	GUI/Components/ProgressBar.h
+	GUI/Components/PageCanvas.h
 	GUI/Tabs/TabPanel.h
 	GUI/Tabs/UITab.h
 	GUI/Tabs/PlotWindow.h
@@ -196,6 +197,7 @@ set(monitor_SOURCES
 	GUI/Components/Menu.cpp
 	GUI/Components/Submenu.cpp
 	GUI/Components/ProgressBar.cpp
+	GUI/Components/PageCanvas.cpp
 	GUI/Tabs/TabPanel.cpp
 	GUI/Tabs/UITab.cpp
 	GUI/Tabs/PlotWindow.cpp

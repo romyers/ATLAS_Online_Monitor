@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include <string>
+#include "UITab.h"
+#include "GUI/Components/PageCanvas.h"
 
 #include "TCanvas.h"
 #include "TRootEmbeddedCanvas.h"
@@ -18,39 +19,11 @@
 #include "TH1.h"
 #include "TGraph.h"
 
-#include "UITab.h"
-
-class PlotList {
-
-public:
-
-	PlotList(std::vector<TH1F*> *histograms);
-	PlotList(std::vector<TGraph*> *graphs);
-
-	void Draw(TCanvas *canvas);
-
-	size_t size();
-
-private:
-
-	std::vector<TH1F*>   *histograms;
-	std::vector<TGraph*> *graphs;
-
-	bool isHistograms;
-
-};
+#include <string>
 
 class PlotWindow : public UITab {
 
 public:
-
-	PlotWindow(
-		const TGWindow *p,
-		PlotList plotList,
-		const std::string &title = "",
-		int w = 1,
-		int h = 1
-	);
 
 	PlotWindow(
 		const TGWindow *p,
@@ -67,32 +40,39 @@ public:
 		int w = 1,
 		int h = 1
 	);
+	~PlotWindow();
 
 	virtual void update() override;
 
-	virtual void teardown() override;
+	virtual size_t plotCount();
+
+	virtual void handleResize(Event_t *event);
 
 protected:
 
 	// VIEW
 
-	TGHorizontalFrame *mainView;
+	PageCanvas *canvas;
 
-		TRootEmbeddedCanvas *canvas;
-	
-	TGHorizontalFrame *buttonFrame;
-
-		TGLabel      *pageNum    ;
-
-		TGTextButton *begButton  ;
-		TGTextButton *leftButton ;
-		TGTextButton *rightButton;
-		TGTextButton *endButton  ;
+	virtual void makeConnections() override;
+	virtual void breakConnections() override;
 
 private:
 
     // DATA
 
-	PlotList plotList;
+	std::vector<TH1F*> *histograms;
+	std::vector<TGraph*> *graphs;
+
+	PlotWindow(
+		const TGWindow *p,
+		const std::string &title = "",
+		int w = 1,
+		int h = 1
+	);
+
+	int plotsWide;
+	int plotsTall;
+	int numPages;
 
 };
