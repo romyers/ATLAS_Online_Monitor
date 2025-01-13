@@ -103,7 +103,7 @@ namespace MuonReco {
   uint16_t Signal:: TrailerEID     () const { return eventid_t                              ; }
   uint32_t Signal:: TriggerLEdge   () const { return triggerledge                           ; }
   uint8_t  Signal:: CSMID          () const { return csmid                                  ; }
-  uint8_t  Signal:: TDC            () const { return tdcid                                  ; }
+  uint8_t  Signal:: TDC            () const { return tdcid+csmid*20                         ; }
   uint8_t  Signal:: Channel        () const { return chnlid                                 ; }
   uint8_t  Signal:: Mode           () const { return mode                                   ; }
   uint32_t Signal:: LEdge          () const { return ledge                                  ; }
