@@ -72,7 +72,10 @@ namespace MuonReco {
   }
 
   int ParameterSet::getInt(TString key, int defaultVal, int index) {
-    if (!hasKey(key)) return defaultVal;
+    if (!hasKey(key)) {
+      std::cout << "Attempting to access key " << key << " that is not in ParameterSet" << std::endl;
+      return defaultVal;
+    }
 
     try {
       return getInt(key, index);
@@ -91,7 +94,10 @@ namespace MuonReco {
   }
 
   double ParameterSet::getDouble(TString key, double defaultVal, int index /*=-1*/) {
-    if (!hasKey(key)) return defaultVal;
+    if (!hasKey(key)) {
+      std::cout << "Attempting to access key " << key << " that is not in ParameterSet" << std::endl;
+      return defaultVal;
+    }
 
     try {
       return getDouble(key, index);
@@ -108,7 +114,10 @@ namespace MuonReco {
   }
 
   Bool_t ParameterSet::getBool(TString key, Bool_t defaultVal, int index) {
-    if (!hasKey(key)) return defaultVal;
+    if (!hasKey(key)) {
+      std::cout << "Error, attempting to access key " << key << " that is not in ParameterSet" << std::endl;
+      return defaultVal;
+    }
 
     try { 
       return getBool(key, index);

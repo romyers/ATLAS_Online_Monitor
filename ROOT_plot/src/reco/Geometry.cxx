@@ -7,7 +7,7 @@ namespace MuonReco {
   Int_t Geometry::MAX_TUBE_LAYER   =  8;
   Int_t Geometry::MAX_TUBE_COLUMN  = 54;
   Int_t Geometry::MAX_TDC_LAYER    =  4;
-  Int_t Geometry::MAX_TDC_COLUMN   =  6;
+  // Int_t Geometry::MAX_TDC_COLUMN   =  6;
 
   double Geometry::ML_distance     = 224.231;
   double Geometry::tube_length     = 1.1;
@@ -274,7 +274,7 @@ namespace MuonReco {
     Geometry::MAX_TDC_CHANNEL = ps.getInt("MAX_TDC_CHANNEL", 24, 0);
     Geometry::MAX_TUBE_COLUMN = ps.getInt("MAX_TUBE_COLUMN", 54, 0);
     Geometry::MAX_TUBE_LAYER  = ps.getInt("MAX_TUBE_LAYER",  8,  0);
-    Geometry::MAX_TDC_COLUMN  = ps.getInt("MAX_TDC_COLUMN",  6,  0);
+    // Geometry::MAX_TDC_COLUMN  = ps.getInt("MAX_TDC_COLUMN",  6,  0);
     Geometry::MAX_TDC_LAYER   = ps.getInt("MAX_TDC_LAYER",   4,  0);
 
     Geometry::ML_distance     = ps.getDouble("ML_distance", 224.231, 0);

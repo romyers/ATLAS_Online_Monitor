@@ -31,6 +31,7 @@ void DAQData::initialize(
     clear();
 
     ConfigParser cp(confFile);
+    // cp.Print();
 
     geo.Configure(cp.items("Geometry"));
 
@@ -39,6 +40,7 @@ void DAQData::initialize(
 
     tc = TimeCorrection(cp);
     // tc.Read();
+    // cp.items("RecoUtility").Print();
 
     recoUtil = RecoUtility(cp.items("RecoUtility"));
 

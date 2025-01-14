@@ -22,9 +22,9 @@ namespace MuonReco {
   void RecoUtility::Configure(ParameterSet ps) {
     CHECK_TRIGGERS      = ps.getBool  ("CHECK_TRIGGERS",      1,        0);
     IS_PHASE2_DATA      = ps.getBool  ("IS_PHASE2_DATA",      0,        0);
-    WIDTHSEL            = ps.getInt   ("WIDTHSEL      ",      2,        0);
+    WIDTHSEL            = ps.getInt   ("WIDTHSEL",            2,        0);
     IS_RELATIVE_DATA    = ps.getBool  ("IS_RELATIVE_DATA",    0,        0);  
-    ADC_NOISE_CUT       = ps.getDouble("ADC_NOISE_CUT ",      0,        0);
+    ADC_NOISE_CUT       = ps.getDouble("ADC_NOISE_CUT",       0,        0);
     
 
     MIN_HITS_NUMBER     = ps.getInt   ("MIN_HITS_NUMBER",     6,        0);
@@ -41,6 +41,8 @@ namespace MuonReco {
 
     SIG_VOLTAGE_INVERT  = ps.getInt   ("SIG_VOLTAGE_INVERT",  0,        0);
     TRG_VOLTAGE_INVERT  = ps.getInt   ("TRG_VOLTAGE_INVERT",  0,        0);
+    std::cout<<"Configure IS_PHASE2_DATA="<<IS_PHASE2_DATA<<std::endl;
+    std::cout<<"Configure ADC_NOISE_CUT="<<ADC_NOISE_CUT<<std::endl;
   }
 
   bool RecoUtility::IsPhase2Data(){return IS_PHASE2_DATA;}
@@ -150,6 +152,8 @@ namespace MuonReco {
   } //DoHitClustering
 
   int RecoUtility::DoHitFinding(Event *e, TimeCorrection* tc, Geometry& geo) {
+    // std::cout<<"Hit Finding ADC_NOISE_CUT="<<ADC_NOISE_CUT<<std::endl;
+
     if (IS_PHASE2_DATA){
       return DoHitFindingPhase2(e,   tc, geo, ADC_NOISE_CUT, IS_RELATIVE_DATA);
     }
@@ -246,6 +250,7 @@ namespace MuonReco {
     for (auto sig : e->WireSignals()) {
       adc_time = sig.Width()*BINSIZE*WIDTHSEL;
       if(adc_time>=adc_cut){
+        // std::cout<<"ADC cut="<<adc_cut<<std::endl;
         tdc_time = sig.LEdge()*BINSIZE;
         if (relative){
           drift_time = sig.LEdge()*BINSIZE;
