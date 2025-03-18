@@ -14,6 +14,9 @@
 #include <mutex>
 #include <fstream>
 #include <vector>
+#include <sys/stat.h> // For mkdir
+#include <string>
+#include <iostream>
 
 class LockableStream {
 
@@ -57,6 +60,8 @@ private:
 	std::ofstream out;
 
 	std::mutex m;
+	std::string filename;
+	int subfileindex;
 
 	RingBuffer<unsigned char> cache;
 

@@ -5,6 +5,10 @@
 #include "DAQMonitor/DataModel/DAQData.h"
 
 #include "TPaveLabel.h"
+#include <TMath.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>   // Required for std::setprecision
 
 using namespace std;
 
@@ -135,6 +139,32 @@ void PlotWindow::update() {
 					} else {
 
 						(*graphs)[plotIndex]->Draw("AB");
+						
+						int nPoints = (*graphs)[plotIndex]->GetN();  // Get number of points
+
+						if (nPoints > 0) {
+							TText *xlabel = new TText();
+							string text_content;
+							xlabel -> SetTextColor(kBlack);
+							xlabel -> SetNDC();
+							xlabel -> SetTextFont(42);
+							xlabel -> SetTextSize(0.05);
+							xlabel -> SetTextAngle(0);
+						    double* y_values = (*graphs)[plotIndex]->GetY();  // Get pointer to Y-values array
+
+						    double maxY = TMath::MaxElement(nPoints, y_values);  // Get max value
+						    double meanY = TMath::Mean(nPoints, y_values);  // Get mean value
+
+						    std::ostringstream oss_max, oss_mean;
+						    oss_max << std::fixed << std::setprecision(2) << maxY;  // Format max value
+						    oss_mean << std::fixed << std::setprecision(2) << meanY;  // Format mean value
+
+						    text_content = "Max = " + oss_max.str() + " kHz";
+						    xlabel->DrawText(0.2, 0.85, text_content.c_str());
+
+						    text_content = "Mean = " + oss_mean.str() + " kHz";
+						    xlabel->DrawText(0.6, 0.85, text_content.c_str());
+						}
 
 					}
 

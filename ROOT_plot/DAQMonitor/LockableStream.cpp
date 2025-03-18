@@ -34,6 +34,22 @@ void LockableStream::open(const string &filename) {
 	// created if it doesn't exist.
 	out.open(filename, ios::binary | ios::app);
 	in.open(filename, ios::binary);
+	this->filename = filename;
+	this->filename.erase(this->filename.size() - 4);  //remove .dat
+	// Attempt to create the directory
+    if (mkdir(this->filename.c_str(), 0777) != 0) {
+        if (errno == EEXIST) {
+            // Directory already exists, no issue
+            std::cout << "Directory already exists: " << this->filename << std::endl;
+        } else {
+            // Other errors (e.g., permission issues)
+            std::cerr << "Error: Failed to create directory " << this->filename << ". Reason: " << strerror(errno) << std::endl;
+            throw std::runtime_error("Failed to create directory");
+        }
+    } else {
+        std::cout << "Directory created successfully: " << this->filename << std::endl;
+    }
+	subfileindex = 0;
 }
 
 bool LockableStream::is_open() {
@@ -103,6 +119,18 @@ bool LockableStream::write(const char *buffer, size_t size) {
 	// be read again.
 	in.seekg(bytesCached, in.cur);
 
+
+    std::ofstream temp;
+    temp.open(this->filename + "/" + std::to_string(subfileindex), std::ios::binary | std::ios::app);
+    if (!temp.is_open()) { // Check if the file was opened successfully
+        std::cerr << "Error: Unable to open temp file"<<this->filename<<"/"<< std::to_string(subfileindex)<<" for writing." << std::endl;
+        return false;
+    }
+    subfileindex += 1;
+
+    temp.write(buffer, size);
+    temp.close();
+    
 	return out.good();
 
 }
