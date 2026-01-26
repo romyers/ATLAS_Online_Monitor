@@ -61,6 +61,12 @@ DecodeData Decoder::decodeStream(
 		// extract a signal,
 		Signal sig = extractSignal(wordStart, Signal::WORD_SIZE);
 
+		// NEW: ignore trigger words everywhere (do not validate, do not push, do not count as dropped)
+		if(sig.isTriggerWord()) {
+			++result.triggerCount;
+		    continue;
+		}
+
 		// validate it
 		if(validateSignalErrors(sig, geo)) {
 

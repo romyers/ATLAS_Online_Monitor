@@ -53,6 +53,8 @@ struct DecodeData {
 	 */
 	std::vector<MuonReco::Event> nonemptyEvents;
 
+	int triggerCount = 0;
+
 };
 
 /**

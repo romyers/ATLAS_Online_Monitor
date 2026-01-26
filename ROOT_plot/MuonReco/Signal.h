@@ -63,6 +63,21 @@
    4'b1100   4'TDC header count   4'TDC trailer count   12'EventID  1'header count error  1'trailer count error  4'b0   10'HitCount
 */
 
+// NEW MiniDAQ (event_builder_byhit) framing:
+//
+// Header:
+// [39:36]=4'b1010, [35:16]=20'EventID, [15]=rd_bank_sel, [14:0]=0
+//
+// Trigger word (may appear inside framed events or in TRIG_ONLY mode):
+// [39:36]=4'b1110, [35:30]=0, [29:0]=trigger_payload
+//
+// Trailer:
+// [39:36]=4'b1100, [35:16]=20'EventID, [15:10]=6'TrigCount, [9:0]=10'HitCount
+//
+// TRIG_ONLY mode:
+// one or more trigger words ONLY (no header/trailer, no event_id consumed)
+
+
 namespace MuonReco {
 
   struct TDCErrorData {
@@ -131,6 +146,15 @@ namespace MuonReco {
 
     TDCErrorData getTDCError    () const;
 
+    // NEW (2026-01): event_builder_byhit additions
+    uint32_t HeaderEID20    () const;   // full 20-bit event_id from header
+    uint32_t TrailerEID20   () const;   // full 20-bit event_id from trailer
+    uint8_t  HeaderBankSel  () const;   // header bit[15] = rd_bank_sel
+    uint8_t  TriggerCount   () const;   // trailer [15:10]
+    bool     isTriggerWord  () const;   // Type()==0b1110
+    uint32_t TriggerPayload () const;   // trigger word [29:0]
+
+
     static const uint8_t HEADER               = 0b1010    ; // bits 37-39
     static const uint8_t TRAILER              = 0b1100    ; // bits 37-39
 
@@ -143,6 +167,9 @@ namespace MuonReco {
 
     static const short RISING                 = 4         ; //for phase1 compatibility
     static const short FALLING                = 5         ; //for phase1 compatibility
+
+    static const uint8_t TRIG_WORD = 0b1110; // bits [39:36]
+
  
   private:
 
@@ -166,6 +193,13 @@ namespace MuonReco {
     uint8_t  tdc_tlr_count;
     uint8_t  hdrCountErr  ;
     uint8_t  tlrCountErr  ;
+
+    // NEW (2026-01): event_builder_byhit additions
+    uint32_t eventid20      ;  // header/trailer [35:16]
+    uint8_t  header_bankSel ;  // header [15]
+    uint8_t  trig_count     ;  // trailer [15:10]
+    uint32_t trig_payload   ;  // trigger word [29:0]
+
 
     double      time_in_ns;
 

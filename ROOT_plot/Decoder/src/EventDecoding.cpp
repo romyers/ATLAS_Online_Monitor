@@ -86,7 +86,7 @@ bool validateEventErrors(const vector<Signal> &signals) {
 	}
 
 	// Make sure the header and trailer event IDs match
-	if(header.HeaderEID() != trailer.TrailerEID()) {
+	if(header.HeaderEID20() != trailer.TrailerEID20()) {
 
 		logger.logError(
 			"Found event with mismatched event IDs",
@@ -298,33 +298,33 @@ void validateEventWarnings(const vector<Signal> &signals) {
 
 	// Check that the real TDC header count matches the count reported in the
 	// event trailer
-	if(TDCHeaderCount != trailer.TDCHdrCount()) {
+	// if(TDCHeaderCount != trailer.TDCHdrCount()) {
 
-		logger.logError(
-			to_string(TDCHeaderCount)
-			+ " TDC header(s) found in data, event trailer indicates "
-			+ to_string(trailer.TDCHdrCount())
-			+ "!",
-			EVENT_ERROR,
-			WARNING
-		);
+	// 	logger.logError(
+	// 		to_string(TDCHeaderCount)
+	// 		+ " TDC header(s) found in data, event trailer indicates "
+	// 		+ to_string(trailer.TDCHdrCount())
+	// 		+ "!",
+	// 		EVENT_ERROR,
+	// 		WARNING
+	// 	);
 
-	}
+	// }
 
-	// Check that the real TDC trailer count matches the count reported in the
-	// event trailer
-	if(TDCTrailerCount != trailer.TDCTlrCount()) {
+	// // Check that the real TDC trailer count matches the count reported in the
+	// // event trailer
+	// if(TDCTrailerCount != trailer.TDCTlrCount()) {
 
-		logger.logError(
-			to_string(TDCTrailerCount)
-			+ " TDC trailer(s) found in data, event trailer indicates "
-			+ to_string(trailer.TDCTlrCount())
-			+ "!",
-			EVENT_ERROR,
-			WARNING
-		);
+	// 	logger.logError(
+	// 		to_string(TDCTrailerCount)
+	// 		+ " TDC trailer(s) found in data, event trailer indicates "
+	// 		+ to_string(trailer.TDCTlrCount())
+	// 		+ "!",
+	// 		EVENT_ERROR,
+	// 		WARNING
+	// 	);
 
-	}
+	// }
 
 }
 
@@ -351,6 +351,8 @@ void removeTDCSignals(
                 if(signal.isTDCTrailer  ()) { return true; }
                 if(signal.isTDCOverflow ()) { return true; }
                 if(signal.isTDCDecodeErr()) { return true; }
+                // NEW: ignore trigger words completely
+                if(signal.isTriggerWord ()) return true;
                 return false;
             }
         ),

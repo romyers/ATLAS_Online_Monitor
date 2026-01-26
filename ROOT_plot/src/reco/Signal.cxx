@@ -16,6 +16,13 @@ namespace MuonReco {
     std::bitset<1>  _trigoverflow ;
     std::bitset<12> _eventid_t    ;
     std::bitset<17> _triggerledge ;
+
+    // NEW bitsets for new builder format
+    std::bitset<20> _eventid20;
+    std::bitset<1>  _header_bankSel;
+    std::bitset<6>  _trig_count;
+    std::bitset<30> _trig_payload;
+
     std::bitset<3>  _csmid        ;
     std::bitset<5>  _tdcid        ;
     std::bitset<5>  _chnlid       ;
@@ -32,11 +39,44 @@ namespace MuonReco {
     std::bitset<1>  _tlrCountErr  ;
 
     _type          = word >> 36;
+    type           = static_cast<uint8_t >((_type         .to_ulong()));
+    
+
+    // -------------------------
+    // NEW builder decode (safe defaults)
+    // -------------------------
+    _eventid20       = word >> 16;
+    _header_bankSel  = word >> 15;
+    _trig_count      = word >> 10;
+    _trig_payload    = word >> 0;
+
+    eventid20        = static_cast<uint32_t>(_eventid20.to_ulong()) & 0xFFFFF;
+    header_bankSel   = static_cast<uint8_t >(_header_bankSel.to_ulong()) & 0x1;
+    trig_count       = static_cast<uint8_t >(_trig_count.to_ulong()) & 0x3F;
+    trig_payload     = static_cast<uint32_t>(_trig_payload.to_ulong()) & 0x3FFFFFFF;
+
+
+    // -------------------------
+    // Legacy header/trailer fields (kept for backward compatibility)
+    // (These were for the old format; keep them populated, but note they
+    //  are not the authoritative ID anymore in new format.)
+    // -------------------------
     _eventid       = word >> 17;
     _eventidext    = word >> 17;
     _trigoverflow  = word >> 35;
-    _eventid_t     = word >> 16;    
+    _eventid_t     = word >> 16;
     _triggerledge  = word >>  0;
+
+    eventid        = static_cast<uint16_t>(_eventid.to_ulong());
+    eventid_ext    = static_cast<uint32_t>(_eventidext.to_ulong());
+    trigoverflow   = static_cast<uint8_t >(_trigoverflow.to_ulong());
+    eventid_t      = static_cast<uint16_t>(_eventid_t.to_ulong());
+    triggerledge   = static_cast<uint32_t>(_triggerledge.to_ulong());
+    // -------------------------
+
+
+
+
     _csmid         = word >> 37;
     _tdcid         = word >> 32;
     _chnlid        = word >> 27;
@@ -52,13 +92,6 @@ namespace MuonReco {
     _hdrCountErr   = word >> 15;
     _tlrCountErr   = word >> 14;
 
-    type           = static_cast<uint8_t >((_type         .to_ulong()));
-    eventid        = static_cast<uint16_t>((_eventid      .to_ulong()));
-    eventid_t      = static_cast<uint16_t>((_eventid_t    .to_ulong()));
-    eventid_ext    = static_cast<uint32_t>((_eventidext   .to_ulong()));
-    trigoverflow   = static_cast<uint8_t >((_trigoverflow .to_ulong()));
-    
-    triggerledge   = static_cast<uint32_t>((_triggerledge .to_ulong()));
     csmid          = static_cast<uint8_t >((_csmid        .to_ulong()));
     tdcid          = static_cast<uint8_t >((_tdcid        .to_ulong()));
     chnlid         = static_cast<uint8_t >((_chnlid       .to_ulong()));
@@ -75,6 +108,7 @@ namespace MuonReco {
     tlrCountErr    = static_cast<uint8_t >((_tlrCountErr  .to_ulong()));
 
     time_in_ns = ledge * 0.78125;
+
 
     if(isTDCOverflow()) {
 
@@ -116,6 +150,14 @@ namespace MuonReco {
   uint8_t  Signal:: TDCTlrCount    () const { return tdc_tlr_count                          ; }
   uint8_t  Signal:: HeaderCountErr () const { return hdrCountErr                            ; }
   uint8_t  Signal:: TrailerCountErr() const { return tlrCountErr                            ; }
+
+  uint32_t Signal::HeaderEID20     () const { return eventid20; }
+  uint32_t Signal::TrailerEID20    () const { return eventid20; } // same field location in new format
+  uint8_t  Signal::HeaderBankSel   () const { return header_bankSel; }
+  uint8_t  Signal::TriggerCount    () const { return trig_count; }
+  uint32_t Signal::TriggerPayload  () const { return trig_payload; }
+
+  bool     Signal:: isTriggerWord  () const { return Type() == TRIG_WORD; }
 
   bool     Signal:: isEventHeader  () const { return Type         () == HEADER              ; }
   bool     Signal:: isEventTrailer () const { return Type         () == TRAILER             ; }

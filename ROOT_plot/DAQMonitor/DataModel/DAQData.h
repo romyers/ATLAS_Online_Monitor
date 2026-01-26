@@ -46,6 +46,7 @@ struct DAQData {
 
     int droppedSignals     = 0;
     int droppedEvents      = 0;
+    int triggerCount       = 0;
 
     /**
      * Checks if the DAQData has any events in it at all.

@@ -13,6 +13,7 @@ struct UpdatePacket {
 	int lostPackets       = 0 ;
 	int droppedSignals    = 0 ;
 	int droppedEvents     = 0 ;
+	int triggerCount      = 0 ;
 
 	std::string statusTag = "";
 

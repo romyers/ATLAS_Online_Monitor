@@ -222,6 +222,7 @@ void aggregateEventData(const DecodeData &loopData, DAQData &data) {
 
     data.droppedSignals  += loopData.droppedSignals;
     data.droppedEvents   += loopData.droppedEvents ;
+    data.triggerCount    += loopData.triggerCount  ;
 
     data.newEvents = loopData.nonemptyEvents;
 
