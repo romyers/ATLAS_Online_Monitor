@@ -254,6 +254,7 @@ void SigHandlers::handleDataUpdate() {
 	packet.lostPackets     = data.lostPackets                              ;
 	packet.droppedSignals  = data.droppedSignals                           ;
 	packet.droppedEvents   = data.droppedEvents                            ;
+	packet.triggerCount    = data.triggerCount;
 	data.markClean();
 	data.unlock();
 
